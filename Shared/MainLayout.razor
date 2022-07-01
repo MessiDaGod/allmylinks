@@ -19,6 +19,6 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-        module0 = await Js.InvokeAsync<IJSObjectReference>("import", "/js/AllMyLinks.js");
+        module0 = await Js.InvokeAsync<IJSObjectReference>("import", "./js/AllMyLinks.js");
     }
 }
