@@ -6,7 +6,7 @@
   "display": "minimal-ui",
   "orientation": "portrait",
   "scope": "/",
-  "start_url": "/admin",
+  "start_url": "/",
   "icons": [
     {
       "src": "/_next/static/logo-assets/android-icon-36x36.png",
