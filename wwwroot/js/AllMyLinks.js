@@ -51,8 +51,6 @@
         },
         toggleCancel: function () {
             var x = document.getElementById("cancel");
-            // x.removeAttribute('class');
-            // x.classList.toggle("hide");
             x.style.display = "none";
             x = document.getElementById("cancel-2");
             x.style.display = "none";

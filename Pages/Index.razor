@@ -2,10 +2,10 @@
 @inject NavigationManager NavigationManager;
 
 @code {
-    
+
     protected override Task OnInitializedAsync()
     {
-        Task.Run(async() => NavigationManager.NavigateTo("allmylinks")).ConfigureAwait(false);
+        Task.Run(() => NavigationManager.NavigateTo("allmylinks")).ConfigureAwait(false);
         return base.OnInitializedAsync();
     }
 }
