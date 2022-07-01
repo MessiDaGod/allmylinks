@@ -9,12 +9,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 7.0.100-preview.5.22307.18
+
     - name: Publish with dotnet
-      run: dotnet publish --configuration Release --output build
+      run: dotnet publish --configuration Release --output build -p:GHPages=true
+
+    - name: Rewrite base href
+      if: success()
+      uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
+      with:
+        html_path: ${{ env.PUBLISH_DIR }}/index.html
+        base_href: BASE_URL or REPOSITORY_NAME
+
+    - name: Add .nojekyll file
+      run: touch ${{ env.PUBLISH_DIR }}/.nojekyll
+
     - name: Deploy to Github Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
