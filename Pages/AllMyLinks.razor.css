@@ -855,3 +855,109 @@ data-styled.g68[id="TopBar__ProfilePictureContainer-sc-1u0ccma-2"] {
 }
 
 /*!sc*/
+
+.bFYATv {
+    animation: 4s linear 0s infinite normal none running fqWWsH;
+}
+
+.bhdLno {
+    display: flex;
+}
+
+.fjeJqU {
+    background-color: black;
+    box-shadow: rgb(10 11 13 / 12%) 0px 12px 16px;
+    border-radius: 24px;
+    height: 48px;
+    padding-left: 16px;
+    padding-right: 16px;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: auto;
+}
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, menu, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, main, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+*, ::before, ::after {
+    box-sizing: inherit;
+}
+user agent stylesheet
+div {
+    display: block;
+}
+
+.eebIWD {
+    position: fixed;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    flex-direction: column;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 124px;
+    background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%);
+    font-family: inter;
+    z-index: 1000;
+    width: 100%;
+}
+
+html > * {
+    letter-spacing: normal;
+}
+
+body {
+    line-height: 1;
+}
+
+html {
+    font-family: Inter, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+*, ::before, ::after {
+    box-sizing: inherit;
+}
+
+*, ::before, ::after {
+    box-sizing: inherit;
+}
+
+@keyframes fqWWsH {
+
+    4.16% {
+        transform: translateY(4px);
+    }
+
+    8.33% {
+        transform: translateY(-3px);
+    }
+
+    12.48% {
+        transform: translateY(2px);
+    }
+
+    16.66% {
+        transform: translateY(-1px);
+    }
+
+    20.81% {
+        transform: translateY(1px);
+    }
+
+    25% {
+        transform: translateY(0px);
+    }
+}

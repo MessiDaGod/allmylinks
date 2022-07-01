@@ -1,86 +1,47 @@
 @page "/allmylinks"
 
-
+<PageTitle>@@joeshakely</PageTitle>
 <div class="sc-bdfBwQ LyLIy">
-    <div id="links-1" class="sc-bdfBwQ pkAuV">
+
+@for (var i = 0; i < Links.Length; i++) {
+    <div id="links-@i" class="sc-bdfBwQ pkAuV">
         <div data-testid="StyledContainer" class="sc-bdfBwQ StyledContainer__StyledLinkContainer-sc-1kae6sc-0 hBNyQA doOGeq">
-            <a href="https://github.com/messidagod" target="_blank" rel="noopener" data-testid="LinkButton"
-               aria-describedby="profile-messidagod" height="auto" class="@CssClass">
-                <p class="">GitHub </p>
+            <a href="@Links[i]" target="_blank" rel="noopener" data-testid="LinkButton"
+               aria-describedby="profile-links-@i" height="auto" class="@CssClass">
+                <p class="">@DomainFromUrl(Links[i]).Replace(".com", "") </p>
             </a>
         </div>
     </div>
-    
-     <div id="links-2" class="sc-bdfBwQ pkAuV">
-         <div data-testid="StyledContainer" class="sc-bdfBwQ StyledContainer__StyledLinkContainer-sc-1kae6sc-0 hBNyQA doOGeq">
-             <a href="https://instagram.com/joeshakely" target="_blank" rel="noopener" data-testid="LinkButton"
-               aria-describedby="profile-instagram" height="auto" class="@CssClass">
-                <p class="">Instagram </p>
-            </a>  
-         </div>
-     </div>
+    }
 </div>
 
-@* *@
-@* <style> *@
-@* *@
-@* .LyLIy { *@
-@*     margin: 0px auto; *@
-@*     height: 100%; *@
-@*     width: 100%; *@
-@*     max-width: 680px; *@
-@*     padding-bottom: 80px; *@
-@* } *@
-@* .imjgnX { *@
-@*     overflow-wrap: break-word; *@
-@*     word-break: break-word; *@
-@*     hyphens: auto; *@
-@*     white-space: normal; *@
-@*     background: none; *@
-@*     color: inherit; *@
-@*     transition: box-shadow 0.25s cubic-bezier(0.08, 0.59, 0.29, 0.99) 0s, border-color 0.25s cubic-bezier(0.08, 0.59, 0.29, 0.99) 0s, transform 0.25s cubic-bezier(0.08, 0.59, 0.29, 0.99) 0s, background-color 0.25s cubic-bezier(0.08, 0.59, 0.29, 0.99) 0s; *@
-@*     min-height: 56px; *@
-@* }     *@
-@* .ldGKnQ { *@
-@*     margin: 0px; *@
-@*     border: none; *@
-@*     font-family: inherit; *@
-@*     font-weight: inherit; *@
-@*     font-size: inherit; *@
-@*     text-align: center; *@
-@*     cursor: pointer; *@
-@*     background: none; *@
-@*     text-decoration: none; *@
-@*     display: flex; *@
-@*     -webkit-box-align: center; *@
-@*     align-items: center; *@
-@*     -webkit-box-pack: center; *@
-@*     justify-content: center; *@
-@*     height: auto; *@
-@*     position: relative; *@
-@*     padding: 16px 20px; *@
-@*     width: 100%; *@
-@*     appearance: none; *@
-@*     box-sizing: border-box; *@
-@*     vertical-align: middle; *@
-@* } *@
-@* .doOGeq { *@
-@*     z-index: 0; *@
-@*     overflow: hidden; *@
-@*     margin-bottom: 16px; *@
-@*     border: none; *@
-@*     background-color: rgb(42, 50, 53); *@
-@*     color: rgb(255, 255, 255); *@
-@*     transition: transform 0.15s cubic-bezier(0, 0.2, 0.5, 3) 0s; *@
-@* } *@
-@* .hBNyQA { *@
-@*     position: relative; *@
-@*     height: auto; *@
-@*     border-radius: 14px; *@
-@* } *@
-@* </style> *@
+<div data-testid="SignupCta" class="sc-bdfBwQ sc-gsTCUz eebIWD bhdLno">
+
+    <div class="sc-bdfBwQ sc-gsTCUz SignupCta__AnimatedPill-sc-1831vut-0 fjeJqU bhdLno bFYATv">
+        <button type="button" height="100%" class="sc-pFZIQ cqNGIV">
+            <div class="sc-bdfBwQ sc-gsTCUz dOtDFk bhdLno">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 25" height="16px" role="icon" aria-labelledby="title desc"
+                     style="display: block; width: auto;">
+                    <title>Linktree Logo</title><desc>Linktree Logo Symbol</desc><path d="M13.5108 5.85343L17.5158 1.73642L19.8404 4.11701L15.6393 8.12199H21.5488V11.4268H15.6113L19.8404 15.5345L17.5158 17.8684L11.7744 12.099L6.03299 17.8684L3.70842 15.5438L7.93745 11.4361H2V8.12199H7.90944L3.70842 4.11701L6.03299 1.73642L10.038 5.85343V0H13.5108V5.85343ZM10.038 16.16H13.5108V24.0019H10.038V16.16Z" fill="#FFFFFF"></path>
+                </svg>
+                <div class="sc-bdfBwQ ghpmkC">
+                    <p class="sc-hKgILt izSXmz">linktr.ee/</p></div>
+                <p class="sc-hKgILt eJnoRI">yournamehere</p>
+            </div></button><button class="sc-pFZIQ hKHFyd"><svg width="10" height="10" viewBox="0 0 10 10" color="palette.slate6" enable-background="new 0 0 24 24" class="sc-gKsewC lfaeoX"><path d="M0.64063 8.19141C0.341802 8.49023 0.330083 9.0293 0.64649 9.3457C0.962896 9.66211 1.50196 9.65039 1.80079 9.35742L4.98829 6.16992L8.16993 9.35156C8.48047 9.66211 9.00782 9.66211 9.32422 9.33984C9.63477 9.02344 9.64063 8.49609 9.33008 8.19141L6.14844 5.00977L9.33008 1.82227C9.64063 1.51758 9.64063 0.984375 9.32422 0.673828C9.00782 0.357422 8.48047 0.357422 8.16993 0.662109L4.98829 3.84375L1.80079 0.65625C1.50196 0.363281 0.962896 0.351562 0.64649 0.667969C0.335943 0.984375 0.341802 1.52344 0.64063 1.82227L3.82813 5.00977L0.64063 8.19141Z"></path></svg></button></div>
+    <div class="sc-bdfBwQ iNJRdR">
+        <p class="sc-hKgILt eVPdtz">Claim your Linktree now!</p></div>
+</div>
+
 @code {
 
     private static string CssClass => "sc-pFZIQ StyledButton-sc-686c3k-0 ldGKnQ imjgnX";
 
+    private static string[] Links => new[] { "https://github.com/messidagod", "https://instagram.com/joeshakely" };
+
+    private static string DomainFromUrl(string uri)
+    {
+        Uri myUri = new Uri(uri);
+        return myUri.Host;
+    }
 }
