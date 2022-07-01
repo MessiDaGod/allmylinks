@@ -52,9 +52,6 @@
         toggleCancel: function () {
             var x = document.getElementById("cancel");
             x.style.display = "none";
-            x = document.getElementById("cancel-2");
-            if (x)
-            x.style.display = "none";
         },
     };
 }());
