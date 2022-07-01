@@ -18,6 +18,7 @@
     <Content Remove="Pages\Counter.razor" />
     <Content Remove="Pages\FetchData.razor" />
     <Content Remove="Pages\Index.razor" />
+    <Content Remove="Pages\Redirect.razor" />
   </ItemGroup>
 
 </Project>
