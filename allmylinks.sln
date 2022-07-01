@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1703.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "allmylinks", "allmylinks.csproj", "{B17C2878-C101-4D77-BF5C-C0E4E6635987}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B17C2878-C101-4D77-BF5C-C0E4E6635987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B17C2878-C101-4D77-BF5C-C0E4E6635987}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B17C2878-C101-4D77-BF5C-C0E4E6635987}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B17C2878-C101-4D77-BF5C-C0E4E6635987}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EEB0606C-B807-494C-A3EB-AD3ED3A1C888}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		description = Blazor WebAssembly app mimicking Linktr.ee functionality
+		version = 1.0
+	EndGlobalSection
+EndGlobal

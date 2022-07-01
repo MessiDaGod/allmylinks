@@ -1,27 +1,24 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime Js;
 
-@* <div class="page"> *@
-        <NavMenu />
-    <main>
-        <div class="top-row px-4">
-            <a href="https://github.com/messidagod/allmylinks" target="_blank">Source Repo</a>
-        </div>
+<NavMenu />
+<main>
+    <div class="top-row px-4">
+        <a href="https://github.com/messidagod/allmylinks" target="_blank">Source Repo</a>
+    </div>
+    <article class="content px-4">
+        @Body
+    </article>
+</main>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-@* </div> *@
 
 @code {
 
-    private IJSObjectReference module0;
+    private IJSObjectReference? module0;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-            module0 = await Js.InvokeAsync<IJSObjectReference>("import", "./js/AllMyLinks.js");
+        module0 = await Js.InvokeAsync<IJSObjectReference>("import", "./js/AllMyLinks.js");
     }
-
-
 }
