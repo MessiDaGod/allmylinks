@@ -1,0 +1,10 @@
+@page "/"
+@inject NavigationManager NavigationManager;
+@code {
+
+    protected override Task OnInitializedAsync()
+    {
+        Task.Run(() => NavigationManager.NavigateTo("allmylinks")).ConfigureAwait(false);
+        return base.OnInitializedAsync();
+    }
+}
