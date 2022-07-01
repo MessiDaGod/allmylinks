@@ -13,7 +13,7 @@ class="sc-iBPRYJ flTywP Header__StyledProfilePicture-sc-i98650-2" filter="none">
         <div data-testid="StyledContainer" class="sc-bdfBwQ StyledContainer__StyledLinkContainer-sc-1kae6sc-0 hBNyQA doOGeq">
             <a href="@Links[i]" target="_blank" rel="noopener" data-testid="LinkButton"
                aria-describedby="profile-links-@i" height="auto" class="@CssClass">
-                <p class="">@DomainFromUrl(Links[i]).Replace(".com", "") </p>
+                <p class="">@DomainFromUrl(Links[i]).Replace(".com", "").Replace("www.", "") </p>
             </a>
         </div>
     </div>
