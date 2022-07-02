@@ -17,18 +17,7 @@
 
     <link rel="shortcut icon" href="_next/static/logo-assets/favicon.ico" />
     <link rel="icon" type="image/png" href="_next/static/logo-assets/favicon.png" />
-    <link rel="icon" type="image/png" href="_next/static/logo-assets/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/png" href="_next/static/logo-assets/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="_next/static/logo-assets/favicon-16x16.png" sizes="16x16" />
-    <link rel="apple-touch-icon" sizes="180x180" href="_next/static/logo-assets/apple-icon-180x180.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="_next/static/logo-assets/apple-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="_next/static/logo-assets/android-icon-144x144.png" />
-    <link rel="apple-touch-icon" sizes="120x120" href="_next/static/logo-assets/apple-icon-120x120.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="_next/static/logo-assets/apple-icon-114x114.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="_next/static/logo-assets/apple-icon-72x72.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="_next/static/logo-assets/apple-icon-76x76.png" />
-    <link rel="apple-touch-icon" sizes="60x60" href="_next/static/logo-assets/apple-icon-60x60.png" />
-    <link rel="apple-touch-icon" sizes="57x57" href="_next/static/logo-assets/apple-icon-57x57.png" />
     <meta name="msapplication-square310x310logo" content="_next/static/logo-assets/ms-icon-310x310.png" />
     <meta name="msapplication-square150x150logo" content="_next/static/logo-assets/ms-icon-150x150.png" />
     <meta name="msapplication-square70x70logo" content="_next/static/logo-assets/ms-icon-70x70.png" />
@@ -38,18 +27,31 @@
     <link rel="manifest" href="static/manifest.json" />
     <title>All My Links</title>
     <base href="/" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
     <link href="allmylinks.styles.css" rel="stylesheet" />
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh; width: 100%;">
+            <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
+        </div>
+    </div>
     <div id="blazor-error-ui">
         An unhandled error has occurred.
         <a href="" class="reload">Reload</a>
         <a class="dismiss"></a>
     </div>
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>
         navigator.serviceWorker.register('service-worker.js');

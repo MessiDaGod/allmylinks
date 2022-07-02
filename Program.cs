@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using allmylinks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
+using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-builder.Services.Configure<ForwardedHeadersOptions>(options =>  
+builder.Services.AddMudServices();
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders =
         ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
