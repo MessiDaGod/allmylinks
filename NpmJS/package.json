@@ -1,0 +1,27 @@
+{
+  "name": "allmylinks",
+  "version": "1.0.0",
+  "description": "[![gh-pages](https://github.com/MessiDaGod/allmylinks/actions/workflows/main.yml/badge.svg)](https://github.com/MessiDaGod/allmylinks/actions/workflows/main.yml)",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack ./src/index.js --output-path ../wwwroot/js --output-filename fs.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MessiDaGod/allmylinks.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MessiDaGod/allmylinks/issues"
+  },
+  "homepage": "https://github.com/MessiDaGod/allmylinks#readme",
+  "devDependencies": {
+    "igniteui-webcomponents-core": "^3.2.2",
+    "igniteui-webcomponents-gauges": "^3.2.2",
+    "path": "^0.12.7",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
+  }
+}

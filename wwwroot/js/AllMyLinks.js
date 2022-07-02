@@ -1,6 +1,7 @@
 // @ts-nocheck
 (function () {
     'use strict';
+
     if (!Element.prototype.matches) {
         Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
     }
@@ -56,7 +57,7 @@
         mountAndInitializeDb: function() {
             FS.mkdir('/database');
             FS.mount(IDBFS, {}, '/database');
-            return syncDatabase(true);
+            return AllMyLinks.syncDatabase(true);
         },
         syncDatabase: function(populate) {
 
