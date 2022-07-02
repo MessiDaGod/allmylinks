@@ -22,26 +22,12 @@ public class PersonServices
         await using var dbContext = await _factory.CreateDbContextAsync();
         if (dbContext.Person.Count() > 0) return;
 
-        var result = await _httpClient.GetFromJsonAsync<Root<Person>>("/sample-data/contributions.json");
-        if (result?.Items.Count > 0)
-        {
-            var index = 1;
-            result.Items.ForEach(item =>
-            {
-                item.Id = index++;
-                if (DateTime.TryParse(item.Date, out var startDate))
-                {
-                    item.StartDate = startDate;
-                }
+        var result = new Person("Joe", "Shakely");
 
-                dbContext.Person.Add(item);
-            });
-        }
-
+        dbContext.Person.Add(result);
         await dbContext.SaveChangesAsync();
         _hasSynced = true;
     }
-
 }
 
 
@@ -50,3 +36,6 @@ public class Root<T>
     public List<T> Items { get; set; } = new List<T>();
     public int ItemCount { get; set; }
 }
+
+
+// dotnet build && dotnet run

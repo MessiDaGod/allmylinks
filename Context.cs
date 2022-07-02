@@ -58,4 +58,10 @@ public record Person
     public string? LastName { get; set; } = null!;
     public string Date { get { return DateTime.Now.ToShortDateString(); } }
     public DateTime? StartDate { get; set; } = null!;
+
+    public Person(string firstName, string lastName)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+    }
 }

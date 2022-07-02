@@ -5,6 +5,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ReleaseVersion>1.0</ReleaseVersion>
+    <PublishTrimmed>true</PublishTrimmed>
+    <EmccExtraLDFlags>-lidbfs.js</EmccExtraLDFlags>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0</EmccExtraLDFlags>
   </PropertyGroup>
 
   <ItemGroup>
