@@ -22,24 +22,4 @@
     <Content Remove="Pages\Redirect.razor" />
   </ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.CommandR\project.assets.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.CommandR\Stl.CommandR.csproj.nuget.dgspec.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.Fusion.Blazor\Debug\net6.0\project.razor.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.Fusion.Blazor\project.assets.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.Fusion.Blazor\project.packagespec.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.Fusion.Blazor\Stl.Fusion.Blazor.csproj.nuget.dgspec.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.Fusion.Client\project.assets.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.Fusion.Client\Stl.Fusion.Client.csproj.nuget.dgspec.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.Fusion\project.assets.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.Fusion\Stl.Fusion.csproj.nuget.dgspec.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.Interception\project.assets.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.Interception\Stl.Interception.csproj.nuget.dgspec.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.Net\project.assets.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl.Net\Stl.Net.csproj.nuget.dgspec.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl\project.assets.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl\project.packagespec.json" />
-    <_ContentIncludedByDefault Remove="artifacts\obj\Stl\Stl.csproj.nuget.dgspec.json" />
-  </ItemGroup>
-
 </Project>

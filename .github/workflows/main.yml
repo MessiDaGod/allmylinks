@@ -21,16 +21,6 @@ jobs:
     - name: Publish
       run: dotnet publish allmylinks.sln -c:Release -o:publish -p:GHPages=true
 
-    # - name: Rewrite base href
-    #   if: success()
-    #   uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
-    #   with:
-    #     html_path: ${{ env.PUBLISH_DIR }}/index.html
-    #     base_href: BASE_URL or REPOSITORY_NAME
-
-    # - name: Add .nojekyll file
-    #   run: touch ${{ env.PUBLISH_DIR }}/.nojekyll
-
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
