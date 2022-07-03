@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@inject IJSRuntime JS;
+@inject IJSRuntime? JS;
 <NavMenu />
 <main>
   <div class="top-row px-4">
@@ -18,13 +18,13 @@
 
 @code {
 
-  private IJSObjectReference module {get; set; }
-  private IJSObjectReference module1 {get; set; }
+  private IJSObjectReference? module {get; set; }
+  private IJSObjectReference? module1 {get; set; }
   protected override async Task OnAfterRenderAsync(bool firstRender)
   {
     if (firstRender) {
-      module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/AllMyLinks.js");
-      module1 = await JS.InvokeAsync<IJSObjectReference>("import", "./js/fs.js");
+      module = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/AllMyLinks.js");
+      module1 = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/fs.js");
     }
   }
 }

@@ -6,7 +6,7 @@ namespace allmylinks;
 public class DatabaseService<T>
     where T : DbContext
 {
-    [Inject] IJSRuntime JS { get; set; }
+    [Inject] IJSRuntime? JS { get; set; }
     // #if RELEASE
     public static string FileName = "/Users/joeshakely/repos/allmylinks/wwwroot/database/app.db";
     private readonly IDbContextFactory<T> _dbContextFactory;
