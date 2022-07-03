@@ -1,0 +1,32 @@
+.hide {
+    display: none;
+}
+
+button {
+    border-radius: 8px;
+    padding: 14px 40px;
+    background-color: blue;
+    color: white;
+}
+
+button.mouse {
+    font-family: Verdana,
+        Geneva,
+        sans-serif;
+    font-size: large;
+    cursor: pointer;
+}
+
+.no-bullets {
+    list-style-type: none;
+}
+
+#candleprice {
+    width: 100%;
+    position: absolute;
+    color: white;
+}
+
+#header {
+    margin: 0 0 0 0;
+}
