@@ -19,9 +19,12 @@
 @code {
 
   private IJSObjectReference module {get; set; }
+  private IJSObjectReference module1 {get; set; }
   protected override async Task OnAfterRenderAsync(bool firstRender)
   {
-    if (firstRender)
+    if (firstRender) {
       module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/AllMyLinks.js");
+      module1 = await JS.InvokeAsync<IJSObjectReference>("import", "./js/fs.js");
+    }
   }
 }
