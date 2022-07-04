@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <RunAOTCompilation>false</RunAOTCompilation>
-    <EmccExtraLDFlags>-lidbfs.js --use-preload-plugins</EmccExtraLDFlags>
+    <EmccExtraLDFlags>-lidbfs.js</EmccExtraLDFlags>
     <EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0</EmccExtraLDFlags>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -18,7 +18,6 @@
     <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0-preview.5.22302.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0-preview.5.22302.2" />
-    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.0-pre20220427180151" />
     <PackageReference Include="MudBlazor" Version="6.0.11" />
     <PackageReference Include="PublishSPAforGitHubPages.Build" Version="1.3.6" />
   </ItemGroup>

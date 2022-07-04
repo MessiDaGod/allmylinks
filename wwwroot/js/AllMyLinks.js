@@ -51,6 +51,7 @@
         }
     }
 
+    var FS;
     window.AllMyLinks = {
         openNewWindow: function (url) {
             var windowTarget = "_blank";
@@ -653,9 +654,10 @@
             document.title = AllMyLinks.getCurrentPrice();
         },
         mountAndInitializeDb: function() {
-            window.Module.FS.mkdir('/database');
+            FS = window.Module.FS;
+            FS.mkdir('/database');
             try {
-                window.Module.FS.mount(IDBFS, {}, '/database');
+                FS.mount(IDBFS, {}, '/database');
                 return AllMyLinks.syncDatabase(true);
             }
             catch (error) {
