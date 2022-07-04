@@ -24,9 +24,12 @@
         }
         x.classList.toggle("hide");
 
-        if (document.getElementById(sectionId).classList.length === 0)
+        if (document.getElementById(sectionId).classList.length === 0) {
             button.textContent = ("Hide " + buttonId.replace('Button', '') + (buttonId.includes('Price') ? " BTC-USD" : ""));
-        else button.textContent = ("Show " + buttonId.replace('Button', '') + (buttonId.includes('Price') ? " BTC-USD" : ""));
+        }
+        else {
+            button.textContent = ("Show " + buttonId.replace('Button', '') + (buttonId.includes('Price') ? " BTC-USD" : ""))
+        };
     }
 
     class Log {
