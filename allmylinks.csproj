@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RunAOTCompilation>false</RunAOTCompilation>
+    <RunAOTCompilation>true</RunAOTCompilation>
     <EmccExtraLDFlags>-lidbfs.js</EmccExtraLDFlags>
     <EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0</EmccExtraLDFlags>
     <Nullable>enable</Nullable>
