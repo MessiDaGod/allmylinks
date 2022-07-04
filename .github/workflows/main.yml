@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - sqlite
+      - net6.0
 
 jobs:
   build:

@@ -51,7 +51,7 @@
         }
     }
 
-    var FS;
+
     window.AllMyLinks = {
         openNewWindow: function (url) {
             var windowTarget = "_blank";
@@ -654,9 +654,9 @@
             document.title = AllMyLinks.getCurrentPrice();
         },
         mountAndInitializeDb: function() {
-            FS = window.Module.FS;
-            FS.mkdir('/database');
+
             try {
+                FS.mkdir('/database');
                 FS.mount(IDBFS, {}, '/database');
                 return AllMyLinks.syncDatabase(true);
             }
@@ -667,7 +667,7 @@
         syncDatabase: function(populate) {
             try {
             return new Promise((resolve, reject) => {
-                window.Module.FS.syncfs(populate, (err) => {
+                FS.syncfs(populate, (err) => {
                     if (err) {
                         console.log('syncfs failed. Error:', err);
                         reject(err);
