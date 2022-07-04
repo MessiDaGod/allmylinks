@@ -483,7 +483,7 @@
             // find next lowest nice number below yEnd
             let yEndRoundNumber = Math.floor(AllMyLinks.yEnd / niceNumber) * niceNumber;
             // DRAWING Y AXIS LABELS
-            document.getElementById("candleprice").textContent = "Current Price: " + AllMyLinks.fmt(currentprice);
+            document.getElementById("candleprice").textContent = "Current Price: " + AllMyLinks.fmt(currentprice) + " of BTC-USD";
             var currentcolor = AllMyLinks.candlesticks[AllMyLinks.candlesticks.length - 1].close > AllMyLinks.candlesticks[AllMyLinks.candlesticks.length - 1].open ? AllMyLinks.greenColor : AllMyLinks.redColor;
             for (var y = yStartRoundNumber; y <= yEndRoundNumber; y += niceNumber) {
                 AllMyLinks.drawLine(0, AllMyLinks.yToPixelCoords(y), AllMyLinks.width, AllMyLinks.yToPixelCoords(y), AllMyLinks.gridColor);
