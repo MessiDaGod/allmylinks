@@ -19,14 +19,19 @@ public class PersonServices
     {
         if (_hasSynced) return;
 
-        await using var dbContext = await _factory.CreateDbContextAsync();
-        if (dbContext.Person.Count() > 0) return;
+        try {
+            await using var dbContext = await _factory.CreateDbContextAsync();
+            if (dbContext.Person.Count() == 0) return;
 
-        var result = new Person("Joe", "Shakely");
+            var result = new Person("Joe", "Shakely");
 
-        dbContext.Person.Add(result);
-        await dbContext.SaveChangesAsync();
-        _hasSynced = true;
+            dbContext.Person.Add(result);
+            await dbContext.SaveChangesAsync();
+            _hasSynced = true;
+        }
+        catch (Exception e) {
+            // ignore
+        }
     }
 }
 

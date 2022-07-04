@@ -4,12 +4,12 @@
     <TargetFramework>net7.0</TargetFramework>
     <RunAOTCompilation>false</RunAOTCompilation>
     <EmccExtraLDFlags>-lidbfs.js</EmccExtraLDFlags>
+    <EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0 --use-preload-plugins</EmccExtraLDFlags>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ReleaseVersion>1.0</ReleaseVersion>
     <PublishTrimmed>true</PublishTrimmed>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0</EmccExtraLDFlags>
   </PropertyGroup>
 
   <ItemGroup>

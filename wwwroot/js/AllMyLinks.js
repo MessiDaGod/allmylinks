@@ -652,7 +652,7 @@
         mountAndInitializeDb: function() {
             window.Module.FS.mkdir('/database');
             try {
-                window.Module.FS.mount(IDBFS, {}, '/database');
+                window.Module.FS.mount(typeof IDBFS, {}, '/database');
                 return AllMyLinks.syncDatabase(true);
             }
             catch (error) {
@@ -660,7 +660,7 @@
             }
         },
         syncDatabase: function(populate) {
-
+            try {
             return new Promise((resolve, reject) => {
                 window.Module.FS.syncfs(populate, (err) => {
                     if (err) {
@@ -673,6 +673,10 @@
                     }
                 });
             });
+            }
+            catch (error) {
+                console.log('failed to sync database.');
+            }
         }
     };
 }());

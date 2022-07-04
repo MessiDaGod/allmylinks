@@ -54,8 +54,14 @@ class="sc-iBPRYJ flTywP Header__StyledProfilePicture-sc-i98650-2" filter="none">
 
     private async Task ToggleCancel()
     {
+        try {
         await JS.InvokeVoidAsync("AllMyLinks.mountAndInitializeDb");
         await Service.InitAsync();
+        }
+        catch (Exception) {
+            // ignore
+        }
+
         await JS.InvokeVoidAsync("AllMyLinks.toggleCancel");
     }
 }

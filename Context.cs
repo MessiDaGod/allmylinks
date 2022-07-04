@@ -11,7 +11,7 @@ public class Context : DbContext
     public Context(DbContextOptions<Context> options, IJSRuntime jsRuntime) : base(options)
     {
         _moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-   "import", "./js/file.js").AsTask());
+   "import", "./js/AllMyLinks.js").AsTask());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

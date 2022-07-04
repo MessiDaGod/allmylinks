@@ -20,6 +20,10 @@
 
   private IJSObjectReference? module {get; set; }
   private IJSObjectReference? module1 {get; set; }
+
+  protected override async Task OnInitializedAsync() {
+    await base.OnInitializedAsync();
+  }
   protected override async Task OnAfterRenderAsync(bool firstRender)
   {
     if (firstRender) {
