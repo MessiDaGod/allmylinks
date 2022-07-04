@@ -12,7 +12,7 @@ public static class InitializeDatabase
     public static void AddDatabaseFeatures(this IServiceCollection services)
     {
         services.AddDbContextFactory<Context>(
-                options => options.UseSqlite($"Filename=/Users/joeshakely/repos/allmylinks/wwwroot/database/app.db"));
+                options => options.UseSqlite($"Filename=/Users/joeshakely/repos/allmylinks/wwwroot/database/main.db"));
         services.AddScoped<PersonServices>();
     }
 

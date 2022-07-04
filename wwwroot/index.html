@@ -3,7 +3,7 @@
 
 <head>
     <meta charSet="utf-8" />
-    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta content="ie=edge" http-equiv="x-ua-compatible" />
     <meta property="og:image:height" content="600" />
@@ -31,7 +31,11 @@
     <link href="css/app.css" rel="stylesheet" />
     <link href="allmylinks.styles.css" rel="stylesheet" />
 </head>
-
+<script type="text/javascript">
+    caches.delete("blazor-resources-/").then(function (e) {
+        console.log("'blazor-resources-/' cache deleted");
+    });
+</script>
 <body>
     <div id="app">
         <div style="display: flex; justify-content: center; align-items: center; height: 100vh; width: 100%;">
@@ -45,7 +49,7 @@
         </div>
     </div>
 
-    <div id="candles" class="hide">
+    <div id="candles" class="hide center">
         <a id="candleprice" class="rz-helper-hidden"></a>
         <canvas id="header" width="100px"></canvas>
         <canvas id="candlestick"></canvas>

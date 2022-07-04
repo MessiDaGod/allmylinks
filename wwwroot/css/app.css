@@ -232,3 +232,8 @@ button.mouse {
 #header {
     margin: 0 0 0 0;
 }
+.center {
+    margin: auto;
+    /* border: 5px solid black; */
+    padding: 10px;
+}

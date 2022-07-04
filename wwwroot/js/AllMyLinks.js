@@ -25,8 +25,8 @@
         x.classList.toggle("hide");
 
         if (document.getElementById(sectionId).classList.length === 0)
-            button.textContent = "Hide " + buttonId.replace('Button', '');
-        else button.textContent = "Show " + buttonId.replace('Button', '');
+            button.textContent = ("Hide " + buttonId.replace('Button', '') + (buttonId.includes('Price') ? " BTC-USD" : ""));
+        else button.textContent = ("Show " + buttonId.replace('Button', '') + (buttonId.includes('Price') ? " BTC-USD" : ""));
     }
 
     class Log {
@@ -652,7 +652,7 @@
         mountAndInitializeDb: function() {
             window.Module.FS.mkdir('/database');
             try {
-                window.Module.FS.mount(typeof IDBFS, {}, '/database');
+                window.Module.FS.mount(IDBFS, {}, '/database');
                 return AllMyLinks.syncDatabase(true);
             }
             catch (error) {
