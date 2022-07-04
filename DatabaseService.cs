@@ -8,7 +8,7 @@ public class DatabaseService<T>
 {
     [Inject] IJSRuntime? JS { get; set; }
     // #if RELEASE
-    public static string FileName = "/Users/joeshakely/repos/allmylinks/wwwroot/database/main.db";
+    public static string FileName = "database/main.db";
     private readonly IDbContextFactory<T> _dbContextFactory;
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
     // #endif

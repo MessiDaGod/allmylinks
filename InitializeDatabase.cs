@@ -13,7 +13,7 @@ public static class InitializeDatabase
     {
         try {
             services.AddDbContextFactory<Context>(
-                    options => options.UseSqlite($"Filename=/Users/joeshakely/repos/allmylinks/wwwroot/database/main.db"));
+                    options => options.UseSqlite($"Filename=database/main.db"));
         }
         catch (Exception) {
             // ignore
