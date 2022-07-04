@@ -18,7 +18,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.6
+        dotnet-version: 6.0.301
 
     - name: Publish
       run: dotnet publish allmylinks.sln -c:Release -o:publish -p:GHPages=true
