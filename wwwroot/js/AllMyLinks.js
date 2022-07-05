@@ -654,10 +654,9 @@
             document.title = AllMyLinks.getCurrentPrice();
         },
         mountAndInitializeDb: function() {
-            FS = window.Module.FS;
-            FS.mkdir('/database');
             try {
-                FS.mount(IDBFS, {}, '/database');
+                window.Module.FS.mkdir('/database');
+                window.Module.FS.mount(IDBFS, {}, '/database');
                 return AllMyLinks.syncDatabase(true);
             }
             catch (error) {
