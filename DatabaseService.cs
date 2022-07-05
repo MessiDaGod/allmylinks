@@ -3,12 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
 
 namespace allmylinks;
+
 public class DatabaseService<T>
     where T : DbContext
 {
     [Inject] IJSRuntime? JS { get; set; }
     // #if RELEASE
-    public static string FileName = "database/main.db";
+    public string FileName { get { return DatabasePath; } }
+    public string DbDir { get { return Path.Combine(Directory.GetCurrentDirectory(), "database"); } }
+    public string DatabasePath { get { return Path.Combine(DbDir, "main.db"); } }
     private readonly IDbContextFactory<T> _dbContextFactory;
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
     // #endif
@@ -36,14 +39,14 @@ public class DatabaseService<T>
         {
             // #if RELEASE
 
-            var module = await _moduleTask.Value;
-            try {
-                await module.InvokeVoidAsync("mountAndInitializeDb");
+            // var module = await _moduleTask.Value;
+            // try {
+            //     await module.InvokeVoidAsync("mountAndInitializeDb");
 
-            if (!File.Exists(FileName))
-            {
-                File.Create(FileName).Close();
-            }
+            // if (!File.Exists(FileName))
+            // {
+            //     File.Create(FileName).Close();
+            // }
 
             await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
             await dbContext.Database.EnsureCreatedAsync();
@@ -54,10 +57,10 @@ public class DatabaseService<T>
             }
 
             // #endif
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.GetType().Name, ex.Message);
-        }
+        // }
+        // catch (Exception ex)
+        // {
+        //     Console.WriteLine(ex.GetType().Name, ex.Message);
+        // }
     }
 }

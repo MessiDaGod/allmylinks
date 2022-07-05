@@ -7,7 +7,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-public class PersonServices
+public class PersonServices : IPersonServices
 {
     // [Inject] IJSRuntime JS { get; set; }
     private readonly IDbContextFactory<Context> _factory;
@@ -23,10 +23,8 @@ public class PersonServices
     }
 
 
-    public async Task<string> InitAsync()
+    public async virtual Task<string> InitAsync()
     {
-
-        try {
         var db = new SQLiteAsyncConnection(DatabasePath);
         await db.DropTableAsync<Person>();
         await db.CreateTableAsync<Person>();
@@ -37,11 +35,6 @@ public class PersonServices
         };
 
         await db.InsertAsync(person);
-
-        }
-        catch (Exception e) {
-            return e.Message;
-        }
 
         return "Success!";
     }
@@ -54,5 +47,9 @@ public class Root<T>
     public int ItemCount { get; set; }
 }
 
+public interface IPersonServices
+{
+    Task<string> InitAsync();
+}
 
 // dotnet build && dotnet run

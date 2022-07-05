@@ -75,6 +75,8 @@ class="sc-iBPRYJ flTywP Header__StyledProfilePicture-sc-i98650-2" filter="none">
         {
             await JS.InvokeVoidAsync("AllMyLinks.logit", e.Message);
             await JS.InvokeVoidAsync("AllMyLinks.logit", result);
+            if (e.InnerException is not null && e.InnerException.Message is not null)
+                await JS.InvokeVoidAsync("AllMyLinks.logit", e.InnerException.Message);
         }
         return "finished...";
     }
