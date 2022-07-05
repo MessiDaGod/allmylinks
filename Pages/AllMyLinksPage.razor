@@ -53,23 +53,31 @@ class="sc-iBPRYJ flTywP Header__StyledProfilePicture-sc-i98650-2" filter="none">
 
     private static string[] Links => new[] { "https://github.com/messidagod", "https://instagram.com/joeshakely", "https://www.tiktok.com/@joeshakely" };
 
-    private Lazy<Task<IJSObjectReference>> _moduleTask { get; set; }
+    private Lazy<Task<IJSObjectReference>>? _moduleTask { get; set; }
     private static string DomainFromUrl(string uri)
     {
         Uri myUri = new Uri(uri);
         return myUri.Host;
     }
 
-    private async Task ToggleCancel()
+    private async Task<string> ToggleCancel()
     {
-        try {
-        await JS.InvokeVoidAsync("AllMyLinks.mountAndInitializeDb");
-        await Service.InitAsync();
-        }
-        catch (Exception) {
-            // ignore
-        }
-
+        await JS.InvokeVoidAsync("AllMyLinks.logit", "ToggleCancel starting...");
         await JS.InvokeVoidAsync("AllMyLinks.toggleCancel");
+        await InvokeAsync(StateHasChanged);
+        await JS.InvokeVoidAsync("AllMyLinks.logit", "ToggleCancel done.");
+        string result = string.Empty;
+        try
+        {
+            result = await Service.InitAsync();
+        }
+        catch (Exception e)
+        {
+            await JS.InvokeVoidAsync("AllMyLinks.logit", e.Message);
+            await JS.InvokeVoidAsync("AllMyLinks.logit", result);
+        }
+        return "finished...";
     }
 }
+
+        @* await JS.InvokeVoidAsync("AllMyLinks.mountAndInitializeDb"); *@

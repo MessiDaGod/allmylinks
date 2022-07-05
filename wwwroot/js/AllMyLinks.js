@@ -656,7 +656,7 @@
         mountAndInitializeDb: function() {
             try {
                 window.Module.FS.mkdir('/database');
-                // window.Module.FS.mount(window.Module.FS.IDBFS, {}, '/database');
+                window.Module.FS.mount(window.Module.FS.IDBFS, {}, '/database');
                 return AllMyLinks.syncDatabase(true);
             }
             catch (error) {
@@ -681,6 +681,9 @@
             catch (error) {
                 console.log('failed to sync database.');
             }
+        },
+        logit: function(message) {
+            console.log(message);
         }
     };
 }());

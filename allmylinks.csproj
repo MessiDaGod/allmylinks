@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <RunAOTCompilation>false</RunAOTCompilation>
-    <EmccExtraLDFlags>-lidbfs.js</EmccExtraLDFlags>
-    <EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0</EmccExtraLDFlags>
+    <!-- <EmccExtraLDFlags>-lidbfs.js</EmccExtraLDFlags>
+    <EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0</EmccExtraLDFlags> -->
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ReleaseVersion>1.0</ReleaseVersion>
@@ -20,6 +20,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0-preview.5.22302.2" />
     <PackageReference Include="MudBlazor" Version="6.0.11" />
     <PackageReference Include="PublishSPAforGitHubPages.Build" Version="1.3.6" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+    <PackageReference Include="sqlite-net-static" Version="1.8.116" />
+    <!-- <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.0" />
+    <PackageReference Include="SQLitePCLRaw.core" Version="2.1.0" />
+    <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.0" /> -->
   </ItemGroup>
 
   <ItemGroup>

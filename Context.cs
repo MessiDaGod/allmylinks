@@ -1,15 +1,22 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
+using SQLite;
 
 namespace allmylinks;
 public class Context : DbContext
 {
-    public DbSet<Person> Person { get; set; }
+    // [DllImport("foo")]
+    // public static extern int whatever();
+    public DbSet<Person>? Person { get; set; } = null!;
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
-    public Context(DbContextOptions<Context> options, IJSRuntime jsRuntime) : base(options)
+    public Context(
+        DbContextOptions<Context> options,
+        IJSRuntime jsRuntime) : base(options)
     {
+        SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3());
         _moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
    "import", "./js/AllMyLinks.js").AsTask());
     }
@@ -49,15 +56,14 @@ public class Context : DbContext
 
 }
 
-[Table(nameof(Person))]
-public record Person
+[System.ComponentModel.DataAnnotations.Schema.Table(nameof(Person))]
+public record Person : LongKeyedEntity
 {
-    [Key]
-    public long Id {get; set; }
+    public Person() { }
+
     public string? FirstName { get; set; } = null!;
     public string? LastName { get; set; } = null!;
-    public string Date { get { return DateTime.Now.ToShortDateString(); } }
-    public DateTime? StartDate { get; set; } = null!;
+    public string Date { get { return DateTime.Now.ToLongTimeString(); } }
 
     public Person(string firstName, string lastName)
     {

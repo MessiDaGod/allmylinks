@@ -201,7 +201,7 @@ h1:focus {
     }
 
 .hide {
-    display: none;
+    display: none !important;
 }
 
 button {
