@@ -29,6 +29,7 @@
     if (firstRender) {
       module = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/AllMyLinks.js");
       module1 = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/fs.js");
+      module1 = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/bundle.js");
     }
   }
 }
