@@ -26,8 +26,8 @@ public class PersonServices : IPersonServices
     public async virtual Task<string> InitAsync()
     {
         var db = new SQLiteAsyncConnection(DatabasePath);
-        await db.DropTableAsync<Person>();
-        await db.CreateTableAsync<Person>();
+        var dropResult = await db.DropTableAsync<Person>();
+        var createResult = await db.CreateTableAsync<Person>();
         List<string> people = new();
         var person = new Person()
         {
@@ -36,14 +36,9 @@ public class PersonServices : IPersonServices
         };
 
         await db.InsertAsync(person);
+        Console.WriteLine(person.ToString());
 
-        var query = db.Table<Person>();
-
-        for (int i = 0; i < await query.CountAsync(); i++) {
-            people.Add(query.ToString()!);
-        }
-
-        return "Success!";
+        return person.ToString();
     }
 }
 

@@ -73,6 +73,6 @@ public record Person : LongKeyedEntity
 
     public override string ToString()
     {
-        return this.FirstName ?? "" + " " + this.LastName ?? "";
+        return string.Concat(this.FirstName ?? "", " ", this.LastName ?? "");
     }
 }
