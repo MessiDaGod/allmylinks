@@ -70,6 +70,7 @@ class="sc-iBPRYJ flTywP Header__StyledProfilePicture-sc-i98650-2" filter="none">
         try
         {
             result = await Service.InitAsync();
+            await JS.InvokeVoidAsync("AllMyLinks.logit", "Success!!!");
         }
         catch (Exception e)
         {
