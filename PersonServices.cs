@@ -28,6 +28,7 @@ public class PersonServices : IPersonServices
         var db = new SQLiteAsyncConnection(DatabasePath);
         await db.DropTableAsync<Person>();
         await db.CreateTableAsync<Person>();
+        List<string> people = new();
         var person = new Person()
         {
             FirstName = "AAPL",
@@ -35,6 +36,12 @@ public class PersonServices : IPersonServices
         };
 
         await db.InsertAsync(person);
+
+        var query = db.Table<Person>();
+
+        for (int i = 0; i < await query.CountAsync(); i++) {
+            people.Add(query.ToString()!);
+        }
 
         return "Success!";
     }

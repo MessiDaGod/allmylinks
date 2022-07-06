@@ -70,4 +70,9 @@ public record Person : LongKeyedEntity
         FirstName = firstName;
         LastName = lastName;
     }
+
+    public override string ToString()
+    {
+        return this.FirstName ?? "" + " " + this.LastName ?? "";
+    }
 }
