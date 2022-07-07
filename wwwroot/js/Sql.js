@@ -693,7 +693,7 @@
                         currentPage = parseInt(evt0.target.value);
                         setPaginationClass();
                     });
-                    Sql.firstPageBtn.addEventListener('click', (evt1) => {
+                    firstPageBtn.addEventListener('click', (evt1) => {
                         evt1.stopPropagation();
                         currentPage = 1;
                         setPaginationClass();
