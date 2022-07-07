@@ -21,6 +21,7 @@
 	    <meta name='MobileOptimized' content='320' />
 	    <meta http-equiv='Content-Security-Policy' content='upgrade-insecure-requests' />
 		<script src='js/sql-browser.min.js'></script>
+		<script src='js/Sql.js'></script>
 		<link href='css/bootstrap-4.5.2.min.css' rel='stylesheet' type='text/css' />
 		<link href='css/offcanvas.css' rel='stylesheet' type='text/css' />
 		<link href='css/main.css' rel='stylesheet' type='text/css' />
@@ -29,6 +30,9 @@
 	</head>
 	<noscript>You need to enable JavaScript to run this app.</noscript>
 	<body>
+		<div id="app">
+
+		</div>
 		<div class='container-fluid'>
 			<div class='row'>
 				<div class='col-sm-4 pr-0'>
@@ -403,6 +407,7 @@
 						tblClickableBtn.setAttribute('type','button');
 						tblClickableBtn.setAttribute('class','btn btn-sm btn-link rounded-0 datatable');
 						tblClickableBtn.innerText=`${tblIcon}${tblName}`;
+						tblClickableBtn.setAttribute('id', tblName);
 
 						let tblClickableRow=dbTableDetails.insertRow(0);
 						let tblClickableCell=tblClickableRow.insertCell(0);
@@ -416,6 +421,8 @@
 
 								selected_tbl_name=tblClickableBtn.innerText;
 								selected_tbl_name=selected_tbl_name.replace(tblIcon,'');
+								let txtarea = document.getElementById('codeEditor');
+								sampleQueryStmt='SELECT * FROM `' + selected_tbl_name + '`';
 								// ================================================
 								tableDetails.innerHTML='';
 								removeAllChildNodes(tablePagination);
@@ -530,7 +537,7 @@
 
 
 	                // ================================== Query Editor Tab ===========================
-	                var sampleQueryStmt='SELECT * FROM Person';
+	                var sampleQueryStmt='SELECT * FROM ' + selected_tbl_name;
 			  		var codeEditor = document.getElementById('codeEditor');
 					var lineCounter = document.getElementById('lineCounter');
 
@@ -659,39 +666,43 @@
 				  			queryStmt=codeEditor.value;
 				  			originalQueryStmt=queryStmt.trim();
 		    				if(originalQueryStmt.charAt(originalQueryStmt.length-1)==';') {
+
 		    					originalQueryStmt=originalQueryStmt.substr(0,originalQueryStmt.length-1);
 		    				}
 					  		// ================================================
-							queryStmt='SELECT COUNT(*) FROM (' + originalQueryStmt + ')';
-		    				queryResultset=db.exec(queryStmt);
-		    				// ================================================
-		    				tableQueryDetails.innerHTML='';
-							removeAllChildNodes(tableQueryPagination);
-							// ================================================
-							currentQueryPage=1;
-							queryOffset=(currentQueryPage-1)*recordsPerPage;
-							// ================================================
-		    				totalNoOfQueryRecords=queryResultset[0]['values'][0];
-		    				totalNoOfQueryRecords=parseInt(totalNoOfQueryRecords);
-		    				noOfQueryPages=totalNoOfQueryRecords/recordsPerPage;
-		    				noOfQueryPages=Math.ceil(noOfQueryPages);
-		    				// ================================================
-		    				tableQueryDetails.innerHTML=`${tblIcon} ⯈ Total no. of records: <kbd>${totalNoOfQueryRecords}</kbd> ⯈ Displaying records <kbd>${queryOffset} ― ${queryOffset+recordsPerPage}</kbd>`;
-							// ================================================
-		    				firstQueryPageBtn=await initPaginationBtn('firstQueryPageBtn',tableQueryPagination);
-		    				// ================================================
-		    				prevQueryPageBtn=await initPaginationBtn('prevQueryPageBtn',tableQueryPagination);
-		    				// ================================================
-							currentQueryPageNo=await initInputPageNo(tableQueryPagination,'currentQueryPageNo',currentQueryPage,noOfQueryPages);
-							// ================================================
-							nextQueryPageBtn=await initPaginationBtn('nextQueryPageBtn',tableQueryPagination);
-							// ================================================
-							lastQueryPageBtn=await initPaginationBtn('lastQueryPageBtn',tableQueryPagination);
-							// ================================================
-		    				// render datatable records
-		    				queryStmt='SELECT * FROM (' + originalQueryStmt + ') LIMIT ' + queryOffset + ',' + recordsPerPage;
-		    				queryResultset = db.exec(queryStmt);
-		    				await renderDatatable(queryResultset,tableQueryRecords);
+							if (originalQueryStmt.toUpperCase().substring(0, originalQueryStmt.indexOf(' ')).includes('SELECT')) {
+								console.log('running select..');
+								queryStmt='SELECT COUNT(*) FROM (' + originalQueryStmt + ') x';
+								queryResultset=db.exec(queryStmt);
+								// ================================================
+								tableQueryDetails.innerHTML='';
+								removeAllChildNodes(tableQueryPagination);
+								// ================================================
+								currentQueryPage=1;
+								queryOffset=(currentQueryPage-1)*recordsPerPage;
+								// ================================================
+								totalNoOfQueryRecords=queryResultset[0]['values'][0];
+								totalNoOfQueryRecords=parseInt(totalNoOfQueryRecords);
+								noOfQueryPages=totalNoOfQueryRecords/recordsPerPage;
+								noOfQueryPages=Math.ceil(noOfQueryPages);
+								// ================================================
+								tableQueryDetails.innerHTML=`${tblIcon} ⯈ Total no. of records: <kbd>${totalNoOfQueryRecords}</kbd> ⯈ Displaying records <kbd>${queryOffset} ― ${queryOffset+recordsPerPage}</kbd>`;
+								// ================================================
+								firstQueryPageBtn=await initPaginationBtn('firstQueryPageBtn',tableQueryPagination);
+								// ================================================
+								prevQueryPageBtn=await initPaginationBtn('prevQueryPageBtn',tableQueryPagination);
+								// ================================================
+								currentQueryPageNo=await initInputPageNo(tableQueryPagination,'currentQueryPageNo',currentQueryPage,noOfQueryPages);
+								// ================================================
+								nextQueryPageBtn=await initPaginationBtn('nextQueryPageBtn',tableQueryPagination);
+								// ================================================
+								lastQueryPageBtn=await initPaginationBtn('lastQueryPageBtn',tableQueryPagination);
+								// ================================================
+								// render datatable records
+								queryStmt='SELECT * FROM (' + originalQueryStmt + ') LIMIT ' + queryOffset + ',' + recordsPerPage;
+								queryResultset = db.exec(queryStmt);
+								await renderDatatable(queryResultset,tableQueryRecords);
+							}
 
 		    				currentQueryPageNo.addEventListener('change', (evt0) => {
 		    					evt0.stopPropagation();
@@ -803,6 +814,8 @@
 
 		                let file = ev.currentTarget.files[0];
 		                if(!file) return;
+
+						console.log(file);
 
 		                try {
 		                    fileNameDisplay.innerText=file.name;
