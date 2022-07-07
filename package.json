@@ -1,0 +1,25 @@
+{
+  "name": "allmylinks",
+  "version": "1.0.0",
+  "description": "[![gh-pages](https://github.com/MessiDaGod/allmylinks/actions/workflows/main.yml/badge.svg)](https://github.com/MessiDaGod/allmylinks/actions/workflows/main.yml)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MessiDaGod/AllMyLinks.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MessiDaGod/AllMyLinks/issues"
+  },
+  "homepage": "https://github.com/MessiDaGod/AllMyLinks#readme",
+  "devDependencies": {
+    "express": "^4.18.1",
+    "open": "^8.4.0",
+    "path": "^0.12.7"
+  }
+}

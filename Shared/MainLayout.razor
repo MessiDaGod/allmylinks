@@ -30,10 +30,10 @@
   protected override async Task OnAfterRenderAsync(bool firstRender)
   {
     if (firstRender) {
-      module = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/AllMyLinks.js");
+      @* module = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/AllMyLinks.js");
       module = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/polyfill.js");
       module1 = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/e10-viewport-bug-workaround.js");
-      module2 = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/bootstrap-native-v4.js");
+      module2 = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/bootstrap-native-v4.js"); *@
       module3 = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/Sql.js");
     }
   }
