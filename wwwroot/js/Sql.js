@@ -69,6 +69,58 @@
             var totalNoOfQueryRecords = 0;
             var queryOffset = 0;
 
+            var paginationBtnProps = {
+                'firstPageBtn': {
+                    'className': 'page-item disabled',
+                    'linkClassName': 'page-link',
+                    'linkTitle': 'first',
+                    'linkInnerText': '⏮'
+                },
+                'prevPageBtn': {
+                    'className': 'page-item disabled',
+                    'linkClassName': 'page-link',
+                    'linkTitle': 'previous',
+                    'linkInnerText': '⏪'
+                },
+                'nextPageBtn': {
+                    'className': 'page-item',
+                    'linkClassName': 'page-link',
+                    'linkTitle': 'next',
+                    'linkInnerText': '⏩'
+                },
+                'lastPageBtn': {
+                    'className': 'page-item',
+                    'linkClassName': 'page-link',
+                    'linkTitle': 'last',
+                    'linkInnerText': '⏭'
+                },
+                // =====================
+                'firstQueryPageBtn': {
+                    'className': 'page-item disabled',
+                    'linkClassName': 'page-link',
+                    'linkTitle': 'first',
+                    'linkInnerText': '⏮'
+                },
+                'prevQueryPageBtn': {
+                    'className': 'page-item disabled',
+                    'linkClassName': 'page-link',
+                    'linkTitle': 'previous',
+                    'linkInnerText': '⏪'
+                },
+                'nextQueryPageBtn': {
+                    'className': 'page-item',
+                    'linkClassName': 'page-link',
+                    'linkTitle': 'next',
+                    'linkInnerText': '⏩'
+                },
+                'lastQueryPageBtn': {
+                    'className': 'page-item',
+                    'linkClassName': 'page-link',
+                    'linkTitle': 'last',
+                    'linkInnerText': '⏭'
+                }
+            };
+
             // if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
             //     return;
             // } else {
@@ -123,57 +175,6 @@
                     exportQueryAsJSON = document.getElementById('exportQueryAsJSON');
                     exportEditorQuery = document.getElementById('exportEditorQuery');
 
-                    const paginationBtnProps = {
-                        'firstPageBtn': {
-                            'className': 'page-item disabled',
-                            'linkClassName': 'page-link',
-                            'linkTitle': 'first',
-                            'linkInnerText': '⏮'
-                        },
-                        'prevPageBtn': {
-                            'className': 'page-item disabled',
-                            'linkClassName': 'page-link',
-                            'linkTitle': 'previous',
-                            'linkInnerText': '⏪'
-                        },
-                        'nextPageBtn': {
-                            'className': 'page-item',
-                            'linkClassName': 'page-link',
-                            'linkTitle': 'next',
-                            'linkInnerText': '⏩'
-                        },
-                        'lastPageBtn': {
-                            'className': 'page-item',
-                            'linkClassName': 'page-link',
-                            'linkTitle': 'last',
-                            'linkInnerText': '⏭'
-                        },
-                        // =====================
-                        'firstQueryPageBtn': {
-                            'className': 'page-item disabled',
-                            'linkClassName': 'page-link',
-                            'linkTitle': 'first',
-                            'linkInnerText': '⏮'
-                        },
-                        'prevQueryPageBtn': {
-                            'className': 'page-item disabled',
-                            'linkClassName': 'page-link',
-                            'linkTitle': 'previous',
-                            'linkInnerText': '⏪'
-                        },
-                        'nextQueryPageBtn': {
-                            'className': 'page-item',
-                            'linkClassName': 'page-link',
-                            'linkTitle': 'next',
-                            'linkInnerText': '⏩'
-                        },
-                        'lastQueryPageBtn': {
-                            'className': 'page-item',
-                            'linkClassName': 'page-link',
-                            'linkTitle': 'last',
-                            'linkInnerText': '⏭'
-                        }
-                    };
                 })
 
                 // ================================== Query Editor Tab ===========================
@@ -281,15 +282,15 @@
                             // ================================================
                             tableQueryDetails.innerHTML = `${tblIcon} ⯈ Total no. of records: <kbd>${totalNoOfQueryRecords}</kbd> ⯈ Displaying records <kbd>${queryOffset} ― ${queryOffset+recordsPerPage}</kbd>`;
                             // ================================================
-                            firstQueryPageBtn = await initPaginationBtn('firstQueryPageBtn', tableQueryPagination);
+                            firstQueryPageBtn = await Sql.initPaginationBtn('firstQueryPageBtn', tableQueryPagination);
                             // ================================================
-                            prevQueryPageBtn = await initPaginationBtn('prevQueryPageBtn', tableQueryPagination);
+                            prevQueryPageBtn = await Sql.iinitPaginationBtn('prevQueryPageBtn', tableQueryPagination);
                             // ================================================
-                            currentQueryPageNo = await initInputPageNo(tableQueryPagination, 'currentQueryPageNo', currentQueryPage, noOfQueryPages);
+                            currentQueryPageNo = await Sql.iinitInputPageNo(tableQueryPagination, 'currentQueryPageNo', currentQueryPage, noOfQueryPages);
                             // ================================================
-                            nextQueryPageBtn = await initPaginationBtn('nextQueryPageBtn', tableQueryPagination);
+                            nextQueryPageBtn = await Sql.iinitPaginationBtn('nextQueryPageBtn', tableQueryPagination);
                             // ================================================
-                            lastQueryPageBtn = await initPaginationBtn('lastQueryPageBtn', tableQueryPagination);
+                            lastQueryPageBtn = await Sql.iinitPaginationBtn('lastQueryPageBtn', tableQueryPagination);
                             // ================================================
                             // render datatable records
                             queryStmt = 'SELECT * FROM (' + originalQueryStmt + ') LIMIT ' + queryOffset + ',' + recordsPerPage;
@@ -427,6 +428,57 @@
             try {
                 let paginationBtn = document.createElement('li');
                 paginationBtn.id = paginationBtnType;
+                let paginationBtnProps = {
+                    'firstPageBtn': {
+                        'className': 'page-item disabled',
+                        'linkClassName': 'page-link',
+                        'linkTitle': 'first',
+                        'linkInnerText': '⏮'
+                    },
+                    'prevPageBtn': {
+                        'className': 'page-item disabled',
+                        'linkClassName': 'page-link',
+                        'linkTitle': 'previous',
+                        'linkInnerText': '⏪'
+                    },
+                    'nextPageBtn': {
+                        'className': 'page-item',
+                        'linkClassName': 'page-link',
+                        'linkTitle': 'next',
+                        'linkInnerText': '⏩'
+                    },
+                    'lastPageBtn': {
+                        'className': 'page-item',
+                        'linkClassName': 'page-link',
+                        'linkTitle': 'last',
+                        'linkInnerText': '⏭'
+                    },
+                    // =====================
+                    'firstQueryPageBtn': {
+                        'className': 'page-item disabled',
+                        'linkClassName': 'page-link',
+                        'linkTitle': 'first',
+                        'linkInnerText': '⏮'
+                    },
+                    'prevQueryPageBtn': {
+                        'className': 'page-item disabled',
+                        'linkClassName': 'page-link',
+                        'linkTitle': 'previous',
+                        'linkInnerText': '⏪'
+                    },
+                    'nextQueryPageBtn': {
+                        'className': 'page-item',
+                        'linkClassName': 'page-link',
+                        'linkTitle': 'next',
+                        'linkInnerText': '⏩'
+                    },
+                    'lastQueryPageBtn': {
+                        'className': 'page-item',
+                        'linkClassName': 'page-link',
+                        'linkTitle': 'last',
+                        'linkInnerText': '⏭'
+                    }
+                };
                 paginationBtn.className = paginationBtnProps[paginationBtnType]['className'];
 
                 let pageBtnLink = document.createElement('a');
@@ -535,33 +587,33 @@
             try {
                 currentPageNo.value = currentPage;
                 if (currentPage == 1) {
-                    if (!firstPageBtn.classList.contains('disabled')) {
-                        firstPageBtn.classList.add('disabled');
+                    if (!Sql.firstPageBtn.classList.contains('disabled')) {
+                        Sql.firstPageBtn.classList.add('disabled');
                     }
-                    if (!prevPageBtn.classList.contains('disabled')) {
-                        prevPageBtn.classList.add('disabled');
+                    if (!Sql.prevPageBtn.classList.contains('disabled')) {
+                        Sql.prevPageBtn.classList.add('disabled');
                     }
                 } else if (currentPage > 1) {
-                    if (firstPageBtn.classList.contains('disabled')) {
-                        firstPageBtn.classList.remove('disabled');
+                    if (Sql.firstPageBtn.classList.contains('disabled')) {
+                        Sql.firstPageBtn.classList.remove('disabled');
                     }
-                    if (prevPageBtn.classList.contains('disabled')) {
-                        prevPageBtn.classList.remove('disabled');
+                    if (Sql.prevPageBtn.classList.contains('disabled')) {
+                        Sql.prevPageBtn.classList.remove('disabled');
                     }
                 }
                 if (currentPage == noOfPages) {
-                    if (!nextPageBtn.classList.contains('disabled')) {
-                        nextPageBtn.classList.add('disabled');
+                    if (!Sql.nextPageBtn.classList.contains('disabled')) {
+                        Sql.nextPageBtn.classList.add('disabled');
                     }
-                    if (!lastPageBtn.classList.contains('disabled')) {
-                        lastPageBtn.classList.add('disabled');
+                    if (!Sql.lastPageBtn.classList.contains('disabled')) {
+                        Sql.lastPageBtn.classList.add('disabled');
                     }
                 } else if (currentPage < noOfPages) {
-                    if (nextPageBtn.classList.contains('disabled')) {
-                        nextPageBtn.classList.remove('disabled');
+                    if (Sql.nextPageBtn.classList.contains('disabled')) {
+                        Sql.nextPageBtn.classList.remove('disabled');
                     }
-                    if (lastPageBtn.classList.contains('disabled')) {
-                        lastPageBtn.classList.remove('disabled');
+                    if (Sql.lastPageBtn.classList.contains('disabled')) {
+                        Sql.lastPageBtn.classList.remove('disabled');
                     }
                 }
                 offset = (currentPage - 1) * recordsPerPage;
@@ -584,6 +636,9 @@
             let recordsPerPage = 100;
             let offset = 0;
             let stmt;
+            let totalNoOfRecords;
+            let noOfPages;
+            let firstPageBtn, prevPageBtn, currentPageNo, nextPageBtn, lastPageBtn;
             let tblClickableBtn = document.createElement('button');
             var tableDetails = document.getElementById('tableDetails');
             tblClickableBtn.setAttribute('type', 'button');
@@ -608,37 +663,37 @@
                     offset = (currentPage - 1) * recordsPerPage;
                     // ================================================
                     stmt = 'SELECT COUNT(*) FROM `' + selected_tbl_name + '`';
-                    resultset = db2.exec(stmt);
+                    resultset2 = db2.exec(stmt);
                     // ================================================
-                    totalNoOfRecords = resultset[0]['values'][0];
+                    totalNoOfRecords = resultset2[0]['values'][0];
                     totalNoOfRecords = parseInt(totalNoOfRecords);
                     noOfPages = totalNoOfRecords / recordsPerPage;
                     noOfPages = Math.ceil(noOfPages);
                     // ================================================
                     tableDetails.innerHTML = `${tblIcon}${selected_tbl_name} ⯈ Total no. of records: <kbd>${totalNoOfRecords}</kbd> ⯈ Displaying records <kbd>${offset} ― ${offset+recordsPerPage}</kbd>`;
                     // ================================================
-                    firstPageBtn = await initPaginationBtn('firstPageBtn', tablePagination);
+                    firstPageBtn = await Sql.initPaginationBtn('firstPageBtn', tablePagination);
                     // ================================================
-                    prevPageBtn = await initPaginationBtn('prevPageBtn', tablePagination);
+                    prevPageBtn = await Sql.initPaginationBtn('prevPageBtn', tablePagination);
                     // ================================================
-                    currentPageNo = await initInputPageNo(tablePagination, 'currentPageNo', currentPage, noOfPages);
+                    currentPageNo = await Sql.initInputPageNo(tablePagination, 'currentPageNo', currentPage, noOfPages);
                     // ================================================
-                    nextPageBtn = await initPaginationBtn('nextPageBtn', tablePagination);
+                    nextPageBtn = await Sql.initPaginationBtn('nextPageBtn', tablePagination);
                     // ================================================
-                    lastPageBtn = await initPaginationBtn('lastPageBtn', tablePagination);
+                    lastPageBtn = await Sql.initPaginationBtn('lastPageBtn', tablePagination);
                     // ================================================
 
                     // render datatable records
                     stmt = 'SELECT * FROM `' + selected_tbl_name + '` LIMIT ' + offset + ',' + recordsPerPage;
-                    resultset2 = db.exec(stmt);
-                    await renderDatatable(resultset2, tableRecords);
+                    resultset2 = db2.exec(stmt);
+                    await Sql.renderDatatable(resultset2, tableRecords);
 
                     currentPageNo.addEventListener('change', (evt0) => {
                         evt0.stopPropagation();
                         currentPage = parseInt(evt0.target.value);
                         setPaginationClass();
                     });
-                    firstPageBtn.addEventListener('click', (evt1) => {
+                    Sql.firstPageBtn.addEventListener('click', (evt1) => {
                         evt1.stopPropagation();
                         currentPage = 1;
                         setPaginationClass();
@@ -686,7 +741,6 @@
                 throw new Error(err.message);
             }
         },
-
         renderDatatable: async function (resultset, tableRecordsEle) {
             try {
                 tableRecordsEle.innerHTML = '';
@@ -713,7 +767,6 @@
                 throw new Error(err.message);
             }
         },
-
         setQueryPaginationClass: async function () {
             try {
                 currentQueryPageNo.value = currentQueryPage;
