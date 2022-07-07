@@ -219,9 +219,9 @@
 
 
                 Sql.line_counter();
-                var fileNameDisplay = document.getElementById('fileNameDisplay');
-                var fileSizeDisplay = document.getElementById('fileSizeDisplay');
-                var noOfTablesDisplay = document.getElementById('noOfTablesDisplay');
+                // var fileNameDisplay = document.getElementById('fileNameDisplay');
+                // var fileSizeDisplay = document.getElementById('fileSizeDisplay');
+                // var noOfTablesDisplay = document.getElementById('noOfTablesDisplay');
 
                 if (upload != null && upload != undefined) {
                     upload.addEventListener('change', async (ev) => {
@@ -231,8 +231,8 @@
                         if (!file) return;
 
                         try {
-                            fileNameDisplay.innerText = file.name;
-                            fileSizeDisplay.innerText = `${parseInt(file.size/1024)} ㎅`;
+                            // fileNameDisplay.innerText = file.name;
+                            // fileSizeDisplay.innerText = `${parseInt(file.size/1024)} ㎅`;
 
                             let arrayBuffer = await Sql.readFileAsArrayBuffer(file);
                             console.log("database file location: " + file);
@@ -243,7 +243,7 @@
                             stmt = 'SELECT * FROM sqlite_master WHERE type=\'table\'';
                             resultset = Sql.getResultSetAsRowJSON(db, stmt);
                             let noOfTables = resultset.length;
-                            noOfTablesDisplay.innerHTML = `<kbd>${noOfTables}</kdb>`;
+                            // noOfTablesDisplay.innerHTML = `<kbd>${noOfTables}</kdb>`;
 
                             for (let rowObj of resultset) {
                                 let tblName = rowObj['tbl_name'];
