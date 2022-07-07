@@ -4202,6 +4202,7 @@ input[type=button].btn-block,input[type=reset].btn-block,input[type=submit].btn-
 
 .nav-tabs {
   border-bottom: 1px solid #dee2e6;
+  width: 100;
 }
 
 .nav-tabs .nav-item {

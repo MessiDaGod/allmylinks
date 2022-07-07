@@ -4,33 +4,40 @@
 @inject PersonServices Service;
 
 <PageTitle>@@joeshakely | GitHub.io</PageTitle>
-
-<div class="sc-bdfBwQ sc-gsTCUz jgGrsq bhdLno"><div class="sc-bdfBwQ eZNKTD"><img src="me.png" alt="@@joeshakely Profile Image | Linktree" data-testid="ProfileImage"
-class="sc-iBPRYJ flTywP Header__StyledProfilePicture-sc-i98650-2" filter="none"></div><div class="sc-bdfBwQ Header__Grid-sc-i98650-0 llgrqs jvyDlw"><h1 id="profile-joeshakely" class="sc-dlfnbm Header__GridHeading-sc-i98650-1 dxNTBA eiGOpF">@@joeshakely</h1></div></div>
-
-
-<div class="sc-bdfBwQ LyLIy">
-@for (var i = 0; i < Links.Length; i++) {
-    <div id="links-@i" class="sc-bdfBwQ pkAuV">
-        <div data-testid="StyledContainer" class="sc-bdfBwQ StyledContainer__StyledLinkContainer-sc-1kae6sc-0 hBNyQA doOGeq">
-            <a href="@Links[i]" target="_blank" rel="noopener" data-testid="LinkButton"
-               aria-describedby="profile-links-@i" height="auto" class="@CssClass">
-                <p class="">@DomainFromUrl(Links[i]).Replace(".com", "").Replace("www.", "") </p>
-            </a>
+<MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
+    <MudTabPanel Text="SQL">
+        <SqlPage />
+    </MudTabPanel>
+    <MudTabPanel Text="All My Links">
+        <div id="AllMyLinks" class="">
+            <div class="sc-bdfBwQ sc-gsTCUz jgGrsq bhdLno">
+                <div class="sc-bdfBwQ eZNKTD"><img src="me.png" alt="@@joeshakely Profile Image | Linktree" data-testid="ProfileImage" class="sc-iBPRYJ flTywP Header__StyledProfilePicture-sc-i98650-2" filter="none"></div>
+                <div class="sc-bdfBwQ Header__Grid-sc-i98650-0 llgrqs jvyDlw">
+                    <h1 id="profile-joeshakely" class="sc-dlfnbm Header__GridHeading-sc-i98650-1 dxNTBA eiGOpF">@@joeshakely</h1>
+                </div>
+            </div>
+            <div class="sc-bdfBwQ LyLIy">
+                @for (var i = 0; i < Links.Length; i++)
+                {
+                    <div id="links-@i" class="sc-bdfBwQ pkAuV">
+                        <div data-testid="StyledContainer" class="sc-bdfBwQ StyledContainer__StyledLinkContainer-sc-1kae6sc-0 hBNyQA doOGeq">
+                            <a href="@Links[i]" target="_blank" rel="noopener" data-testid="LinkButton" aria-describedby="profile-links-@i" height="auto" class="@CssClass">
+                                <p class="">@DomainFromUrl(Links[i]).Replace(".com", "").Replace("www.", "") </p>
+                            </a>
+                        </div>
+                    </div>
+                }
+                <div id="links-@Links.Length + 1" class="sc-bdfBwQ pkAuV">
+                    <div data-testid="StyledContainer" class="sc-bdfBwQ StyledContainer__StyledLinkContainer-sc-1kae6sc-0 hBNyQA doOGeq">
+                        <a data-testid="LinkButton" aria-describedby="profile-links-@Links.Length + 1" height="auto" class="@CssClass">
+                            <button id="PricesButton" class="@CssClass mouse" onclick="AllMyLinks.plot()">Show Prices BTC-USD</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    }
-    <div id="links-@Links.Length + 1" class="sc-bdfBwQ pkAuV">
-        <div data-testid="StyledContainer" class="sc-bdfBwQ StyledContainer__StyledLinkContainer-sc-1kae6sc-0 hBNyQA doOGeq">
-            <a data-testid="LinkButton"
-               aria-describedby="profile-links-@Links.Length + 1" height="auto" class="@CssClass">
-                <button id="PricesButton" class="@CssClass mouse" onclick="AllMyLinks.plot()">Show Prices BTC-USD</button>
-            </a>
-        </div>
-    </div>
-</div>
-
-<SqlPage />
+    </MudTabPanel>
+</MudTabs>
 
 @code {
 
@@ -38,7 +45,6 @@ class="sc-iBPRYJ flTywP Header__StyledProfilePicture-sc-i98650-2" filter="none">
 
     public static string[] Links => new[] { "https://github.com/messidagod", "https://instagram.com/joeshakely", "https://www.tiktok.com/@joeshakely" };
 
-    public Lazy<Task<IJSObjectReference>>? _moduleTask { get; set; }
     public static string DomainFromUrl(string uri)
     {
         Uri myUri = new Uri(uri);

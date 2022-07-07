@@ -1,6 +1,9 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime Js;
 <NavMenu />
+<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 <main>
   <div class="top-row px-4">
     <a href="https://github.com/MessiDaGod/" title="GitHub" target="_blank">
@@ -27,22 +30,5 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-    }
-
-    // 2
-  protected override async Task OnAfterRenderAsync(bool firstRender)
-  {
-      await base.OnAfterRenderAsync(firstRender);
-  }
-
-    // 3
-    protected override async Task OnParametersSetAsync()
-    {
-      await RemoveSpinner();
-    }
-
-    protected async Task RemoveSpinner() {
-    await Js.InvokeVoidAsync("AllMyLinks.Toggle", "spinner");
-    await Js.InvokeVoidAsync("AllMyLinks.logit", "spinner removed...");
     }
 }
