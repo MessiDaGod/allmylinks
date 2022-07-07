@@ -15,6 +15,10 @@
         };
     }
 
+    var file = '';
+    var db2;
+    var resultset2 = [];
+
     window.Sql = {
         line_counter: async function() {
             if (codeEditor === null || codeEditor === undefined)
@@ -37,7 +41,7 @@
             var uploadBtn = document.getElementById('upload-btn');
             var upload = document.getElementById('upload');
             var outputLogs = [];
-            var db = null;
+            var db;
             var tblIcon = '▦ ';
             var recordsPerPage = 100;
             var stmt = '';
@@ -222,7 +226,7 @@
                     upload.addEventListener('change', async (ev) => {
                         errorDisplay.innerHTML = '';
 
-                        let file = ev.currentTarget.files[0];
+                        file = ev.currentTarget.files[0];
                         if (!file) return;
 
                         try {
@@ -232,7 +236,7 @@
                             let arrayBuffer = await Sql.readFileAsArrayBuffer(file);
                             let uInt8Array = new Uint8Array(arrayBuffer);
                             db = new SQL.Database(uInt8Array);
-
+                            db2 = db;
                             stmt = 'SELECT * FROM sqlite_master WHERE type=\'table\'';
                             resultset = Sql.getResultSetAsRowJSON(db, stmt);
                             let noOfTables = resultset.length;
@@ -572,17 +576,22 @@
             }
         },
 
-        loadTableSelectable: function (tblName) {
+        loadTableSelectable: async function (tblName) {
+            // Sql.init();
             let tblIcon = '';
+            let selected_tbl_name = '';
+            let currentPage;
+            let recordsPerPage = 100;
+            let offset = 0;
+            let stmt;
             let tblClickableBtn = document.createElement('button');
+            var tableDetails = document.getElementById('tableDetails');
             tblClickableBtn.setAttribute('type', 'button');
             tblClickableBtn.setAttribute('class', 'btn btn-sm btn-link rounded-0 datatable');
             tblClickableBtn.innerText = `${tblIcon}${tblName}`;
-
             let tblClickableRow = dbTableDetails.insertRow(0);
             let tblClickableCell = tblClickableRow.insertCell(0);
             tblClickableCell.setAttribute('colspan', 2);
-
             tblClickableCell.appendChild(tblClickableBtn);
 
             try {
@@ -593,13 +602,13 @@
                     selected_tbl_name = selected_tbl_name.replace(tblIcon, '');
                     // ================================================
                     tableDetails.innerHTML = '';
-                    removeAllChildNodes(tablePagination);
+                    Sql.removeAllChildNodes(tablePagination);
                     // ================================================
                     currentPage = 1;
                     offset = (currentPage - 1) * recordsPerPage;
                     // ================================================
                     stmt = 'SELECT COUNT(*) FROM `' + selected_tbl_name + '`';
-                    resultset = db.exec(stmt);
+                    resultset = db2.exec(stmt);
                     // ================================================
                     totalNoOfRecords = resultset[0]['values'][0];
                     totalNoOfRecords = parseInt(totalNoOfRecords);
@@ -621,8 +630,8 @@
 
                     // render datatable records
                     stmt = 'SELECT * FROM `' + selected_tbl_name + '` LIMIT ' + offset + ',' + recordsPerPage;
-                    resultset = db.exec(stmt);
-                    await renderDatatable(resultset, tableRecords);
+                    resultset2 = db.exec(stmt);
+                    await renderDatatable(resultset2, tableRecords);
 
                     currentPageNo.addEventListener('change', (evt0) => {
                         evt0.stopPropagation();
@@ -749,9 +758,6 @@
                 throw new Error(err.message);
             }
         },
-
-
-
         readFileAsArrayBuffer: async function (file) {
             return new Promise((resolve, reject) => {
                 let fileredr = new FileReader();
