@@ -79,8 +79,12 @@
             // anchorElement.click();
             // anchorElement.remove();
         },
-        toggleCancel: function () {
+        ToggleCancel: function () {
             var x = document.getElementById("cancel");
+            x.classList.toggle("hide");
+        },
+        Toggle: function(elemId) {
+            var x = document.getElementById(elemId);
             x.classList.toggle("hide");
         },
         scrollEventConsolesToTop: function () {

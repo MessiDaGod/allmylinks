@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@inject IJSRuntime? JS;
+@inject IJSRuntime Js;
 <NavMenu />
 <main>
   <div class="top-row px-4">
@@ -18,23 +18,31 @@
 
 @code {
 
-  private IJSObjectReference? module {get; set; }
-  private IJSObjectReference? module1 {get; set; }
-  private IJSObjectReference? module2 {get; set; }
+  internal IJSObjectReference? Module;
+  internal IJSObjectReference? module1;
+  internal IJSObjectReference? module2;
+  internal IJSObjectReference? Module3;
 
-  private IJSObjectReference? module3 {get; set; }
-  protected override async Task OnInitializedAsync() {
-    await base.OnInitializedAsync();
-  }
+    // 1
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
 
+    // 2
   protected override async Task OnAfterRenderAsync(bool firstRender)
   {
-    if (firstRender) {
-      @* module = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/AllMyLinks.js");
-      module = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/polyfill.js");
-      module1 = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/e10-viewport-bug-workaround.js");
-      module2 = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/bootstrap-native-v4.js"); *@
-      module3 = await JS!.InvokeAsync<IJSObjectReference>("import", "./js/Sql.js");
-    }
+      await base.OnAfterRenderAsync(firstRender);
   }
+
+    // 3
+    protected override async Task OnParametersSetAsync()
+    {
+      await RemoveSpinner();
+    }
+
+    protected async Task RemoveSpinner() {
+    await Js.InvokeVoidAsync("AllMyLinks.Toggle", "spinner");
+    await Js.InvokeVoidAsync("AllMyLinks.logit", "spinner removed...");
+    }
 }

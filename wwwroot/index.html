@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang='en' class='notranslate' translate='no'>
 	<head>
+    	<meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
 	    <meta name='google' content='notranslate' />
         <meta charset='UTF-8'>
 	    <meta name='description' content='In-Browser SQLite Database Demo'>
@@ -8,7 +9,7 @@
 	    <meta name='viewport' content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' />
 	    <meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1' />
 	    <meta http-equiv='Content-Language' content='en' />
-	    <link rel='shortcut icon' href='img/favicon.ico'>
+	    <link rel='shortcut icon' href='_next/static/logo-assets/favicon.ico'>
 	    <meta name='msapplication-TileColor' content='#ffffff' />
 	    <meta name='theme-color' content='#ffffff' />
 		<link rel="shortcut icon" href="_next/static/logo-assets/favicon.ico" />
@@ -20,18 +21,39 @@
 	    <meta name='HandheldFriendly' content='True' />
 	    <meta name='MobileOptimized' content='320' />
 	    <meta http-equiv='Content-Security-Policy' content='upgrade-insecure-requests' />
+		<script src='js/AllMyLinks.js'></script>
 		<script src='js/sql-browser.min.js'></script>
 		<script src='js/Sql.js'></script>
 		<link href='css/bootstrap-4.5.2.min.css' rel='stylesheet' type='text/css' />
 		<link href='css/offcanvas.css' rel='stylesheet' type='text/css' />
 		<link href='css/main.css' rel='stylesheet' type='text/css' />
 		<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-		<title>SQLite Browser Utility | No Server Setup Required</title>
+		<link href="css/app.css" rel="stylesheet" />
+		<link href="allmylinks.styles.css" rel="stylesheet" />
+		<title>Joe Shakely | Website</title>
 	</head>
+	<script type="text/javascript">
+		caches.delete("blazor-resources-/").then(function (e) {
+			console.log("'blazor-resources-/' cache deleted");
+		});
+	</script>
 	<noscript>You need to enable JavaScript to run this app.</noscript>
 	<body>
 		<div id="app">
-
+			<div id="spinner" style="display: flex; justify-content: center; align-items: center;"> <!-- height: 100vh; width: 100%; -->
+				<div class="spinner">
+					<div class="rect1"></div>
+					<div class="rect2"></div>
+					<div class="rect3"></div>
+					<div class="rect4"></div>
+					<div class="rect5"></div>
+				</div>
+			</div>
+		</div>
+		<div id="candles" class="hide">
+			<a id="candleprice" class="rz-helper-hidden"></a>
+			<canvas id="header" width="100px"></canvas>
+			<canvas id="candlestick"></canvas>
 		</div>
 		<div class='container-fluid'>
 			<div class='row'>
@@ -131,10 +153,15 @@
 				</div>
 			</div>
 		</div>
+		<script src="_content/MudBlazor/MudBlazor.min.js"></script>
+		<script src="_framework/blazor.webassembly.js"></script>
+		<script>
+			navigator.serviceWorker.register('service-worker.js');
+		</script>
 		<script src='js/polyfill.js'></script>
 	    <script src='js/ie10-viewport-bug-workaround.js'></script>
 	    <script src='js/bootstrap-native-v4.js'></script>
-	    <script>
+	    <!-- <script>
 	    	if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
 			    callback();
 			} else {
@@ -843,6 +870,12 @@
                    }, false); // upload file change event
 			    }); // DOMContentLoaded
 			}
-	    </script>
+	    </script> -->
+		<div id="blazor-error-ui">
+			An unhandled error has occurred.
+			<a href="" class="reload">Reload</a>
+			<a class="dismiss"></a>
+		</div>
+
 	</body>
 </html>

@@ -1,7 +1,7 @@
 window.Sql = {
     Init: function () {
         if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
-            callback();
+            return; // callback();
         } else {
             document.addEventListener('DOMContentLoaded', async () => {
                 console.log('DOMContentLoaded');
