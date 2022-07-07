@@ -530,14 +530,7 @@
 
 
 	                // ================================== Query Editor Tab ===========================
-	                var sampleQueryStmt='SELECT patient_id,diagnosis_code,icd9_description'
-							+'\n FROM'
-							+'\n (SELECT'
-							+'\n 	patient_id,'
-							+'\n 	diagnosis_code'
-							+'\n FROM patient_diagnosis) A LEFT JOIN '
-							+'\n (SELECT icd9_code, icd9_description FROM icd9_mapping) B'
-							+'\n ON A.diagnosis_code = B.icd9_code;';
+	                var sampleQueryStmt='SELECT * FROM Person';
 			  		var codeEditor = document.getElementById('codeEditor');
 					var lineCounter = document.getElementById('lineCounter');
 
