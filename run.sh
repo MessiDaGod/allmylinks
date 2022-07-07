@@ -1,2 +1,2 @@
 #!/bin/sh
-dotnet build && dotnet run
+dotnet build && dotnet watch

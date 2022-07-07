@@ -1,16 +1,16 @@
 import * as fs from 'fs';
 
-export fucntion db() {
+const db = async () => {
     mountAndInitializeDb();
 }
 
-export function mountAndInitializeDb() {
+function mountAndInitializeDb() {
     fs.mkdir('/database');
     fs.mount(IDBFS, {}, '/database');
     return AllMyLinks.syncDatabase(true);
 };
 
-export function syncDatabase(populate) {
+function syncDatabase(populate) {
 
     return new Promise((resolve, reject) => {
         fs.syncfs(populate, (err) => {
@@ -26,4 +26,4 @@ export function syncDatabase(populate) {
     });
 }
 
-exports.db = db;
+export default db;

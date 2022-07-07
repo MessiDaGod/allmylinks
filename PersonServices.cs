@@ -6,6 +6,7 @@ using SQLite;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Threading.Tasks;
 
 public class PersonServices : IPersonServices
 {

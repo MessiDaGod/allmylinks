@@ -1,19 +1,13 @@
-const {
-    src,
-    dest
-} = require('gulp');
-const beautify = require('gulp-jsbeautifier');
+import * as browserify from 'browserify';
+import * as gulp from 'gulp';
 
-function beaut() {
-    src('./dist/js/bundle.js')
-        .pipe(beautify())
-        .pipe(dest('../wwwroot/js/'));
-    return copy();
-}
+gulp.task('browserify', function() {
+    return browserify('./src/index.js')
+        .bundle()
+        .pipe(gulp.dest('./dist/'));
+});
 
-function copy() {
-    src('./src/index.js')
-        .pipe(dest('./dist/bundle.js/'));
-}
-
-exports.default = beaut;
+gulp.task('default', function () {
+    gulp.src('./src/index.js')
+        .pipe(gulp.dest('../wwwroot/js/'));
+});

@@ -22,12 +22,23 @@
     <meta name="msapplication-square310x310logo" content="_next/static/logo-assets/android-icon-144x144" />
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta name="theme-color" content="#ffffff" />
+    <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent' />
+    <meta name='apple-mobile-web-app-capable' content='yes' />
+    <meta name='mobile-web-app-capable' content='yes' />
+    <meta name='HandheldFriendly' content='True' />
+    <meta name='MobileOptimized' content='320' />
+    <meta http-equiv='Content-Security-Policy' content='upgrade-insecure-requests' />
+    <link href='css/bootstrap-4.5.2.min.css' rel='stylesheet' type='text/css' />
+    <link href='css/offcanvas.css' rel='stylesheet' type='text/css' />
+    <link href='css/main.css' rel='stylesheet' type='text/css' />
+    <script src='js/sql-browser.min.js'></script>
     <!-- <link rel="manifest" href="static/manifest.json" /> -->
     <title>All My Links</title>
     <base href="/" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <!-- <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
-    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" /> -->
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
     <link href="allmylinks.styles.css" rel="stylesheet" />
 </head>
@@ -49,6 +60,8 @@
         </div>
     </div>
 
+    <body>
+
     <div id="candles" class="hide">
         <a id="candleprice" class="rz-helper-hidden"></a>
         <canvas id="header" width="100px"></canvas>
@@ -60,12 +73,6 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss"></a>
     </div>
-
-    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-    <script src="_framework/blazor.webassembly.js"></script>
-    <script>
-        navigator.serviceWorker.register('service-worker.js');
-    </script>
 </body>
 
 </html>
