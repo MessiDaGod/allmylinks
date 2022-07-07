@@ -235,6 +235,8 @@
                             fileSizeDisplay.innerText = `${parseInt(file.size/1024)} ㎅`;
 
                             let arrayBuffer = await Sql.readFileAsArrayBuffer(file);
+                            console.log("database file location: " + file);
+                            console.log(file.name);
                             let uInt8Array = new Uint8Array(arrayBuffer);
                             db = new SQL.Database(uInt8Array);
                             db2 = db;
@@ -722,7 +724,6 @@
                 throw new Error(err.message);
             }
         },
-
         getResultSetAsRowJSON: function (_db, _stmt) {
             try {
                 let _resultset = _db.exec(_stmt);

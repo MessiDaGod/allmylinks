@@ -61,7 +61,8 @@
 								<div id='browse' role='tabpanel' class='tab-pane fade active show' aria-labelledby='browse-tab'>
 									<div class='btn-group btn-group-sm m-0'>
 										<div class='btn-group btn-group-sm'>
-											<button id='exportToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown'><small>💾 Save…</small></button>
+											<button id='exportToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown'>Save
+												<span class="material-symbols-outlined">save</span></button>
 											<div class='dropdown-menu'>
 												<button id='exportAsJSON' type='button' class='dropdown-item'><small>💽 Export datatable as JSON</small></button>
 											</div>
@@ -78,13 +79,15 @@
 								<div id='editor' role='tabpanel' class='tab-pane fade show' aria-labelledby='editor-tab'>
 									<div class='btn-group btn-group-sm m-0'>
 										<div class='btn-group btn-group-sm'>
-											<button id='exportQueryToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown'><small>💾 Save…</small></button>
+											<button id='exportQueryToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown'>Save
+												<span class="material-symbols-outlined">save</span></button>
 											<div class='dropdown-menu'>
 												<button id='exportQueryAsJSON' type='button' class='dropdown-item'><small>💽 Export resultset as JSON</small></button>
 												<button id='exportEditorQuery' type='button' class='dropdown-item'><small>📄 Export SQL query to local file</small></button>
 											</div>
 										</div>
-										<button id='runQueryBtn' type='button' class='btn btn-sm btn-light text-primary border-primary rounded-0 ml-2'><small>Run ⯈</small></button>
+										<button id='runQueryBtn' type='button' class='btn btn-sm btn-light text-primary border-primary rounded-0 ml-2'>Execute Query
+											<span class="material-symbols-outlined">database</span></button>
 										<small id='tableQueryDetails' class='ml-2'></small>
 									</div>
 									<hr class='invisible-divider'>
