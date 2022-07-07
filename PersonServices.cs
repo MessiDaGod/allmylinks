@@ -32,8 +32,8 @@ public class PersonServices : IPersonServices
         List<string> people = new();
         var person = new Person()
         {
-            FirstName = "AAPL",
-            LastName = "Mothafucka",
+            FirstName = "Joe",
+            LastName = "Mothafuckin Shakely",
         };
 
         await db.InsertAsync(person);
