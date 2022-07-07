@@ -1,7 +1,28 @@
-window.Sql = {
-    Init: function () {
+(function () {
+    'use strict';
+
+    if (!Element.prototype.matches) {
+        Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+    }
+    if (!Element.prototype.closest) {
+        Element.prototype.closest = function ( /** @type {string} */ s) {
+            var el = this;
+            do {
+                if (el.matches(s)) return el;
+                el = el.parentElement || el.parentNode;
+            } while (el !== null && el.nodeType === 1);
+            return null;
+        };
+    }
+
+     var upload;
+     var runQueryBtn;
+     var exportAsJSON;
+    var exportQueryAsJSON;
+    var exportEditorQuery;
+
         if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
-            return; // callback();
+           callback();
         } else {
             document.addEventListener('DOMContentLoaded', async () => {
                 console.log('DOMContentLoaded');
@@ -36,18 +57,6 @@ window.Sql = {
                 }
 
                 var logsRecords = document.getElementById('logsRecords');
-
-                function appendLogOutput(msg, type) {
-                    let logObj = {
-                        'Datetime': getCurrentDatetimeStamp(),
-                        'Message': msg,
-                        'Type': 'ERROR'
-                    };
-                    outputLogs.push(logObj);
-
-                    logsRecords.innerText = JSON.stringify(outputLogs, null, 2);
-                }
-
                 const copyrightYearDisplay = document.getElementById('copyrightYearDisplay');
                 copyrightYearDisplay.innerHTML = new Date().getFullYear();
 
@@ -56,7 +65,9 @@ window.Sql = {
                 Array.from(mainTabsCollection).forEach(tab => new BSN.Tab(tab));
 
                 var uploadBtn = document.getElementById('upload-btn');
-                var upload = document.getElementById('upload');
+                upload = document.getElementById('upload');
+
+                if (upload != null && upload != undefined)
                 uploadBtn.addEventListener('click', () => {
                     let clickEvent = new MouseEvent('click', {
                         view: window,
@@ -87,7 +98,7 @@ window.Sql = {
                 var tableDetails = document.getElementById('tableDetails');
                 var tableRecords = document.getElementById('tableRecords');
                 var tablePagination = document.getElementById('tablePagination');
-                var exportAsJSON = document.getElementById('exportAsJSON');
+                exportAsJSON = document.getElementById('exportAsJSON');
 
                 var firstPageBtn, prevPageBtn, currentPageNo, nextPageBtn, lastPageBtn;
 
@@ -105,8 +116,8 @@ window.Sql = {
                 var tableQueryRecords = document.getElementById('tableQueryRecords');
                 var tableQueryPagination = document.getElementById('tableQueryPagination');
 
-                var exportQueryAsJSON = document.getElementById('exportQueryAsJSON');
-                var exportEditorQuery = document.getElementById('exportEditorQuery');
+                exportQueryAsJSON = document.getElementById('exportQueryAsJSON');
+                exportEditorQuery = document.getElementById('exportEditorQuery');
 
                 var firstQueryPageBtn, prevQueryPageBtn, currentQueryPageNo, nextQueryPageBtn, lastQueryPageBtn;
 
@@ -163,8 +174,260 @@ window.Sql = {
                 };
             })
 
+            // ================================== Query Editor Tab ===========================
+            var sampleQueryStmt = 'SELECT patient_id,diagnosis_code,icd9_description' +
+                '\n FROM' +
+                '\n (SELECT' +
+                '\n 	patient_id,' +
+                '\n 	diagnosis_code' +
+                '\n FROM patient_diagnosis) A LEFT JOIN ' +
+                '\n (SELECT icd9_code, icd9_description FROM icd9_mapping) B' +
+                '\n ON A.diagnosis_code = B.icd9_code;';
+            var codeEditor = document.getElementById('codeEditor');
+            var lineCounter = document.getElementById('lineCounter');
 
-            async function initPaginationBtn(paginationBtnType, tablePaginationEle) {
+
+            var _buffer;
+
+            var onFirstLoad = true;
+            var lineCountCache = 0;
+            var outArrCache = new Array();
+
+            if (codeEditor != null && codeEditor != undefined)   {
+                codeEditor.addEventListener('scroll', () => {
+                lineCounter.scrollTop = codeEditor.scrollTop;
+                lineCounter.scrollLeft = codeEditor.scrollLeft;
+                });
+
+           codeEditor.addEventListener('input', () => {
+                this.line_counter();
+            });
+
+            codeEditor.addEventListener('keydown', (e) => {
+                let {
+                    keyCode
+                } = e;
+                let {
+                    value,
+                    selectionStart,
+                    selectionEnd
+                } = codeEditor;
+                if (keyCode === 9) { // TAB = 9
+                    e.preventDefault();
+                    codeEditor.value = value.slice(0, selectionStart) + '\t' + value.slice(selectionEnd);
+                    codeEditor.setSelectionRange(selectionStart + 2, selectionStart + 1)
+                }
+            });
+            codeEditor.value = sampleQueryStmt;
+            }
+
+
+            line_counter();
+            var fileNameDisplay = document.getElementById('fileNameDisplay');
+            var fileSizeDisplay = document.getElementById('fileSizeDisplay');
+            var noOfTablesDisplay = document.getElementById('noOfTablesDisplay');
+
+            if (upload != null && upload != undefined) {
+                upload.addEventListener('change', async (ev) => {
+                    errorDisplay.innerHTML = '';
+
+                    let file = ev.currentTarget.files[0];
+                    if (!file) return;
+
+                    try {
+                        fileNameDisplay.innerText = file.name;
+                        fileSizeDisplay.innerText = `${parseInt(file.size/1024)} ㎅`;
+
+                        let arrayBuffer = await readFileAsArrayBuffer(file);
+                        let uInt8Array = new Uint8Array(arrayBuffer);
+                        db = new SQL.Database(uInt8Array);
+
+                        stmt = 'SELECT * FROM sqlite_master WHERE type=\'table\'';
+                        resultset = getResultSetAsRowJSON(db, stmt);
+                        let noOfTables = resultset.length;
+                        noOfTablesDisplay.innerHTML = `<kbd>${noOfTables}</kdb>`;
+
+                        for (let rowObj of resultset) {
+                            let tblName = rowObj['tbl_name'];
+                            loadTableSelectable(tblName);
+                        }
+                    } catch (err) {
+                        errorDisplay.innerHTML = '';
+                        errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
+
+                        appendLogOutput(err.message, 'ERROR');
+                    }
+                }, false); // upload file change event
+            }
+
+            runQueryBtn  = document.getElementById('runQueryBtn');
+            if (runQueryBtn != null && runQueryBtn != undefined)
+            runQueryBtn.addEventListener('click', async () => {
+                try {
+                    queryStmt = codeEditor.value;
+                    originalQueryStmt = queryStmt.trim();
+                    if (originalQueryStmt.charAt(originalQueryStmt.length - 1) == ';') {
+                        originalQueryStmt = originalQueryStmt.substr(0, originalQueryStmt.length - 1);
+                    }
+                    // ================================================
+                    queryStmt = 'SELECT COUNT(*) FROM (' + originalQueryStmt + ')';
+                    queryResultset = db.exec(queryStmt);
+                    // ================================================
+                    tableQueryDetails.innerHTML = '';
+                    removeAllChildNodes(tableQueryPagination);
+                    // ================================================
+                    currentQueryPage = 1;
+                    queryOffset = (currentQueryPage - 1) * recordsPerPage;
+                    // ================================================
+                    totalNoOfQueryRecords = queryResultset[0]['values'][0];
+                    totalNoOfQueryRecords = parseInt(totalNoOfQueryRecords);
+                    noOfQueryPages = totalNoOfQueryRecords / recordsPerPage;
+                    noOfQueryPages = Math.ceil(noOfQueryPages);
+                    // ================================================
+                    tableQueryDetails.innerHTML = `${tblIcon} ⯈ Total no. of records: <kbd>${totalNoOfQueryRecords}</kbd> ⯈ Displaying records <kbd>${queryOffset} ― ${queryOffset+recordsPerPage}</kbd>`;
+                    // ================================================
+                    firstQueryPageBtn = await initPaginationBtn('firstQueryPageBtn', tableQueryPagination);
+                    // ================================================
+                    prevQueryPageBtn = await initPaginationBtn('prevQueryPageBtn', tableQueryPagination);
+                    // ================================================
+                    currentQueryPageNo = await initInputPageNo(tableQueryPagination, 'currentQueryPageNo', currentQueryPage, noOfQueryPages);
+                    // ================================================
+                    nextQueryPageBtn = await initPaginationBtn('nextQueryPageBtn', tableQueryPagination);
+                    // ================================================
+                    lastQueryPageBtn = await initPaginationBtn('lastQueryPageBtn', tableQueryPagination);
+                    // ================================================
+                    // render datatable records
+                    queryStmt = 'SELECT * FROM (' + originalQueryStmt + ') LIMIT ' + queryOffset + ',' + recordsPerPage;
+                    queryResultset = db.exec(queryStmt);
+                    await renderDatatable(queryResultset, tableQueryRecords);
+
+                    currentQueryPageNo.addEventListener('change', (evt0) => {
+                        evt0.stopPropagation();
+                        currentQueryPage = parseInt(evt0.target.value);
+                        setQueryPaginationClass();
+                    });
+                    firstQueryPageBtn.addEventListener('click', (evt1) => {
+                        evt1.stopPropagation();
+                        currentQueryPage = 1;
+                        setQueryPaginationClass();
+                    });
+                    prevQueryPageBtn.addEventListener('click', (evt2) => {
+                        evt2.stopPropagation();
+                        if (currentQueryPage > 1) {
+                            currentQueryPage = currentQueryPage - 1;
+                            setQueryPaginationClass();
+                        }
+                    });
+                    nextQueryPageBtn.addEventListener('click', (evt3) => {
+                        evt3.stopPropagation();
+                        if (currentQueryPage < noOfQueryPages) {
+                            currentQueryPage = currentQueryPage + 1;
+                            setQueryPaginationClass();
+                        }
+                    });
+                    lastQueryPageBtn.addEventListener('click', (evt4) => {
+                        evt4.stopPropagation();
+                        currentQueryPage = noOfQueryPages;
+                        setQueryPaginationClass();
+                    });
+                } catch (err) {
+                    errorDisplay.innerHTML = '';
+                    errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
+                    appendLogOutput(err.message, 'ERROR');
+                }
+            }, false);
+
+            if (exportAsJSON != null && exportAsJSON != undefined)
+            exportAsJSON.addEventListener('click', (ev) => {
+                try {
+                    let jsonObj = getResultSetAsRowJSON(db, 'SELECT * FROM `' + selected_tbl_name + '`');
+                    let jsonStr = JSON.stringify(jsonObj);
+                    let textblob = new Blob([jsonStr], {
+                        type: 'application/json'
+                    });
+                    let dwnlnk = document.createElement('a');
+                    dwnlnk.download = `${selected_tbl_name}.json`;
+                    if (window.webkitURL != null) {
+                        dwnlnk.href = window.webkitURL.createObjectURL(textblob);
+                    }
+                    dwnlnk.click();
+                } catch (err) {
+                    errorDisplay.innerHTML = '';
+                    errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
+
+                    appendLogOutput(err.message, 'ERROR');
+                }
+            });
+
+            if (exportQueryAsJSON != null && exportQueryAsJSON != undefined)
+            exportQueryAsJSON.addEventListener('click', (ev) => {
+                try {
+                    let jsonObj = getResultSetAsRowJSON(db, 'SELECT * FROM (' + originalQueryStmt + ')');
+                    let jsonStr = JSON.stringify(jsonObj);
+                    let textblob = new Blob([jsonStr], {
+                        type: 'application/json'
+                    });
+                    let dwnlnk = document.createElement('a');
+                    dwnlnk.download = 'queryResultset.json';
+                    if (window.webkitURL != null) {
+                        dwnlnk.href = window.webkitURL.createObjectURL(textblob);
+                    }
+                    dwnlnk.click();
+                } catch (err) {
+                    errorDisplay.innerHTML = '';
+                    errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
+
+                    appendLogOutput(err.message, 'ERROR');
+                }
+            });
+            if (exportEditorQuery != null && exportEditorQuery != undefined)
+            exportEditorQuery.addEventListener('click', (ev) => {
+                try {
+                    let queryStr = codeEditor.value;
+                    let textblob = new Blob([queryStr], {
+                        type: 'text/plain'
+                    });
+                    let dwnlnk = document.createElement('a');
+                    dwnlnk.download = 'query.sql';
+                    if (window.webkitURL != null) {
+                        dwnlnk.href = window.webkitURL.createObjectURL(textblob);
+                    }
+                    dwnlnk.click();
+                } catch (err) {
+                    errorDisplay.innerHTML = '';
+                    errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
+
+                    appendLogOutput(err.message, 'ERROR');
+                }
+            });
+
+        }
+
+            async function line_counter() {
+                if (codeEditor === null || codeEditor === undefined)
+                    return;
+                let lineCount = codeEditor.value.split('\n').length;
+                let outarr = new Array();
+                for (var x = 0; x < lineCount; x++) {
+                    outarr[x] = (x + 1) + '.';
+                }
+                await Promise.resolve(outarr);
+                lineCountCache = lineCount;
+                lineCounter.value = outarr.join('\n');
+            }
+window.Sql = {
+
+            appendLogOutput: function(msg, type) {
+                    let logObj = {
+                        'Datetime': getCurrentDatetimeStamp(),
+                        'Message': msg,
+                        'Type': 'ERROR'
+                    };
+                    outputLogs.push(logObj);
+                    logsRecords.innerText = JSON.stringify(outputLogs, null, 2);
+                },
+
+            initPaginationBtn: async function(paginationBtnType, tablePaginationEle) {
                 try {
                     let paginationBtn = document.createElement('li');
                     paginationBtn.id = paginationBtnType;
@@ -182,9 +445,50 @@ window.Sql = {
                 } catch (err) {
                     throw new Error(err.message);
                 }
-            }
+            },
+            line_counter: async function () {
+                let lineCount = codeEditor.value.split('\n').length;
+                let outarr = new Array();
+                for (var x = 0; x < lineCount; x++) {
+                    outarr[x] = (x + 1) + '.';
+                }
+                await Promise.resolve(outarr);
+                lineCountCache = lineCount;
+                lineCounter.value = outarr.join('\n');
+            },
+            countLines: function(textarea) {
+                if (_buffer == null) {
+                    _buffer = document.createElement('textarea');
+                    _buffer.style.border = 'none';
+                    _buffer.style.height = '0';
+                    _buffer.style.overflow = 'hidden';
+                    _buffer.style.padding = '0';
+                    _buffer.style.position = 'absolute';
+                    _buffer.style.left = '0';
+                    _buffer.style.top = '0';
+                    _buffer.style.zIndex = '-1';
+                    document.body.appendChild(_buffer);
+                }
+                let cs = window.getComputedStyle(textarea);
+                let pl = parseInt(cs.paddingLeft);
+                let pr = parseInt(cs.paddingRight);
+                let lh = parseInt(cs.lineHeight);
+                if (isNaN(lh)) lh = parseInt(cs.fontSize);
+                _buffer.style.width = (textarea.clientWidth - pl - pr) + 'px';
+                _buffer.style.font = cs.font;
+                _buffer.style.letterSpacing = cs.letterSpacing;
+                _buffer.style.whiteSpace = cs.whiteSpace;
+                _buffer.style.wordBreak = cs.wordBreak;
+                _buffer.style.wordSpacing = cs.wordSpacing;
+                _buffer.style.wordWrap = cs.wordWrap;
 
-            async function initInputPageNo(tablePaginationEle, currentPageNoID, currentPageVal, noOfPagesVal) {
+                _buffer.value = textarea.value;
+
+                let result = Math.floor(_buffer.scrollHeight / lh);
+                if (result == 0) result = 1;
+                return result;
+            },
+            initInputPageNo: async function (tablePaginationEle, currentPageNoID, currentPageVal, noOfPagesVal) {
                 try {
                     let currentPageNoLI = document.createElement('li');
                     currentPageNoLI.className = 'page-item';
@@ -217,9 +521,9 @@ window.Sql = {
                 } catch (err) {
                     throw new Error(err.message);
                 }
-            }
+            },
 
-            function removeAllChildNodes(parent) {
+             removeAllChildNodes: function(parent) {
                 try {
                     while (parent.firstChild) {
                         parent.removeChild(parent.firstChild);
@@ -227,9 +531,9 @@ window.Sql = {
                 } catch (err) {
                     throw new Error(err.message);
                 }
-            }
+            },
 
-            async function setPaginationClass() {
+            setPaginationClass: async function () {
                 try {
                     currentPageNo.value = currentPage;
                     if (currentPage == 1) {
@@ -272,9 +576,9 @@ window.Sql = {
                 } catch (err) {
                     throw new Error(err.message);
                 }
-            }
+            },
 
-            function loadTableSelectable(tblName) {
+             loadTableSelectable: function(tblName) {
                 let tblClickableBtn = document.createElement('button');
                 tblClickableBtn.setAttribute('type', 'button');
                 tblClickableBtn.setAttribute('class', 'btn btn-sm btn-link rounded-0 datatable');
@@ -358,9 +662,9 @@ window.Sql = {
                 } catch (err) {
                     throw new Error(err.message);
                 }
-            }
+            },
 
-            function getResultSetAsRowJSON(_db, _stmt) {
+             getResultSetAsRowJSON: function(_db, _stmt) {
                 try {
                     let _resultset = _db.exec(_stmt);
                     let _columns = _resultset[0]['columns'];
@@ -377,9 +681,9 @@ window.Sql = {
                 } catch (err) {
                     throw new Error(err.message);
                 }
-            }
+            },
 
-            async function renderDatatable(resultset, tableRecordsEle) {
+            renderDatatable: async function (resultset, tableRecordsEle) {
                 try {
                     tableRecordsEle.innerHTML = '';
 
@@ -404,102 +708,9 @@ window.Sql = {
                 } catch (err) {
                     throw new Error(err.message);
                 }
-            }
+            },
 
-
-            // ================================== Query Editor Tab ===========================
-            var sampleQueryStmt = 'SELECT patient_id,diagnosis_code,icd9_description' +
-                '\n FROM' +
-                '\n (SELECT' +
-                '\n 	patient_id,' +
-                '\n 	diagnosis_code' +
-                '\n FROM patient_diagnosis) A LEFT JOIN ' +
-                '\n (SELECT icd9_code, icd9_description FROM icd9_mapping) B' +
-                '\n ON A.diagnosis_code = B.icd9_code;';
-            var codeEditor = document.getElementById('codeEditor');
-            var lineCounter = document.getElementById('lineCounter');
-
-
-            var _buffer;
-
-            function countLines(textarea) {
-                if (_buffer == null) {
-                    _buffer = document.createElement('textarea');
-                    _buffer.style.border = 'none';
-                    _buffer.style.height = '0';
-                    _buffer.style.overflow = 'hidden';
-                    _buffer.style.padding = '0';
-                    _buffer.style.position = 'absolute';
-                    _buffer.style.left = '0';
-                    _buffer.style.top = '0';
-                    _buffer.style.zIndex = '-1';
-                    document.body.appendChild(_buffer);
-                }
-                let cs = window.getComputedStyle(textarea);
-                let pl = parseInt(cs.paddingLeft);
-                let pr = parseInt(cs.paddingRight);
-                let lh = parseInt(cs.lineHeight);
-                if (isNaN(lh)) lh = parseInt(cs.fontSize);
-                _buffer.style.width = (textarea.clientWidth - pl - pr) + 'px';
-                _buffer.style.font = cs.font;
-                _buffer.style.letterSpacing = cs.letterSpacing;
-                _buffer.style.whiteSpace = cs.whiteSpace;
-                _buffer.style.wordBreak = cs.wordBreak;
-                _buffer.style.wordSpacing = cs.wordSpacing;
-                _buffer.style.wordWrap = cs.wordWrap;
-
-                _buffer.value = textarea.value;
-
-                let result = Math.floor(_buffer.scrollHeight / lh);
-                if (result == 0) result = 1;
-                return result;
-            }
-
-
-            var onFirstLoad = true;
-            var lineCountCache = 0;
-            var outArrCache = new Array();
-
-            async function line_counter() {
-                let lineCount = codeEditor.value.split('\n').length;
-                let outarr = new Array();
-                for (var x = 0; x < lineCount; x++) {
-                    outarr[x] = (x + 1) + '.';
-                }
-                await Promise.resolve(outarr);
-                lineCountCache = lineCount;
-                lineCounter.value = outarr.join('\n');
-            }
-
-            codeEditor.addEventListener('scroll', () => {
-                lineCounter.scrollTop = codeEditor.scrollTop;
-                lineCounter.scrollLeft = codeEditor.scrollLeft;
-            });
-
-
-            codeEditor.addEventListener('input', () => {
-                line_counter();
-            });
-
-            codeEditor.addEventListener('keydown', (e) => {
-                let {
-                    keyCode
-                } = e;
-                let {
-                    value,
-                    selectionStart,
-                    selectionEnd
-                } = codeEditor;
-                if (keyCode === 9) { // TAB = 9
-                    e.preventDefault();
-                    codeEditor.value = value.slice(0, selectionStart) + '\t' + value.slice(selectionEnd);
-                    codeEditor.setSelectionRange(selectionStart + 2, selectionStart + 1)
-                }
-            });
-            codeEditor.value = sampleQueryStmt;
-            line_counter();
-
-            async function setQueryPaginationClass() {
+            setQueryPaginationClass: async function () {
                 try {
                     currentQueryPageNo.value = currentQueryPage;
                     if (currentQueryPage == 1) {
@@ -542,190 +753,17 @@ window.Sql = {
                 } catch (err) {
                     throw new Error(err.message);
                 }
-            }
+            },
 
 
-            var runQueryBtn = document.getElementById('runQueryBtn');
-            runQueryBtn.addEventListener('click', async () => {
-                try {
-                    queryStmt = codeEditor.value;
-                    originalQueryStmt = queryStmt.trim();
-                    if (originalQueryStmt.charAt(originalQueryStmt.length - 1) == ';') {
-                        originalQueryStmt = originalQueryStmt.substr(0, originalQueryStmt.length - 1);
-                    }
-                    // ================================================
-                    queryStmt = 'SELECT COUNT(*) FROM (' + originalQueryStmt + ')';
-                    queryResultset = db.exec(queryStmt);
-                    // ================================================
-                    tableQueryDetails.innerHTML = '';
-                    removeAllChildNodes(tableQueryPagination);
-                    // ================================================
-                    currentQueryPage = 1;
-                    queryOffset = (currentQueryPage - 1) * recordsPerPage;
-                    // ================================================
-                    totalNoOfQueryRecords = queryResultset[0]['values'][0];
-                    totalNoOfQueryRecords = parseInt(totalNoOfQueryRecords);
-                    noOfQueryPages = totalNoOfQueryRecords / recordsPerPage;
-                    noOfQueryPages = Math.ceil(noOfQueryPages);
-                    // ================================================
-                    tableQueryDetails.innerHTML = `${tblIcon} ⯈ Total no. of records: <kbd>${totalNoOfQueryRecords}</kbd> ⯈ Displaying records <kbd>${queryOffset} ― ${queryOffset+recordsPerPage}</kbd>`;
-                    // ================================================
-                    firstQueryPageBtn = await initPaginationBtn('firstQueryPageBtn', tableQueryPagination);
-                    // ================================================
-                    prevQueryPageBtn = await initPaginationBtn('prevQueryPageBtn', tableQueryPagination);
-                    // ================================================
-                    currentQueryPageNo = await initInputPageNo(tableQueryPagination, 'currentQueryPageNo', currentQueryPage, noOfQueryPages);
-                    // ================================================
-                    nextQueryPageBtn = await initPaginationBtn('nextQueryPageBtn', tableQueryPagination);
-                    // ================================================
-                    lastQueryPageBtn = await initPaginationBtn('lastQueryPageBtn', tableQueryPagination);
-                    // ================================================
-                    // render datatable records
-                    queryStmt = 'SELECT * FROM (' + originalQueryStmt + ') LIMIT ' + queryOffset + ',' + recordsPerPage;
-                    queryResultset = db.exec(queryStmt);
-                    await renderDatatable(queryResultset, tableQueryRecords);
 
-                    currentQueryPageNo.addEventListener('change', (evt0) => {
-                        evt0.stopPropagation();
-                        currentQueryPage = parseInt(evt0.target.value);
-                        setQueryPaginationClass();
-                    });
-                    firstQueryPageBtn.addEventListener('click', (evt1) => {
-                        evt1.stopPropagation();
-                        currentQueryPage = 1;
-                        setQueryPaginationClass();
-                    });
-                    prevQueryPageBtn.addEventListener('click', (evt2) => {
-                        evt2.stopPropagation();
-                        if (currentQueryPage > 1) {
-                            currentQueryPage = currentQueryPage - 1;
-                            setQueryPaginationClass();
-                        }
-                    });
-                    nextQueryPageBtn.addEventListener('click', (evt3) => {
-                        evt3.stopPropagation();
-                        if (currentQueryPage < noOfQueryPages) {
-                            currentQueryPage = currentQueryPage + 1;
-                            setQueryPaginationClass();
-                        }
-                    });
-                    lastQueryPageBtn.addEventListener('click', (evt4) => {
-                        evt4.stopPropagation();
-                        currentQueryPage = noOfQueryPages;
-                        setQueryPaginationClass();
-                    });
-                } catch (err) {
-                    errorDisplay.innerHTML = '';
-                    errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
-                    appendLogOutput(err.message, 'ERROR');
-                }
-            }, false);
-
-            exportAsJSON.addEventListener('click', (ev) => {
-                try {
-                    let jsonObj = getResultSetAsRowJSON(db, 'SELECT * FROM `' + selected_tbl_name + '`');
-                    let jsonStr = JSON.stringify(jsonObj);
-                    let textblob = new Blob([jsonStr], {
-                        type: 'application/json'
-                    });
-                    let dwnlnk = document.createElement('a');
-                    dwnlnk.download = `${selected_tbl_name}.json`;
-                    if (window.webkitURL != null) {
-                        dwnlnk.href = window.webkitURL.createObjectURL(textblob);
-                    }
-                    dwnlnk.click();
-                } catch (err) {
-                    errorDisplay.innerHTML = '';
-                    errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
-
-                    appendLogOutput(err.message, 'ERROR');
-                }
-            });
-
-            exportQueryAsJSON.addEventListener('click', (ev) => {
-                try {
-                    let jsonObj = getResultSetAsRowJSON(db, 'SELECT * FROM (' + originalQueryStmt + ')');
-                    let jsonStr = JSON.stringify(jsonObj);
-                    let textblob = new Blob([jsonStr], {
-                        type: 'application/json'
-                    });
-                    let dwnlnk = document.createElement('a');
-                    dwnlnk.download = 'queryResultset.json';
-                    if (window.webkitURL != null) {
-                        dwnlnk.href = window.webkitURL.createObjectURL(textblob);
-                    }
-                    dwnlnk.click();
-                } catch (err) {
-                    errorDisplay.innerHTML = '';
-                    errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
-
-                    appendLogOutput(err.message, 'ERROR');
-                }
-            });
-
-            exportEditorQuery.addEventListener('click', (ev) => {
-                try {
-                    let queryStr = codeEditor.value;
-                    let textblob = new Blob([queryStr], {
-                        type: 'text/plain'
-                    });
-                    let dwnlnk = document.createElement('a');
-                    dwnlnk.download = 'query.sql';
-                    if (window.webkitURL != null) {
-                        dwnlnk.href = window.webkitURL.createObjectURL(textblob);
-                    }
-                    dwnlnk.click();
-                } catch (err) {
-                    errorDisplay.innerHTML = '';
-                    errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
-
-                    appendLogOutput(err.message, 'ERROR');
-                }
-            });
-
-            function readFileAsArrayBuffer(file) {
+             readFileAsArrayBuffer: function(file) {
                 return new Promise((resolve, reject) => {
                     let fileredr = new FileReader();
                     fileredr.onload = () => resolve(fileredr.result);
                     fileredr.onerror = () => reject(fileredr);
                     fileredr.readAsArrayBuffer(file);
                 });
-            }
-
-            var fileNameDisplay = document.getElementById('fileNameDisplay');
-            var fileSizeDisplay = document.getElementById('fileSizeDisplay');
-            var noOfTablesDisplay = document.getElementById('noOfTablesDisplay');
-
-            upload.addEventListener('change', async (ev) => {
-                errorDisplay.innerHTML = '';
-
-                let file = ev.currentTarget.files[0];
-                if (!file) return;
-
-                try {
-                    fileNameDisplay.innerText = file.name;
-                    fileSizeDisplay.innerText = `${parseInt(file.size/1024)} ㎅`;
-
-                    let arrayBuffer = await readFileAsArrayBuffer(file);
-                    let uInt8Array = new Uint8Array(arrayBuffer);
-                    db = new SQL.Database(uInt8Array);
-
-                    stmt = 'SELECT * FROM sqlite_master WHERE type=\'table\'';
-                    resultset = getResultSetAsRowJSON(db, stmt);
-                    let noOfTables = resultset.length;
-                    noOfTablesDisplay.innerHTML = `<kbd>${noOfTables}</kdb>`;
-
-                    for (let rowObj of resultset) {
-                        let tblName = rowObj['tbl_name'];
-                        loadTableSelectable(tblName);
-                    }
-                } catch (err) {
-                    errorDisplay.innerHTML = '';
-                    errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
-
-                    appendLogOutput(err.message, 'ERROR');
-                }
-            }, false); // upload file change event
+            },
         }; // DOMContentLoaded
-    }
-}
+}());
