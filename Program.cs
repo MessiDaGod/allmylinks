@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.HttpOverrides;
 using MudBlazor.Services;
 using SQLite;
 using Newtonsoft.Json;
+using Radzen;
+using Radzen.Blazor;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddMudServices();
@@ -32,6 +34,10 @@ var person = new Person()
     LastName = "Mothafucka",
 };
 
+builder.Services.AddScoped<DialogService>();
+builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<TooltipService>();
+builder.Services.AddScoped<ContextMenuService>();
 // await db.InsertAsync(person);
 
 // Console.WriteLine(person.ToString());
