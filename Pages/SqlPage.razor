@@ -41,11 +41,11 @@
 				</div>
 			</div>
 			<div class='col-sm-8 pl-0'>
+				<p id='errorDisplay' class='m-0 p-0 small text-danger'></p>
 				<div id='mainTabsWrapper' class='card rounded-0 border-right-0'>
 					<div id='mainTabs' role='tablist'>
 						<MudTabs Elevation="4" Rounded="true" Centered="false" Color="@Color.Secondary" class='nav nav-tabs'>
 							<MudTabPanel Text="🔎 Browse Data">
-								<p id='errorDisplay' class='m-0 p-0 small text-danger'></p>
 								<div id='browse' role='tabpanel' class='tab-pane fade active show' aria-labelledby='browse-tab'>
 									<div class='btn-group btn-group-sm m-0'>
 										<div class='btn-group btn-group-sm'>
@@ -115,10 +115,8 @@
 			await InvokeAsync(StateHasChanged);
 		}
 	}
-	@* protected override async Task OnParametersSetAsync()
-	{
-		await Init();
-	} *@
+
+
 	protected async Task Init()
 	{
 		await Js.InvokeVoidAsync("Sql.init");
