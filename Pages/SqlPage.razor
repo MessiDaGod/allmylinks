@@ -112,6 +112,7 @@
 			await Task.Run(() => isLoading = false);
 			await Js.InvokeVoidAsync("AllMyLinks.logit", "Initializing Sql.js");
 			await Init();
+			await Js.InvokeVoidAsync("Sql.toggleTabs");
 			await InvokeAsync(StateHasChanged);
 		}
 	}
@@ -131,7 +132,7 @@
 			await Js.InvokeVoidAsync("AllMyLinks.logit", $"Adding file {i + 1}");
 			await Task.Run(() => files.Add(file));
 		}
-		await Js.InvokeVoidAsync("AllMyLinks.logit", "Re-Init Sql.js");
+		await Js.InvokeVoidAsync("Sql.toggleTabs");
 		await Js.InvokeVoidAsync("Sql.init");
 	}
 }
