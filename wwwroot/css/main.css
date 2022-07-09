@@ -16,6 +16,7 @@ body {
 #infoPanel,
 #mainTabsWrapper {
     height:calc(100vh - 2px);
+    width: calc(var(--variable-width) + 500px);
 }
 #browse {
     height:calc(100vh - 70px);
@@ -36,7 +37,7 @@ div#tableQueryRecords.table-responsive {
     width:100%;
     text-align: left;
 }
-.table td, 
+.table td,
 .table th {
     padding: 0.25rem;
     border-top: 1px solid #dee2e6;
@@ -57,7 +58,7 @@ a.dropdown-item {
 #currentQueryPageNo {
     height: calc(31px - 0.5rem - 2px);
 }
-.dropdown-item:focus, 
+.dropdown-item:focus,
 .dropdown-item:hover {
     background-color: #f0f5fb;
 }
