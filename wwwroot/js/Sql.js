@@ -18,6 +18,7 @@
     var file = '';
     var db2;
     var resultset2 = [];
+    var tableRecords = [];
 
     window.Sql = {
         line_counter: async function () {
@@ -33,21 +34,15 @@
             lineCounter.value = outarr.join('\n');
         },
         toggleTabs: async function () {
-            var browseDataTab = document.getElementById('browseDataTab');
-            if (browseDataTab !== null) {
-            browseDataTab.classList.toggle('hide');
-            }
-            var queryEditor = document.getElementById('editorTab');
-            if (browseDataTab !== null) {
-                browseDataTab.classList.toggle('hide');
-                }
-            var outputLogs = document.getElementById('outputLogsTab');
-            if (browseDataTab !== null) {
-                browseDataTab.classList.toggle('hide');
-                }
             var mainTabs = document.getElementById('mainTabs');
             if (mainTabs !== null) {
                 mainTabs.classList.toggle('hide');
+                }
+        },
+        toggleMsg: async function () {
+            var msg = document.getElementById('infomsg');
+            if (msg !== null) {
+                msg.classList.toggle('hide');
                 }
         },
         init: async function () {

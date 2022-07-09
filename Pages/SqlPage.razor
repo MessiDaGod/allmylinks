@@ -7,6 +7,12 @@
 
 @if (!isLoading)
 {
+	@if (showCallAlert && files.ToArray().Length == 0)
+	{
+		<div id="infomsg">
+		<MudAlert Severity="Severity.Success" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Press the "Upload Database" button to the left and upload a .db file to access this page.</MudAlert>
+		</div>
+	}
 	<div class='container-fluid'>
 	<div class='row'>
 		<div class='col-sm-4 pr-0'>
@@ -26,7 +32,7 @@
 											@foreach (var file in files)
 											{
 												<MudListItem Icon="@Icons.Filled.AttachFile" @key="@file">
-													@file.Name <code>@file.Size bytes</code>
+													@file.Name <code>@(file.Size / 1000) KB</code>
 												</MudListItem>
 											}
 										</MudList>
@@ -49,7 +55,7 @@
 								<div id='browse' role='tabpanel' class='tab-pane fade active show' aria-labelledby='browse-tab'>
 									<div class='btn-group btn-group-sm m-0'>
 										<div class='btn-group btn-group-sm'>
-											<button id='exportToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown'>Save
+											<button id='exportToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown' onclick="Sql.">Save
 												<span class="material-symbols-outlined">save</span></button>
 											<div class='dropdown-menu'>
 												<button id='exportAsJSON' type='button' class='dropdown-item'><small>💽 Export datatable as JSON</small></button>
@@ -133,6 +139,28 @@
 			await Task.Run(() => files.Add(file));
 		}
 		await Js.InvokeVoidAsync("Sql.toggleTabs");
-		await Js.InvokeVoidAsync("Sql.init");
+		await Js.InvokeVoidAsync("Sql.toggleMsg");
+		await Init();
 	}
+
+    private bool showCallAlert = true;
+    private bool showLeaveAlert = true;
+
+    private void CloseMe(bool value)
+    {
+        if (value)
+        {
+            showLeaveAlert = false;
+        }
+        else
+        {
+            showCallAlert = false;
+        }
+    }
+
+    private void ShowAlerts()
+    {
+        showCallAlert = true;
+        showLeaveAlert = true;
+    }
 }
