@@ -32,6 +32,24 @@
             lineCountCache = lineCount;
             lineCounter.value = outarr.join('\n');
         },
+        toggleTabs: async function () {
+            var browseDataTab = document.getElementById('browseDataTab');
+            if (browseDataTab !== null) {
+            browseDataTab.classList.toggle('hide');
+            }
+            var queryEditor = document.getElementById('editorTab');
+            if (browseDataTab !== null) {
+                browseDataTab.classList.toggle('hide');
+                }
+            var outputLogs = document.getElementById('outputLogsTab');
+            if (browseDataTab !== null) {
+                browseDataTab.classList.toggle('hide');
+                }
+            var mainTabs = document.getElementById('mainTabs');
+            if (mainTabs !== null) {
+                mainTabs.classList.toggle('hide');
+                }
+        },
         init: async function () {
             var runQueryBtn;
             var exportAsJSON;

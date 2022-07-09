@@ -1,4 +1,7 @@
-﻿:root {
+﻿.hide {
+    display: none !important;
+}
+:root {
     --mud-typography-default-family: Fredoka, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
     --mud-typography-h1-family: Fredoka, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
     --mud-typography-h2-family: Fredoka, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
@@ -199,10 +202,6 @@ h1:focus {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
-
-.hide {
-    display: none !important;
-}
 
 button {
     border-radius: 8px;
