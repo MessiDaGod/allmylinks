@@ -53,6 +53,10 @@
 
     var FS;
     window.AllMyLinks = {
+        toggleMenuItems: function() {
+            var el = document.getElementById('menuItems');
+            el.classList.toggle('hide');
+        },
         openNewWindow: function (url) {
             var windowTarget = "_blank";
             let popup = window.open(url, this.windowTarget, "popup,width=1300,height=900z");

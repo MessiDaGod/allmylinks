@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime Js;
+
+
 <NavMenu />
 <MudThemeProvider/>
 <MudDialogProvider/>
@@ -10,7 +12,14 @@
 <RadzenTooltip/>
 <main>
 <MudAppBar Color="Color.Transparent" Fixed="false">
-    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
+  <MudPaper Width="250px" Elevation="0">
+      <MudNavMenu Rounded="true" Margin="Margin.Dense" Color="Color.Primary" Class="pa-2">
+      </MudNavMenu>
+  </MudPaper>
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="ToggleMenuItems" />
+    <MudPaper Width="300px" id="menuItems" class="hide">
+
+</MudPaper>
     <MudSpacer />
     <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/MessiDaGod/" title="GitHub" target="_blank"/>
 </MudAppBar>
@@ -19,6 +28,7 @@
   </article>
 </main>
 
+
 @code {
 
   internal IJSObjectReference? Module;
@@ -26,9 +36,16 @@
   internal IJSObjectReference? module2;
   internal IJSObjectReference? Module3;
 
+  internal List<string> Pages = new();
+
     // 1
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+    }
+
+    protected async Task ToggleMenuItems()
+    {
+      await Js.InvokeVoidAsync("AllMyLinks.toggleMenuItems");
     }
 }
