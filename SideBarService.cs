@@ -123,7 +123,7 @@ public class SideBarService
        new SideBarItem()
         {
             Name = "All My Links",
-            Path = "/AllMyLinksPage",
+            Path = "/",
             Icon = "link"
         },
     };

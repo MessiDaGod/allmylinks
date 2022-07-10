@@ -32,7 +32,7 @@
       <div class="row">
         <div class="col-md-6">2022 @@ Shakely Consulting</div>
         <div class="col-md-6">
-          <div class="text-md-right footer-links d-none d-md-block"><a href="https://github.com/MessiDaGod/" target="_blank">About</a> <a href="https://github.com/MessiDaGod/" target="_blank">Support</a></div>
+          @* <div class="text-md-right footer-links d-none d-md-block"><a href="https://github.com/MessiDaGod/" target="_blank">About</a> <a href="https://github.com/MessiDaGod/" target="_blank">Support</a></div> *@
         </div>
       </div>
     </div>
@@ -53,7 +53,7 @@
             {
               @foreach (var example in category.Children)
               {
-                if (example.Children != null)
+                if (example != null)
                 {
                   <NavigationItem Example=@example>
                     @foreach (var child in example.Children)
