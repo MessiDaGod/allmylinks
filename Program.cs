@@ -38,6 +38,7 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
+builder.Services.AddScoped<SideBarService>();
 // await db.InsertAsync(person);
 
 // Console.WriteLine(person.ToString());

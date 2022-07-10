@@ -1,20 +1,21 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime Js;
 @inject NavigationManager UriHelper;
+@inject SideBarService SideBarService;
+@using allmylinks;
 
 <NavMenu />
-<MudThemeProvider/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
-<RadzenDialog/>
-<RadzenNotification/>
-<RadzenContextMenu/>
-<RadzenTooltip/>
-
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<RadzenDialog />
+<RadzenNotification />
+<RadzenContextMenu />
+<RadzenTooltip />
 <MudAppBar Color="Color.Transparent" Fixed="false">
   <MudPaper Width="10px" Elevation="0">
-  <MudNavMenu Rounded="true" Margin="Margin.Dense" Color="Color.Primary" Class="pa-2">
-  </MudNavMenu>
+    <MudNavMenu Rounded="true" Margin="Margin.Dense" Color="Color.Primary" Class="pa-2">
+    </MudNavMenu>
   </MudPaper>
   <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
   <MudPaper Width="300px" id="menuItems" class="hide">
@@ -22,38 +23,58 @@
   <MudSpacer />
   <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/MessiDaGod/" title="GitHub" target="_blank" />
 </MudAppBar>
-
-<div class="loading" data-layout="dark-sidenav">
-  <div class="wrapper">
-    <div class="left-side-menu" id="left-side-bar">
-      <div class="slimscroll-menu" id="left-side-menu-container">
-        <a class="logo text-center"><span class="logo-lg" style="color: white;"><strong>All My Links</strong></span></a>
-        <ul class="mt-3 metismenu side-nav" id="left-bar-menu">
-          <li class="side-nav-item"><a class="none" onclick="AllMyLinks.toggleMenuItems(" SQL")"><span style="color: white;" class="material-symbols-outlined">
-                database</span><span style="color: white;"><strong>SQL</strong></span></a></li>
-          <li class="side-nav-item"><a class="none" onclick="AllMyLinks.toggleMenuItems()"><span style="color: white;" class="material-symbols-outlined">
-                link
-              </span><span style="color: white;">All my links</span></a></li>
-        </ul>
+<div class="content-page">
+  <article class="content px-4">
+    @Body
+  </article>
+  <footer class="footer">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6">2022 @@ Shakely Consulting</div>
+        <div class="col-md-6">
+          <div class="text-md-right footer-links d-none d-md-block"><a href="https://github.com/MessiDaGod/" target="_blank">About</a> <a href="https://github.com/MessiDaGod/" target="_blank">Support</a></div>
+        </div>
       </div>
     </div>
-    <div class="content-page">
-      <article class="content px-4">
-        @Body
-      </article>
-      <footer class="footer">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-6">2022 @@ Shakely Consulting</div>
-            <div class="col-md-6">
-              <div class="text-md-right footer-links d-none d-md-block"><a href="https://github.com/MessiDaGod/" target="_blank">About</a> <a href="https://github.com/MessiDaGod/" target="_blank">Support</a></div>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
-  </div>
+  </footer>
 </div>
+<RadzenSidebar @ref="@sidebar0" @bind-Expanded="@sidebarExpanded" class="demos-sidebar">
+  <ChildContent>
+    <div style="padding: 1rem">
+      <RadzenTextBox Placeholder="Find component ..." type="search" @oninput="@FilterPanelMenu" style="width: 100%" />
+    </div>
+    <RadzenPanelMenu Match="NavLinkMatch.Prefix">
+      @if (examples != null)
+      {
+        @foreach (var category in examples)
+        {
+          <NavigationItem @bind-Expanded=@category.Expanded Example=@category>
+            @if (category.Children != null)
+            {
+              @foreach (var example in category.Children)
+              {
+                if (example.Children != null)
+                {
+                  <NavigationItem Example=@example>
+                    @foreach (var child in example.Children)
+                    {
+                      <NavigationItem Example=@child />
+                    }
+                  </NavigationItem>
+                }
+                else
+                {
+                  <NavigationItem Example=@example />
+                }
+              }
+            }
+          </NavigationItem>
+        }
+      }
+    </RadzenPanelMenu>
+  </ChildContent>
+</RadzenSidebar>
+
 <style>
 button > #none {
   all: unset;
@@ -61,6 +82,50 @@ button > #none {
 }
 </style>
 @code {
+
+    RadzenSidebar? sidebar0;
+    RadzenBody? body0;
+    bool sidebarExpanded = true;
+    bool bodyExpanded = false;
+    bool notExpanded = false;
+    bool IsServerSide = true;
+    IEnumerable<SideBarItem>? examples;
+
+    [Parameter]
+    public string CssClass { get; set; } = "";
+
+    internal IJSObjectReference module0;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        module0 = await Js.InvokeAsync<IJSObjectReference>("import", "./js/Shakely.js");
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+    }
+
+    void FilterPanelMenu(ChangeEventArgs args)
+    {
+        var term = args.Value.ToString();
+        examples = SideBarService.Filter(term);
+    }
+    async Task ChangeTheme(object value)
+    {
+        var url = await Task.Run(async () => UriHelper.GetUriWithQueryParameter("theme", $"{value.ToString()}"));
+        UriHelper.NavigateTo(url, true);
+    }
+    async Task ChangeDataBase(object value)
+    {
+        var url = UriHelper.GetUriWithQueryParameter("database", $"{value.ToString()}");
+        UriHelper.NavigateTo(url, true);
+    }
+    public class LoginTypes
+    {
+        public LoginTypes() { }
+        public string Name { get; set; } = null!;
+        public string DisplayName { get; set; } = null!;
+    }
 
   internal IJSObjectReference? Module;
   internal IJSObjectReference? module1;
@@ -70,8 +135,9 @@ button > #none {
   internal List<string> Pages = new();
 
     // 1
-    protected override async Task OnInitializedAsync()
+  protected override async Task OnInitializedAsync()
     {
+        examples = SideBarService.Examples;
         await base.OnInitializedAsync();
     }
 

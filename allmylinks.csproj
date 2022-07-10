@@ -28,6 +28,7 @@
     <!-- <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.0" />
     <PackageReference Include="SQLitePCLRaw.core" Version="2.1.0" />
     <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.0" /> -->
+    <PackageReference Include="Stl" Version="3.2.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,4 +43,7 @@
     <Exec Command="npm run build" WorkingDirectory="NpmJS" />
   </Target> -->
 
+  <ItemGroup>
+    <None Remove="Stl" />
+  </ItemGroup>
 </Project>

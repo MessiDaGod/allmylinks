@@ -1,0 +1,33 @@
+@using Radzen;
+@using Radzen.Blazor;
+
+@if (!Example.New && !Example.Updated)
+{
+    <RadzenPanelMenuItem @bind-Expanded=@Expanded Text="@Example.Name" Path="@Example.Path" Icon="@Example.Icon">
+        @ChildContent
+    </RadzenPanelMenuItem>
+}
+else
+{
+    <RadzenPanelMenuItem @bind-Expanded=@Expanded Text="@Example.Name" Path="@Example.Path" Icon="@Example.Icon">
+        <Template>
+            @Example.Name
+            <RadzenBadge Text="Updated" Visible=@Example.Updated />
+            <RadzenBadge Text="New" Visible=@Example.New BadgeStyle="BadgeStyle.Success" />
+        </Template>
+        <ChildContent>@ChildContent</ChildContent>
+    </RadzenPanelMenuItem>
+}
+@code {
+    [Parameter]
+    public SideBarItem Example { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public bool Expanded { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ExpandedChanged { get; set; }
+}
