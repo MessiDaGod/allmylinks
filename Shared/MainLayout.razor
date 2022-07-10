@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime Js;
-
+@inject NavigationManager UriHelper;
 
 <NavMenu />
 <MudThemeProvider/>
@@ -16,7 +16,7 @@
   <MudNavMenu Rounded="true" Margin="Margin.Dense" Color="Color.Primary" Class="pa-2">
   </MudNavMenu>
   </MudPaper>
-  <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="ToggleMenuItems" />
+  <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
   <MudPaper Width="300px" id="menuItems" class="hide">
   </MudPaper>
   <MudSpacer />
@@ -26,15 +26,15 @@
 <div class="loading" data-layout="dark-sidenav">
   <div class="wrapper">
     <div class="left-side-menu" id="left-side-bar">
-      <div class="slimscroll-menu" id="left-side-menu-container"><a href="index.html" class="logo text-center"><span class="logo-lg"><img src="./public/images/logo.png" alt="" height="16" id="side-main-logo"> </span><span class="logo-sm"><img src="./public/images/logo_sm.png" alt="" height="16"></span></a>
+      <div class="slimscroll-menu" id="left-side-menu-container">
+        <a class="logo text-center"><span class="logo-lg"><img src="./public/images/logo.png" alt="" height="16" id="side-main-logo"> </span><span class="logo-sm"><img src="./public/images/logo_sm.png" alt="" height="16"></span></a>
         <ul class="mt-3 metismenu side-nav" id="left-bar-menu">
-          <li class="side-nav-title side-nav-item">All My Links</li>
-          <li class="side-nav-item"><a href="index.html" class="side-nav-link"><i class="dripicons-box"></i> <span>SQL</span></a></li>
-          <li class="side-nav-item"><a href="pages-installation.html" class="side-nav-link"><i class="dripicons-scale"></i> <span>All my links</span></a></li>
+          <li class="side-nav-item"><button class="none"  onclick="AllMyLinks.toggleMenuItems("SQL")"><span class="material-symbols-outlined">
+database</span>    SQL</button></li>
+          <li class="side-nav-item"><button class="none" onclick="AllMyLinks.toggleMenuItems()" ><i class="dripicons-scale"></i> <span>All my links</span></button></li>
         </ul>
       </div>
     </div>
-
     <div class="content-page">
         <article class="content px-4">
           @Body
@@ -52,6 +52,12 @@
     </div>
   </div>
 </div>
+<style>
+button > #none {
+  all: unset;
+  cursor: pointer;
+}
+</style>
 @code {
 
   internal IJSObjectReference? Module;
@@ -69,6 +75,6 @@
 
     protected async Task ToggleMenuItems()
     {
-      await Js.InvokeVoidAsync("AllMyLinks.toggleMenuItems");
+      await Js.InvokeVoidAsync("AML.toggleMenuItems");
     }
 }

@@ -23,22 +23,22 @@
 
     private async Task<string> ToggleCancel()
     {
-        await JS.InvokeVoidAsync("AllMyLinks.logit", "ToggleCancel starting...");
-        await JS.InvokeVoidAsync("AllMyLinks.toggleCancel");
+        await JS.InvokeVoidAsync("AML.logit", "ToggleCancel starting...");
+        await JS.InvokeVoidAsync("AML.toggleCancel");
         await InvokeAsync(StateHasChanged);
-        await JS.InvokeVoidAsync("AllMyLinks.logit", "ToggleCancel done.");
+        await JS.InvokeVoidAsync("AML.logit", "ToggleCancel done.");
         string result = string.Empty;
         try
         {
             result = await Service.InitAsync();
-            await JS.InvokeVoidAsync("AllMyLinks.logit", "Success!!!");
+            await JS.InvokeVoidAsync("AML.logit", "Success!!!");
         }
         catch (Exception e)
         {
-            await JS.InvokeVoidAsync("AllMyLinks.logit", e.Message);
-            await JS.InvokeVoidAsync("AllMyLinks.logit", result);
+            await JS.InvokeVoidAsync("AML.logit", e.Message);
+            await JS.InvokeVoidAsync("AML.logit", result);
             if (e.InnerException is not null && e.InnerException.Message is not null)
-                await JS.InvokeVoidAsync("AllMyLinks.logit", e.InnerException.Message);
+                await JS.InvokeVoidAsync("AML.logit", e.InnerException.Message);
         }
 
         return "finished...";

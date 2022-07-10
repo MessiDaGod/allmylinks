@@ -52,9 +52,13 @@
     }
 
     var FS;
-    window.AllMyLinks = {
-        toggleMenuItems: function() {
-            var el = document.getElementById('menuItems');
+    window.AML = {
+        toggleMenuItems: function(item) {
+            var el = [];
+            if (item.toLowerCase().includes("sql")) {
+            el = document.getElementById("");
+            }
+            if (el)
             el.classList.toggle('hide');
         },
         openNewWindow: function (url) {

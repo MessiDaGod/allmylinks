@@ -50,7 +50,7 @@ public class Context : DbContext
     {
         Console.WriteLine("Start saving database");
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("AllMyLinks.syncDatabase", false, cancellationToken);
+        await module.InvokeVoidAsync("AML.syncDatabase", false, cancellationToken);
         Console.WriteLine("Finish save database");
     }
 

@@ -21,7 +21,7 @@
 					<thead>
 						<tr>
 							<td colspan='2'>
-								<InputFile id="upload" OnChange="UploadFiles" hidden multiple />
+								<InputFile id="upload" OnChange="UploadFiles" hidden />
 								<MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.CloudUpload" for="upload">
 									Upload Database
 								</MudButton>
@@ -115,7 +115,7 @@
 		if (firstRender)
 		{
 			await Task.Run(() => isLoading = false);
-			await Js.InvokeVoidAsync("AllMyLinks.logit", "Initializing Sql.js");
+			await Js.InvokeVoidAsync("AML.logit", "Initializing Sql.js");
 			await Init();
 			await Js.InvokeVoidAsync("Sql.toggleTabs");
 			await InvokeAsync(StateHasChanged);
@@ -134,7 +134,7 @@
 		for (int i = 0; i < e.GetMultipleFiles().Count; i++)
 		{
 			var file = e.GetMultipleFiles()[i];
-			await Js.InvokeVoidAsync("AllMyLinks.logit", $"Adding file {i + 1}");
+			await Js.InvokeVoidAsync("AML.logit", $"Adding file {i + 1}");
 			await Task.Run(() => files.Add(file));
 		}
 		await Js.InvokeVoidAsync("Sql.toggleTabs");
