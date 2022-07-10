@@ -51,14 +51,5 @@
     {
         Uri myUri = new Uri(uri);
         return myUri.Host;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender) {
-            await JS.InvokeVoidAsync("AML.logit", "addDbLink init...");
-            await JS.InvokeVoidAsync("AML.addDbLink");
-            await InvokeAsync(StateHasChanged);
-        }
-    }
+    }s
 }
