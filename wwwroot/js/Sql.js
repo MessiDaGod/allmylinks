@@ -20,6 +20,7 @@
     var resultset2 = [];
     var tableRecords = [];
     var outputLogs = [];
+    var logsRecords;
 
     window.Sql = {
         line_counter: async function () {
@@ -145,7 +146,7 @@
                     return;
                 }
 
-                var logsRecords = document.getElementById('logsRecords');
+                logsRecords = document.getElementById('logsRecords');
                 const copyrightYearDisplay = document.getElementById('copyrightYearDisplay');
                 copyrightYearDisplay.innerHTML = new Date().getFullYear();
 
@@ -238,7 +239,7 @@
                     errorDisplay.innerHTML = '';
 
                     file = ev.currentTarget.files[0];
-                    if (!file) return;
+                    if (!file || !file.name.includes(".db")) return;
 
                     try {
                         // fileNameDisplay.innerText = file.name;
@@ -339,7 +340,7 @@
                     } catch (err) {
                         errorDisplay.innerHTML = '';
                         errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
-                        appendLogOutput(err.message, 'ERROR');
+                        Sql.appendLogOutput(err.message, 'ERROR');
                     }
                 }, false);
 
@@ -361,7 +362,7 @@
                         errorDisplay.innerHTML = '';
                         errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
 
-                        appendLogOutput(err.message, 'ERROR');
+                        Sql.appendLogOutput(err.message, 'ERROR');
                     }
                 });
 
@@ -383,7 +384,7 @@
                         errorDisplay.innerHTML = '';
                         errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
 
-                        appendLogOutput(err.message, 'ERROR');
+                        Sql.appendLogOutput(err.message, 'ERROR');
                     }
                 });
             if (exportEditorQuery != null && exportEditorQuery != undefined)
@@ -403,7 +404,7 @@
                         errorDisplay.innerHTML = '';
                         errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
 
-                        appendLogOutput(err.message, 'ERROR');
+                        Sql.appendLogOutput(err.message, 'ERROR');
                     }
                 });
 
@@ -425,6 +426,7 @@
             return datetimeStr;
         },
         appendLogOutput: function (msg, type) {
+            logsRecords = document.getElementById('logsRecords');
             let logObj = {
                 'Datetime': Sql.getCurrentDatetimeStamp(),
                 'Message': msg,
@@ -829,6 +831,8 @@
             }
         },
         readFileAsArrayBuffer: async function (file) {
+            if (!file.name.includes(".db"))
+                return;
             return new Promise((resolve, reject) => {
                 let fileredr = new FileReader();
                 fileredr.onload = () => resolve(fileredr.result);
