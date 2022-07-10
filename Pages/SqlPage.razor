@@ -131,15 +131,16 @@
 	IList<IBrowserFile> files = new List<IBrowserFile>();
 	private async Task UploadFiles(InputFileChangeEventArgs e)
 	{
+		if (!files[0].Name.ToString().Contains(".db")) {
+			await Js.InvokeVoidAsync("AML.logit", "File is not a valid SQLite database");
+			return;
+		}
+
 		for (int i = 0; i < e.GetMultipleFiles().Count; i++)
 		{
 			var file = e.GetMultipleFiles()[i];
 			await Js.InvokeVoidAsync("AML.logit", $"Adding file {i + 1}");
 			await Task.Run(() => files.Add(file));
-		}
-		if (!files.ToArray()[0].ToString().Contains(".db")) {
-			await Js.InvokeVoidAsync("AML.logit", "File is not a valid SQLite database");
-			return;
 		}
 
 		await Js.InvokeVoidAsync("Sql.toggleTabs");

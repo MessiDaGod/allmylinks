@@ -245,8 +245,6 @@
                         // fileSizeDisplay.innerText = `${parseInt(file.size/1024)} ㎅`;
 
                         let arrayBuffer = await Sql.readFileAsArrayBuffer(file);
-                        console.log("database file location: " + file);
-                        console.log(file.name);
                         let uInt8Array = new Uint8Array(arrayBuffer);
                         db = new SQL.Database(uInt8Array);
                         db2 = db;
