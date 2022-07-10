@@ -19,6 +19,7 @@
     var db2;
     var resultset2 = [];
     var tableRecords = [];
+    var outputLogs = [];
 
     window.Sql = {
         line_counter: async function () {
@@ -64,14 +65,7 @@
             var noOfPages = 1;
             var totalNoOfRecords = 0;
             var offset = 0;
-            var sampleQueryStmt = 'SELECT patient_id,diagnosis_code,icd9_description' +
-                '\n FROM' +
-                '\n (SELECT' +
-                '\n 	patient_id,' +
-                '\n 	diagnosis_code' +
-                '\n FROM patient_diagnosis) A LEFT JOIN ' +
-                '\n (SELECT icd9_code, icd9_description FROM icd9_mapping) B' +
-                '\n ON A.diagnosis_code = B.icd9_code;';
+            var sampleQueryStmt = 'SELECT * FROM Prices';
             var firstQueryPageBtn, prevQueryPageBtn, currentQueryPageNo, nextQueryPageBtn, lastQueryPageBtn;
             var firstPageBtn, prevPageBtn, currentPageNo, nextPageBtn, lastPageBtn;
             var queryStmt = '';
@@ -298,7 +292,7 @@
                         noOfQueryPages = totalNoOfQueryRecords / recordsPerPage;
                         noOfQueryPages = Math.ceil(noOfQueryPages);
                         // ================================================
-                        tableQueryDetails.innerHTML = `${tblIcon} ⯈ Total no. of records: <kbd>${totalNoOfQueryRecords}</kbd> ⯈ Displaying records <kbd>${queryOffset} ― ${queryOffset+recordsPerPage}</kbd>`;
+                        tableQueryDetails.innerHTML = `${tblIcon} Total no. of records: <kbd>${totalNoOfQueryRecords}</kbd> Displaying records <kbd>${queryOffset} ― ${queryOffset+recordsPerPage}</kbd>`;
                         // ================================================
                         firstQueryPageBtn = await Sql.initPaginationBtn('firstQueryPageBtn', tableQueryPagination);
                         // ================================================
@@ -438,7 +432,7 @@
                 'Message': msg,
                 'Type': 'ERROR'
             };
-            Sql.outputLogs.push(logObj);
+            outputLogs.push(logObj);
             logsRecords.innerText = JSON.stringify(outputLogs, null, 2);
         },
 
@@ -641,7 +635,7 @@
                 resultset = db.exec(stmt);
                 await renderDatatable(resultset, tableRecords);
 
-                let tableDetailsHtmlStr = `${tblIcon}${selected_tbl_name} ⯈ Total no. of records: <kbd>${totalNoOfRecords}</kbd> ⯈ Displaying records <kbd>${offset} ― ${offset+recordsPerPage}</kbd>`;
+                let tableDetailsHtmlStr = `${tblIcon}${selected_tbl_name} Total no. of records: <kbd>${totalNoOfRecords}</kbd> Displaying records <kbd>${offset} ― ${offset+recordsPerPage}</kbd>`;
                 tableDetails.innerHTML = tableDetailsHtmlStr;
             } catch (err) {
                 // throw new Error(err.message);
@@ -692,7 +686,7 @@
                     noOfPages = totalNoOfRecords / recordsPerPage;
                     noOfPages = Math.ceil(noOfPages);
                     // ================================================
-                    tableDetails.innerHTML = `${tblIcon}${selected_tbl_name} ⯈ Total no. of records: <kbd>${totalNoOfRecords}</kbd> ⯈ Displaying records <kbd>${offset} ― ${offset+recordsPerPage}</kbd>`;
+                    tableDetails.innerHTML = `${tblIcon}${selected_tbl_name} Total no. of records: <kbd>${totalNoOfRecords}</kbd> Displaying records <kbd>${offset} ― ${offset+recordsPerPage}</kbd>`;
                     // ================================================
                     firstPageBtn = await Sql.initPaginationBtn('firstPageBtn', tablePagination);
                     // ================================================
@@ -830,7 +824,7 @@
                 queryResultset = db.exec(queryStmt);
                 await renderDatatable(queryResultset, tableQueryRecords);
 
-                let tableQueryDetailsHtmlStr = `${tblIcon} ⯈ Total no. of records: <kbd>${totalNoOfQueryRecords}</kbd> ⯈ Displaying records <kbd>${queryOffset} ― ${queryOffset+recordsPerPage}</kbd>`;
+                let tableQueryDetailsHtmlStr = `${tblIcon} Total no. of records: <kbd>${totalNoOfQueryRecords}</kbd> Displaying records <kbd>${queryOffset} ― ${queryOffset+recordsPerPage}</kbd>`;
                 tableQueryDetails.innerHTML = tableQueryDetailsHtmlStr;
             } catch (err) {
                 // throw new Error(err.message);
