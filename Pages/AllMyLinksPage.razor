@@ -39,6 +39,8 @@
     </MudTabPanel>
 </MudTabs>
 
+
+
 @code {
 
     public static string CssClass => "sc-pFZIQ StyledButton-sc-686c3k-0 ldGKnQ imjgnX";
@@ -49,5 +51,14 @@
     {
         Uri myUri = new Uri(uri);
         return myUri.Host;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) {
+            await JS.InvokeVoidAsync("AML.logit", "addDbLink init...");
+            await JS.InvokeVoidAsync("AML.addDbLink");
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }

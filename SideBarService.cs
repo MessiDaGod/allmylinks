@@ -116,15 +116,15 @@ public class SideBarService
     public readonly SideBarItem[] GetSideBarItems = new[] {
        new SideBarItem()
         {
-            Name = "Sql",
-            Path = "/SqlPage",
-            Icon = "database"
-        },
-       new SideBarItem()
-        {
             Name = "All My Links",
             Path = "/",
             Icon = "link"
+        },
+       new SideBarItem()
+        {
+            Name = "Sql",
+            Path = "/SqlPage",
+            Icon = "database"
         },
     };
 }

@@ -50,9 +50,20 @@
             document.getElementById("myList").appendChild(node);
         }
     }
-
+// <span class="material-symbols-outlined">database</span>
     var FS;
     window.AML = {
+        addDbLink: function () {
+            var els = document.querySelectorAll("a[href='/SqlPage']");
+            // els.innerHTML = "database";
+            var dblink = document.createElement('span');
+
+            dblink.setAttribute("class", "material-symbols-outlined");
+            dblink.innerHTML = "database";
+            // dblink.innerHTML = dateString;
+            // var li = document.createElement('li');
+            // li.appendChild(dblink);
+        },
         toggleMenuItems: function(item) {
             var el = [];
             if (item.toLowerCase().includes("sql")) {
