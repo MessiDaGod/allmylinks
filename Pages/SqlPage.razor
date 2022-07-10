@@ -48,7 +48,7 @@
 			<div class='col-sm-8 pl-0'>
 				<p id='errorDisplay' class='m-0 p-0 small text-danger'></p>
 				<div id='mainTabsWrapper' class='card rounded-0 border-right-0'>
-					<div id='mainTabs' role='tablist'>
+					<div id='mainTabs' role='tablist' class="hide">
 						<MudTabs Elevation="4" Rounded="true" Centered="false" Color="@Color.Secondary" class='nav nav-tabs'>
 							<MudTabPanel Text="🔎 Browse Data">
 								<div id='browse' role='tabpanel' class='tab-pane fade active show' aria-labelledby='browse-tab'>
@@ -117,7 +117,6 @@
 			await Task.Run(() => isLoading = false);
 			await Js.InvokeVoidAsync("AML.logit", "Initializing Sql.js");
 			await Init();
-			await Js.InvokeVoidAsync("Sql.toggleTabs");
 			await InvokeAsync(StateHasChanged);
 		}
 	}
@@ -131,18 +130,18 @@
 	IList<IBrowserFile> files = new List<IBrowserFile>();
 	private async Task UploadFiles(InputFileChangeEventArgs e)
 	{
-		if (!files[0].Name.ToString().Contains(".db")) {
-			await Js.InvokeVoidAsync("AML.logit", "File is not a valid SQLite database");
-			return;
-		}
-
 		for (int i = 0; i < e.GetMultipleFiles().Count; i++)
 		{
 			var file = e.GetMultipleFiles()[i];
 			await Js.InvokeVoidAsync("AML.logit", $"Adding file {i + 1}");
 			await Task.Run(() => files.Add(file));
+			await Js.InvokeVoidAsync("AML.logit", files[0].Name.ToString());
+			if (!files[0].Name.ToString().Contains(".db"))
+			{
+				await Js.InvokeVoidAsync("AML.logit", "File is not a valid SQLite database");
+				return;
+			}
 		}
-
 		await Js.InvokeVoidAsync("Sql.toggleTabs");
 		await Js.InvokeVoidAsync("Sql.toggleMsg");
 		await Init();
