@@ -147,8 +147,7 @@
                 }
 
                 logsRecords = document.getElementById('logsRecords');
-                const copyrightYearDisplay = document.getElementById('copyrightYearDisplay');
-                copyrightYearDisplay.innerHTML = new Date().getFullYear();
+
 
                 var mainTabs = document.getElementById('mainTabs');
                 var mainTabsCollection = mainTabs.getElementsByTagName('a');

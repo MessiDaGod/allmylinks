@@ -2,8 +2,12 @@
 @namespace allmylinks
 @inject IJSRuntime JS;
 @inject PersonServices Service;
+@using Radzen.Blazor;
+@using Radzen;
+
 
 <PageTitle>@@joeshakely | GitHub.io</PageTitle>
+
 <MudTabs Elevation="2" Rounded="true" Centered="true" Color="@Color.Primary">
     <MudTabPanel Text="SQL">
         <SqlPage />
@@ -39,17 +43,16 @@
     </MudTabPanel>
 </MudTabs>
 
-
-
 @code {
 
     public static string CssClass => "sc-pFZIQ StyledButton-sc-686c3k-0 ldGKnQ imjgnX";
 
     public static string[] Links => new[] { "https://github.com/messidagod", "https://instagram.com/joeshakely", "https://www.tiktok.com/@joeshakely" };
 
+
     public static string DomainFromUrl(string uri)
     {
         Uri myUri = new Uri(uri);
         return myUri.Host;
-    }s
+    }
 }
