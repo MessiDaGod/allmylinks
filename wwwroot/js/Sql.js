@@ -58,7 +58,7 @@
             var outputLogs = [];
             var db;
             var tblIcon = '▦ ';
-            var recordsPerPage = 100;
+            var recordsPerPage = 1000000;
             var stmt = '';
             var resultset = [];
             var currentPage = 1;
@@ -646,7 +646,7 @@
             let tblIcon = '';
             let selected_tbl_name = '';
             let currentPage;
-            let recordsPerPage = 100;
+            let recordsPerPage = 1000000;
             let offset = 0;
             let stmt;
             let totalNoOfRecords;
