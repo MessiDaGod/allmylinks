@@ -3,6 +3,7 @@
 @using MudBlazor;
 @namespace allmylinks
 
+
 @if (!isLoading)
 {
 	@if (showCallAlert && files.ToArray().Length == 0)
@@ -14,6 +15,15 @@
 	}
 </div>
 	}
+
+    @* <RadzenDataGrid @ref="PersonsGrid" AllowFiltering="true" AllowColumnResize="true" AllowVirtualization="true" Style="height:700px" FilterMode="FilterMode.Advanced" AllowSorting="true" Data="@Persons" TItem="Person" ColumnWidth="100px" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" PagerHorizontalAlign="HorizontalAlign.Left" LogicalFilterOperator="LogicalFilterOperator.Or" AllowRowSelectOnRowClick="@allowRowSelectOnRowClick" SelectionMode="Radzen.DataGridSelectionMode.Multiple">
+        <Columns>
+		@for (int i = 0; i < columns.Length; i++) {
+            <RadzenDataGridColumn TItem="Person" Property="@columns[i]" Title="@columns[i]"  />
+		}
+        </Columns>
+    </RadzenDataGrid> *@
+
 	<RadzenSplitter Orientation="Radzen.Orientation.Vertical" Collapse=@OnCollapse Expand=@OnExpand>
 		<RadzenSplitterPane>
 			<RadzenSplitter Collapse=@OnCollapse Expand=@OnExpand>
@@ -93,12 +103,15 @@
 										<ul id='tableQueryPagination' class='pagination pagination-sm rounded-0'></ul>
 									</div>
 								</MudTabPanel>
+								<div class="hide">
 								<MudTabPanel Text="📝 Output Logs">
+
 									<div id='logs' role='tabpanel' class='tab-pane fade show' aria-labelledby='logs-tab'>
 										<hr class='invisible-divider'>
 										<div id='logsRecords' class='table-responsive'></div>
 									</div>
 								</MudTabPanel>
+								</div>
 							</MudTabs>
 						</div>
 					</div>
@@ -110,7 +123,14 @@
 
 
 @code {
+    public IEnumerable<Person?>? Persons;
 
+	private RadzenDataGrid<Person>? PersonsGrid;
+
+@*	public string[] columns = new string[] { "Id", "FirstName", "LastName" }; *@
+
+	public string[]? columns {get; set;}
+	bool allowRowSelectOnRowClick = true;
 	bool isLoading = false;
 	protected override async Task OnInitializedAsync()
 	{
@@ -121,7 +141,7 @@
 		if (firstRender)
 		{
 			await Task.Run(() => isLoading = false);
-			await Js.InvokeVoidAsync("AML.logit", "Initializing Sql.js");
+			columns = await Js.InvokeAsync<string[]>("Sql.getColumns", "Person");
 			await Init();
 			await InvokeAsync(StateHasChanged);
 		}
