@@ -1,0 +1,17 @@
+@page "/candles"
+@namespace allmylinks
+@inject IJSRuntime JS;
+@inject PersonServices Service;
+<PageTitle>@@joeshakely | GitHub.io</PageTitle>
+<div id="candles">
+    <p id="candleprice" class="center"></p>
+    <canvas id="header" width="100px"></canvas>
+    <canvas id="candlestick"></canvas>
+</div>
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await JS.InvokeVoidAsync("AML.plot");
+    }
+}

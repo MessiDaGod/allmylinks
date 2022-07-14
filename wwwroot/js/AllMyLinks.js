@@ -120,7 +120,7 @@
             document.getElementById("myList").innerHTML = "";
         },
         plot: function ( /** @type {string | URL} */ url) {
-            toggle('candles', 'PricesButton');
+            //toggle('candles', 'PricesButton');
             this.webSocketConnected = false;
             this.webSocketHost = "wss://stream.binance.com:9443/ws/" + "BTCUSDT" + "@kline_" + "1";
             if (url == null) url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=50";
