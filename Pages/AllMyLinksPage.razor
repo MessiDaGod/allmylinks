@@ -2,9 +2,6 @@
 @namespace allmylinks
 @inject IJSRuntime JS;
 @inject PersonServices Service;
-@using Radzen.Blazor;
-@using Radzen;
-
 
 <PageTitle>@@joeshakely | GitHub.io</PageTitle>
 
@@ -31,13 +28,20 @@
                         </div>
                     </div>
                 }
-                <div id="links-@Links.Length + 1" class="sc-bdfBwQ pkAuV">
+                @* <div id="links-@Links.Length + 1" class="sc-bdfBwQ pkAuV">
                     <div data-testid="StyledContainer" class="sc-bdfBwQ StyledContainer__StyledLinkContainer-sc-1kae6sc-0 hBNyQA doOGeq">
                         <a data-testid="LinkButton" aria-describedby="profile-links-@Links.Length + 1" height="auto" class="@CssClass">
                             <button id="PricesButton" class="@CssClass mouse" onclick="AML.plot()">Show Prices BTC-USD</button>
                         </a>
                     </div>
-                </div>
+                </div> *@
+                    <div id="links-@Links.Length + 1" class="sc-bdfBwQ pkAuV">
+                        <div data-testid="StyledContainer" class="sc-bdfBwQ StyledContainer__StyledLinkContainer-sc-1kae6sc-0 hBNyQA doOGeq">
+                            <a href="@Links[0]" target="_blank" rel="noopener" data-testid="LinkButton" aria-describedby="profile-links-@Links.Length + 1" height="auto" class="@CssClass">
+                            <button id="PricesButton" class="@CssClass mouse" onclick="AML.plot()">Show Prices BTC-USD</button>
+                            </a>
+                        </div>
+                    </div>
             </div>
         </div>
     </MudTabPanel>
@@ -48,7 +52,6 @@
     public static string CssClass => "sc-pFZIQ StyledButton-sc-686c3k-0 ldGKnQ imjgnX";
 
     public static string[] Links => new[] { "https://github.com/messidagod", "https://instagram.com/joeshakely", "https://www.tiktok.com/@joeshakely" };
-
 
     public static string DomainFromUrl(string uri)
     {

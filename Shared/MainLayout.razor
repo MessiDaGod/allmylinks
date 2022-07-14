@@ -3,6 +3,8 @@
 @inject NavigationManager UriHelper;
 @inject SideBarService SideBarService;
 @using allmylinks;
+@using System;
+@using System.Text.RegularExpressions;
 
 <NavMenu />
 <MudThemeProvider />
@@ -20,7 +22,9 @@
   <MudPaper Width="300px" id="menuItems" class="hide">
   </MudPaper>
   <MudSpacer />
+    <span class="material-symbols-outlined">computer</span><a>OS: @userAgent</a>
   <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/MessiDaGod/" title="GitHub" target="_blank" />
+
 </MudAppBar>
 
   <article class="content">
@@ -88,9 +92,27 @@ button > #none {
     bool notExpanded = false;
     bool IsServerSide = true;
     IEnumerable<SideBarItem>? examples;
+    private string? userAgent { get; set; } = null!;
 
     [Parameter]
     public string CssClass { get; set; } = "";
+
+
+  protected override async Task OnInitializedAsync()
+    {
+        examples = SideBarService.Examples;
+        string pattern = @"(Windows|Mac OS X|iPhone)";
+        var ua = await Js.InvokeAsync<string>("getUserAgent");
+        RegexOptions options = RegexOptions.Multiline;
+
+        foreach (Match m in Regex.Matches(ua, pattern, options))
+        {
+            userAgent = m.Value;
+            break;
+        }
+        userAgent = userAgent ?? "Other";
+        await base.OnInitializedAsync();
+    }
 
     internal IJSObjectReference module0;
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -131,13 +153,6 @@ button > #none {
   internal IJSObjectReference? Module3;
 
   internal List<string> Pages = new();
-
-    // 1
-  protected override async Task OnInitializedAsync()
-    {
-        examples = SideBarService.Examples;
-        await base.OnInitializedAsync();
-    }
 
     protected async Task ToggleMenuItems()
     {

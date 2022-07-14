@@ -1,4 +1,4 @@
-﻿.hide {
+.hide {
     display: none !important;
 }
 :root {
@@ -151,6 +151,8 @@ h1:focus {
 .btn-link {
     color: #0071c1;
 }
+
+button { text-decoration: none !important; }
 
 .btn-primary {
     color: #fff;
