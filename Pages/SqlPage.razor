@@ -81,7 +81,7 @@
 										<ul id='tablePagination' class='pagination pagination-sm rounded-0'></ul>
 									</div>
 								</MudTabPanel>
-								<MudTabPanel Text="❮⁄❯ Query Editor">
+									<MudTabPanel Text="❮⁄❯ Query Editor">
 									<div id='editor' role='tabpanel' class='tab-pane fade show' aria-labelledby='editor-tab'>
 										<div class='btn-group btn-group-sm m-0'>
 											<div class='btn-group btn-group-sm'>
@@ -92,7 +92,7 @@
 													<button id='exportEditorQuery' type='button' class='dropdown-item'><small>📄 Export SQL query to local file</small></button>
 												</div>
 											</div>
-											<button id='runQueryBtn' type='button' class='btn btn-sm btn-light text-primary border-primary rounded-0 ml-2'>Execute Query
+											<button id='runQueryBtn' type='button' class='btn btn-sm btn-light text-primary border-primary rounded-0 ml-2' onclick="Sql.initRunQuery()">Execute Query
 												<span class="material-symbols-outlined">database</span></button>
 											<small id='tableQueryDetails' class='ml-2'></small>
 										</div>
@@ -151,6 +151,10 @@
 	protected async Task Init()
 	{
 		await Js.InvokeVoidAsync("Sql.init");
+	}
+
+	protected async Task InitRunQuery() {
+		await Js.InvokeVoidAsync("Sql.initRunQuery");
 	}
 
 	IList<IBrowserFile> files = new List<IBrowserFile>();
