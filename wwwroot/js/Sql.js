@@ -645,35 +645,40 @@
 
         setPaginationClass: async function () {
             try {
+                firstPageBtn = document.getElementById('firstPageBtn');
+                currentPageNo = document.getElementById('currentPageNo');
+                prevPageBtn = document.getElementById('prevPageBtn');
+                nextPageBtn = document.getElementById('nextPageBtn');
+                lastPageBtn = document.getElementById('lastPageBtn');
                 currentPageNo.value = currentPage;
                 if (currentPage == 1) {
-                    if (!Sql.firstPageBtn.classList.contains('disabled')) {
-                        Sql.firstPageBtn.classList.add('disabled');
+                    if (!firstPageBtn.classList.contains('disabled')) {
+                        firstPageBtn.classList.add('disabled');
                     }
-                    if (!Sql.prevPageBtn.classList.contains('disabled')) {
-                        Sql.prevPageBtn.classList.add('disabled');
+                    if (!prevPageBtn.classList.contains('disabled')) {
+                        prevPageBtn.classList.add('disabled');
                     }
                 } else if (currentPage > 1) {
-                    if (Sql.firstPageBtn.classList.contains('disabled')) {
-                        Sql.firstPageBtn.classList.remove('disabled');
+                    if (firstPageBtn.classList.contains('disabled')) {
+                        firstPageBtn.classList.remove('disabled');
                     }
-                    if (Sql.prevPageBtn.classList.contains('disabled')) {
-                        Sql.prevPageBtn.classList.remove('disabled');
+                    if (prevPageBtn.classList.contains('disabled')) {
+                        prevPageBtn.classList.remove('disabled');
                     }
                 }
                 if (currentPage == noOfPages) {
-                    if (!Sql.nextPageBtn.classList.contains('disabled')) {
-                        Sql.nextPageBtn.classList.add('disabled');
+                    if (!nextPageBtn.classList.contains('disabled')) {
+                        nextPageBtn.classList.add('disabled');
                     }
-                    if (!Sql.lastPageBtn.classList.contains('disabled')) {
-                        Sql.lastPageBtn.classList.add('disabled');
+                    if (!lastPageBtn.classList.contains('disabled')) {
+                        lastPageBtn.classList.add('disabled');
                     }
                 } else if (currentPage < noOfPages) {
-                    if (Sql.nextPageBtn.classList.contains('disabled')) {
-                        Sql.nextPageBtn.classList.remove('disabled');
+                    if (nextPageBtn.classList.contains('disabled')) {
+                        nextPageBtn.classList.remove('disabled');
                     }
-                    if (Sql.lastPageBtn.classList.contains('disabled')) {
-                        Sql.lastPageBtn.classList.remove('disabled');
+                    if (lastPageBtn.classList.contains('disabled')) {
+                        lastPageBtn.classList.remove('disabled');
                     }
                 }
                 offset = (currentPage - 1) * recordsPerPage;
@@ -746,8 +751,8 @@
             Sql.getColumns(tblName);
 
             try {
-                tblClickableBtn.addEventListener('click', async (e) => {
-                    e.stopPropagation();
+                // tblClickableBtn.addEventListener('click', async (e) => {
+                //     e.stopPropagation();
 
                     selected_tbl_name = tblClickableBtn.innerText;
                     selected_tbl_name = selected_tbl_name.replace(tblIcon, '');
@@ -785,41 +790,48 @@
                     stmt = 'SELECT * FROM `' + selected_tbl_name + '` LIMIT ' + offset + ',' + recordsPerPage;
                     resultset2 = db2.exec(stmt);
                     await Sql.renderDatatable(resultset2, document.getElementById('tableRecords'));
-                    if (currentPageNo != null)
+                    if (currentPageNo != null) {
                         // currentPageNo.addEventListener('change', (evt0) => {
                         //     evt0.stopPropagation();
                             currentPage = 1
-                            setPaginationClass();
+                            Sql.setPaginationClass();
                         //});
-                    if (firstPageBtn != null)
+                    }
+
+                    if (firstPageBtn != null) {
                         // firstPageBtn.addEventListener('click', (evt1) => {
                         //     evt1.stopPropagation();
                             currentPage = 1;
-                            setPaginationClass();
+                            Sql.setPaginationClass();
                         //});
-                    if (prevPageBtn != null)
+                    }
+
+                    if (prevPageBtn != null) {
                         // prevPageBtn.addEventListener('click', (evt2) => {
                         //     evt2.stopPropagation();
                             if (currentPage > 1) {
                                 currentPage = currentPage - 1;
-                                setPaginationClass();
+                                Sql.setPaginationClass();
                             }
                         //});
-                    if (nextPageBtn != null)
+                    }
+                    if (nextPageBtn != null) {
                         // nextPageBtn.addEventListener('click', (evt3) => {
                         //     evt3.stopPropagation();
                             if (currentPage < noOfPages) {
                                 currentPage = currentPage + 1;
-                                setPaginationClass();
+                                Sql.setPaginationClass();
                             }
                         //});
-                    if (lastPageBtn != null)
+                    }
+                    if (lastPageBtn != null) {
                         // lastPageBtn.addEventListener('click', (evt4) => {
                         //     evt4.stopPropagation();
                             currentPage = noOfPages;
-                            setPaginationClass();
+                            Sql.setPaginationClass();
                         //});
-                }, false);
+                // }, false);
+                    }
             } catch (err) {
                 throw new Error(err.message);
             }
