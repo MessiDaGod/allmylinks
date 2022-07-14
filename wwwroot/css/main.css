@@ -22,7 +22,6 @@ body {
     height:calc(100vh - 70px);
 }
 div#tableRecords.table-responsive {
-    height:calc(100vh - 170px);
     overflow-y:scroll;
 }
 

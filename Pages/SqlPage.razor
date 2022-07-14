@@ -99,7 +99,7 @@
 										<hr class='invisible-divider'>
 										<p class='mb-0'><textarea id='lineCounter' wrap='off' readonly>1.</textarea><textarea id='codeEditor' wrap='off'></textarea></p>
 										<div id='tableQueryRecords' class='table-responsive'></div>
-										<hr class='invisible-divider'>
+										@* <hr class='invisible-divider'> *@
 										<ul id='tableQueryPagination' class='pagination pagination-sm rounded-0'></ul>
 									</div>
 								</MudTabPanel>
@@ -120,7 +120,6 @@
 		</RadzenSplitterPane>
 	</RadzenSplitter>
 }
-
 
 @code {
     public IEnumerable<Person?>? Persons;
