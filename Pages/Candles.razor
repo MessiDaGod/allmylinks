@@ -4,10 +4,18 @@
 @inject PersonServices Service;
 <PageTitle>@@joeshakely | GitHub.io</PageTitle>
 <div id="candles">
-    <p id="candleprice" class="center"></p>
+    <strong><p id="candleprice" class="center"></p></strong>
     <canvas id="header" width="100px"></canvas>
     <canvas id="candlestick"></canvas>
 </div>
+<style>
+    .center {
+        text-align: center;
+    }
+    #header, #candlestick {
+        margin-left: 100px;
+    }
+</style>
 @code {
 
     protected override async Task OnInitializedAsync()
