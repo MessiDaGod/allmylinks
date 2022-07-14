@@ -689,83 +689,6 @@
                 let tableDetailsHtmlStr = `${tblIcon}${selected_tbl_name} Total no. of records: <kbd>${totalNoOfRecords}</kbd> Displaying records <kbd>${offset} ― ${offset+recordsPerPage}</kbd>`;
                 tableDetails.innerHTML = tableDetailsHtmlStr;
 
-                runQueryBtn = document.getElementById('runQueryBtn');
-                if (runQueryBtn != null && runQueryBtn != undefined)
-                    runQueryBtn.addEventListener('click', async () => {
-                        try {
-                            queryStmt = codeEditor.value;
-                            originalQueryStmt = queryStmt.trim();
-                            if (originalQueryStmt.charAt(originalQueryStmt.length - 1) == ';') {
-                                originalQueryStmt = originalQueryStmt.substr(0, originalQueryStmt.length - 1);
-                            }
-                            // ================================================
-                            queryStmt = 'SELECT COUNT(*) FROM (' + originalQueryStmt + ')';
-                            queryResultset = db.exec(queryStmt);
-                            // ================================================
-                            tableQueryDetails.innerHTML = '';
-                            removeAllChildNodes(tableQueryPagination);
-                            // ================================================
-                            currentQueryPage = 1;
-                            queryOffset = (currentQueryPage - 1) * recordsPerPage;
-                            // ================================================
-                            totalNoOfQueryRecords = queryResultset[0]['values'][0];
-                            totalNoOfQueryRecords = parseInt(totalNoOfQueryRecords);
-                            noOfQueryPages = totalNoOfQueryRecords / recordsPerPage;
-                            noOfQueryPages = Math.ceil(noOfQueryPages);
-                            // ================================================
-                            tableQueryDetails.innerHTML = `${tblIcon} Total no. of records: <kbd>${totalNoOfQueryRecords}</kbd> ⯈ Displaying records <kbd>${queryOffset} ― ${queryOffset+recordsPerPage}</kbd>`;
-                            // ================================================
-                            firstQueryPageBtn = await Sql.initPaginationBtn('firstQueryPageBtn', tableQueryPagination);
-                            // ================================================
-                            prevQueryPageBtn = await Sql.iinitPaginationBtn('prevQueryPageBtn', tableQueryPagination);
-                            // ================================================
-                            currentQueryPageNo = await Sql.iinitInputPageNo(tableQueryPagination, 'currentQueryPageNo', currentQueryPage, noOfQueryPages);
-                            // ================================================
-                            nextQueryPageBtn = await Sql.iinitPaginationBtn('nextQueryPageBtn', tableQueryPagination);
-                            // ================================================
-                            lastQueryPageBtn = await Sql.iinitPaginationBtn('lastQueryPageBtn', tableQueryPagination);
-                            // ================================================
-                            // render datatable records
-                            queryStmt = 'SELECT * FROM (' + originalQueryStmt + ') LIMIT ' + queryOffset + ',' + recordsPerPage;
-                            queryResultset = db.exec(queryStmt);
-                            await renderDatatable(queryResultset, tableQueryRecords);
-
-                            currentQueryPageNo.addEventListener('change', (evt0) => {
-                                evt0.stopPropagation();
-                                currentQueryPage = parseInt(evt0.target.value);
-                                setQueryPaginationClass();
-                            });
-                            firstQueryPageBtn.addEventListener('click', (evt1) => {
-                                evt1.stopPropagation();
-                                currentQueryPage = 1;
-                                setQueryPaginationClass();
-                            });
-                            prevQueryPageBtn.addEventListener('click', (evt2) => {
-                                evt2.stopPropagation();
-                                if (currentQueryPage > 1) {
-                                    currentQueryPage = currentQueryPage - 1;
-                                    setQueryPaginationClass();
-                                }
-                            });
-                            nextQueryPageBtn.addEventListener('click', (evt3) => {
-                                evt3.stopPropagation();
-                                if (currentQueryPage < noOfQueryPages) {
-                                    currentQueryPage = currentQueryPage + 1;
-                                    setQueryPaginationClass();
-                                }
-                            });
-                            lastQueryPageBtn.addEventListener('click', (evt4) => {
-                                evt4.stopPropagation();
-                                currentQueryPage = noOfQueryPages;
-                                setQueryPaginationClass();
-                            });
-                        } catch (err) {
-                            errorDisplay.innerHTML = '';
-                            errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
-                            appendLogOutput(err.message, 'ERROR');
-                        }
-                    }, false);
-
             } catch (err) {
             //     throw new Error(err.message);
              }
@@ -806,6 +729,7 @@
             }
         },
         loadTableSelectable: async function (tblName) {
+            //await Sql.setQuery(tblName);
             // Sql.init();
             let tblIcon = '';
             let selected_tbl_name = '';
@@ -1024,8 +948,11 @@
                 fileredr.readAsArrayBuffer(file);
             });
         },
-        setQuery: function () {
-            document.getElementById('codeEditor').value = "SELECT * FROM Prices";
+        setQuery: async function (tblName) {
+           var x =  document.getElementById('codeEditor');
+           x.classList.toggle('hide');
+           x.value = "SELECT * FROM " + tblName;
+           x.classList.toggle('hide');
         },
     }; // DOMContentLoaded
 }());
