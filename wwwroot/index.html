@@ -1,80 +1,73 @@
 <!DOCTYPE html>
 <html lang='en' class='notranslate' translate='no'>
-	<head>
-    	<meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
-	    <meta name='google' content='notranslate' />
-        <meta charset='UTF-8'>
-	    <meta name='description' content='In-Browser SQLite Database Demo'>
-	    <meta name='keywords' content='SQL,SQLite,Browser Plugin,Database'>
-	    <meta name='viewport' content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' />
-	    <meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1' />
-	    <meta http-equiv='Content-Language' content='en' />
-	    <link rel='shortcut icon' href='_next/static/logo-assets/favicon.ico'>
-	    <meta name='msapplication-TileColor' content='#ffffff' />
-	    <meta name='theme-color' content='#ffffff' />
-		<link rel="shortcut icon" href="_next/static/logo-assets/favicon.ico" />
-		<link rel="icon" type="image/png" href="_next/static/logo-assets/favicon.png" />
-		<link rel="icon" type="image/png" href="_next/static/logo-assets/favicon-32x32.png" sizes="32x32" />
-	    <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent' />
-	    <meta name='apple-mobile-web-app-capable' content='yes' />
-	    <meta name='mobile-web-app-capable' content='yes' />
-	    <meta name='HandheldFriendly' content='True' />
-	    <meta name='MobileOptimized' content='320' />
-	    <meta http-equiv='Content-Security-Policy' content='upgrade-insecure-requests' />
-		<script src='js/sql-browser.min.js'></script>
-		<link href='css/bootstrap-4.5.2.min.css' rel='stylesheet' type='text/css' />
-		<link href='css/offcanvas.css' rel='stylesheet' type='text/css' />
-		<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-		<style>
-			body.loading {
-				visibility: hidden
-			}
-		</style>
 
-		<!-- <link href="css/vendor.css" rel="stylesheet">
+<head>
+	<meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+	<meta name='google' content='notranslate' />
+	<meta charset='UTF-8'>
+	<meta name='description' content='In-Browser SQLite Database Demo'>
+	<meta name='keywords' content='SQL,SQLite,Browser Plugin,Database'>
+	<meta name='viewport' content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' />
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1' />
+	<meta http-equiv='Content-Language' content='en' />
+	<link rel='shortcut icon' href='_next/static/logo-assets/favicon.ico'>
+	<meta name='msapplication-TileColor' content='#ffffff' />
+	<meta name='theme-color' content='#ffffff' />
+	<link rel="shortcut icon" href="_next/static/logo-assets/favicon.ico" />
+	<link rel="icon" type="image/png" href="_next/static/logo-assets/favicon.png" />
+	<link rel="icon" type="image/png" href="_next/static/logo-assets/favicon-32x32.png" sizes="32x32" />
+	<meta name='apple-mobile-web-app-status-bar-style' content='black-translucent' />
+	<meta name='apple-mobile-web-app-capable' content='yes' />
+	<meta name='mobile-web-app-capable' content='yes' />
+	<meta name='HandheldFriendly' content='True' />
+	<meta name='MobileOptimized' content='320' />
+	<meta http-equiv='Content-Security-Policy' content='upgrade-insecure-requests' />
+	<script src='js/sql-browser.min.js'></script>
+	<link href='css/bootstrap-4.5.2.min.css' rel='stylesheet' type='text/css' />
+	<link href='css/offcanvas.css' rel='stylesheet' type='text/css' />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+	<style>
+		body.loading {
+			visibility: hidden
+		}
+	</style>
+	<!-- <link href="css/vendor.css" rel="stylesheet">
 		<link href="css/icons.css" rel="stylesheet">
 		<link href="css/core.css" rel="stylesheet"> -->
-		<link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
-		<link href="css/app.css" rel="stylesheet" />
-		<link href="allmylinks.styles.css" rel="stylesheet" />
-		<link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-		<link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
-		<link href='css/main.css' rel='stylesheet' type='text/css' />
-		<title>Joe Shakely | Website</title>
-	</head>
-   <script>
-        window.getUserAgent = () => {
-            return navigator.userAgent;
-        };
-    </script>
-	<script src='js/AllMyLinks.js'></script>
+	<link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+	<link href="css/app.css" rel="stylesheet" />
+	<link href="allmylinks.styles.css" rel="stylesheet" />
+	<link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+	<link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
+	<link href='css/main.css' rel='stylesheet' type='text/css' />
+	<title>Joe Shakely | Website</title>
+</head>
+<script>
+	window.getUserAgent = () => {
+		return navigator.userAgent;
+	};
+</script>
+<script src='js/AllMyLinks.js'></script>
+<script type="text/javascript">
+	caches.delete("blazor-resources-/").then(function (e) {
+		console.log("'blazor-resources-/' cache deleted");
+	});
+</script>
+<noscript>You need to enable JavaScript to run this app.</noscript>
 
-	<script type="text/javascript">
-		caches.delete("blazor-resources-/").then(function (e) {
-			console.log("'blazor-resources-/' cache deleted");
-		});
-	</script>
-	<noscript>You need to enable JavaScript to run this app.</noscript>
-	<body>
-		<div id="app">
-			<div id="spinner" style="display: flex; justify-content: center; align-items: center;">
-				<div class="spinner">
-					<div class="rect1"></div>
-					<div class="rect2"></div>
-					<div class="rect3"></div>
-					<div class="rect4"></div>
-					<div class="rect5"></div>
-				</div>
+<body>
+	<div id="app" style="width: 100%; height: 100%;">
+		<div id="spinner" style="display: flex; justify-content: center; align-items: center;">
+			<div class="spinner">
+				<div class="rect1"></div>
+				<div class="rect2"></div>
+				<div class="rect3"></div>
+				<div class="rect4"></div>
+				<div class="rect5"></div>
 			</div>
 		</div>
-		<div id="candles" class="hide">
-			<a id="candleprice" class="rz-helper-hidden"></a>
-			<canvas id="header" width="100px"></canvas>
-			<canvas id="candlestick"></canvas>
-		</div>
-
 		<script src="_content/MudBlazor/MudBlazor.min.js"></script>
 		<script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
 		<script src="_framework/blazor.webassembly.js"></script>
@@ -82,11 +75,10 @@
 			navigator.serviceWorker.register('service-worker.js');
 		</script>
 		<script src='js/polyfill.js'></script>
-	    <script src='js/ie10-viewport-bug-workaround.js'></script>
-	    <!-- <script src='js/bootstrap-native-v4.js'></script> -->
+		<script src='js/ie10-viewport-bug-workaround.js'></script>
+		<!-- <script src='js/bootstrap-native-v4.js'></script> -->
 		<script src='js/Sql.js'></script>
 		<script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
-
 		<div id="blazor-error-ui">
 			An unhandled error has occurred.
 			<a href="" class="reload">Reload</a>
@@ -100,5 +92,7 @@
 		<script src="js/icons.c464bbd1982b6f37ac4e.js"></script>
 		<script src="js/core.c464bbd1982b6f37ac4e.js"></script>
 		<script src="js/pagesshared.c464bbd1982b6f37ac4e.js"></script>
-	</body>
+	</div>
+</body>
+
 </html>

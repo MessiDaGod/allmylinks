@@ -6,7 +6,6 @@
 @using System;
 @using System.Text.RegularExpressions;
 
-<NavMenu />
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -22,68 +21,63 @@
   <MudPaper Width="300px" id="menuItems" class="hide">
   </MudPaper>
   <MudSpacer />
-    <span class="material-symbols-outlined">computer</span><a>OS: @userAgent</a>
+  <span class="material-symbols-outlined">computer</span><a>OS: @userAgent</a>
   <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/MessiDaGod/" title="GitHub" target="_blank" />
-
 </MudAppBar>
-
-  <article class="content">
-    @Body
-  </article>
-  <footer class="footer">
-    <div class="container-fluid">
-        <div>2022 @@ Shakely Consulting</div>
-    </div>
-  </footer>
-
-
-@* <RadzenSidebar @ref="@sidebar0" @bind-Expanded="@sidebarExpanded" class="demos-sidebar">
-  <ChildContent>
-    <div style="padding: 1rem">
-      <RadzenTextBox Placeholder="Find component ..." type="search" @oninput="@FilterPanelMenu" style="width: 100%" />
-    </div>
-    <RadzenPanelMenu Match="NavLinkMatch.Prefix">
-      @if (examples != null)
-      {
-        @foreach (var category in examples)
-        {
-          <NavigationItem @bind-Expanded=@category.Expanded Example=@category>
-            @if (category.Children != null)
-            {
-              @foreach (var example in category.Children)
-              {
-                if (example != null)
-                {
-                  <NavigationItem Example=@example>
-                    @foreach (var child in example.Children)
-                    {
-                      @if (child.Name.Contains("SqlPage")) {
-                        <span class="material-symbols-outlined">database</span>
-                      }
-                      <NavigationItem Example=@child />
-                    }
-                  </NavigationItem>
-                }
-                else
-                {
-                  <NavigationItem Example=@example />
-                }
-              }
-            }
-          </NavigationItem>
-        }
-      }
-    </RadzenPanelMenu>
-  </ChildContent>
-</RadzenSidebar> *@
+	<RadzenSplitter Orientation="Radzen.Orientation.Horizontal" Collapse=@OnCollapse Expand=@OnExpand>
+		<RadzenSplitterPane>
+			<RadzenSplitter Collapse=@OnCollapse Expand=@OnExpand>
+				<RadzenSplitterPane Size="70%">
+          @Body
+				</RadzenSplitterPane>
+			</RadzenSplitter>
+		</RadzenSplitterPane>
+	</RadzenSplitter>
+<footer class="footer">
+  2022 @@ Shakely Consulting
+</footer>
 
 <style>
 button > #none {
   all: unset;
   cursor: pointer;
 }
+.footer {
+  position: fixed !important;
+  left: 0 !important;
+  bottom: 0  !important;
+  width: 100% !important;
+  background-color: transparent !important;
+  color: black !important;
+  text-align: center !important;
+}
 </style>
 @code {
+
+    void OnCollapse(RadzenSplitterEventArgs args)
+    {
+    }
+
+    void OnExpand(RadzenSplitterEventArgs args)
+    {
+    }
+
+    void OnResize(RadzenSplitterResizeEventArgs args)
+    {
+
+    }
+
+    void OnCollapseDisabled(RadzenSplitterEventArgs args)
+    {
+        args.Cancel = true;
+
+    }
+
+    void OnResizeDisabled(RadzenSplitterResizeEventArgs args)
+    {
+        args.Cancel = true;
+
+    }
 
     RadzenSidebar? sidebar0;
     RadzenBody? body0;
@@ -159,3 +153,43 @@ button > #none {
       await Js.InvokeVoidAsync("AML.toggleMenuItems");
     }
 }
+
+@* <RadzenSidebar @ref="@sidebar0" @bind-Expanded="@sidebarExpanded" class="demos-sidebar">
+  <ChildContent>
+  <div style="padding: 1rem">
+  <RadzenTextBox Placeholder="Find component ..." type="search" @oninput="@FilterPanelMenu" style="width: 100%" />
+  </div>
+  <RadzenPanelMenu Match="NavLinkMatch.Prefix">
+  @if (examples != null)
+  {
+  @foreach (var category in examples)
+  {
+  <NavigationItem @bind-Expanded=@category.Expanded Example=@category>
+  @if (category.Children != null)
+  {
+  @foreach (var example in category.Children)
+  {
+  if (example != null)
+  {
+  <NavigationItem Example=@example>
+  @foreach (var child in example.Children)
+  {
+  @if (child.Name.Contains("SqlPage")) {
+  <span class="material-symbols-outlined">database</span>
+  }
+  <NavigationItem Example=@child />
+  }
+  </NavigationItem>
+  }
+  else
+  {
+  <NavigationItem Example=@example />
+  }
+  }
+  }
+  </NavigationItem>
+  }
+  }
+  </RadzenPanelMenu>
+  </ChildContent>
+  </RadzenSidebar> *@
