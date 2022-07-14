@@ -24,9 +24,9 @@
         </Columns>
     </RadzenDataGrid> *@
 
-	<RadzenSplitter Orientation="Radzen.Orientation.Vertical" Collapse=@OnCollapse Expand=@OnExpand>
+	<RadzenSplitter Orientation="Radzen.Orientation.Vertical" Collapse=@OnCollapseDisabled Expand=@OnExpand>
 		<RadzenSplitterPane>
-			<RadzenSplitter Collapse=@OnCollapse Expand=@OnExpand>
+				<RadzenSplitter Collapse=@OnCollapseDisabled Expand=@OnExpand>
 				<RadzenSplitterPane Size="14%">
 					<div id='infoPanel' class="card rounded-0 border-left-0">
 						<table class='table table-condensed small'>

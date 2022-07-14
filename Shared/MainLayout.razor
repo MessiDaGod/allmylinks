@@ -24,9 +24,9 @@
   <span class="material-symbols-outlined">computer</span><a><strong>OS: </strong>@userAgent</a>&nbsp;&nbsp;&nbsp;&nbsp;
   <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/MessiDaGod/" title="GitHub" target="_blank" />
 </MudAppBar>
-	<RadzenSplitter Orientation="Radzen.Orientation.Horizontal" Collapse=@OnCollapse Expand=@OnExpand>
+	<RadzenSplitter Orientation="Radzen.Orientation.Horizontal" Expand=@OnExpand>
 		<RadzenSplitterPane>
-			<RadzenSplitter Collapse=@OnCollapse Expand=@OnExpand>
+			<RadzenSplitter Expand=@OnExpand>
 				<RadzenSplitterPane Size="70%">
           @Body
 				</RadzenSplitterPane>
@@ -57,9 +57,6 @@ button > #none {
 </style>
 @code {
 
-    void OnCollapse(RadzenSplitterEventArgs args)
-    {
-    }
 
     void OnExpand(RadzenSplitterEventArgs args)
     {
@@ -144,55 +141,11 @@ button > #none {
         public string DisplayName { get; set; } = null!;
     }
 
-  internal IJSObjectReference? Module;
-  internal IJSObjectReference? module1;
-  internal IJSObjectReference? module2;
-  internal IJSObjectReference? Module3;
 
-  internal List<string> Pages = new();
+   internal List<string> Pages = new();
 
     protected async Task ToggleMenuItems()
     {
       await Js.InvokeVoidAsync("AML.toggleMenuItems");
     }
 }
-
-@* <RadzenSidebar @ref="@sidebar0" @bind-Expanded="@sidebarExpanded" class="demos-sidebar">
-  <ChildContent>
-  <div style="padding: 1rem">
-  <RadzenTextBox Placeholder="Find component ..." type="search" @oninput="@FilterPanelMenu" style="width: 100%" />
-  </div>
-  <RadzenPanelMenu Match="NavLinkMatch.Prefix">
-  @if (examples != null)
-  {
-  @foreach (var category in examples)
-  {
-  <NavigationItem @bind-Expanded=@category.Expanded Example=@category>
-  @if (category.Children != null)
-  {
-  @foreach (var example in category.Children)
-  {
-  if (example != null)
-  {
-  <NavigationItem Example=@example>
-  @foreach (var child in example.Children)
-  {
-  @if (child.Name.Contains("SqlPage")) {
-  <span class="material-symbols-outlined">database</span>
-  }
-  <NavigationItem Example=@child />
-  }
-  </NavigationItem>
-  }
-  else
-  {
-  <NavigationItem Example=@example />
-  }
-  }
-  }
-  </NavigationItem>
-  }
-  }
-  </RadzenPanelMenu>
-  </ChildContent>
-  </RadzenSidebar> *@
