@@ -750,22 +750,19 @@
             tblClickableBtn.setAttribute('type', 'button');
             tblClickableBtn.setAttribute('class', 'btn btn-sm btn-link rounded-0 datatable');
             tblClickableBtn.innerText = `${tblName}`;
-			var el = document.getElementById('dbTableDetails').rows[0];
-			var tbls;
-			if (el != null && el != undefined) {
-				tbls = el.querySelectorAll('button');
-				console.log(tbls[0].id);
-			}
-
-s            let tblClickableRow = dbTableDetails.insertRow(0);
-            let tblClickableCell = tblClickableRow.insertCell(0);
-            tblClickableCell.setAttribute('colspan', 2);
-            tblClickableCell.appendChild(tblClickableBtn);
+            var el = document.getElementById('dbTableDetails').rows[0];
+            var tbls;
+            if (el === undefined) {
+                tbls = el.querySelectorAll('button');
+                let tblClickableRow = dbTableDetails.insertRow(0);
+                let tblClickableCell = tblClickableRow.insertCell(0);
+                tblClickableCell.setAttribute('colspan', 2);
+                tblClickableCell.appendChild(tblClickableBtn);
+                console.log(tbls[0].id);
+            }
             Sql.getColumns(tblName);
 
             try {
-                // tblClickableBtn.addEventListener('click', async (e) => {
-                //     e.stopPropagation();
 
                 selected_tbl_name = tblClickableBtn.innerText;
                 selected_tbl_name = selected_tbl_name.replace(tblIcon, '');
