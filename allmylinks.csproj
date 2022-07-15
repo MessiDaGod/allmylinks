@@ -12,7 +12,13 @@
   <PropertyGroup>
     <EmccExtraLDFlags>-lidbfs.js</EmccExtraLDFlags>
     <EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0</EmccExtraLDFlags>
-      </PropertyGroup>
+  </PropertyGroup>
+  <PropertyGroup>
+      <PreBuildEvent>kill-port 7199</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+      <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0-preview.5.22303.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0-preview.5.22303.8" PrivateAssets="all" />
@@ -29,6 +35,9 @@
     <PackageReference Include="SQLitePCLRaw.core" Version="2.1.0" />
     <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.0" /> -->
     <PackageReference Include="Stl" Version="3.2.6" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,5 +54,13 @@
 
   <ItemGroup>
     <None Remove="Stl" />
+    <None Remove="Serilog.Extensions.Logging.File" />
+    <None Remove="Microsoft.AspNetCore.Hosting" />
+    <None Remove="Microsoft.AspNetCore.Hosting.Abstractions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\main.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

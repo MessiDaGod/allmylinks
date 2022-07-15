@@ -10,7 +10,6 @@
   "profiles": {
     "allmylinks": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
       "applicationUrl": "https://localhost:7199;http://localhost:5092",

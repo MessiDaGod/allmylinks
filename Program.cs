@@ -8,8 +8,10 @@ using SQLite;
 using Newtonsoft.Json;
 using Radzen;
 using Radzen.Blazor;
+using Microsoft.Extensions.Logging.Abstractions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
 builder.Services.AddMudServices();
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {

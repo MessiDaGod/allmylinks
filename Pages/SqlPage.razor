@@ -1,183 +1,216 @@
 @page "/SqlPage"
-@inject IJSRuntime Js;
 @using MudBlazor;
+@inject IJSRuntime Js;
+@using Radzen
+@using Radzen.Blazor
 @namespace allmylinks
 
 
 @if (!isLoading)
 {
-	@if (showCallAlert && files.ToArray().Length == 0)
-	{
-<div id="infomsg">
-	<MudAlert Severity="Severity.Success" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Press the "Upload Database" button to the left and upload a .db file to access this page.</MudAlert>
-	@if (showLeaveAlert == true) {
-	<MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Only .db files can be uploaded!</MudAlert>
-	}
-</div>
-	}
+    @if (showCallAlert && files.ToArray().Length == 0)
+    {
+        <div id="infomsg">
+            <MudAlert Severity="Severity.Success" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Press the "Upload Database" button to the left and upload a .db file to access this page.</MudAlert>
+            @if (showLeaveAlert == true)
+            {
+                <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Only .db files can be uploaded!</MudAlert>
+            }
+        </div>
+    }
 
     @* <RadzenDataGrid @ref="PersonsGrid" AllowFiltering="true" AllowColumnResize="true" AllowVirtualization="true" Style="height:700px" FilterMode="FilterMode.Advanced" AllowSorting="true" Data="@Persons" TItem="Person" ColumnWidth="100px" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" PagerHorizontalAlign="HorizontalAlign.Left" LogicalFilterOperator="LogicalFilterOperator.Or" AllowRowSelectOnRowClick="@allowRowSelectOnRowClick" SelectionMode="Radzen.DataGridSelectionMode.Multiple">
-        <Columns>
-		@for (int i = 0; i < columns.Length; i++) {
-            <RadzenDataGridColumn TItem="Person" Property="@columns[i]" Title="@columns[i]"  />
-		}
-        </Columns>
-    </RadzenDataGrid> *@
+            <Columns>
+            @for (int i = 0; i < columns.Length; i++) {
+                <RadzenDataGridColumn TItem="Person" Property="@columns[i]" Title="@columns[i]"  />
+            }
+            </Columns>
+        </RadzenDataGrid> *@
 
-	<RadzenSplitter Orientation="Radzen.Orientation.Vertical" Collapse=@OnCollapseDisabled Expand=@OnExpand>
-		<RadzenSplitterPane>
-				<RadzenSplitter Collapse=@OnCollapseDisabled Expand=@OnExpand>
-				<RadzenSplitterPane Size="14%">
-					<div id='infoPanel' class="card rounded-0 border-left-0">
-						<table class='table table-condensed small'>
-							<thead>
-								<tr>
-									<td colspan='2'>
-										<InputFile id="upload" OnChange="UploadFiles" hidden />
-										<MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.CloudUpload" for="upload">
-											Upload Database
-										</MudButton>
-										@if (files != null)
-										{
-											@foreach (var file in files)
-											{
-												@if (file.Name.Contains(".db"))
-												{
-													<MudList>
-														<MudListItem Icon="@Icons.Filled.AttachFile" @key="@file">
-															@file.Name <code>@(file.Size / 1000) KB</code>
-														</MudListItem>
-													</MudList>
-												}
-											}
-										}
-									</td>
-								</tr>
-							</thead>
-							<tbody id='dbTableDetails'></tbody>
-						</table>
-					</div>
-				</RadzenSplitterPane>
-				<RadzenSplitterPane>
-					<p id='errorDisplay' class='m-0 p-0 small text-danger'></p>
-					<div id='mainTabsWrapper' class='card rounded-0 border-right-0'>
-						<div id='mainTabs' role='tablist' class="hide">
-							<MudTabs Elevation="4" Rounded="true" Centered="false" Color="@Color.Secondary" class='nav nav-tabs'>
-								<MudTabPanel Text="🔎 Browse Data">
-									<div id='browse' role='tabpanel' class='tab-pane fade active show' aria-labelledby='browse-tab'>
-										<div class='btn-group btn-group-sm m-0'>
-											<div class='btn-group btn-group-sm'>
-												<button id='exportToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown' onclick="Sql.">Save
-													<span class="material-symbols-outlined">save</span></button>
-												<div class='dropdown-menu'>
-													<button id='exportAsJSON' type='button' class='dropdown-item'><small>💽 Export datatable as JSON</small></button>
-												</div>
-											</div>
-											<small id='tableDetails' class='ml-2'></small>
-										</div>
-										<hr class='invisible-divider'>
-										<div id='tableRecords' class='table-responsive'></div>
-										<hr class='invisible-divider'>
-										<ul id='tablePagination' class='pagination pagination-sm rounded-0'></ul>
-									</div>
-								</MudTabPanel>
-									<MudTabPanel Text="❮⁄❯ Query Editor">
-									<div id='editor' role='tabpanel' class='tab-pane fade show' aria-labelledby='editor-tab'>
-										<div class='btn-group btn-group-sm m-0'>
-											<div class='btn-group btn-group-sm'>
-												<button id='exportQueryToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown'>Save
-													<span class="material-symbols-outlined">save</span></button>
-												<div class='dropdown-menu'>
-													<button id='exportQueryAsJSON' type='button' class='dropdown-item'><small>💽 Export resultset as JSON</small></button>
-													<button id='exportEditorQuery' type='button' class='dropdown-item'><small>📄 Export SQL query to local file</small></button>
-												</div>
-											</div>
-											<button id='runQueryBtn' type='button' class='btn btn-sm btn-light text-primary border-primary rounded-0 ml-2' onclick="Sql.initRunQuery()">Execute Query
-												<span class="material-symbols-outlined">database</span></button>
-											<small id='tableQueryDetails' class='ml-2'></small>
-										</div>
-										<hr class='invisible-divider'>
-										<p class='mb-0'><textarea id='lineCounter' wrap='off' readonly>1.</textarea><textarea id='codeEditor' wrap='off'></textarea></p>
-										<div id='tableQueryRecords' class='table-responsive'></div>
-										@* <hr class='invisible-divider'> *@
-										<ul id='tableQueryPagination' class='pagination pagination-sm rounded-0'></ul>
-									</div>
-								</MudTabPanel>
-								<div class="hide">
-								<MudTabPanel Text="📝 Output Logs">
+    <RadzenSplitter Orientation="Radzen.Orientation.Vertical" Collapse=@OnCollapseDisabled Expand=@OnExpand>
+        <RadzenSplitterPane>
+            <RadzenSplitter Collapse=@OnCollapseDisabled Expand=@OnExpand>
+                <RadzenSplitterPane Size="14%">
+                    <div id='infoPanel' class="card rounded-0 border-left-0">
+                        <table class='table table-condensed small'>
+                            <thead>
+                                <tr>
+                                    <td colspan='2'>
+                                        <InputFile id="upload" OnChange="UploadFiles" hidden />
+                                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.CloudUpload" for="upload">
+                                            Upload Database
+                                        </MudButton>
+                                        @if (files != null)
+                                        {
+                                            @foreach (var file in files)
+                                            {
+                                                @if (file.Name.Contains(".db"))
+                                                {
+                                                    <MudList>
+                                                        <MudListItem Icon="@Icons.Filled.AttachFile" @key="@file">
+                                                            @file.Name <code>@(file.Size / 1000) KB</code>
+                                                        </MudListItem>
+                                                    </MudList>
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody id='dbTableDetails'></tbody>
+                        </table>
+                    </div>
+                </RadzenSplitterPane>
+                <RadzenSplitterPane>
+                    <p id='errorDisplay' class='m-0 p-0 small text-danger'></p>
+                    <div id='mainTabsWrapper' class='card rounded-0 border-right-0'>
+                        <div id='mainTabs' role='tablist' class="hide">
+                            <MudTabs Elevation="4" Rounded="true" Centered="false" Color="@Color.Secondary" class='nav nav-tabs'>
+                                <MudTabPanel Text="🔎 Browse Data">
+                                    <div id='browse' role='tabpanel' class='tab-pane fade active show' aria-labelledby='browse-tab'>
+                                        <div class='btn-group btn-group-sm m-0'>
+                                            <div class='btn-group btn-group-sm'>
+                                                <button id='exportToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown' onclick="Sql.">
+                                                    Save
+                                                    <span class="material-symbols-outlined">save</span>
+                                                </button>
+                                                <div class='dropdown-menu'>
+                                                    <button id='exportAsJSON' type='button' class='dropdown-item'><small>💽 Export datatable as JSON</small></button>
+                                                </div>
+                                            </div>
+                                            <small id='tableDetails' class='ml-2'></small>
+                                        </div>
+                                        <hr class='invisible-divider'>
+                                        <div id='tableRecords' class='table-responsive'></div>
+                                        <hr class='invisible-divider'>
+                                        <ul id='tablePagination' class='pagination pagination-sm rounded-0'></ul>
+                                    </div>
+                                </MudTabPanel>
+                                <MudTabPanel Text="❮⁄❯ Query Editor">
+                                    <div id='editor' role='tabpanel' class='tab-pane fade show' aria-labelledby='editor-tab'>
+                                        <div class='btn-group btn-group-sm m-0'>
+                                            <div class='btn-group btn-group-sm'>
+                                                <button id='exportQueryToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown'>
+                                                    Save
+                                                    <span class="material-symbols-outlined">save</span>
+                                                </button>
+                                                <div class='dropdown-menu'>
+                                                    <button id='exportQueryAsJSON' type='button' class='dropdown-item'><small>💽 Export resultset as JSON</small></button>
+                                                    <button id='exportEditorQuery' type='button' class='dropdown-item'><small>📄 Export SQL query to local file</small></button>
+                                                </div>
+                                            </div>
+                                            <button id='runQueryBtn' type='button' class='btn btn-sm btn-light text-primary border-primary rounded-0 ml-2' onclick="Sql.initRunQuery()">
+                                                Execute Query
+                                                <span class="material-symbols-outlined">database</span>
+                                            </button>
+                                            <small id='tableQueryDetails' class='ml-2'></small>
+                                        </div>
+                                        <hr class='invisible-divider'>
+                                        <p class='mb-0'><textarea id='lineCounter' wrap='off' readonly>1.</textarea><textarea id='codeEditor' wrap='off'></textarea></p>
+                                        <div id='tableQueryRecords' class='table-responsive'></div>
+                                        @* <hr class='invisible-divider'> *@
+                                        <ul id='tableQueryPagination' class='pagination pagination-sm rounded-0'></ul>
+                                    </div>
+                                </MudTabPanel>
+                                <div class="hide">
+                                    <MudTabPanel Text="📝 Output Logs">
 
-									<div id='logs' role='tabpanel' class='tab-pane fade show' aria-labelledby='logs-tab'>
-										<hr class='invisible-divider'>
-										<div id='logsRecords' class='table-responsive'></div>
-									</div>
-								</MudTabPanel>
-								</div>
-							</MudTabs>
-						</div>
-					</div>
-				</RadzenSplitterPane>
-			</RadzenSplitter>
-		</RadzenSplitterPane>
-	</RadzenSplitter>
+                                        <div id='logs' role='tabpanel' class='tab-pane fade show' aria-labelledby='logs-tab'>
+                                            <hr class='invisible-divider'>
+                                            <div id='logsRecords' class='table-responsive'></div>
+                                        </div>
+                                    </MudTabPanel>
+                                </div>
+                            </MudTabs>
+                        </div>
+                    </div>
+                </RadzenSplitterPane>
+            </RadzenSplitter>
+        </RadzenSplitterPane>
+    </RadzenSplitter>
 }
 
 @code {
+
+    [Inject] IJSRuntime JS { get; set; }
+
+    public class DatabaseTables
+    {
+        public DatabaseTables() { }
+        public object[] columns { get; set; } = null!;
+        public object[] values { get; set; } = null!;
+    }
+
     public IEnumerable<Person?>? Persons;
 
-	private RadzenDataGrid<Person>? PersonsGrid;
+    private RadzenDataGrid<Person>? PersonsGrid;
 
-@*	public string[] columns = new string[] { "Id", "FirstName", "LastName" }; *@
+    public string[]? columns { get; set; }
 
-	public string[]? columns {get; set;}
-	bool allowRowSelectOnRowClick = true;
-	bool isLoading = false;
-	protected override async Task OnInitializedAsync()
-	{
-		await base.OnInitializedAsync();
-	}
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (firstRender)
-		{
-			await Task.Run(() => isLoading = false);
-			columns = await Js.InvokeAsync<string[]>("Sql.getColumns", "Person");
-			await Init();
-			await InvokeAsync(StateHasChanged);
-		}
-	}
+    bool allowRowSelectOnRowClick = true;
+    bool isLoading = false;
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Run(() => isLoading = false);
+            columns = await Js.InvokeAsync<string[]>("Sql.getColumns", "Person");
+            await Init();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
 
 
-	protected async Task Init()
-	{
-		await Js.InvokeVoidAsync("Sql.init");
-	}
+    protected async Task Init()
+    {
+        await Js.InvokeVoidAsync("Sql.init");
+    }
 
-	protected async Task InitRunQuery() {
-		await Js.InvokeVoidAsync("Sql.initRunQuery");
-	}
+    [JSInvokable("LoadSelectedTable")]
+    public static async Task LoadSelectedTable(DatabaseTables[] tableNames)
+    {
+        for (int i = 0; i < tableNames.Length; i++)
+        {
+            for (int j = 0; j < tableNames[i].columns.Length; j++)
+            {
+                @* await Task.Run(() => Console.WriteLine(tableNames[i].columns[j].ToString())).ConfigureAwait(false);
+                await Task.Run(() => Console.WriteLine(tableNames[i].values[j].ToString())).ConfigureAwait(false); *@
+            }
+        }
+        return;
+    }
 
-	IList<IBrowserFile> files = new List<IBrowserFile>();
+    protected async Task InitRunQuery()
+    {
+        await Js.InvokeVoidAsync("Sql.initRunQuery");
+    }
 
-	private async Task UploadFiles(InputFileChangeEventArgs e)
-	{
-		if (!e.GetMultipleFiles()[0].Name.ToString().Contains(".db"))
-		{
-			await Js.InvokeVoidAsync("AML.logit", "File is not a valid SQLite database");
-			showLeaveAlert = true;
-			await InvokeAsync(StateHasChanged);
-			return;
-		}
-		for (int i = 0; i < e.GetMultipleFiles().Count; i++)
-		{
-			var file = e.GetMultipleFiles()[i];
-			await Js.InvokeVoidAsync("AML.logit", $"Adding file {i + 1}");
-			await Task.Run(() => files.Add(file));
-			await Js.InvokeVoidAsync("AML.logit", files[0].Name.ToString());
-		}
-		await Js.InvokeVoidAsync("Sql.toggleTabs");
-		await Js.InvokeVoidAsync("Sql.toggleMsg");
-		await Init();
-	}
+    IList<IBrowserFile> files = new List<IBrowserFile>();
+
+    private async Task UploadFiles(InputFileChangeEventArgs e)
+    {
+        if (!e.GetMultipleFiles()[0].Name.ToString().Contains(".db"))
+        {
+            await Js.InvokeVoidAsync("AML.logit", "File is not a valid SQLite database");
+            showLeaveAlert = true;
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
+        for (int i = 0; i < e.GetMultipleFiles().Count; i++)
+        {
+            var file = e.GetMultipleFiles()[i];
+            await Js.InvokeVoidAsync("AML.logit", $"Adding file {i + 1}");
+            await Task.Run(() => files.Add(file));
+            await Js.InvokeVoidAsync("AML.logit", files[0].Name.ToString());
+        }
+        await Js.InvokeVoidAsync("Sql.toggleTabs");
+        await Js.InvokeVoidAsync("Sql.toggleMsg");
+        await Init();
+    }
 
     private bool showCallAlert = true;
     private bool showLeaveAlert = false;
