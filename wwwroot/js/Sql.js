@@ -752,14 +752,15 @@
             tblClickableBtn.innerText = `${tblName}`;
             var el = document.getElementById('dbTableDetails').rows[0];
             var tbls;
-            if (el === undefined) {
-                tbls = el.querySelectorAll('button');
-                let tblClickableRow = dbTableDetails.insertRow(0);
-                let tblClickableCell = tblClickableRow.insertCell(0);
-                tblClickableCell.setAttribute('colspan', 2);
-                tblClickableCell.appendChild(tblClickableBtn);
+			if (el != undefined) {
+				tbls = el.querySelectorAll('button');
                 console.log(tbls[0].id);
-            }
+			}
+
+            let tblClickableRow = dbTableDetails.insertRow(0);
+            let tblClickableCell = tblClickableRow.insertCell(0);
+            tblClickableCell.setAttribute('colspan', 2);
+            tblClickableCell.appendChild(tblClickableBtn);
             Sql.getColumns(tblName);
 
             try {
