@@ -46,11 +46,11 @@
     <Content Remove="Pages\Index.razor" />
     <Content Remove="Pages\Redirect.razor" />
   </ItemGroup>
-<!--
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="npm install" WorkingDirectory="NpmJS" />
-    <Exec Command="npm run build" WorkingDirectory="NpmJS" />
-  </Target> -->
+    <Exec Command="npm install" WorkingDirectory="/" />
+    <!-- <Exec Command="npm run build" WorkingDirectory="NpmJS" /> -->
+  </Target>
 
   <ItemGroup>
     <None Remove="Stl" />
