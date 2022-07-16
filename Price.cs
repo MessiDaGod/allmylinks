@@ -28,8 +28,8 @@ public class Prices
 {
     public int Id { get; set; }
     public string? UserId { get; set; }
-    public DateTime CreatedAt { get { return DateTime.UtcNow; } set { value = DateTime.UtcNow; } }
-    public DateTime Date { get; set; }
+    public string CreatedAt { get; set; } = string.Empty;
+    public string Date { get; set; } = string.Empty;
     public double? Open { get; set; }
     public double? High { get; set; }
     public double? Low { get; set; }
@@ -39,7 +39,7 @@ public class Prices
     public string? Symbol { get; set; }
     public double Pct_Change { get; set; } = 0.0;
 
-    public override string ToString() => $@"""Date"": ""{Date}"", ""Open"": ""{Open}"", ""High"": ""{High}"", ""Low"": ""{Low}"", ""Close"": ""{Close}"", ""AdjustedClose"": ""{AdjustedClose}"", ""Volume"": ""{Volume}"", ""Pct_Change"": ""{Pct_Change}""" + "\n";
+    public override string ToString() => $@"{{ Prices: {{""Id"": ""{Id}"",""UserId"": ""{UserId}"",""CreatedAt"": ""{CreatedAt}"", ""Date"": ""{Date}"", ""Open"": ""{Open}"", ""High"": ""{High}"", ""Low"": ""{Low}"", ""Close"": ""{Close}"", ""AdjustedClose"": ""{AdjustedClose}"", ""Volume"": ""{Volume}"", ""Pct_Change"": ""{Pct_Change}"" }} }}" + "\n";
 }
 public enum SymbolType
 {

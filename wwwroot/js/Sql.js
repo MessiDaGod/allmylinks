@@ -486,18 +486,12 @@
 		},
 		getPrices: async function() {
 			await Sql.init();
+            var prices = [];
 			stmt = 'SELECT * FROM ' + "Prices";
 			var res;
 			if (db) {
-				res = db.exec(stmt);
-				var str = res[0].values.toString();
-				var stringArray = str.split(",");
-				// for (let i = 0; i < stringArray.length; i++) {
-				//     console.log(stringArray[i]);
-				// }
-				var price = new Price(res[0].values[0]);
-                console.log(res[0].values[0]);
-				return price;
+				res = Sql.getResultSetAsRowJSON(db, stmt);
+				return res;
 			}
 		},
 		loadTableSelectable: async function(tblName) {
