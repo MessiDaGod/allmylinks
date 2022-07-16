@@ -70,6 +70,7 @@
             pricesList.Add(result[i]);
         }
         Prices = pricesList.AsEnumerable();
+        InvokeAsync(StateHasChanged);
         return;
     }
 }
