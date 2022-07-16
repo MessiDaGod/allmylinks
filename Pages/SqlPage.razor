@@ -4,7 +4,8 @@
 @using Radzen
 @using Radzen.Blazor
 @namespace allmylinks
-
+@using allmylinks.Models;
+@inject NavigationManager UriHelper;
 
 @if (!isLoading)
 {
@@ -120,6 +121,9 @@
                                             <div id='logsRecords' class='table-responsive'></div>
                                         </div>
                                     </MudTabPanel>
+                                <MudTabPanel Text="🔎 Blazor Grid">
+                                    <BlazorPrice />
+                                </MudTabPanel>
                                 </div>
                             </MudTabs>
                         </div>
@@ -131,6 +135,7 @@
 }
 
 @code {
+
 
     [Inject] IJSRuntime JS { get; set; }
 

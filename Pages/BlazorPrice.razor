@@ -1,0 +1,76 @@
+@page "/BlazorPrice"
+@using MudBlazor;
+@inject IJSRuntime Js;
+@using Radzen
+@using Radzen.Blazor
+@namespace allmylinks
+@using allmylinks.Models;
+@inject NavigationManager UriHelper;
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq
+
+
+@if (Prices != null) {
+<RadzenDataGrid @ref="_pricesGrid" AllowFiltering="true" AllowColumnResize="true" AllowVirtualization="true" Style="height:700px" FilterMode="FilterMode.Advanced" AllowSorting="true" Data="@Prices.ToList().AsEnumerable()" TItem="Price" ColumnWidth="100px" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" PagerHorizontalAlign="HorizontalAlign.Left" LogicalFilterOperator="LogicalFilterOperator.Or" AllowRowSelectOnRowClick="@AllowRowSelectOnRowClick" SelectionMode="Radzen.DataGridSelectionMode.Multiple">
+    <Columns>
+        <RadzenDataGridColumn TItem="Price" Property="Symbol" Title="Symbol" Sortable="true" Filterable="true">
+            <Template Context="prices">
+                @if (Conv.ConvertTo(prices.Symbol).Type == SymbolType.Stock || prices.Symbol == "BTC-USD")
+                {
+                    <a href="@(String.Concat("JavaScript:Shakely.openNewWindow('", "https://finance.yahoo.com/quote/", @prices.Symbol, "/", "')"))">@(prices.Symbol)</a>
+                }
+                else
+                {
+                    @prices.Symbol
+                }
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Price" Property="Open" Title="Open" FormatString="{0:C}" />
+        <RadzenDataGridColumn TItem="Price" Property="High" Title="High" FormatString="{0:C}" />
+        <RadzenDataGridColumn TItem="Price" Property="Low" Title="Low" FormatString="{0:C}" />
+        <RadzenDataGridColumn TItem="Price" Property="AdjustedClose" Title="Adj. Close" FormatString="{0:C}" />
+        <RadzenDataGridColumn TItem="Price" Property="Close" Title="Close" FormatString="{0:C}" />
+        <RadzenDataGridColumn TItem="Price" Property="Volume" Title="Volume" FormatString="{0:N0}" />
+        <RadzenDataGridColumn TItem="Price" Property="Pct_Change" Title="% Change">
+            <Template Context="prices">
+                <span style="color: black; font-weight: 700">@prices.Pct_Change.ToString("N4")</span>
+                @if (prices.Pct_Change < 0)
+                {
+                    <RadzenImage Path="@UriHelper.ToAbsoluteUri($"img/down.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
+                }
+                @if (prices.Pct_Change > 0)
+                {
+                    <RadzenImage Path="@UriHelper.ToAbsoluteUri($"img/up.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
+                }
+                @if (prices.Pct_Change == 0)
+                {
+                    <RadzenImage Path="@UriHelper.ToAbsoluteUri($"img/arrowleftright.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
+                }
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+}
+
+@code {
+    IEnumerable<SymbolField> symbols => SymbolField.Symbols;
+    private SymbolField Conv { get; set; } = new();
+    private bool AllowRowSelectOnRowClick { get; set; } = true;
+    private IEnumerable<Price> Prices { get; set; }
+    private Radzen.TabPosition _tabPosition = Radzen.TabPosition.Left;
+    private RadzenDataGrid<Price> _pricesGrid;
+    RadzenDataGrid<Price> _grid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Js.InvokeAsync<Price[]>("Sql.getPrices");
+        for (int i = 0; i < result.Length; i++)
+        {
+            if (i == 0)
+            Console.WriteLine("C# Logging...");
+            Console.WriteLine(result[i]);
+        }
+        Price[] price = JsonConvert.DeserializeObject<Price[]>(result[0].ToString());
+
+    }
+}
