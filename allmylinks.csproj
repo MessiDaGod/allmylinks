@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="npm install" WorkingDirectory="/" />
+    <Exec Command="npm install" WorkingDirectory="./" />
     <!-- <Exec Command="npm run build" WorkingDirectory="NpmJS" /> -->
   </Target>
 
