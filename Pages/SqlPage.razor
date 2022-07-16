@@ -143,11 +143,9 @@
 
     bool allowRowSelectOnRowClick = true;
     bool isLoading = false;
-    internal IJSObjectReference module0;
 
     protected override async Task OnInitializedAsync()
     {
-            module0 = await JS.InvokeAsync<IJSObjectReference>("import", "./js/highlight.pack.js");
         await base.OnInitializedAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
