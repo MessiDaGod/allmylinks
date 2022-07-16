@@ -9,7 +9,12 @@
 @using Newtonsoft.Json;
 @using Newtonsoft.Json.Linq
 
-
+@if (Prices == null)
+{
+        <div id="infomsg" class="center">
+            <MudAlert Severity="Severity.Success" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Press the "Upload Database" button to the left and upload a .db file to access this page.</MudAlert>
+            </div>
+}
 @if (Prices != null) {
 <RadzenDataGrid @ref="_PricesGrid" AllowFiltering="true" AllowColumnResize="true" AllowVirtualization="true" Style="height:700px" FilterMode="FilterMode.Advanced" AllowSorting="true" Data="@Prices.ToList().AsEnumerable()" TItem="Prices" ColumnWidth="100px" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" PagerHorizontalAlign="HorizontalAlign.Left" LogicalFilterOperator="LogicalFilterOperator.Or" AllowRowSelectOnRowClick="@AllowRowSelectOnRowClick" SelectionMode="Radzen.DataGridSelectionMode.Multiple">
     <Columns>
@@ -65,12 +70,30 @@
     {
         var result = await Js.InvokeAsync<Prices[]>("Sql.getPrices");
         List<Prices> pricesList = new();
+        if (result != null) {
         for (int i = 0; i < result.Length; i++)
         {
             pricesList.Add(result[i]);
         }
         Prices = pricesList.AsEnumerable();
         InvokeAsync(StateHasChanged);
+        }
+
         return;
+    }
+
+    private bool showCallAlert = true;
+    private bool showLeaveAlert = false;
+
+    private void CloseMe(bool value)
+    {
+        if (value)
+        {
+            showLeaveAlert = false;
+        }
+        else
+        {
+            showCallAlert = false;
+        }
     }
 }
