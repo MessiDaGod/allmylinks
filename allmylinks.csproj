@@ -13,9 +13,9 @@
     <EmccExtraLDFlags>-lidbfs.js</EmccExtraLDFlags>
     <EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0</EmccExtraLDFlags>
   </PropertyGroup>
-  <PropertyGroup>
+  <!-- <PropertyGroup>
       <PreBuildEvent>kill-port 7199</PreBuildEvent>
-  </PropertyGroup>
+  </PropertyGroup> -->
   <PropertyGroup>
       <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
