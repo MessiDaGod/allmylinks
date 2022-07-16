@@ -11,8 +11,9 @@
 {
     @if (showCallAlert && files.ToArray().Length == 0)
     {
-        <div id="infomsg">
-            <MudAlert Severity="Severity.Success" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Press the "Upload Database" button to the left and upload a .db file to access this page.</MudAlert>
+        <div id="infomsg" class="center">
+            <MudAlert Severity="Severity.Success" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Press the "Upload Database" button to the left and upload a .db file to access this page.<br><a href="https://github.com/MessiDaGod/Files/blob/main/main.db?raw=true" class="center">Database File</a></MudAlert>
+
             @if (showLeaveAlert == true)
             {
                 <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Only .db files can be uploaded!</MudAlert>
@@ -192,6 +193,11 @@
     protected async Task InitRunQuery()
     {
         await Js.InvokeVoidAsync("Sql.initRunQuery");
+    }
+
+    public async Task InitDbFile()
+    {
+
     }
 
     IList<IBrowserFile> files = new List<IBrowserFile>();
