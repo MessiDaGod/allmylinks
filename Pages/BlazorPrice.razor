@@ -12,8 +12,9 @@
 @if (Prices == null)
 {
         <div id="infomsg" class="center">
-            <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Please Upload the .db file linked from the SQL tab to see this page.</MudAlert>
+            <MudAlert Severity="Severity.Info" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Please Upload the .db file to see this page.</MudAlert>
             </div>
+            <SqlPage />
 }
 @if (Prices != null) {
 <RadzenDataGrid @ref="_PricesGrid" AllowFiltering="true" AllowColumnResize="true" AllowVirtualization="true" Style="height:700px" FilterMode="FilterMode.Advanced" AllowSorting="true" Data="@Prices.ToList().AsEnumerable()" TItem="Prices" ColumnWidth="100px" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" PagerHorizontalAlign="HorizontalAlign.Left" LogicalFilterOperator="LogicalFilterOperator.Or" AllowRowSelectOnRowClick="@AllowRowSelectOnRowClick" SelectionMode="Radzen.DataGridSelectionMode.Multiple">
@@ -58,6 +59,7 @@
 }
 
 @code {
+
     IEnumerable<SymbolField> symbols => SymbolField.Symbols;
     private SymbolField Conv { get; set; } = new();
     private bool AllowRowSelectOnRowClick { get; set; } = true;
@@ -76,7 +78,7 @@
             pricesList.Add(result[i]);
         }
         Prices = pricesList.AsEnumerable();
-        InvokeAsync(StateHasChanged);
+        await InvokeAsync(StateHasChanged);
         }
 
         return;
