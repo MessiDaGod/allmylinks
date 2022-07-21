@@ -4,11 +4,7 @@
 @inject PersonServices Service;
 
 <PageTitle>@@joeshakely | GitHub.io</PageTitle>
-<MudTabs Elevation="2" Rounded="true" Centered="true" Color="@Color.Primary">
-    <MudTabPanel Text="SQL">
-        <SqlPage />
-    </MudTabPanel>
-    <MudTabPanel Text="All My Links">
+<MudTabs Elevation="2" Rounded="true" Centered="true" Color="@Color.Primary">    <MudTabPanel Text="All My Links">
         <div id="AllMyLinks" class="">
             <div class="sc-bdfBwQ sc-gsTCUz jgGrsq bhdLno">
                 <div class="sc-bdfBwQ eZNKTD"><img src="me.png" alt="@@joeshakely Profile Image | Linktree" data-testid="ProfileImage" class="sc-iBPRYJ flTywP Header__StyledProfilePicture-sc-i98650-2" filter="none"></div>
@@ -29,6 +25,9 @@
                 }
             </div>
         </div>
+    </MudTabPanel>s
+    <MudTabPanel Text="SQL">
+        <SqlPage />
     </MudTabPanel>
     <MudTabPanel Text="BTC-USD CandleStick Chart">
         <Candles />
@@ -42,7 +41,7 @@
 
     public static string CssClass => "sc-pFZIQ StyledButton-sc-686c3k-0 ldGKnQ imjgnX";
 
-    public static string[] Links => new[] { "https://github.com/messidagod", "https://instagram.com/joeshakely", "https://www.tiktok.com/@joeshakely" };
+    public static string[] Links => new[] { "https://github.com/messidagod", "https://instagram.com/joeshakely", "https://www.tiktok.com/@joeshakely", "https://joe-shakely.github.io" };
 
     public static string DomainFromUrl(string uri)
     {
