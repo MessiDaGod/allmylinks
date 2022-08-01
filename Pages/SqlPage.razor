@@ -172,6 +172,7 @@
         {
             for (int j = 0; j < tableNames[i].columns.Length; j++)
             {
+                break;
                 @* await Task.Run(() => Console.WriteLine(tableNames[i].columns[j].ToString())).ConfigureAwait(false);
                 await Task.Run(() => Console.WriteLine(tableNames[i].values[j].ToString())).ConfigureAwait(false); *@
             }
@@ -184,16 +185,11 @@
         await Js.InvokeVoidAsync("Sql.initRunQuery");
     }
 
-    public async Task InitDbFile()
-    {
-
-    }
-
     IList<IBrowserFile> files = new List<IBrowserFile>();
 
     private async Task UploadFiles(InputFileChangeEventArgs e)
     {
-        if (!e.GetMultipleFiles()[0].Name.ToString().Contains(".db"))
+        if (!e.GetMultipleFiles()[0].Name.ToString().ToLower().Contains(".db"))
         {
             await Js.InvokeVoidAsync("AML.logit", "File is not a valid SQLite database");
             showLeaveAlert = true;

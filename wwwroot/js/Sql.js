@@ -76,7 +76,57 @@
 	var tbls = [];
 	var staticTbls = [];
 	var tblcnt = 0;
-
+	var paginationBtnProps = {
+		'firstPageBtn': {
+			'className': 'page-item disabled',
+			'linkClassName': 'page-link',
+			'linkTitle': 'first',
+			'linkInnerText': '⏮'
+		},
+		'prevPageBtn': {
+			'className': 'page-item disabled',
+			'linkClassName': 'page-link',
+			'linkTitle': 'previous',
+			'linkInnerText': '⏪'
+		},
+		'nextPageBtn': {
+			'className': 'page-item',
+			'linkClassName': 'page-link',
+			'linkTitle': 'next',
+			'linkInnerText': '⏩'
+		},
+		'lastPageBtn': {
+			'className': 'page-item',
+			'linkClassName': 'page-link',
+			'linkTitle': 'last',
+			'linkInnerText': '⏭'
+		},
+		// =====================
+		'firstQueryPageBtn': {
+			'className': 'page-item disabled',
+			'linkClassName': 'page-link',
+			'linkTitle': 'first',
+			'linkInnerText': '⏮'
+		},
+		'prevQueryPageBtn': {
+			'className': 'page-item disabled',
+			'linkClassName': 'page-link',
+			'linkTitle': 'previous',
+			'linkInnerText': '⏪'
+		},
+		'nextQueryPageBtn': {
+			'className': 'page-item',
+			'linkClassName': 'page-link',
+			'linkTitle': 'next',
+			'linkInnerText': '⏩'
+		},
+		'lastQueryPageBtn': {
+			'className': 'page-item',
+			'linkClassName': 'page-link',
+			'linkTitle': 'last',
+			'linkInnerText': '⏭'
+		}
+	};
 
 	window.Sql = {
 		snapToQE: function() {
@@ -290,58 +340,6 @@
 			var totalNoOfQueryRecords = 0;
 			var queryOffset = 0;
 
-			var paginationBtnProps = {
-				'firstPageBtn': {
-					'className': 'page-item disabled',
-					'linkClassName': 'page-link',
-					'linkTitle': 'first',
-					'linkInnerText': '⏮'
-				},
-				'prevPageBtn': {
-					'className': 'page-item disabled',
-					'linkClassName': 'page-link',
-					'linkTitle': 'previous',
-					'linkInnerText': '⏪'
-				},
-				'nextPageBtn': {
-					'className': 'page-item',
-					'linkClassName': 'page-link',
-					'linkTitle': 'next',
-					'linkInnerText': '⏩'
-				},
-				'lastPageBtn': {
-					'className': 'page-item',
-					'linkClassName': 'page-link',
-					'linkTitle': 'last',
-					'linkInnerText': '⏭'
-				},
-				// =====================
-				'firstQueryPageBtn': {
-					'className': 'page-item disabled',
-					'linkClassName': 'page-link',
-					'linkTitle': 'first',
-					'linkInnerText': '⏮'
-				},
-				'prevQueryPageBtn': {
-					'className': 'page-item disabled',
-					'linkClassName': 'page-link',
-					'linkTitle': 'previous',
-					'linkInnerText': '⏪'
-				},
-				'nextQueryPageBtn': {
-					'className': 'page-item',
-					'linkClassName': 'page-link',
-					'linkTitle': 'next',
-					'linkInnerText': '⏩'
-				},
-				'lastQueryPageBtn': {
-					'className': 'page-item',
-					'linkClassName': 'page-link',
-					'linkTitle': 'last',
-					'linkInnerText': '⏭'
-				}
-			};
-
 			// if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
 			//     return;
 			// } else {
@@ -494,6 +492,14 @@
 				return res;
 			}
 		},
+		LoadTables: async function(tblName) {
+			var el = document.getElementById('dbTableDetails').rows;
+
+			if (tblcnt == el.length && el.length > 0) {
+				AML.logit("table count: " + tblcnt);
+			}
+			await DotNet.invokeMethodAsync('allmylinks', 'LoadTables', tblName);
+		},
 		loadTableSelectable: async function(tblName) {
 			//await Sql.setQuery(tblName);
 			// Sql.init();
@@ -515,7 +521,8 @@
 			tblClickableBtn.innerText = `${tblName}`;
 			var el = document.getElementById('dbTableDetails').rows;
 
-			if (tblcnt == el.length)
+			if (tblcnt == el.length && el.length > 0) {
+				await Sql.LoadTables(tblName);
 				for (let i = 0; i < tblcnt; i++) {
 					for (let j = 0; j < el[i].querySelectorAll('button').length; j++) {
 						tbls = el[i].querySelectorAll('button')[j];
@@ -609,6 +616,7 @@
 						}
 					}
 				}
+			}
 			let tblClickableRow = dbTableDetails.insertRow(0);
 			let tblClickableCell = tblClickableRow.insertCell(0);
 			tblClickableCell.setAttribute('colspan', 2);
@@ -735,57 +743,6 @@
 			try {
 				let paginationBtn = document.createElement('li');
 				paginationBtn.id = paginationBtnType;
-				let paginationBtnProps = {
-					'firstPageBtn': {
-						'className': 'page-item disabled',
-						'linkClassName': 'page-link',
-						'linkTitle': 'first',
-						'linkInnerText': '⏮'
-					},
-					'prevPageBtn': {
-						'className': 'page-item disabled',
-						'linkClassName': 'page-link',
-						'linkTitle': 'previous',
-						'linkInnerText': '⏪'
-					},
-					'nextPageBtn': {
-						'className': 'page-item',
-						'linkClassName': 'page-link',
-						'linkTitle': 'next',
-						'linkInnerText': '⏩'
-					},
-					'lastPageBtn': {
-						'className': 'page-item',
-						'linkClassName': 'page-link',
-						'linkTitle': 'last',
-						'linkInnerText': '⏭'
-					},
-					// =====================
-					'firstQueryPageBtn': {
-						'className': 'page-item disabled',
-						'linkClassName': 'page-link',
-						'linkTitle': 'first',
-						'linkInnerText': '⏮'
-					},
-					'prevQueryPageBtn': {
-						'className': 'page-item disabled',
-						'linkClassName': 'page-link',
-						'linkTitle': 'previous',
-						'linkInnerText': '⏪'
-					},
-					'nextQueryPageBtn': {
-						'className': 'page-item',
-						'linkClassName': 'page-link',
-						'linkTitle': 'next',
-						'linkInnerText': '⏩'
-					},
-					'lastQueryPageBtn': {
-						'className': 'page-item',
-						'linkClassName': 'page-link',
-						'linkTitle': 'last',
-						'linkInnerText': '⏭'
-					}
-				};
 				paginationBtn.className = paginationBtnProps[paginationBtnType]['className'];
 
 				let pageBtnLink = document.createElement('a');
@@ -980,6 +937,7 @@
 		RenderDatabaseTables: async function(tbleName) {
 			// Invoke to call C# function from JavaScript.
 			await DotNet.invokeMethodAsync('allmylinks', 'LoadSelectedTable', tbleName);
+			await DotNet.invokeMethodAsync('allmylinks', 'LoadSelectedTable2', tbleName);
 		},
 		getResultSetAsRowJSON: function(_db, _stmt) {
 			try {

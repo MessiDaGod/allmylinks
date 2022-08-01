@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RunAOTCompilation>false</RunAOTCompilation>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -20,8 +20,9 @@
       <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0-preview.5.22303.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0-preview.5.22303.8" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.6" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0-preview.5.22302.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0-preview.5.22302.2" />
@@ -34,10 +35,16 @@
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.0" />
     <PackageReference Include="SQLitePCLRaw.core" Version="2.1.0" />
     <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.0" />
-    <PackageReference Include="Stl" Version="3.2.6" />
+    <PackageReference Include="Stl" Version="3.5.2" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Stl.Fusion.EntityFramework" Version="3.5.2" />
+    <PackageReference Include="UAParser" Version="3.1.47" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+    <PackageReference Include="Blazor-Analytics" Version="3.11.0" />
+    <PackageReference Include="FluentValidation" Version="11.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,9 +54,27 @@
     <Content Remove="Pages\Redirect.razor" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+  <!-- <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="npm install" WorkingDirectory="./" />
-    <!-- <Exec Command="npm run build" WorkingDirectory="NpmJS" /> -->
+  </Target> -->
+
+  <!--Is this a rebuild - Dont clean generated files as this breaks rebuild behaviour-->
+  <Target Name="ShouldCleanGeneratedFiles" BeforeTargets="BeforeRebuild">
+    <PropertyGroup>
+      <CleanGeneratedFiles>false</CleanGeneratedFiles>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="CleanGeneratedFiles" BeforeTargets="Clean" Condition="'$(CleanGeneratedFiles)' != 'false'">
+    <ItemGroup>
+      <FilesToClean Include="./Pages/**/*ExampleCode.*" />
+      <FilesToClean Include="./Pages/**/*Example_DialogCode.*" />
+      <FilesToClean Include="./NewFilesToBuild.txt" />
+      <FilesToClean Include="./Models/Snippets.generated.cs" />
+      <FilesToClean Include="./Models/DocStrings.generated.cs" />
+      <FilesToClean Include="./wwwroot/MudBlazorDocs.min.css" />
+    </ItemGroup>
+    <Delete Files="@(FilesToClean)" />
   </Target>
 
   <ItemGroup>

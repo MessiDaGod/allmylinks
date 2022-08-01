@@ -1,0 +1,96 @@
+@using System.Linq
+@using System.Text.RegularExpressions
+@using allmylinks.Extensions
+@using allmylinks.Services
+@inject IMenuService MenuService;
+@inject NavigationManager NavMan;
+
+<MudText Typo="Typo.subtitle1" Class="mt-1 mb-2 ml-2 d-flex d-md-none"><b>Docs</b></MudText>
+<MudNavLink Href="docs/overview" Class="docs-single-link">Overview</MudNavLink>
+<MudNavGroup Title="Components" Expanded="@(_section == "components")" ExpandIcon="@Icons.Material.Filled.ExpandMore">
+    @foreach (var item in MenuService.Components)
+    {
+        if (item.IsNavGroup)
+        {
+            <MudNavGroup Title="@item.Name" Expanded="@(IsSubGroupExpanded(item))" ExpandIcon="@Icons.Material.Filled.ExpandMore">
+                @foreach (var subItem in item.GroupComponents)
+                {
+                    string href = $"components/{subItem.Link}";
+                    <MudNavLink Href="@href">@subItem.Name</MudNavLink>
+                }
+            </MudNavGroup>
+        }
+        else
+        {
+            string href = $"components/{item.Link}";
+            <MudNavLink Href="@href">@item.Name</MudNavLink>
+        }
+    }
+</MudNavGroup>
+<MudNavGroup Title="API" Expanded="@(_section == "api")" ExpandIcon="@Icons.Material.Filled.ExpandMore">
+    @foreach (var item in MenuService.Api.OrderBy(x => x.Name))
+    {
+        <MudNavLink Href="@ApiLink.GetApiLinkFor(item.Type)">@item.Name</MudNavLink>
+    }
+</MudNavGroup>
+<MudNavGroup Title="Features" Expanded="@(_section == "features")" ExpandIcon="@Icons.Material.Filled.ExpandMore">
+    @foreach (var link in MenuService.Features)
+    {
+        <MudNavLink Href="@link.Href">@link.Title</MudNavLink>
+    }
+</MudNavGroup>
+<MudNavGroup Title="Customization" Expanded="@(_section == "customization")" ExpandIcon="@Icons.Material.Filled.ExpandMore">
+    @foreach (var link in MenuService.Customization)
+    {
+        <MudNavLink Href="@link.Href">@link.Title</MudNavLink>
+    }
+</MudNavGroup>
+<MudNavGroup Title="CSS Utilities" Expanded="@(_section == "utilities")" ExpandIcon="@Icons.Material.Filled.ExpandMore">
+    @foreach (var title in MenuService.Utilities.GroupBy(x => x.Group).Select(x => x.Key))
+    {
+        <div class="docs-css-utility-header">
+            @title
+        </div>
+        @foreach (var link in MenuService.Utilities.Where(x => x.Group == title))
+        {
+            <MudNavLink Href="@link.Href" Match="NavLinkMatch.All">@link.Title</MudNavLink>
+        }
+    }
+</MudNavGroup>
+
+@code {
+
+        //sections are "getting-started","components", "api", ...
+        string _section;
+
+        //component links are the part of the url that tells us what component is featured
+        string _componentLink;
+
+        protected override void OnInitialized()
+        {
+            Refresh();
+            base.OnInitialized();
+        }
+
+        public void Refresh()
+        {
+            _section = NavMan.GetSection();
+            _componentLink = NavMan.GetComponentLink();
+            StateHasChanged();
+        }
+
+        bool IsSubGroupExpanded(MudComponent item)
+        {
+            #region comment about is subgroup expanded
+            //if the route contains any of the links of the subgroup, then the subgroup
+            //should be expanded
+            //Example:
+            //subgroup: form inputs & controls
+            //the subgroup "form inputs & controls" should be open if the current page has in the route
+            //a component included in the subgroup elements, that in this case are autocomplete, form, field,
+            //radio, select...
+            //this route `/components/autocomplete` should open the subgroup "form inputs..."
+            #endregion
+            return item.GroupComponents.Any(i => i.Link == _componentLink);
+        }
+}

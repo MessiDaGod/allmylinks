@@ -1,0 +1,54 @@
+@page "/is-it-christmas"
+@inject IJSRuntime Js;
+@using UAParser;
+@using System.Collections.Generic;
+@using System.Collections.Concurrent;
+@namespace allmylinks.Pages
+
+<h3><em>High-Performance Modern Christmas Detection Technology</em></h3>
+<PageTitle>Is It Christmas?</PageTitle>
+<div class="middle">
+    <p>@Answer</p>
+</div>
+<div class="middle-small">
+    <p>@UserAgent</p>
+    @for (var i = 0; i < UserAgentCache.Values.ToArray().Length; i++)
+    {
+        <p>@Js.InvokeVoidAsync("AML.logit", UserAgentCache.Values.ToArray()[i])</p>
+    }
+</div>
+<style>
+    .middle {
+        font-size: 10em;
+        font-weight: bold;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .middle-small {
+        font-size: 1em;
+        font-weight: bold;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        vertical-align: middle;
+    }
+    h3 {
+        text-align: center;
+    }
+</style>
+@code {
+
+    public string Answer { get; set; } = string.Empty;
+    internal ConcurrentDictionary<string, UserAgent> UserAgentCache { get; } = new();
+    private string UserAgent { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var today = DateTime.Now;
+        Answer = today.Month == 12 && today.Day == 25 ? "YES" : "NO";
+        var ua = await Js.InvokeAsync<string>("getUserAgent");
+        UserAgent = ua;
+    }
+}

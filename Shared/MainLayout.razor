@@ -1,151 +1,46 @@
-﻿@inherits LayoutComponentBase
-@inject IJSRuntime Js;
-@inject NavigationManager UriHelper;
-@inject SideBarService SideBarService;
-@using allmylinks;
-@using System;
-@using System.Text.RegularExpressions;
+@inherits LayoutComponentBase
+@inject LayoutService LayoutService;
 
-<MudThemeProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
-<RadzenDialog />
-<RadzenNotification />
-<RadzenContextMenu />
-<RadzenTooltip />
-<MudAppBar Color="Color.Transparent" Fixed="false">
-  <MudPaper Width="10px" Elevation="0">
-    <MudNavMenu Rounded="true" Margin="Margin.Dense" Color="Color.Primary" Class="pa-2">
-    </MudNavMenu>
-  </MudPaper>
-  <MudPaper Width="300px" id="menuItems" class="hide">
-  </MudPaper>
-  <MudSpacer />
-  <span class="material-symbols-outlined">computer</span><a><strong>OS: </strong>@userAgent</a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/MessiDaGod/" title="GitHub" target="_blank" />
-</MudAppBar>
-	<RadzenSplitter Orientation="Radzen.Orientation.Horizontal" Expand=@OnExpand>
-		<RadzenSplitterPane>
-			<RadzenSplitter Expand=@OnExpand>
-				<RadzenSplitterPane Size="70%">
-          @Body
-				</RadzenSplitterPane>
-			</RadzenSplitter>
-		</RadzenSplitterPane>
-	</RadzenSplitter>
-<footer class="footer">
-  2022 @@ Shakely Consulting
-</footer>
+<PageTitle>All My Links</PageTitle>
 
-<style>
-button > #none {
-  all: unset;
-  cursor: pointer;
-}
-.footer {
-  position: fixed !important;
-  left: 0 !important;
-  bottom: 0  !important;
-  width: 100% !important;
-  background-color: white !important;
-  color: black !important;
-  text-align: center !important;
-}
-.rz-expand, .rz-resize {
-  width: 20%;
-}
-</style>
+    <MudThemeProvider @ref="@_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
+    <MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.ExtraSmall"/>
+    <MudSnackbarProvider/>
+    @Body
+
 @code {
 
 
-    void OnExpand(RadzenSplitterEventArgs args)
-    {
-    }
+        private MudThemeProvider _mudThemeProvider;
 
-    void OnResize(RadzenSplitterResizeEventArgs args)
-    {
-
-    }
-
-    void OnCollapseDisabled(RadzenSplitterEventArgs args)
-    {
-        args.Cancel = true;
-
-    }
-
-    void OnResizeDisabled(RadzenSplitterResizeEventArgs args)
-    {
-        args.Cancel = true;
-
-    }
-
-    RadzenSidebar? sidebar0;
-    RadzenBody? body0;
-    bool sidebarExpanded = true;
-    bool bodyExpanded = false;
-    bool notExpanded = false;
-    bool IsServerSide = true;
-    IEnumerable<SideBarItem>? examples;
-    private string? userAgent { get; set; } = null!;
-
-    [Parameter]
-    public string CssClass { get; set; } = "";
-
-
-  protected override async Task OnInitializedAsync()
-    {
-        examples = SideBarService.Examples;
-        string pattern = @"(Windows|Mac OS X|iPhone)";
-        var ua = await Js.InvokeAsync<string>("getUserAgent");
-        RegexOptions options = RegexOptions.Multiline;
-
-        foreach (Match m in Regex.Matches(ua, pattern, options))
+        protected override void OnInitialized()
         {
-            userAgent = m.Value;
-            break;
+            LayoutService.MajorUpdateOccured += LayoutServiceOnMajorUpdateOccured;
+            base.OnInitialized();
         }
-        userAgent = userAgent ?? "Other";
-        await base.OnInitializedAsync();
-    }
 
-    internal IJSObjectReference module0;
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        module0 = await Js.InvokeAsync<IJSObjectReference>("import", "./js/Shakely.js");
-    }
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
 
-    protected override async Task OnParametersSetAsync()
-    {
-    }
+            if (firstRender)
+            {
+                await ApplyUserPreferences();
+                StateHasChanged();
+            }
+        }
 
-    void FilterPanelMenu(ChangeEventArgs args)
-    {
-        var term = args.Value.ToString();
-        examples = SideBarService.Filter(term);
-    }
-    async Task ChangeTheme(object value)
-    {
-        var url = await Task.Run(async () => UriHelper.GetUriWithQueryParameter("theme", $"{value.ToString()}"));
-        UriHelper.NavigateTo(url, true);
-    }
-    async Task ChangeDataBase(object value)
-    {
-        var url = UriHelper.GetUriWithQueryParameter("database", $"{value.ToString()}");
-        UriHelper.NavigateTo(url, true);
-    }
-    public class LoginTypes
-    {
-        public LoginTypes() { }
-        public string Name { get; set; } = null!;
-        public string DisplayName { get; set; } = null!;
-    }
+        private async Task ApplyUserPreferences()
+        {
+            var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
+            await LayoutService.ApplyUserPreferences(defaultDarkMode);
+        }
 
+        public void Dispose()
+        {
+            LayoutService.MajorUpdateOccured -= LayoutServiceOnMajorUpdateOccured;
+        }
 
-   internal List<string> Pages = new();
-
-    protected async Task ToggleMenuItems()
-    {
-      await Js.InvokeVoidAsync("AML.toggleMenuItems");
+        private void LayoutServiceOnMajorUpdateOccured(object sender, EventArgs e) => StateHasChanged();
     }
 }

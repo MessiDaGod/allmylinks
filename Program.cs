@@ -9,6 +9,9 @@ using Newtonsoft.Json;
 using Radzen;
 using Radzen.Blazor;
 using Microsoft.Extensions.Logging.Abstractions;
+using allmylinks.Services;
+using allmylinks.Services.UserPreferences;
+using  allmylinks.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -41,6 +44,16 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 builder.Services.AddScoped<SideBarService>();
+
+// MudBlazor
+// builder.Services.AddScoped<LayoutService>();
+// builder.Services.AddScoped<MenuService>();
+// builder.Services.AddScoped<RenderQueueService>();
+// builder.Services.AddScoped<DocsNavigationService>();
+
+// builder.Services.AddScoped(typeof(IUserPreferencesService), typeof(UserPreferencesService));
+
+builder.Services.TryAddDocsViewServices();
 // await db.InsertAsync(person);
 
 // Console.WriteLine(person.ToString());

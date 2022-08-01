@@ -1,0 +1,341 @@
+@page "/sql"
+@using MudBlazor;
+@inject IJSRuntime Js;
+@using Radzen
+@using Radzen.Blazor
+@namespace allmylinks
+@using allmylinks.Models;
+@inject NavigationManager UriHelper;
+
+@if (!isLoading)
+{
+    @if (showCallAlert && files.ToArray().Length == 0)
+    {
+        <div id="infomsg" class="center">
+            <MudAlert Severity="Severity.Success" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Press the "Upload Database" button to the left and upload a .db file to access this page.<br><a href="https://github.com/MessiDaGod/Files/blob/main/main.db?raw=true" class="center">Database File</a></MudAlert>
+
+            @if (showLeaveAlert == true)
+            {
+                <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Only .db files can be uploaded!</MudAlert>
+            }
+        </div>
+    }
+
+    @* <RadzenDataGrid @ref="PersonsGrid" AllowFiltering="true" AllowColumnResize="true" AllowVirtualization="true" Style="height:700px" FilterMode="FilterMode.Advanced" AllowSorting="true" Data="@Persons" TItem="Person" ColumnWidth="100px" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" PagerHorizontalAlign="HorizontalAlign.Left" LogicalFilterOperator="LogicalFilterOperator.Or" AllowRowSelectOnRowClick="@allowRowSelectOnRowClick" SelectionMode="Radzen.DataGridSelectionMode.Multiple">
+            <Columns>
+            @for (int i = 0; i < columns.Length; i++) {
+                <RadzenDataGridColumn TItem="Person" Property="@columns[i]" Title="@columns[i]"  />
+            }
+            </Columns>
+        </RadzenDataGrid> *@
+
+    <RadzenSplitter Orientation="Radzen.Orientation.Vertical" Collapse=@OnCollapseDisabled Expand=@OnExpand>
+        <RadzenSplitterPane>
+            <RadzenSplitter Collapse=@OnCollapseDisabled Expand=@OnExpand>
+                <RadzenSplitterPane Size="14%">
+                    <div id='infoPanel' class="card rounded-0 border-left-0">
+                        <table class='table table-condensed small'>
+                            <thead>
+                                <tr>
+                                    <td colspan='2'>
+                                        <InputFile id="upload" OnChange="UploadFiles" hidden />
+                                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.CloudUpload" for="upload">
+                                            Upload Database
+                                        </MudButton>
+                                        @if (files != null)
+                                        {
+                                            @foreach (var file in files)
+                                            {
+                                                @if (file.Name.Contains(".db"))
+                                                {
+                                                    <MudList>
+                                                        <MudListItem Icon="@Icons.Filled.AttachFile" @key="@file">
+                                                            @file.Name <code>@(file.Size / 1000) KB</code>
+                                                        </MudListItem>
+                                                    </MudList>
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody id='dbTableDetails'></tbody>
+                        </table>
+                    </div>
+                </RadzenSplitterPane>
+                <RadzenSplitterPane>
+                    <p id='errorDisplay' class='m-0 p-0 small text-danger'></p>
+                    <div id='mainTabsWrapper' class='card rounded-0 border-right-0'>
+                        <div id='mainTabs' role='tablist' class="hide">
+                            <MudTabs Elevation="4" Rounded="true" Centered="false" Color="@Color.Secondary" class='nav nav-tabs'>
+                                <MudTabPanel Text="🔎 Browse Data">
+                                    <div id='browse' role='tabpanel' class='tab-pane fade active show' aria-labelledby='browse-tab'>
+                                        <div class='btn-group btn-group-sm m-0'>
+                                            <div class='btn-group btn-group-sm'>
+                                                <button id='exportToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown' onclick="Sql.">
+                                                    Save
+                                                    <span class="material-symbols-outlined">save</span>
+                                                </button>
+                                                <div class='dropdown-menu'>
+                                                    <button id='exportAsJSON' type='button' class='dropdown-item'><small>💽 Export datatable as JSON</small></button>
+                                                </div>
+                                            </div>
+                                            <small id='tableDetails' class='ml-2'></small>
+                                        </div>
+                                        <hr class='invisible-divider'>
+                                        @if (Prices != null) {
+                                        <RadzenDataGrid @ref="_PricesGrid" AllowFiltering="true" AllowColumnResize="true" AllowVirtualization="true" Style="height:700px" FilterMode="FilterMode.Advanced" AllowSorting="true" Data="@Prices.ToList().AsEnumerable()" TItem="Prices" ColumnWidth="100px" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" PagerHorizontalAlign="HorizontalAlign.Left" LogicalFilterOperator="LogicalFilterOperator.Or" AllowRowSelectOnRowClick="@AllowRowSelectOnRowClick" SelectionMode="Radzen.DataGridSelectionMode.Multiple">
+                                            <Columns>
+                                                <RadzenDataGridColumn TItem="Prices" Property="Symbol" Title="Symbol" Sortable="true" Filterable="true">
+                                                    <Template Context="Prices">
+                                                        @if (Conv.ConvertTo(Prices.Symbol).Type == SymbolType.Stock || Prices.Symbol == "BTC-USD")
+                                                        {
+                                                            <a href="@(String.Concat("JavaScript:Shakely.openNewWindow('", "https://finance.yahoo.com/quote/", @Prices.Symbol, "/", "')"))">@(Prices.Symbol)</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            @Prices.Symbol
+                                                        }
+                                                    </Template>
+                                                </RadzenDataGridColumn>
+                                                <RadzenDataGridColumn TItem="Prices" Property="Open" Title="Open" FormatString="{0:C}" />
+                                                <RadzenDataGridColumn TItem="Prices" Property="High" Title="High" FormatString="{0:C}" />
+                                                <RadzenDataGridColumn TItem="Prices" Property="Low" Title="Low" FormatString="{0:C}" />
+                                                <RadzenDataGridColumn TItem="Prices" Property="AdjustedClose" Title="Adj. Close" FormatString="{0:C}" />
+                                                <RadzenDataGridColumn TItem="Prices" Property="Close" Title="Close" FormatString="{0:C}" />
+                                                <RadzenDataGridColumn TItem="Prices" Property="Volume" Title="Volume" FormatString="{0:N0}" />
+                                                <RadzenDataGridColumn TItem="Prices" Property="Pct_Change" Title="% Change">
+                                                    <Template Context="Prices">
+                                                        <span style="color: black; font-weight: 700">@Prices.Pct_Change.ToString("N4")</span>
+                                                        @if (Prices.Pct_Change < 0)
+                                                        {
+                                                            <RadzenImage Path="@UriHelper.ToAbsoluteUri($"img/down.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
+                                                        }
+                                                        @if (Prices.Pct_Change > 0)
+                                                        {
+                                                            <RadzenImage Path="@UriHelper.ToAbsoluteUri($"img/up.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
+                                                        }
+                                                        @if (Prices.Pct_Change == 0)
+                                                        {
+                                                            <RadzenImage Path="@UriHelper.ToAbsoluteUri($"img/arrowleftright.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
+                                                        }
+                                                    </Template>
+                                                </RadzenDataGridColumn>
+                                            </Columns>
+                                        </RadzenDataGrid>
+                                        }
+                                        <div id='tableRecords' class='table-responsive'></div>
+                                        <hr class='invisible-divider'>
+                                        <ul id='tablePagination' class='pagination pagination-sm rounded-0'></ul>
+                                    </div>
+                                </MudTabPanel>
+                                <MudTabPanel Text="❮⁄❯ Query Editor">
+                                    <div id='editor' role='tabpanel' class='tab-pane fade show' aria-labelledby='editor-tab'>
+                                        <div class='btn-group btn-group-sm m-0'>
+                                            <div class='btn-group btn-group-sm'>
+                                                <button id='exportQueryToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown'>
+                                                    Save
+                                                    <span class="material-symbols-outlined">save</span>
+                                                </button>
+                                                <div class='dropdown-menu'>
+                                                    <button id='exportQueryAsJSON' type='button' class='dropdown-item'><small>💽 Export resultset as JSON</small></button>
+                                                    <button id='exportEditorQuery' type='button' class='dropdown-item'><small>📄 Export SQL query to local file</small></button>
+                                                </div>
+                                            </div>
+                                            <button id='runQueryBtn' type='button' class='btn btn-sm btn-light text-primary border-primary rounded-0 ml-2' onclick="Sql.initRunQuery()">
+                                                Execute Query
+                                                <span class="material-symbols-outlined">database</span>
+                                            </button>
+                                            <small id='tableQueryDetails' class='ml-2'></small>
+                                        </div>
+                                        <hr class='invisible-divider'>
+                                        <p class='mb-0'><textarea id='lineCounter' wrap='off' readonly>1.</textarea><textarea id='codeEditor' wrap='off'></textarea></p>
+                                        <div id='tableQueryRecords' class='table-responsive'></div>
+                                        @* <hr class='invisible-divider'> *@
+                                        <ul id='tableQueryPagination' class='pagination pagination-sm rounded-0'></ul>
+                                    </div>
+                                </MudTabPanel>
+                            </MudTabs>
+                        </div>
+                    </div>
+                </RadzenSplitterPane>
+            </RadzenSplitter>
+        </RadzenSplitterPane>
+    </RadzenSplitter>
+}
+
+@code {
+
+
+    [Inject] IJSRuntime JS { get; set; }
+
+    public class DatabaseTables
+    {
+        public DatabaseTables() { }
+        public object[] columns { get; set; } = null!;
+        public object[] values { get; set; } = null!;
+    }
+
+    public IEnumerable<Person?>? Persons;
+
+    private RadzenDataGrid<Person>? PersonsGrid;
+
+    public string[]? columns { get; set; }
+
+    bool allowRowSelectOnRowClick = true;
+    bool isLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Run(() => isLoading = false);
+            await Init();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    public async Task<object[]?>? GetColumns(string tableName)
+    {
+        columns = await Js.InvokeAsync<string[]>("Sql.getColumns", tableName);
+        for (int i = 0; i < columns.Length; i++)
+        {
+            await Task.Run(() => Console.WriteLine(columns[i].ToString())).ConfigureAwait(false);
+        }
+        return columns;
+    }
+
+    protected async Task Init()
+    {
+        await Js.InvokeVoidAsync("Sql.init");
+    }
+
+    [JSInvokable("LoadSelectedTable2")]
+    public static async Task LoadSelectedTable2(DatabaseTables[] tableNames)
+    {
+        for (int i = 0; i < tableNames.Length; i++)
+        {
+            for (int j = 0; j < tableNames[i].columns.Length; j++)
+            {
+                break;
+                @* await Task.Run(() => Console.WriteLine(tableNames[i].columns[j].ToString())).ConfigureAwait(false);
+                await Task.Run(() => Console.WriteLine(tableNames[i].values[j].ToString())).ConfigureAwait(false); *@
+            }
+        }
+        return;
+    }
+
+    [JSInvokable("LoadTables")]
+    public static async Task LoadTables(DatabaseTables[] tableNames)
+    {
+        for (int i = 0; i < tableNames.Length; i++)
+        {
+            for (int j = 0; j < tableNames[i].columns.Length; j++)
+            {
+                await Task.Run(() => Console.WriteLine(tableNames[i].columns[j].ToString())).ConfigureAwait(false);
+                await Task.Run(() => Console.WriteLine(tableNames[i].values[j].ToString())).ConfigureAwait(false);
+            }
+        }
+        return;
+    }
+
+
+    protected async Task InitRunQuery()
+    {
+        await Js.InvokeVoidAsync("Sql.initRunQuery");
+    }
+
+    IList<IBrowserFile> files = new List<IBrowserFile>();
+
+    private async Task UploadFiles(InputFileChangeEventArgs e)
+    {
+        if (!e.GetMultipleFiles()[0].Name.ToString().ToLower().Contains(".db"))
+        {
+            await Js.InvokeVoidAsync("AML.logit", "File is not a valid SQLite database");
+            showLeaveAlert = true;
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
+        for (int i = 0; i < e.GetMultipleFiles().Count; i++)
+        {
+            var file = e.GetMultipleFiles()[i];
+            await Js.InvokeVoidAsync("AML.logit", $"Adding file {i + 1}");
+            await Task.Run(() => files.Add(file));
+            await Js.InvokeVoidAsync("AML.logit", files[0].Name.ToString());
+        }
+        await Js.InvokeVoidAsync("Sql.toggleTabs");
+        await Js.InvokeVoidAsync("Sql.toggleMsg");
+        await Init();
+        var result = await Js.InvokeAsync<Prices[]>("Sql.getPrices");
+        List<Prices> pricesList = new();
+        if (result != null)
+        {
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (i >=0 && i < 11)
+                await Js.InvokeVoidAsync("AML.logit", $"sql blazor loading row {i}");
+                pricesList.Add(result[i]);
+            }
+            Prices = pricesList.AsEnumerable();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+
+    private void CloseMe(bool value)
+    {
+        if (value)
+        {
+            showLeaveAlert = false;
+        }
+        else
+        {
+            showCallAlert = false;
+        }
+    }
+
+    private void ShowAlerts()
+    {
+        showCallAlert = true;
+        showLeaveAlert = true;
+    }
+
+    void OnCollapse(RadzenSplitterEventArgs args)
+    {
+    }
+
+    void OnExpand(RadzenSplitterEventArgs args)
+    {
+    }
+
+    void OnResize(RadzenSplitterResizeEventArgs args)
+    {
+
+    }
+
+    void OnCollapseDisabled(RadzenSplitterEventArgs args)
+    {
+        args.Cancel = true;
+
+    }
+
+    void OnResizeDisabled(RadzenSplitterResizeEventArgs args)
+    {
+        args.Cancel = true;
+
+    }
+    private bool showCallAlert = true;
+    private bool showLeaveAlert = false;
+    IEnumerable<SymbolField> symbols => SymbolField.Symbols;
+    private SymbolField Conv { get; set; } = new();
+    private bool AllowRowSelectOnRowClick { get; set; } = true;
+    private IEnumerable<Prices> Prices { get; set; }
+    private Radzen.TabPosition _tabPosition = Radzen.TabPosition.Left;
+    private RadzenDataGrid<Prices> _PricesGrid;
+    RadzenDataGrid<Prices> _grid;
+
+}

@@ -2,6 +2,9 @@
 using System;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.AspNetCore.Hosting;
+using Stl.Fusion;
+using allmylinks.Services;
+using allmylinks.Services.UserPreferences;
 
 namespace allmylinks
 {
@@ -15,8 +18,11 @@ namespace allmylinks
             Cfg = configuration;
         }
 
-        public void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services)
         {
+
+            var fusion = services.AddFusion();
+            fusion.AddComputeService<IUserPreferencesService, UserPreferencesService>();
             services.AddLogging(logging =>
             {
                 logging.ClearProviders();
@@ -30,4 +36,3 @@ namespace allmylinks
         }
     }
 }
-

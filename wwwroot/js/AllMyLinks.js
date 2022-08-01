@@ -56,6 +56,13 @@
         getColumns: function(table) {
 
         },
+        hideOtherTabs: function() {
+            var spanList = [...document.querySelectorAll("a[type='button']")];
+            for (var i = 0; i < spanList.length; i++) {
+                var id = spanList[i].textContent.replaceAll(' ', '').replaceAll('?', '');
+                console.log(spanList[i].textContent.replaceAll(' ', '').replaceAll('?', ''));
+                }
+            },
         addDbLink: function () {
             var els = document.querySelectorAll("a[href='/SqlPage']");
             // els.innerHTML = "database";
