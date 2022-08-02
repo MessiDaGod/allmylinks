@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using SQLite;
 using Shakely;
 
-public record LongKeyedEntity : IHasId<long>
+public record LongKeyedEntity : Shakely.IHasId<long>
 {
     [PrimaryKey, AutoIncrement]
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

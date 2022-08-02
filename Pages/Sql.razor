@@ -6,9 +6,10 @@
 @namespace allmylinks
 @using allmylinks.Models;
 @inject NavigationManager UriHelper;
-
+@using BlazorMonaco;
 
 <div id="sql" class="hide">
+<PageTitle>SQL</PageTitle>
 @if (!isLoading)
 {
     @if (showCallAlert && files.ToArray().Length == 0)
@@ -157,6 +158,10 @@
                                         <ul id='tableQueryPagination' class='pagination pagination-sm rounded-0'></ul>
                                     </div>
                                 </MudTabPanel>
+                                <MudTabPanel Text="Monaco Editor">
+                                    <MonacoEditor Id="monaco-editor" ConstructionOptions="EditorConstructionOptions"/>
+                                </MudTabPanel>
+
                             </MudTabs>
                         </div>
                     </div>
@@ -170,9 +175,15 @@
     .hide {
         display: none !important;
     }
+    #sql {
+        padding-top: 60px;
+    }
 </style>
 @code {
 
+    private MonacoEditor _editor { get; set; }
+    private string ValueToSet { get; set; }
+    private string MyLanguage { get; set; } = "csharp";
 
     [Inject] IJSRuntime JS { get; set; }
 
@@ -181,6 +192,50 @@
         public DatabaseTables() { }
         public object[] columns { get; set; } = null!;
         public object[] values { get; set; } = null!;
+    }
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            AutomaticLayout = true,
+            Language = "javascript",
+            GlyphMargin = true,
+            Value = "\"use strict\";\n" +
+                    "function Person(age) {\n" +
+                    "	if (age) {\n" +
+                    "		this.age = age;\n" +
+                    "	}\n" +
+                    "}\n" +
+                    "Person.prototype.getAge = function () {\n" +
+                    "	return this.age;\n" +
+                    "};\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+        };
+    }
+    private string[] decorationIds { get; set; }
+    private async Task EditorOnDidInit(MonacoEditorBase editor)
+    {
+        await _editor.AddCommand((int)KeyMode.CtrlCmd | (int)KeyCode.KeyH, (editor, keyCode) =>
+        {
+            Console.WriteLine("Ctrl+H : Initial editor command is triggered.");
+        });
+
+        var newDecorations = new ModelDeltaDecoration[]
+        {
+            new ModelDeltaDecoration
+            {
+                Range = new BlazorMonaco.Range(3,1,3,1),
+                Options = new ModelDecorationOptions
+                {
+                    IsWholeLine = true,
+                    ClassName = "",
+                    GlyphMarginClassName = ""
+                }
+            }
+        };
+
+        decorationIds = await _editor.DeltaDecorations(null, newDecorations);
+    // You can now use 'decorationIds' to change or remove the decorations
     }
 
     public IEnumerable<Person?>? Persons;
