@@ -24,14 +24,6 @@
         </div>
     }
 
-    @* <RadzenDataGrid @ref="PersonsGrid" AllowFiltering="true" AllowColumnResize="true" AllowVirtualization="true" Style="height:700px" FilterMode="FilterMode.Advanced" AllowSorting="true" Data="@Persons" TItem="Person" ColumnWidth="100px" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" PagerHorizontalAlign="HorizontalAlign.Left" LogicalFilterOperator="LogicalFilterOperator.Or" AllowRowSelectOnRowClick="@allowRowSelectOnRowClick" SelectionMode="Radzen.DataGridSelectionMode.Multiple">
-            <Columns>
-            @for (int i = 0; i < columns.Length; i++) {
-                <RadzenDataGridColumn TItem="Person" Property="@columns[i]" Title="@columns[i]"  />
-            }
-            </Columns>
-        </RadzenDataGrid> *@
-
     <RadzenSplitter Orientation="Radzen.Orientation.Vertical" Collapse=@OnCollapseDisabled Expand=@OnExpand>
         <RadzenSplitterPane>
             <RadzenSplitter Collapse=@OnCollapseDisabled Expand=@OnExpand>
