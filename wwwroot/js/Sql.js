@@ -460,6 +460,7 @@
 						db2 = db;
 						stmt = 'SELECT * FROM sqlite_master WHERE type=\'table\'';
 						resultset = Sql.getResultSetAsRowJSON(db, stmt);
+
 						let noOfTables = resultset.length;
 						// noOfTablesDisplay.innerHTML = `<kbd>${noOfTables}</kdb>`;
 
@@ -468,7 +469,7 @@
 							staticTbls.push(tblName);
 							Sql.loadTableSelectable(tblName);
 						}
-						tblcnt = staticTbls.length;
+						// tblcnt = staticTbls.length;
 
 					} catch (err) {
 						errorDisplay.innerHTML = '';
@@ -478,9 +479,6 @@
 					}
 				}, false); // upload file change event
 			}
-		},
-		price: function() {
-
 		},
 		getPrices: async function() {
 			await Sql.init();
@@ -500,6 +498,17 @@
 			}
 			return await Sql.loadTableSelectable(tblName);
 			// await DotNet.invokeMethodAsync('allmylinks', 'LoadTables', tblName);
+		},
+		setActiveTable: function(tblName) {
+
+			var el = document.getElementById('dbTableDetails');
+			if (el) {
+				if (document.getElementById("activetable").innerText.length == 0 && el.rows.length == tblcnt && el.rows.length > 0)
+					document.getElementById("activetable").innerText = document.querySelectorAll("td>button")[tblcnt - 1].id;
+			}
+		},
+		isNullOrEmpty: function(str) {
+			return (!str || 0 === str.length);
 		},
 		loadTableSelectable: async function(tblName) {
 			//await Sql.setQuery(tblName);
@@ -523,7 +532,6 @@
 			var el = document.getElementById('dbTableDetails').rows;
 
 			if (tblcnt == el.length && el.length > 0) {
-				// await Sql.LoadTables(tblName);
 				for (let i = 0; i < tblcnt; i++) {
 					for (let j = 0; j < el[i].querySelectorAll('button').length; j++) {
 						tbls = el[i].querySelectorAll('button')[j];
@@ -533,6 +541,9 @@
 
 								selected_tbl_name = tblClickableBtn.innerText;
 								selected_tbl_name = selected_tbl_name.replace(tblIcon, '');
+								// if (!Sql.isNullOrEmpty(selected_tbl_name)) {
+								// 	Sql.setActiveTable(selected_tbl_name);
+								// }
 								// ================================================
 								tableDetails.innerHTML = '';
 								if (tablePagination == null)
@@ -550,7 +561,7 @@
 								noOfPages = totalNoOfRecords / recordsPerPage;
 								noOfPages = Math.ceil(noOfPages);
 								// ================================================
-								tableDetails.innerHTML = `${tblIcon}${selected_tbl_name} Total no. of records: <kbd>${totalNoOfRecords}</kbd> Displaying records <kbd>${offset} ― ${offset+recordsPerPage}</kbd>`;
+								tableDetails.innerHTML = `${tblIcon}${selected_tbl_name} Total # of records: <kbd>${totalNoOfRecords}</kbd> Displaying records <kbd>${offset} ― ${offset+recordsPerPage}</kbd>`;
 								// ================================================
 								firstPageBtn = await Sql.initPaginationBtn('firstPageBtn', tablePagination);
 								// ================================================
@@ -613,6 +624,7 @@
 							} catch (err) {
 								throw new Error(err.message);
 							}
+
 							return;
 						}
 					}
@@ -627,6 +639,8 @@
 
 				selected_tbl_name = tblClickableBtn.innerText;
 				selected_tbl_name = selected_tbl_name.replace(tblIcon, '');
+
+				Sql.setActiveTable(selected_tbl_name);
 				// ================================================
 				tableDetails.innerHTML = '';
 				if (tablePagination == null)
@@ -704,6 +718,7 @@
 					//});
 					// }, false);
 				}
+			await Sql.setTableCount();
 			} catch (err) {
 				throw new Error(err.message);
 			}
@@ -900,6 +915,16 @@
 				//     throw new Error(err.message);
 			}
 		},
+		setTableCount: async function() {
+				if (!db)
+					return;
+				let tableCount = db.exec('SELECT COUNT(*) FROM sqlite_master WHERE type=\'table\'')[0].values[0][0];
+				if (tblcnt ===  0) {
+					tblcnt = tableCount;
+				}
+				if (tableCount === tblcnt && tableCount > 0)
+					await Sql.setActiveTable();
+		},
 		getColumns: async function(table) {
 			try {
 				if (!db)
@@ -1041,7 +1066,7 @@
 			}
 		},
 		readFileAsArrayBuffer: async function(file) {
-			if (!file.name.includes(".db"))
+			if (!file.name.toLowerCase().includes(".db"))
 				return;
 			return new Promise((resolve, reject) => {
 				let fileredr = new FileReader();
@@ -1117,6 +1142,9 @@
 					throw new Error(err.message);
 				}
 			}
+		},
+		resultsJson: async function() {
+			var results = await Sql.initRunQuery();
 		},
 	}; // DOMContentLoaded
 }());
