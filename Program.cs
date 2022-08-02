@@ -4,6 +4,7 @@ using allmylinks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using MudBlazor.Services;
+using Microsoft.AspNetCore;
 using SQLite;
 using Newtonsoft.Json;
 using Radzen;
@@ -45,28 +46,7 @@ builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 builder.Services.AddScoped<SideBarService>();
 
-// MudBlazor
-// builder.Services.AddScoped<LayoutService>();
-// builder.Services.AddScoped<MenuService>();
-// builder.Services.AddScoped<RenderQueueService>();
-// builder.Services.AddScoped<DocsNavigationService>();
-
-// builder.Services.AddScoped(typeof(IUserPreferencesService), typeof(UserPreferencesService));
-
 builder.Services.TryAddDocsViewServices();
-// await db.InsertAsync(person);
-
-// Console.WriteLine(person.ToString());
-
-// JsonSerializer serializer = new JsonSerializer();
-// serializer.NullValueHandling = NullValueHandling.Ignore;
-
-// using (StreamWriter sw = new StreamWriter(Path.Combine(DbDir, "db.json")))
-// using (JsonWriter writer = new JsonTextWriter(sw))
-// {
-//     serializer.Serialize(writer, person);
-// }
-
 try
 {
     builder.Services.AddDatabaseFeatures();
@@ -75,5 +55,6 @@ catch (Exception)
 {
     // ignore
 }
+
 builder.Services.AddScoped<PersonServices>();
 await builder.Build().RunAsync();

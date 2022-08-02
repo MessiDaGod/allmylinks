@@ -7,6 +7,8 @@
 @using allmylinks.Models;
 @inject NavigationManager UriHelper;
 
+
+<div id="sql" class="hide">
 @if (!isLoading)
 {
     @if (showCallAlert && files.ToArray().Length == 0)
@@ -163,7 +165,12 @@
         </RadzenSplitterPane>
     </RadzenSplitter>
 }
-
+</div>
+<style>
+    .hide {
+        display: none !important;
+    }
+</style>
 @code {
 
 

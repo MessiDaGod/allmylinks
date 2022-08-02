@@ -52,17 +52,32 @@
     }
 // <span class="material-symbols-outlined">database</span>
     var FS;
+    var Pages = ["showallmylinks", "showsql", "showisitchristmas"];
     window.AML = {
-        getColumns: function(table) {
-
+        setActiveDiv: function(activeDivId) {
+            document.getElementById("appbar").textContent = activeDivId;
+            AML.setAsActive(activeDivId);
         },
-        hideOtherTabs: function() {
-            var spanList = [...document.querySelectorAll("a[type='button']")];
-            for (var i = 0; i < spanList.length; i++) {
-                var id = spanList[i].textContent.replaceAll(' ', '').replaceAll('?', '');
-                console.log(spanList[i].textContent.replaceAll(' ', '').replaceAll('?', ''));
+        setAsActive: function(activeDivId) {
+            var el = document.getElementById(activeDivId);
+            if (el) {
+                el.classList.add("active");
+                var id = el.id.replace("show", "");
+                AML.showById(id);
+            }
+
+            for (var i = 0; i < Pages.length; i++) {
+                if (Pages[i] === activeDivId) {
+                    el.classList.remove("hide");
+                    continue;
                 }
-            },
+                    var el = document.getElementById(Pages[i]);
+                    if (el) {
+                        el.classList.remove("active");
+                        AML.hideById(el.id.replace("show", ""));
+                    }
+                }
+        },
         addDbLink: function () {
             var els = document.querySelectorAll("a[href='/SqlPage']");
             // els.innerHTML = "database";
@@ -114,7 +129,18 @@
         },
         Toggle: function(elemId) {
             var x = document.getElementById(elemId);
+            if (x)
             x.classList.toggle("hide");
+        },
+        hideById: function(elemId) {
+            var x = document.getElementById(elemId);
+            if (x && !x.classList.contains("hide"))
+            x.classList.toggle("hide");
+        },
+        showById: function(elemId) {
+            var x = document.getElementById(elemId);
+            if (x && x.classList.contains("hide"))
+            x.classList.remove("hide");
         },
         scrollEventConsolesToTop: function () {
             var myDiv = document.getElementById("event-console");

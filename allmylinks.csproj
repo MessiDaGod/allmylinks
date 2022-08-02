@@ -54,6 +54,10 @@
     <Content Remove="Pages\Redirect.razor" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <StaticWebAssetBasePath>{}</StaticWebAssetBasePath>
+  </PropertyGroup>
+
   <!-- <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="npm install" WorkingDirectory="./" />
   </Target> -->

@@ -3,19 +3,24 @@
 @using UAParser;
 @using System.Collections.Generic;
 @using System.Collections.Concurrent;
+@using System.IO;
+@using Stl.IO;
+@using Stl;
 @namespace allmylinks.Pages
 
-<h3><em>High-Performance Modern Christmas Detection Technology</em></h3>
+<div id="isitchristmas" class="hide">
 <PageTitle>Is It Christmas?</PageTitle>
+<h3><em>High-Performance Modern Christmas Detection Technology</em></h3>
 <div class="middle">
     <p>@Answer</p>
 </div>
-<div class="middle-small">
+@* <div class="middle-small">
     <p>@UserAgent</p>
     @for (var i = 0; i < UserAgentCache.Values.ToArray().Length; i++)
     {
         <p>@Js.InvokeVoidAsync("AML.logit", UserAgentCache.Values.ToArray()[i])</p>
     }
+</div> *@
 </div>
 <style>
     .middle {
@@ -37,7 +42,11 @@
     h3 {
         text-align: center;
     }
+    .hide {
+        display: none !important;
+    }
 </style>
+
 @code {
 
     public string Answer { get; set; } = string.Empty;

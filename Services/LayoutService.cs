@@ -8,15 +8,20 @@ using Microsoft.AspNetCore.Components;
 using allmylinks.Models;
 using allmylinks.Services.UserPreferences;
 using MudBlazor;
+using Stl.IO;
+using Microsoft.JSInterop;
+using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace allmylinks.Services;
 
-public class LayoutService
+public class LayoutService : ILayoutService
 {
+    [Inject] IJSRuntime Js { get; set; }
     private readonly IUserPreferencesService _userPreferencesService;
     private UserPreferences.UserPreferences _userPreferences;
 
-    public bool IsRTL { get; private  set; } = false;
+    public bool IsRTL { get; private set; } = false;
     public bool IsDarkMode { get; private set; } = false;
 
     public MudTheme CurrentTheme { get; private set; }
@@ -43,14 +48,14 @@ public class LayoutService
         else
         {
             IsDarkMode = isDarkModeDefaultTheme;
-            _userPreferences = new UserPreferences.UserPreferences {DarkTheme = IsDarkMode};
+            _userPreferences = new UserPreferences.UserPreferences { DarkTheme = IsDarkMode };
             await _userPreferencesService.SaveUserPreferences(_userPreferences);
         }
     }
 
     public event EventHandler MajorUpdateOccured;
 
-    private  void OnMajorUpdateOccured() => MajorUpdateOccured?.Invoke(this,EventArgs.Empty);
+    private void OnMajorUpdateOccured() => MajorUpdateOccured?.Invoke(this, EventArgs.Empty);
 
     public async Task ToggleDarkMode()
     {
@@ -80,19 +85,50 @@ public class LayoutService
         if (uri.Contains("/docs/") || uri.Contains("/api/") || uri.Contains("/components/") ||
             uri.Contains("/features/") || uri.Contains("/customization/") || uri.Contains("/utilities/"))
         {
-            return DocsBasePage.Docs;
+            return DocsBasePage.AllMyLinks;
         }
         else if (uri.Contains("/getting-started/"))
         {
-            return DocsBasePage.GettingStarted;
+            return DocsBasePage.IsItChristmas;
         }
         else if (uri.Contains("/mud/"))
         {
-            return DocsBasePage.DiscoverMore;
+            return DocsBasePage.SQL;
         }
         else
         {
             return DocsBasePage.None;
         }
     }
+
+    private static List<string> MyPages { get; set; } = new();
+
+    public static string m_WebRootPath { get { return GetwwwRootPath(); } }
+
+    public static string GetwwwRootPath()
+    {
+        string baseDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
+        string binCfgPart = Regex.Match(baseDir, @"[\\/]bin[\\/]\w+[\\/]").Value;
+        var wwwRootPath = Path.Combine(baseDir, "wwwroot");
+        if (!Directory.Exists(Path.Combine(wwwRootPath, "_framework")))
+            return Path.GetFullPath(Path.Combine(baseDir, $"../../../../UI/{binCfgPart}/net6.0/wwwroot"));
+        else return wwwRootPath;
+    }
+
+    public async Task<List<string>> GetPages()
+    {
+        var pages = Directory.GetFiles(Path.Combine(GetwwwRootPath(), "../../../"), "*.razor", SearchOption.AllDirectories);
+        for (int i = 0; i < pages.Length; i++)
+        {
+            MyPages.Add(pages[i]);
+            await Js.InvokeVoidAsync("AML.logit", pages[i]);
+        }
+
+        return MyPages;
+    }
+}
+
+public interface ILayoutService
+{
+    Task<List<string>> GetPages();
 }

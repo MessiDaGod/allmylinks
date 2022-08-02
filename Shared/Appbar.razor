@@ -1,5 +1,9 @@
 @inject IJSRuntime Js;
+@using UAParser;
+@using System.Collections.Generic;
+@inherits MudComponentBase;
 
+<div id="appbar" class="hide"></div>
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudIconButton OnClick="DrawerToggleCallback" Icon="@Icons.Rounded.Notes" Color="Color.Inherit" Edge="Edge.Start"/>
     <MudSpacer/>
@@ -10,89 +14,34 @@
     <MudSpacer/>
     @if (DisplaySearchBar)
     {
-        <MudIconButton Icon="@Icons.Rounded.Search" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => OpenSearchDialog())"/>
+            <MudIconButton Icon="@Icons.Rounded.Search" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => OpenSearchDialog())"/>
     }
     else
     {
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Edge="Edge.End" Href="https://github.com/MessiDaGod/allmylinks"/>
+            <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Edge="Edge.End" Href="https://github.com/MessiDaGod/allmylinks"/>
     }
-</MudHidden>
-<MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-    <NavLink ActiveClass="d-flex me-4" href="/">
-        <MudBlazorLogo Class="docs-mudblazor-logo"/>
-        <MudText Color="Color.Primary" Typo="Typo.h5" Class="docs-brand-text">AllMyLinks</MudText>
-    </NavLink>
-    <MudButton @onclick="HideOtherTabs" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.Docs)">All My Links</MudButton>
-    <MudButton Href="/is-it-christmas" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.GettingStarted)">Is It Christmas?</MudButton>
-    <MudButton Href="/mud/introduction" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.DiscoverMore)">SQL</MudButton>
-    <MudMenu Color="Color.Inherit" Variant="Variant.Text" Class="mx-1 px-3" PopoverClass="docs-layout-menu-shadow" ListClass="d-flex px-4 pb-2 docs-appbar-special-menu" LockScroll="true" Label="Products" EndIcon="@Icons.Filled.KeyboardArrowDown" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
-        <MudList Clickable="true">
-            <MudListSubheader>
-                Products
-            </MudListSubheader>
-            <MudListItem Href="https://mudblazor.com/">
-                <div class="d-flex">
-                    <MudText Color="Color.Primary">MudBlazor</MudText>
-                </div>
-                <MudText Typo="Typo.body2">Blazor component library</MudText>
-            </MudListItem>
-            <MudListItem Href="https://try.mudblazor.com/">
-                <div class="d-flex">
-                    <MudText Color="Color.Primary">Try</MudText><MudText>MudBlazor</MudText>
-                </div>
-                <MudText Typo="Typo.body2">Online code editor with Blazor</MudText>
-            </MudListItem>
-            <MudListItem Href="https://github.com/MudBlazor/ThemeManager">
-                <div class="d-flex">
-                    <MudText>Theme</MudText><MudText Color="Color.Secondary">Manager</MudText>
-                </div>
-                <MudText Typo="Typo.body2">Manage your theme live in your app</MudText>
-            </MudListItem>
-            <MudListItem Href="https://github.com/MudBlazor/Templates">
-                <div class="d-flex">
-                    <MudText>Templates</MudText>
-                </div>
-                <MudText Typo="Typo.body2">Blazor templates loaded with MudBlazor</MudText>
-            </MudListItem>
-        </MudList>
-        <MudList Clickable="true" Class="relative">
-            <MudListSubheader>
-                Other
-            </MudListSubheader>
-            <MudOverlay Visible="true" LightBackground="true" Absolute="true" Class="docs-menu-overlay" />
-            <MudListItem>
-                <MudBadge Class="d-flex mr-16" Content="@_badgeTextSoon" Color="Color.Info" Overlap="true">
-                    <MudText>Mud</MudText><MudText Color="Color.Primary">Store</MudText>
-                </MudBadge>
-                <MudText Typo="Typo.body2">Marketplace for templates and themes</MudText>
-            </MudListItem>
-            <MudListItem>
-                <MudBadge Class="d-flex mr-16" Content="@_badgeTextSoon" Color="Color.Info" Overlap="true">
-                    <MudText>Mud</MudText><MudText Color="Color.Success">Academy</MudText>
-                </MudBadge>
-                <MudText Typo="Typo.body2">Learning Blazor and MudBlazor</MudText>
-            </MudListItem>
-            <MudListItem>
-                <MudBadge Class="d-flex mr-16" Content="@_badgeTextSoon" Color="Color.Info" Overlap="true">
-                    <MudText>Mud</MudText><MudText Color="Color.Warning">Extensions</MudText>
-                </MudBadge>
-                <MudText Typo="Typo.body2">Official and Community Extensions</MudText>
-            </MudListItem>
-        </MudList>
-    </MudMenu>
-    <MudSpacer/>
-    @if (DisplaySearchBar)
+    </MudHidden>
+    <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+        <NavLink ActiveClass="d-flex me-4" href="/">
+            <MudBlazorLogo Class="docs-mudblazor-logo"/>
+            <MudText Color="Color.Primary" Typo="Typo.h5" Class="docs-brand-text" >AllMyLinks</MudText>
+        </NavLink>
+        <MudButton id="showallmylinks" @onclick="ShowAllMyLinks" Color="Color.Inherit" Variant="Variant.Text" Class="@String.Concat(GetActiveClass(DocsBasePage.AllMyLinks), " active")">All My Links</MudButton>
+        <MudButton  id="showisitchristmas" @onclick="ShowXmas" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.IsItChristmas)">Is It Christmas?</MudButton>
+        <MudButton  id="showsql" @onclick="ShowSql" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.SQL)">SQL</MudButton>
+        <MudSpacer/>
+        @if (DisplaySearchBar)
     {
-        <MudAutocomplete AutoFocus="true" @ref="_searchAutocomplete" T="ApiLinkServiceEntry" Placeholder="Search" SearchFunc="Search" Variant="Variant.Outlined" ValueChanged="OnSearchResult" Class="docs-search-bar mx-4" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search">
-            <ItemTemplate Context="result">
-                <MudText>@result.Title</MudText> <MudText Typo="Typo.body2">@result.SubTitle</MudText>
-            </ItemTemplate>
-        </MudAutocomplete>
-        <MudDivider FlexItem="true" Vertical="true" DividerType="DividerType.Middle" Class="mx-4 my-4"/>
+            <MudAutocomplete AutoFocus="true" @ref="_searchAutocomplete" T="ApiLinkServiceEntry" Placeholder="Search" SearchFunc="Search" Variant="Variant.Outlined" ValueChanged="OnSearchResult" Class="docs-search-bar mx-4" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search">
+                <ItemTemplate Context="result">
+                    <MudText>@result.Title</MudText> <MudText Typo="Typo.body2">@result.SubTitle</MudText>
+                </ItemTemplate>
+            </MudAutocomplete>
+            <MudDivider FlexItem="true" Vertical="true" DividerType="DividerType.Middle" Class="mx-4 my-4"/>
     }
     else
     {
-        <MudIconButton Class="mr-0" Icon="@Icons.Rounded.Search" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => OpenSearchDialog())"/>
+            <MudIconButton Class="mr-0" Icon="@Icons.Rounded.Search" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => OpenSearchDialog())"/>
     }
     <AppbarButtons/>
     <MudTooltip Duration="1000" Text="GitHub Repository">
@@ -114,10 +63,38 @@
     </DialogContent>
 </MudDialog>
 
+<style>
+    .active {
+        color: var(--mud-palette-primary) !important;
+        transition: background-color 150ms cubic-bezier(.4,0,.2,1) 0ms;
+        border-bottom: 2px solid var(--mud-palette-primary);
+        padding: 6px 12px;
+        min-height: 48px;
+        flex-shrink: 0;
+        font-weight: 500;
+        line-height: 1.75;
+        user-select: none;
+        white-space: normal;
+    }
+
+    .hide {
+        display: none !important;
+    }
+</style>
 @code {
 
-    public async Task HideOtherTabs()
+    private static List<string> MyPages { get; set; } = new();
+
+    async Task ShowXmas()
     {
-        await Js.InvokeVoidAsync("AML.hideOtherTabs");
+        await Js.InvokeVoidAsync("AML.setActiveDiv", "showisitchristmas");
+    }
+    async Task ShowSql()
+    {
+        await Js.InvokeVoidAsync("AML.setActiveDiv", "showsql");
+    }
+    async Task ShowAllMyLinks()
+    {
+        await Js.InvokeVoidAsync("AML.setActiveDiv", "showallmylinks");
     }
 }
