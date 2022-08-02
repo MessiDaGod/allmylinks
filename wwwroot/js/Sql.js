@@ -1144,7 +1144,29 @@
 			}
 		},
 		resultsJson: async function() {
-			var results = await Sql.initRunQuery();
+			if (db) {
+				var activetable = document.getElementById('activetable').innerText;
+				// exportAsJSON.addEventListener('click', (ev) => {
+					try {
+						let jsonObj = Sql.getResultSetAsRowJSON(db, 'SELECT * FROM `' + activetable + '`');
+						let jsonStr = JSON.stringify(jsonObj);
+						let textblob = new Blob([jsonStr], {
+							type: 'application/json'
+						});
+						let dwnlnk = document.createElement('a');
+						dwnlnk.download = `${activetable}.json`;
+						if (window.webkitURL != null) {
+							dwnlnk.href = window.webkitURL.createObjectURL(textblob);
+						}
+						dwnlnk.click();
+					} catch (err) {
+						errorDisplay.innerHTML = '';
+						errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
+
+						Sql.appendLogOutput(err.message, 'ERROR');
+					}
+			}
+
 		},
 	}; // DOMContentLoaded
 }());
