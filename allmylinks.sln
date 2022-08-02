@@ -1,11 +1,8 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 25.0.1703.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "allmylinks", "allmylinks.csproj", "{B17C2878-C101-4D77-BF5C-C0E4E6635987}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorMonaco", "BlazorMonaco\BlazorMonaco\BlazorMonaco.csproj", "{0C6E8D63-569F-4A69-AED0-A3473E4055A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +14,6 @@ Global
 		{B17C2878-C101-4D77-BF5C-C0E4E6635987}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B17C2878-C101-4D77-BF5C-C0E4E6635987}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B17C2878-C101-4D77-BF5C-C0E4E6635987}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C6E8D63-569F-4A69-AED0-A3473E4055A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C6E8D63-569F-4A69-AED0-A3473E4055A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C6E8D63-569F-4A69-AED0-A3473E4055A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C6E8D63-569F-4A69-AED0-A3473E4055A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
