@@ -6,7 +6,6 @@
 @namespace allmylinks
 @using allmylinks.Models;
 @inject NavigationManager UriHelper;
-@using BlazorMonaco;
 
 <div id="sql" class="hide">
 <PageTitle>SQL</PageTitle>
@@ -150,10 +149,6 @@
                                         <ul id='tableQueryPagination' class='pagination pagination-sm rounded-0'></ul>
                                     </div>
                                 </MudTabPanel>
-                                <MudTabPanel Text="Monaco Editor">
-                                    <MonacoEditor Id="monaco-editor" ConstructionOptions="EditorConstructionOptions"/>
-                                </MudTabPanel>
-
                             </MudTabs>
                         </div>
                     </div>
