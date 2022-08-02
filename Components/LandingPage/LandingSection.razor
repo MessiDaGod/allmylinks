@@ -2,18 +2,22 @@
 @using MudBlazor.Utilities
 
 
-<section class="@SectionClassnames">
+@* <section class="@SectionClassnames"> *@
+    <section>
     <div class="section-background-container">
-        <div class="@BackgroundClassnames">
+        @* <div class="@BackgroundClassnames"> *@
+            <div>
             @Stripes
         </div>
         @if (StraightEnd)
         {
-            <div class="@EndBackgroundClassnames"></div>
+            @* <div class="@EndBackgroundClassnames"></div> *@
+                        <div></div>
         }
     </div>
     <MudContainer MaxWidth="MaxWidth.Large">
-        <div class="@ContainerClassnames">
+        @* <div class="@ContainerClassnames"> *@
+            <div>
             @ChildContent
         </div>
     </MudContainer>
@@ -28,7 +32,7 @@
     [Parameter] public string BackgroundClass { get; set; }
     [Parameter] public string Class { get; set; }
 
-    protected string SectionClassnames =>
+    @* protected string SectionClassnames =>
         new CssBuilder("mud-landingpage-section")
           .AddClass(SectionClass)
         .Build();
@@ -50,5 +54,5 @@
           .AddClass("padding-straight", Straight)
           .AddClass("padding-skew", !Straight)
           .AddClass(Class)
-        .Build();
+        .Build(); *@
 }
