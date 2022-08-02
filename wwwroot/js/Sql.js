@@ -494,11 +494,12 @@
 		},
 		LoadTables: async function(tblName) {
 			var el = document.getElementById('dbTableDetails').rows;
-
+			var columns = await Sql.getColumns(tblName);
 			if (tblcnt == el.length && el.length > 0) {
 				AML.logit("table count: " + tblcnt);
 			}
-			await DotNet.invokeMethodAsync('allmylinks', 'LoadTables', tblName);
+			return await Sql.loadTableSelectable(tblName);
+			// await DotNet.invokeMethodAsync('allmylinks', 'LoadTables', tblName);
 		},
 		loadTableSelectable: async function(tblName) {
 			//await Sql.setQuery(tblName);
@@ -522,7 +523,7 @@
 			var el = document.getElementById('dbTableDetails').rows;
 
 			if (tblcnt == el.length && el.length > 0) {
-				await Sql.LoadTables(tblName);
+				// await Sql.LoadTables(tblName);
 				for (let i = 0; i < tblcnt; i++) {
 					for (let j = 0; j < el[i].querySelectorAll('button').length; j++) {
 						tbls = el[i].querySelectorAll('button')[j];
@@ -899,7 +900,7 @@
 				//     throw new Error(err.message);
 			}
 		},
-		getColumns: function(table) {
+		getColumns: async function(table) {
 			try {
 				if (!db)
 					return;
