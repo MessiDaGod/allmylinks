@@ -14,9 +14,6 @@
     <EmccExtraLDFlags>-lidbfs.js</EmccExtraLDFlags>
     <EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0</EmccExtraLDFlags>
   </PropertyGroup>
-  <!-- <PropertyGroup>
-      <PreBuildEvent>kill-port 7199</PreBuildEvent>
-  </PropertyGroup> -->
   <PropertyGroup>
       <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
@@ -57,10 +54,6 @@
     <Content Remove="Pages\Redirect.razor" />
     <Content Remove="artifacts\**" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <StaticWebAssetBasePath>{}</StaticWebAssetBasePath>
-  </PropertyGroup>
 
   <!-- <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="npm install" WorkingDirectory="./" />
