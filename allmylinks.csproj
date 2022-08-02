@@ -37,6 +37,8 @@
     <PackageReference Include="SQLitePCLRaw.core" Version="2.1.0" />
     <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.0" />
     <PackageReference Include="Stl" Version="3.5.2" />
+    <PackageReference Include="Stl.Fusion" Version="3.5.2" />
+    <PackageReference Include="Stl.Fusion.Blazor" Version="3.5.2" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
