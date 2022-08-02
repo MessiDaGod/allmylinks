@@ -76,6 +76,7 @@
 	var tbls = [];
 	var staticTbls = [];
 	var tblcnt = 0;
+	var lastClicked = [];
 	var paginationBtnProps = {
 		'firstPageBtn': {
 			'className': 'page-item disabled',
@@ -500,9 +501,22 @@
 			// await DotNet.invokeMethodAsync('allmylinks', 'LoadTables', tblName);
 		},
 		setActiveTable: function(tblName) {
-
+			if (!db)
+				return;
+			
 			var el = document.getElementById('dbTableDetails');
-			if (el) {
+			if (el && !Sql.isNullOrEmpty(tblName)) {
+				if (el.rows.length == tblcnt && el.rows.length > 0)
+					document.getElementById("activetable").innerText = tblName;
+					let tableButton = document.getElementById(tblName);
+				    if (tableButton) {
+					    tableButton.classList.add("active");
+						lastClicked.push(tblName);
+						if (lastClicked.length > 1)
+							document.getElementById(lastClicked[lastClicked.length - 2]).classList.remove("active");
+					}
+			}
+			if (el && Sql.isNullOrEmpty(tblName)) {
 				if (document.getElementById("activetable").innerText.length == 0 && el.rows.length == tblcnt && el.rows.length > 0)
 					document.getElementById("activetable").innerText = document.querySelectorAll("td>button")[tblcnt - 1].id;
 			}
@@ -529,6 +543,8 @@
 			tblClickableBtn.setAttribute('type', 'button');
 			tblClickableBtn.setAttribute('class', 'btn btn-sm btn-link rounded-0 datatable');
 			tblClickableBtn.innerText = `${tblName}`;
+			if (!Sql.isNullOrEmpty(tblName))
+				Sql.setActiveTable(tblName);
 			var el = document.getElementById('dbTableDetails').rows;
 
 			if (tblcnt == el.length && el.length > 0) {
@@ -639,8 +655,6 @@
 
 				selected_tbl_name = tblClickableBtn.innerText;
 				selected_tbl_name = selected_tbl_name.replace(tblIcon, '');
-
-				Sql.setActiveTable(selected_tbl_name);
 				// ================================================
 				tableDetails.innerHTML = '';
 				if (tablePagination == null)
@@ -719,6 +733,7 @@
 					// }, false);
 				}
 			await Sql.setTableCount();
+			await Sql.setActiveTable();
 			} catch (err) {
 				throw new Error(err.message);
 			}
@@ -922,8 +937,8 @@
 				if (tblcnt ===  0) {
 					tblcnt = tableCount;
 				}
-				if (tableCount === tblcnt && tableCount > 0)
-					await Sql.setActiveTable();
+				// if (tableCount === tblcnt && tableCount > 0)
+				// 	await Sql.setActiveTable();
 		},
 		getColumns: async function(table) {
 			try {
