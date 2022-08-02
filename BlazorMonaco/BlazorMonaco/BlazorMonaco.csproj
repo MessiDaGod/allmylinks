@@ -93,29 +93,20 @@
     <PackageReference Include="Stl.Fusion.Client" Version="3.5.2" /> -->
   </ItemGroup>
 
-<ItemGroup>
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.EntityFramework\\Stl.Fusion.EntityFramework.csproj" />
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.RegisterAttributes\\Stl.Fusion.RegisterAttributes.csproj" />
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.RegisterAttributes\\Stl.RegisterAttributes.csproj" />
-<!-- <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.EntityFramework.Redis\\Stl.Fusion.EntityFramework.Redis.csproj" /> -->
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion\\Stl.Fusion.csproj" />
-<!-- <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.Server.NetFx\\Stl.Fusion.Server.NetFx.csproj" /> -->
-<!-- <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Plugins\\Stl.Plugins.csproj" />-->
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.CommandR.RegisterAttributes\\Stl.CommandR.RegisterAttributes.csproj" />
-<!-- <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.Server\\Stl.Fusion.Server.csproj" /> -->
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.Client.RegisterAttributes\\Stl.Fusion.Client.RegisterAttributes.csproj" />
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl\\Stl.csproj" />
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Interception\\Stl.Interception.csproj" />
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.CommandR\\Stl.CommandR.csproj" />
-<!-- <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Net\\Stl.Net.csproj" /> -->
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.Blazor\\Stl.Fusion.Blazor.csproj" />
-<!-- <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Redis\\Stl.Redis.csproj" />
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.DependencyInjection.Extras\\Stl.DependencyInjection.Extras.csproj" />
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.EntityFramework.Npgsql\\Stl.Fusion.EntityFramework.Npgsql.csproj" /> -->
-<ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.Client\\Stl.Fusion.Client.csproj" />
+<!-- <ItemGroup>
+  <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.EntityFramework\\Stl.Fusion.EntityFramework.csproj" />
+  <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.RegisterAttributes\\Stl.Fusion.RegisterAttributes.csproj" />
+  <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.RegisterAttributes\\Stl.RegisterAttributes.csproj" />
+  <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion\\Stl.Fusion.csproj" />
+  <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.CommandR.RegisterAttributes\\Stl.CommandR.RegisterAttributes.csproj" />
+  <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.Client.RegisterAttributes\\Stl.Fusion.Client.RegisterAttributes.csproj" />
+  <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl\\Stl.csproj" />
+  <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Interception\\Stl.Interception.csproj" />
+  <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.CommandR\\Stl.CommandR.csproj" />
+  <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.Blazor\\Stl.Fusion.Blazor.csproj" />
+  <ProjectReference Include="..\\..\\..\\Shakely.YahooApi\\Shakely.YahooApi\\Stl.Fusion\\src\\Stl.Fusion.Client\\Stl.Fusion.Client.csproj" />
+</ItemGroup> -->
 
-
-</ItemGroup>
   <ItemGroup>
     <Content Update="Properties\launchSettings.json">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
