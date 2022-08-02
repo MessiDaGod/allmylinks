@@ -8,6 +8,7 @@
     <ReleaseVersion>1.0</ReleaseVersion>
     <PublishTrimmed>false</PublishTrimmed>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GHPages>true</GHPages>
   </PropertyGroup>
   <PropertyGroup>
     <EmccExtraLDFlags>-lidbfs.js</EmccExtraLDFlags>
