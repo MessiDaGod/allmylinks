@@ -5,6 +5,7 @@
 @using Radzen.Blazor
 @namespace allmylinks
 @using allmylinks.Models;
+@using Newtonsoft.Json
 @inject NavigationManager UriHelper;
 
 <div id="sql" class="hide">
@@ -67,24 +68,12 @@
                                     <div id='browse' role='tabpanel' class='tab-pane fade active show' aria-labelledby='browse-tab'>
                                         <div class='btn-group btn-group-sm mb-3'>
                                             <div class='btn-group btn-group-sm'>
-                                                @* <button id='exportToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown'> *@
-                                                 @* <button id='exportToggleBtn' class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                                    Save
-                                                    <span class="material-symbols-outlined">save</span>
-                                                </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a id='exportAsJSON' type='button' class='dropdown-item'><small>💽 Export datatable as JSON</small></a></li>
-                                                    </ul> *@
-                                                @* <div class='dropdown-menu'>
-                                                    <button id='exportAsJSON' type='button' class='dropdown-item'><small>💽 Export datatable as JSON</small></button>
-                                                </div> *@
-
                                                 <div class="btn-group">
                                                 <button class="btn btn-primary btn-md dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <span class="material-symbols-outlined">save</span>&nbsp;Save Results
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item active" onclick="Sql.resultsJson()">💽 Export DataTable as JSON</a></li>
+                                                    <li><a class="dropdown-item active" onclick="Sql.resultsJson()"><span class="material-symbols-outlined">file_download</span>  JSON</a></li>
                                                 </ul>
                                                 </div>
                                             </div>
@@ -147,7 +136,7 @@
                                                     <span class="material-symbols-outlined">save</span>
                                                 </button>
                                                 <div class='dropdown-menu'>
-                                                    <button id='exportQueryAsJSON' type='button' class='dropdown-item'><small>💽 Export resultset as JSON</small></button>
+                                                    <button id='exportQueryAsJSON' type='button' class='dropdown-item'><small><span class="material-symbols-outlined">file_download</span>Export resultset as JSON</small></button>
                                                     <button id='exportEditorQuery' type='button' class='dropdown-item'><small>📄 Export SQL query to local file</small></button>
                                                 </div>
                                             </div>
@@ -180,12 +169,11 @@
     #sql {
         padding-top: 60px;
     }
+    .active {
+        color: var(--mud-palette-secondary) !important;
+    }
 </style>
 @code {
-
-
-
-    [Inject] IJSRuntime JS { get; set; }
 
     public class DatabaseTables
     {
@@ -194,8 +182,9 @@
         public object[] values { get; set; } = null!;
     }
 
-
+    [Inject] IJSRuntime JS { get; set; }
     public IEnumerable<Person?>? Persons;
+    public static string TableNameFromJS { get; set; } = string.Empty;
 
     private RadzenDataGrid<Person>? PersonsGrid;
 
@@ -221,9 +210,7 @@
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
-        @* Js.InvokeVoidAsync("Sql.setActiveTable"); *@
     }
-
 
     public async Task<object[]?>? GetColumns(string tableName)
     {
@@ -240,33 +227,25 @@
         await Js.InvokeVoidAsync("Sql.init");
     }
 
-    [JSInvokable("LoadSelectedTable2")]
-    public static async Task LoadSelectedTable2(DatabaseTables[] tableNames)
+    [JSInvokable("SetTableName")]
+    public static async Task SetTableName(string tableName)
     {
-        for (int i = 0; i < tableNames.Length; i++)
-        {
-            for (int j = 0; j < tableNames[i].columns.Length; j++)
-            {
-                break;
-                @* await Task.Run(() => Console.WriteLine(tableNames[i].columns[j].ToString())).ConfigureAwait(false);
-                await Task.Run(() => Console.WriteLine(tableNames[i].values[j].ToString())).ConfigureAwait(false); *@
-            }
-        }
-        return;
+        TableNameFromJS = tableName;
     }
 
+
     [JSInvokable("LoadTables")]
-    public static async Task LoadTables(DatabaseTables[] tableNames)
+    public static async Task LoadTables(string json)
     {
-        for (int i = 0; i < tableNames.Length; i++)
+        if (TableNameFromJS == "Prices")
         {
-            for (int j = 0; j < tableNames[i].columns.Length; j++)
-            {
-                await Task.Run(() => Console.WriteLine(tableNames[i].columns[j].ToString())).ConfigureAwait(false);
-                await Task.Run(() => Console.WriteLine(tableNames[i].values[j].ToString())).ConfigureAwait(false);
-            }
+            Prices[]? prices = JsonConvert.DeserializeObject<Prices[]>(json);
+            for (int j = 0; j < prices.Length; j++)
+                {
+                    await Task.Run(() => Console.WriteLine(prices[j].Close)).ConfigureAwait(false);
+                }
+            return;
         }
-        return;
     }
 
 

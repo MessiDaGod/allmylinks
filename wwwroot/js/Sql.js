@@ -503,7 +503,11 @@
 		setActiveTable: function(tblName) {
 			if (!db)
 				return;
-			
+
+			if (el)
+			if (el.rows.length !== tblcnt)
+				return;
+
 			var el = document.getElementById('dbTableDetails');
 			if (el && !Sql.isNullOrEmpty(tblName)) {
 				if (el.rows.length == tblcnt && el.rows.length > 0)
@@ -517,13 +521,17 @@
 					}
 			}
 			if (el && Sql.isNullOrEmpty(tblName)) {
-				if (document.getElementById("activetable").innerText.length == 0 && el.rows.length == tblcnt && el.rows.length > 0)
-					document.getElementById("activetable").innerText = document.querySelectorAll("td>button")[tblcnt - 1].id;
+				if (document.getElementById("activetable").innerText.length == 0 && el.rows.length == tblcnt && el.rows.length > 0) {
+					document.getElementById("activetable").innerText = document.querySelectorAll("td>button")[0].id;
+
+					Sql.sendToBlazor();
+				}
 			}
 		},
 		isNullOrEmpty: function(str) {
 			return (!str || 0 === str.length);
 		},
+
 		loadTableSelectable: async function(tblName) {
 			//await Sql.setQuery(tblName);
 			// Sql.init();
@@ -594,6 +602,7 @@
 								stmt = 'SELECT * FROM `' + selected_tbl_name + '` LIMIT ' + offset + ',' + recordsPerPage;
 								resultset2 = db2.exec(stmt);
 								await Sql.RenderDatabaseTables(resultset2);
+								// await Sql.sendToBlazor();
 								await Sql.renderDatatable(resultset2, document.getElementById('tableRecords'));
 								if (currentPageNo != null) {
 									// currentPageNo.addEventListener('change', (evt0) => {
@@ -978,7 +987,6 @@
 		RenderDatabaseTables: async function(tbleName) {
 			// Invoke to call C# function from JavaScript.
 			await DotNet.invokeMethodAsync('allmylinks', 'LoadSelectedTable', tbleName);
-			await DotNet.invokeMethodAsync('allmylinks', 'LoadSelectedTable2', tbleName);
 		},
 		getResultSetAsRowJSON: function(_db, _stmt) {
 			try {
@@ -1182,6 +1190,19 @@
 					}
 			}
 
+		},
+		sendToBlazor: async function() {
+			if (db) {
+				var activetable = document.getElementById('activetable').innerText;
+				await DotNet.invokeMethodAsync('allmylinks', 'SetTableName', activetable);
+				// exportAsJSON.addEventListener('click', (ev) => {
+					try {
+						let jsonObj = Sql.getResultSetAsRowJSON(db, 'SELECT * FROM `' + activetable + '`');
+						let jsonStr = JSON.stringify(jsonObj);
+					}
+					catch (err) {
+					}
+				}
 		},
 	}; // DOMContentLoaded
 }());
