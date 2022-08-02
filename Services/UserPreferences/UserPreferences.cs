@@ -11,5 +11,7 @@ namespace allmylinks.Services.UserPreferences
         /// If true DarkTheme is used. LightTheme otherwise
         /// </summary>
         public bool DarkTheme { get; set; }
+
+        public string DatabaseFilePath { get; set; } = string.Empty;
     }
 }

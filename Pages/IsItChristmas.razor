@@ -9,10 +9,10 @@
 @namespace allmylinks.Pages
 
 <div id="isitchristmas" class="hide">
-<h3><em>High-Performance Modern Christmas Detection Technology</em></h3>
 <div class="middle">
     <p>@Answer</p>
 </div>
+<p><em>High-Performance Modern Christmas Detection Technology</em></p>
 @* <div class="middle-small">
     <p>@UserAgent</p>
     @for (var i = 0; i < UserAgentCache.Values.ToArray().Length; i++)
@@ -47,6 +47,10 @@
 
     #isitchristmas {
         padding-top: 60px;
+    }
+    p {
+        text-align: center;
+        vertical-align: middle;
     }
 
 </style>

@@ -1,3 +1,4 @@
+@inject IJSRuntime Js;
 @inherits LayoutComponentBase
 @layout MainLayout
 @using allmylinks.Pages;
@@ -12,8 +13,9 @@
             <MudSpacer/>
         </MudToolBar>
         <MudNavMenu Color="Color.Primary" Margin="Margin.Dense" Rounded="true" Class="pa-2">
-            <MudNavLink Href="/allmylinks">All My Links</MudNavLink>
-            <MudNavLink Href="/isitchristmas">Is It Christmas?</MudNavLink>
+            <MudNavLink  id="showallmylinks" @onclick="ShowAllMyLinks">All My Links</MudNavLink>
+            <MudNavLink  id="showisitchristmas" @onclick="ShowXmas">Is It Christmas?</MudNavLink>
+            <MudNavLink id="showsql" @onclick="ShowSql">SQL</MudNavLink>
             @* <MudNavGroup Title="Products" ExpandIcon="@Icons.Material.Filled.ExpandMore">
                 <MudNavLink Href="https://mudblazor.com/">MudBlazor</MudNavLink>
                 <MudNavLink Href="https://try.mudblazor.com/">TryMudBlazor</MudNavLink>
@@ -31,3 +33,21 @@
         <LandingFooter/>
     </MudMainContent>
 </MudLayout>
+
+@code {
+
+    private static List<string> MyPages { get; set; } = new();
+
+    async Task ShowXmas()
+    {
+        await Js.InvokeVoidAsync("AML.setActiveDiv", "showisitchristmas");
+    }
+    async Task ShowSql()
+    {
+        await Js.InvokeVoidAsync("AML.setActiveDiv", "showsql");
+    }
+    async Task ShowAllMyLinks()
+    {
+        await Js.InvokeVoidAsync("AML.setActiveDiv", "showallmylinks");
+    }
+}
