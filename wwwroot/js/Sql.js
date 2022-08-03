@@ -741,8 +741,6 @@
 					//});
 					// }, false);
 				}
-			await Sql.setTableCount();
-			await Sql.setActiveTable();
 			} catch (err) {
 				throw new Error(err.message);
 			}
@@ -1039,6 +1037,20 @@
 
 				errorDisplay.innerHTML = '';
 				await Sql.addEventListeners();
+				await Sql.setTableCount();
+				await Sql.setActiveTable();
+				var el = document.querySelectorAll("#tableRecords>table")[0];
+				if (el && el.rows.length > 0) {
+					var active = document.getElementById("activetable");
+					if (active) {
+						 var activebutton = document.getElementById(active.innerText);
+						 if (activebutton) {
+							activebutton.classList.add("active");
+							if (lastClicked.length === 0)
+								lastClicked.push(active.innerText);
+						}
+					}
+				}
 				return await Promise.resolve('success');
 			} catch (err) {
 				throw new Error(err.message);

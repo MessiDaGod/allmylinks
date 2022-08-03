@@ -35,7 +35,7 @@
                                 <tr>
                                     <td colspan='2'>
                                         <InputFile id="upload" OnChange="UploadFiles" hidden />
-                                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.CloudUpload" for="upload">
+                                        <MudButton id="upload-btn" HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.CloudUpload" for="upload">
                                             Upload Database
                                         </MudButton>
                                         @if (files != null)
@@ -185,6 +185,7 @@
     [Inject] IJSRuntime JS { get; set; }
     public IEnumerable<Person?>? Persons;
     public static string TableNameFromJS { get; set; } = string.Empty;
+    public static string JSON { get; set; } = string.Empty;
 
     private RadzenDataGrid<Person>? PersonsGrid;
 
@@ -233,19 +234,29 @@
         TableNameFromJS = tableName;
     }
 
+    [JSInvokable("GetJson")]
+    public static string GetJson(string json)
+    {
+       JSON = json;
+       return JSON;
+    }
 
-    [JSInvokable("LoadTables")]
-    public static async Task LoadTables(string json)
+    public async Task LoadTables(string json)
     {
         if (TableNameFromJS == "Prices")
         {
             Prices[]? prices = JsonConvert.DeserializeObject<Prices[]>(json);
             for (int j = 0; j < prices.Length; j++)
                 {
-                    await Task.Run(() => Console.WriteLine(prices[j].Close)).ConfigureAwait(false);
+                    await LogIt(prices[j].Close.ToString());
                 }
             return;
         }
+    }
+
+    public async Task LogIt(string message)
+    {
+        await Js.InvokeAsync<string>("AML.logit", message);
     }
 
 
