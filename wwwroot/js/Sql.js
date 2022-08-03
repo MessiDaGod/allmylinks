@@ -33,6 +33,35 @@
 		}
 	}
 
+	// 	// SQL keywords
+	// var keywords = ["SELECT","FROM","WHERE","LIKE","BETWEEN","NOT LIKE","FALSE","NULL","FROM","TRUE","NOT IN", "LIMIT"];
+	// // Keyup event
+	// $("#editor").on("keyup", function(e){
+	// // Space key pressed
+	// if (e.keyCode == 32){
+	// 	var newHTML = "";
+	// 	// Loop through words
+	// 	$(this).text().replace(/[\s]+/g, " ").trim().split(" ").forEach(function(val){
+	// 	// If word is statement
+	// 	if (keywords.indexOf(val.trim().toUpperCase()) > -1)
+	// 		newHTML += "<span class='statement'>" + val + "&nbsp;</span>";
+	// 	else
+	// 		newHTML += "<span class='other'>" + val + "&nbsp;</span>";
+	// 	});
+	// 	$(this).html(newHTML);
+
+	// 	// Set cursor postion to end of text
+	// 	var child = $(this).children();
+	// 	var range = document.createRange();
+	// 	var sel = window.getSelection();
+	// 	range.setStart(child[child.length-1], 1);
+	// 	range.collapse(true);
+	// 	sel.removeAllRanges();
+	// 	sel.addRange(range);
+	// 	this.focus();
+	// }
+	// });
+
 	var file = '';
 	var db2;
 	var tblName = [];
@@ -161,6 +190,16 @@
 			if (mainTabs !== null) {
 				mainTabs.classList.toggle('hide');
 			}
+		},
+		showTab: function(tabId) {
+			var el = docuement.getElementById(tabId);
+			if (el)
+				el.classList.remove('hide');
+		},
+		hideTab: function(tabId) {
+			var el = docuement.getElementById(tabId);
+				el.classList.add('hide');
+			// var divs = [...document.querySelectorAll(".mud-tabs-panels>div")];
 		},
 		toggleMsg: async function() {
 			var msg = document.getElementById('infomsg');
@@ -776,6 +815,21 @@
 				throw new Error(err.message);
 			}
 		},
+		appendErrorOutput: function(msg, type) {
+			logsRecords = document.getElementById('logsRecords');
+			let logObj = {
+				'Datetime': Sql.getCurrentDatetimeStamp(),
+				'Message': msg,
+				'Type': 'ERROR'
+			};
+			try {
+				outputLogs.push(logObj);
+				if (logsRecords)
+					logsRecords.innerText = JSON.stringify(outputLogs, null, 2);
+			} catch (err) {
+				throw new Error(err.message);
+			}
+		},
 
 		initPaginationBtn: async function(paginationBtnType, tablePaginationEle) {
 			try {
@@ -1178,8 +1232,8 @@
 				}
 			}
 		},
-		resultsJson: async function() {
-			if (db) {
+		resultsJson: async function(id) {
+			if (db && !id) {
 				var activetable = document.getElementById('activetable').innerText;
 				// exportAsJSON.addEventListener('click', (ev) => {
 					try {
@@ -1199,6 +1253,47 @@
 						errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
 
 						Sql.appendLogOutput(err.message, 'ERROR');
+					}
+			}
+			if (db && id) {
+				    var code = document.getElementById(id);
+					const regex = new RegExp('(?<=from)\\s+(\\w+)', 'gm');
+					const str = code.value;
+					let m;
+					let tableName = '';
+
+					while ((m = regex.exec(str)) !== null) {
+						// This is necessary to avoid infinite loops with zero-width matches
+						if (m.index === regex.lastIndex) {
+							regex.lastIndex++;
+						}
+
+						// The result can be accessed through the `m`-variable.
+						m.forEach((match, groupIndex) => {
+							console.log(`Found match, group ${groupIndex}: ${match}`);
+							tableName = match.replaceAll(' ', '');
+						});
+					}
+
+					if (code && !Sql.isNullOrEmpty(code.value))
+					try {
+						// let jsonObj = Sql.getResultSetAsRowJSON(db, 'SELECT * FROM `' + tableName + '`');
+						let jsonObj = Sql.getResultSetAsRowJSON(db, str);
+						let jsonStr = JSON.stringify(jsonObj);
+						let textblob = new Blob([jsonStr], {
+							type: 'application/json'
+						});
+						let dwnlnk = document.createElement('a');
+						dwnlnk.download = `${tableName}.json`;
+						if (window.webkitURL != null) {
+							dwnlnk.href = window.webkitURL.createObjectURL(textblob);
+						}
+						dwnlnk.click();
+					} catch (err) {
+						errorDisplay.innerHTML = '';
+						errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
+						Sql.appendLogOutput(err.message, 'ERROR');
+						// throw new Error(err.message);
 					}
 			}
 

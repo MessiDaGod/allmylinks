@@ -63,97 +63,7 @@
                     <p id='errorDisplay' class='m-0 p-0 small text-danger'></p>
                     <div id='mainTabsWrapper' class='card rounded-0 border-right-0'>
                         <div id='mainTabs' role='tablist' class="hide">
-                            <MudTabs Elevation="4" Rounded="true" Centered="false" Color="@Color.Secondary" class='nav nav-tabs'>
-                                <MudTabPanel Text="🔎 Browse Data">
-                                    <div id='browse' role='tabpanel' class='tab-pane fade active show' aria-labelledby='browse-tab'>
-                                        <div class='btn-group btn-group-sm mb-3'>
-                                            <div class='btn-group btn-group-sm'>
-                                                <div class="btn-group">
-                                                <button class="btn btn-primary btn-md dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <span class="material-symbols-outlined">save</span>&nbsp;Save Results
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item active" onclick="Sql.resultsJson()"><span class="material-symbols-outlined">file_download</span>  JSON</a></li>
-                                                </ul>
-                                                </div>
-                                            </div>
-                                            <hr class='invisible-divider'>
-                                            <small id='tableDetails' class='ml-2'></small>
-                                        </div>
-                                        <hr class='invisible-divider'>
-                                        @if (Prices != null) {
-                                        <RadzenDataGrid @ref="_PricesGrid" AllowFiltering="true" AllowColumnResize="true" AllowVirtualization="true" Style="height:700px" FilterMode="FilterMode.Advanced" AllowSorting="true" Data="@Prices.ToList().AsEnumerable()" TItem="Prices" ColumnWidth="100px" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" PagerHorizontalAlign="HorizontalAlign.Left" LogicalFilterOperator="LogicalFilterOperator.Or" AllowRowSelectOnRowClick="@AllowRowSelectOnRowClick" SelectionMode="Radzen.DataGridSelectionMode.Multiple">
-                                            <Columns>
-                                                <RadzenDataGridColumn TItem="Prices" Property="Symbol" Title="Symbol" Sortable="true" Filterable="true">
-                                                    <Template Context="Prices">
-                                                        @if (Conv.ConvertTo(Prices.Symbol).Type == SymbolType.Stock || Prices.Symbol == "BTC-USD")
-                                                        {
-                                                            <a href="@(String.Concat("JavaScript:Shakely.openNewWindow('", "https://finance.yahoo.com/quote/", @Prices.Symbol, "/", "')"))">@(Prices.Symbol)</a>
-                                                        }
-                                                        else
-                                                        {
-                                                            @Prices.Symbol
-                                                        }
-                                                    </Template>
-                                                </RadzenDataGridColumn>
-                                                <RadzenDataGridColumn TItem="Prices" Property="Open" Title="Open" FormatString="{0:C}" />
-                                                <RadzenDataGridColumn TItem="Prices" Property="High" Title="High" FormatString="{0:C}" />
-                                                <RadzenDataGridColumn TItem="Prices" Property="Low" Title="Low" FormatString="{0:C}" />
-                                                <RadzenDataGridColumn TItem="Prices" Property="AdjustedClose" Title="Adj. Close" FormatString="{0:C}" />
-                                                <RadzenDataGridColumn TItem="Prices" Property="Close" Title="Close" FormatString="{0:C}" />
-                                                <RadzenDataGridColumn TItem="Prices" Property="Volume" Title="Volume" FormatString="{0:N0}" />
-                                                <RadzenDataGridColumn TItem="Prices" Property="Pct_Change" Title="% Change">
-                                                    <Template Context="Prices">
-                                                        <span style="color: black; font-weight: 700">@Prices.Pct_Change.ToString("N4")</span>
-                                                        @if (Prices.Pct_Change < 0)
-                                                        {
-                                                            <RadzenImage Path="@UriHelper.ToAbsoluteUri($"img/down.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
-                                                        }
-                                                        @if (Prices.Pct_Change > 0)
-                                                        {
-                                                            <RadzenImage Path="@UriHelper.ToAbsoluteUri($"img/up.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
-                                                        }
-                                                        @if (Prices.Pct_Change == 0)
-                                                        {
-                                                            <RadzenImage Path="@UriHelper.ToAbsoluteUri($"img/arrowleftright.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
-                                                        }
-                                                    </Template>
-                                                </RadzenDataGridColumn>
-                                            </Columns>
-                                        </RadzenDataGrid>
-                                        }
-                                        <div id='tableRecords' class='table-responsive'></div>
-                                        <hr class='invisible-divider'>
-                                        <ul id='tablePagination' class='pagination pagination-sm rounded-0'></ul>
-                                    </div>
-                                </MudTabPanel>
-                                <MudTabPanel Text="❮⁄❯ Query Editor">
-                                    <div id='editor' role='tabpanel' class='tab-pane fade show' aria-labelledby='editor-tab'>
-                                        <div class='btn-group btn-group-sm m-0'>
-                                            <div class='btn-group btn-group-sm'>
-                                                <button id='exportQueryToggleBtn' type='button' class='btn btn-sm btn-light text-info border-info dropdown-toggle rounded-0' data-toggle='dropdown'>
-                                                    Save
-                                                    <span class="material-symbols-outlined">save</span>
-                                                </button>
-                                                <div class='dropdown-menu'>
-                                                    <button id='exportQueryAsJSON' type='button' class='dropdown-item'><small><span class="material-symbols-outlined">file_download</span>Export resultset as JSON</small></button>
-                                                    <button id='exportEditorQuery' type='button' class='dropdown-item'><small>📄 Export SQL query to local file</small></button>
-                                                </div>
-                                            </div>
-                                            <button id='runQueryBtn' type='button' class='btn btn-sm btn-light text-primary border-primary rounded-0 ml-2' onclick="Sql.initRunQuery()">
-                                                Execute Query
-                                                <span class="material-symbols-outlined">database</span>
-                                            </button>
-                                            <small id='tableQueryDetails' class='ml-2'></small>
-                                        </div>
-                                        <hr class='invisible-divider'>
-                                        <p class='mb-0'><textarea id='lineCounter' wrap='off' readonly>1.</textarea><textarea id='codeEditor' wrap='off'></textarea></p>
-                                        <div id='tableQueryRecords' class='table-responsive'></div>
-                                        @* <hr class='invisible-divider'> *@
-                                        <ul id='tableQueryPagination' class='pagination pagination-sm rounded-0'></ul>
-                                    </div>
-                                </MudTabPanel>
-                            </MudTabs>
+                            <BrowseData />
                         </div>
                     </div>
                 </RadzenSplitterPane>
@@ -173,6 +83,8 @@
         color: var(--mud-palette-secondary) !important;
     }
 </style>
+
+
 @code {
 
     public class DatabaseTables
@@ -186,7 +98,15 @@
     public IEnumerable<Person?>? Persons;
     public static string TableNameFromJS { get; set; } = string.Empty;
     public static string JSON { get; set; } = string.Empty;
-
+    private bool showCallAlert = true;
+    private bool showLeaveAlert = false;
+    IEnumerable<SymbolField> symbols => SymbolField.Symbols;
+    private SymbolField Conv { get; set; } = new();
+    private bool AllowRowSelectOnRowClick { get; set; } = true;
+    private IEnumerable<Prices> Prices { get; set; }
+    private Radzen.TabPosition _tabPosition = Radzen.TabPosition.Left;
+    private RadzenDataGrid<Prices> _PricesGrid;
+    RadzenDataGrid<Prices> _grid;
     private RadzenDataGrid<Person>? PersonsGrid;
 
     public string[]? columns { get; set; }
@@ -344,14 +264,5 @@
         args.Cancel = true;
 
     }
-    private bool showCallAlert = true;
-    private bool showLeaveAlert = false;
-    IEnumerable<SymbolField> symbols => SymbolField.Symbols;
-    private SymbolField Conv { get; set; } = new();
-    private bool AllowRowSelectOnRowClick { get; set; } = true;
-    private IEnumerable<Prices> Prices { get; set; }
-    private Radzen.TabPosition _tabPosition = Radzen.TabPosition.Left;
-    private RadzenDataGrid<Prices> _PricesGrid;
-    RadzenDataGrid<Prices> _grid;
 
 }
