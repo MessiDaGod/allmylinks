@@ -27,8 +27,9 @@
             <MudText Color="Color.Primary" Typo="Typo.h5" Class="docs-brand-text" >AllMyLinks</MudText>
         </NavLink>
         <MudButton id="showallmylinks" @onclick="ShowAllMyLinks" Color="Color.Inherit" Variant="Variant.Text" Class="@String.Concat(GetActiveClass(DocsBasePage.AllMyLinks), " active")">All My Links</MudButton>
-        <MudButton  id="showisitchristmas" @onclick="ShowXmas" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.IsItChristmas)">Is It Christmas?</MudButton>
-        <MudButton  id="showsql" @onclick="ShowSql" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.SQL)">SQL</MudButton>
+        <MudButton id="showisitchristmas" @onclick="ShowXmas" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.IsItChristmas)">Is It Christmas?</MudButton>
+        <MudButton id="showsql" @onclick="ShowSql" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.SQL)">SQL</MudButton>
+        <MudButton id="showcandles" @onclick="ShowCandles" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.SQL)">Candlestick</MudButton>
         <MudSpacer/>
         @if (DisplaySearchBar)
     {
@@ -96,5 +97,9 @@
     async Task ShowAllMyLinks()
     {
         await Js.InvokeVoidAsync("AML.setActiveDiv", "showallmylinks");
+    }
+    async Task ShowCandles()
+    {
+        await Js.InvokeVoidAsync("AML.setActiveDiv", "showcandles");
     }
 }

@@ -2,8 +2,9 @@
 @namespace allmylinks
 @inject IJSRuntime JS;
 @inject PersonServices Service;
-<PageTitle>@@joeshakely | GitHub.io</PageTitle>
-<div id="candles">
+
+
+<div id="candles" class="hide">
     <strong><p id="candleprice" class="center"></p></strong>
     <canvas id="header" width="100px"></canvas>
     <canvas id="candlestick"></canvas>
@@ -15,11 +16,26 @@
     #header, #candlestick {
         margin-left: 100px;
     }
+    #candles {
+        padding-top: 90px;
+    }
+    #candleprice {
+        padding-top: 10px;
+    }
 </style>
 @code {
 
+    CancellationTokenSource cts = new CancellationTokenSource();
     protected override async Task OnInitializedAsync()
     {
-        await JS.InvokeVoidAsync("AML.plot");
+        await ContinuallyGetPrices(cts.Token);
+    }
+
+    async Task ContinuallyGetPrices(CancellationToken ct = default)
+    {
+        while (!cts.IsCancellationRequested) {
+            await JS.InvokeVoidAsync("AML.plot");
+            await Task.Delay(10000);
+        }
     }
 }

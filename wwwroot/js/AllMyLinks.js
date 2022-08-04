@@ -52,7 +52,7 @@
     }
 // <span class="material-symbols-outlined">database</span>
     var FS;
-    var Pages = ["showallmylinks", "showsql", "showisitchristmas"];
+    var Pages = ["showallmylinks", "showsql", "showisitchristmas", "showcandles"];
     window.AML = {
         setActiveDiv: function(activeDivId) {
             document.getElementById("appbar").textContent = activeDivId;
