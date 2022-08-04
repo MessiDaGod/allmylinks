@@ -53,6 +53,9 @@
 // <span class="material-symbols-outlined">database</span>
     var FS;
     var Pages = ["showallmylinks", "showsql", "showisitchristmas", "showcandles"];
+    var CandlestickPage = document.getElementById("candles");
+    var isCandlestickActive = (CandlestickPage && !CandlestickPage.classList.contains("hide")) ? true : false;
+
     window.AML = {
         setActiveDiv: function(activeDivId) {
             document.getElementById("appbar").textContent = activeDivId;
@@ -153,7 +156,7 @@
             document.getElementById("myList").innerHTML = "";
         },
         plot: function ( /** @type {string | URL} */ url) {
-            //toggle('candles', 'PricesButton');
+            if (isCandlestickActive) {
             this.webSocketConnected = false;
             this.webSocketHost = "wss://stream.binance.com:9443/ws/" + "BTCUSDT" + "@kline_" + "1";
             if (url == null) url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=50";
@@ -178,6 +181,7 @@
 
             xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xmlhttp.send();
+        }
         },
         plot2: function ( /** @type {[]} */ stick) {
             AML.addCandlestick(new AML.candleStick(
@@ -196,6 +200,7 @@
             this.high = parseFloat(high);
             this.low = parseFloat(low);
             let price = parseFloat(close);
+
             document.title = "BTC-USD | " + AML.fmt(price);
             // let el = document.querySelector('header');
             // el.setAttribute("width", window.innerWidth - 50 + "px");
