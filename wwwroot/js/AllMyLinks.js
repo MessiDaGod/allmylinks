@@ -77,7 +77,7 @@
                     var el = document.getElementById(Pages[i]);
                     if (el) {
                         el.classList.remove("active");
-                        AML.hideById(el.id.replace("show", ""));
+                        // AML.hideById(el.id.replace("show", ""));
                     }
                 }
         },

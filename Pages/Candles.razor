@@ -28,14 +28,15 @@
     CancellationTokenSource cts = new CancellationTokenSource();
     protected override async Task OnInitializedAsync()
     {
-        await ContinuallyGetPrices(cts.Token);
+        // await ContinuallyGetPrices(cts.Token);
+        await base.OnInitializedAsync();
     }
 
     async Task ContinuallyGetPrices(CancellationToken ct = default)
     {
-        while (!cts.IsCancellationRequested) {
-            await JS.InvokeVoidAsync("AML.plot");
+        @* while (!cts.IsCancellationRequested) {
+            // await JS.InvokeVoidAsync("AML.plot");
             await Task.Delay(10000);
-        }
+        } *@
     }
 }
