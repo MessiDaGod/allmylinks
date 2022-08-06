@@ -188,7 +188,7 @@
             document.getElementById("myList").innerHTML = "";
         },
         plot: function ( /** @type {string | URL} */ url) {
- 
+
             this.webSocketConnected = false;
             this.webSocketHost = "wss://stream.binance.com:9443/ws/" + "BTCUSDT" + "@kline_" + "1";
             if (url == null) url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=50";
@@ -239,18 +239,18 @@
         },
         candleStickChart: function ( /** @type {string} */ canvasElementID) {
             AML.canvas = document.getElementById(canvasElementID);
-            var header = document.getElementById("header");
+            // var header = document.getElementById("header");
 
-            header.width = window.innerWidth * 0.9;
-            header.height = window.innerHeight * 0.04;
-            header.style.backgroundColor = "#060d13";
+            // header.width = window.innerWidth * 0.9;
+            // header.height = window.innerHeight * 0.04;
+            // header.style.backgroundColor = "#060d13";
             AML.canvas.width = window.innerWidth * 0.9;
             AML.canvas.height = window.innerHeight * 0.6;
 
             if (AML.canvas.width) AML.width = parseInt(AML.canvas.width) * 0.99;
             AML.height = parseInt(AML.canvas.height) * 0.99;
             AML.ctx = AML.canvas.getContext("2d");
-            header.ctx = header.getContext("2d");
+            // header.ctx = header.getContext("2d");
 
             AML.canvas.addEventListener("mousemove", ( /** @type {any} */ e) => {
                 AML.mouseMove(e);
@@ -271,7 +271,7 @@
 
             AML.canvas.style.backgroundColor = "#060d13";
             AML.ctx.font = '12px sans-serif';
-            header.ctx.font = '12px sans-serif';
+            // header.ctx.font = '12px sans-serif';
             AML.gridColor = "#444444";
             AML.gridTextColor = "#aaaaaa";
             AML.mouseHoverBackgroundColor = "#000000";
@@ -280,7 +280,7 @@
             AML.redColor = "#cc0000";
             AML.greenHoverColor = "#00ff00";
             AML.redHoverColor = "#ff0000";
-            AML.candleWidth = 20;
+            AML.candleWidth = 10;
             AML.marginLeft = 10;
             AML.marginRight = 10;
             AML.marginTop = 10;
@@ -294,8 +294,8 @@
             AML.xRange = 0;
             AML.xPixelRange = (AML.width - AML.marginLeft - AML.marginRight) * 0.87;
             // these are only approximations, the grid will be divided in a way so the numbers are nice
-            AML.xGridCells = 16;
-            AML.yGridCells = 16;
+            AML.xGridCells = 25;
+            AML.yGridCells = 25;
             AML.b_drawMouseOverlay = false;
             AML.mousePosition = {
                 x: 0,
@@ -376,7 +376,7 @@
         draw: function () {
             // document.getElementById('candlestick').style.width = "90%";
             AML.ctx.clearRect(0, 0, AML.width, AML.height);
-            header.ctx.clearRect(0, 0, header.width, header.height);
+            // header.ctx.clearRect(0, 0, header.width, header.height);
             AML.calculateYRange();
             AML.calculateXRange();
             AML.drawGrid();
@@ -404,6 +404,7 @@
                 // if (AML.candleWidth % 2 == 0) AML.candleWidth--;
 
                 let color = (AML.candlesticks[i].close > AML.candlesticks[i].open) ? AML.greenColor : AML.redColor;
+
                 if (i == AML.hoveredCandlestickID) {
                     if (color == AML.greenColor) color = AML.greenHoverColor;
                     else if (color == AML.redColor) color = AML.redHoverColor;
@@ -462,28 +463,33 @@
 
             // Adding prices in the top right corner like coinbase has when hovering over.
             let x = AML.canvas.width * 0.6;
-            header.ctx.fillStyle = AML.gridTextColor;
 
-            header.ctx.fillStyle = AML.gridTextColor;
+            /**
+             * HEADER RECTANGLE
+             */
 
-            // TODO: getting TypeError: Cannot read properties of undefined (reading 'open') here idk why
-            if (AML.candlesticks.length > 0 && !AML.candlesticks === null)
-                try {
-                    header.ctx.fillText("O: ", x, 20);
-                    header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].open), x + 20, 20);
+            // header.ctx.fillStyle = AML.gridTextColor;
 
-                    header.ctx.fillText("H: ", x + 95 + 5, 20);
-                    header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].high), x + 95 + 20, 20);
+            // header.ctx.fillStyle = AML.gridTextColor;
 
-                    header.ctx.fillText("L: ", x + (95 * 2) + 5, 20);
-                    header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].low), x + (95 * 2) + 20, 20);
+            // // TODO: getting TypeError: Cannot read properties of undefined (reading 'open') here idk why
+            // if (AML.candlesticks.length > 0 && !AML.candlesticks === null)
+            //     try {
+            //         header.ctx.fillText("O: ", x, 20);
+            //         header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].open), x + 20, 20);
 
-                    header.ctx.fillText("C: ", x + (95 * 3) + 5, 20);
-                    header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].close), x + (95 * 3) + 20, 20);
-                } catch (error) {
-                    new Log(error);
-                    // new Log(AML.candlesticks.open);
-                }
+            //         header.ctx.fillText("H: ", x + 95 + 5, 20);
+            //         header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].high), x + 95 + 20, 20);
+
+            //         header.ctx.fillText("L: ", x + (95 * 2) + 5, 20);
+            //         header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].low), x + (95 * 2) + 20, 20);
+
+            //         header.ctx.fillText("C: ", x + (95 * 3) + 5, 20);
+            //         header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].close), x + (95 * 3) + 20, 20);
+            //     } catch (error) {
+            //         new Log(error);
+            //         // new Log(AML.candlesticks.open);
+            //     }
 
 
             // draw mouse hover
@@ -512,6 +518,7 @@
                 AML.ctx.fillStyle = AML.gridTextColor;
                 str = AML.formatDate(new Date(AML.xMouseHover));
                 textWidth = AML.ctx.measureText(str).width;
+                console.log("textWidth: " + textWidth);
                 // fill x axis date box when hovering over
                 AML.fillRect(AML.mousePosition.x - textWidth / 2 - 5, AML.height - 20, textWidth + 10, 20, AML.canvas.style.backgroundColor);
                 AML.ctx.fillStyle = AML.gridTextColor;
