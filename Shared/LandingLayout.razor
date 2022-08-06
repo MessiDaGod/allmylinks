@@ -13,10 +13,10 @@
             <MudSpacer/>
         </MudToolBar>
         <MudNavMenu Color="Color.Primary" Margin="Margin.Dense" Rounded="true" Class="pa-2">
-            <MudNavLink id="showallmylinks" @onclick="ShowAllMyLinks">All My Links</MudNavLink>
-            <MudNavLink id="showisitchristmas" @onclick="ShowXmas">Is It Christmas?</MudNavLink>
-            <MudNavLink id="showsql" @onclick="ShowSql">SQL</MudNavLink>
-            <MudNavLink @onclick="ShowCandles" id="showcandles">CandleSticks</MudNavLink>
+            <MudNavLink id="showallmylinks" @ontouchleave="ShowAllMyLinks" @onclick="ShowAllMyLinks">All My Links</MudNavLink>
+            <MudNavLink id="showisitchristmas" @ontouchleave="ShowXmas"  @onclick="ShowXmas">Is It Christmas?</MudNavLink>
+            <MudNavLink id="showsql" @ontouchleave="ShowSql"  @onclick="ShowSql">SQL</MudNavLink>
+            <MudNavLink @ontouchleave="ShowCandles"  @onclick="ShowCandles" id="showcandles">CandleSticks</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
     <MudMainContent Class="pa-0">
@@ -31,18 +31,22 @@
 
     async Task ShowXmas()
     {
+        ToggleDrawer();
         await Js.InvokeVoidAsync("AML.setActiveDiv", "showisitchristmas");
     }
     async Task ShowSql()
     {
+        ToggleDrawer();
         await Js.InvokeVoidAsync("AML.setActiveDiv", "showsql");
     }
     async Task ShowAllMyLinks()
     {
+        ToggleDrawer();
         await Js.InvokeVoidAsync("AML.setActiveDiv", "showallmylinks");
     }
     async Task ShowCandles()
     {
+        ToggleDrawer();
         await Js.InvokeVoidAsync("AML.setActiveDiv", "showcandles");
     }
 }
