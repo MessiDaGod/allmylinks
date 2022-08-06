@@ -72,6 +72,34 @@
     var CandlestickPage = document.getElementById("candles");
     var isCandlestickActive = (CandlestickPage && !CandlestickPage.classList.contains("hide")) ? true : false;
 
+    // const doIsCandlesActive = async () => {
+
+    //     var isactive = false;
+    //     var candlesdiv = document.getElementById("candles");
+    //     if (candlesdiv) {
+    //         if (candlesdiv.classList.contains("hide"))
+    //             return false;
+    //         else {
+    //             return true;
+    //         }
+    //     }
+    // }
+
+
+    //   const isCandlesActive = async () => {
+
+    //     const isactive = await doIsCandlesActive();
+
+    //     if (isactive) {
+    //       return true;
+    //     }
+    //     else {
+    //         return false;
+    //     }
+    //   }
+
+// await isCandlesActive();
+
     window.AML = {
         setActiveDiv: function(activeDivId) {
             document.getElementById("appbar").textContent = activeDivId;
@@ -88,6 +116,34 @@
                   });
             });
         },
+        doIsCandlesActive: async function() {
+            var isactive = false;
+            var candlesdiv = document.getElementById("candles");
+            if (candlesdiv) {
+                if (candlesdiv.classList.includes("hide"))
+                    return false;
+                else {
+                    return true;
+                }
+            }
+        },
+        isCandlesActive:  async function() {
+            var isactive = await AML.doIsCandlesActive();
+
+            if (isactive) {
+              return true;
+            }
+            else {
+                return false;
+            }
+          },
+        resolveAfter2Seconds: function() {
+            return new Promise(resolve => {
+              setTimeout(() => {
+                console.log(typeof resolve(true));
+              }, 1000);
+            });
+          },
         setAsActive: function(activeDivId) {
             var el = document.getElementById(activeDivId);
             if (el && el.id == "candles") {

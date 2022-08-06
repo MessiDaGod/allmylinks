@@ -38,13 +38,14 @@
     <link href="_content/MudBlazor/MudBlazor.min.css?v=6.0.14" rel="stylesheet" />
     <link href="css/MudBlazorDocs.min.css" rel="stylesheet" />
 	<title>Joe Shakely | Website</title>
+	<link href="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.css" rel="stylesheet" />
 </head>
 <script>
 	window.getUserAgent = () => {
 		return navigator.userAgent;
 	};
 </script>
-<script src='js/AllMyLinks.js' defer></script>
+<script src='js/AllMyLinks.js'></script>
 <script type="text/javascript">
 	caches.delete("blazor-resources-/").then(function (e) {
 		console.log("'blazor-resources-/' cache deleted");
@@ -101,6 +102,10 @@
 			});
 		})();
 	</script> -->
+	<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
+	<script>require.config({ paths: { 'vs': '_content/BlazorMonaco/lib/monaco-editor/min/vs' } });</script>
+	<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
+	<script src="_content/BlazorMonaco/jsInterop.js"></script>
 </body>
 
 </html>
