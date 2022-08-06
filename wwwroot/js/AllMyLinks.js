@@ -16,6 +16,22 @@
         };
     }
 
+        // document.addEventListener("load", function(){
+        //     var button = document.querySelectorAll("button[id='showcandles']")[0];
+        //     document.addEventListener("click", function() {
+        //         console.log("clicked");
+        //         var candlesbutton = document.getElementById("candles");
+        //         if (candlesbutton) {
+        //             var aml = document.getElementById("allmylinks");
+        //             if (aml) {
+        //                 aml.classList.add("hide");
+        //             }
+        //             candlesbutton.classList.remove("hide");
+        //             AML.plot();
+        //         }
+        //       });
+        // });
+
     function toggle(sectionId, buttonId) {
         var x = document.getElementById(sectionId);
         let button = document.getElementById(buttonId);
@@ -60,14 +76,30 @@
         setActiveDiv: function(activeDivId) {
             document.getElementById("appbar").textContent = activeDivId;
             AML.setAsActive(activeDivId);
+            if (activeDivId === "showcandles") {
+                AML.plot();
+            }
+        },
+        events: function() {
+            document.addEventListener("load", function(){
+                var button = document.querySelectorAll("button[id='showcandles']")[0];
+                button.addEventListener("click", function() {
+                    AML.setAsActive((button.id.replace('show', '')));
+                  });
+            });
         },
         setAsActive: function(activeDivId) {
             var el = document.getElementById(activeDivId);
+            if (el && el.id == "candles") {
+                if (activeDivId.includes("candles")) {
+                    AML.plot();
+                }
+            }
             if (el) {
                 el.classList.add("active");
                 var id = el.id.replace("show", "");
                 AML.showById(id);
-            }
+            };
 
             for (var i = 0; i < Pages.length; i++) {
                 if (Pages[i] === activeDivId) {
@@ -77,9 +109,9 @@
                     var el = document.getElementById(Pages[i]);
                     if (el) {
                         el.classList.remove("active");
-                        // AML.hideById(el.id.replace("show", ""));
+                        AML.hideById(el.id.replace("show", ""));
                     }
-                }
+                };
         },
         addDbLink: function () {
             var els = document.querySelectorAll("a[href='/SqlPage']");
@@ -156,7 +188,7 @@
             document.getElementById("myList").innerHTML = "";
         },
         plot: function ( /** @type {string | URL} */ url) {
-            if (isCandlestickActive) {
+ 
             this.webSocketConnected = false;
             this.webSocketHost = "wss://stream.binance.com:9443/ws/" + "BTCUSDT" + "@kline_" + "1";
             if (url == null) url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=50";
@@ -181,7 +213,6 @@
 
             xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xmlhttp.send();
-        }
         },
         plot2: function ( /** @type {[]} */ stick) {
             AML.addCandlestick(new AML.candleStick(
