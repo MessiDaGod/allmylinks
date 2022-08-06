@@ -101,6 +101,15 @@
 // await isCandlesActive();
 
     window.AML = {
+        colorize: function() {
+            var lines = document.querySelectorAll(".view-line");
+            if (lines) {
+                for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i];
+                    line.classList.add("blue");
+                }
+            }
+        },
         setActiveDiv: function(activeDivId) {
             document.getElementById("appbar").textContent = activeDivId;
             AML.setAsActive(activeDivId);

@@ -12,7 +12,7 @@
 <div class="mud-tabs-toolbar-wrapper" style="transform:translateX(-0px);">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="browsedata-tab" data-bs-toggle="tab" data-bs-target="#browsedata" type="button" role="tab" aria-controls="browsedata" aria-selected="true"><span class="material-symbols-outlined">search</span>Browse Data</button>
+            <button onclick="AML.colorizes" class="nav-link active" id="browsedata-tab" data-bs-toggle="tab" data-bs-target="#browsedata" type="button" role="tab" aria-controls="browsedata" aria-selected="true"><span class="material-symbols-outlined">search</span>Browse Data</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="queryeditor-tab" data-bs-toggle="tab" data-bs-target="#queryeditor" type="button" role="tab" aria-controls="queryeditor" aria-selected="false">❮⁄❯ Query Editor</button>
@@ -63,6 +63,12 @@
     </div>
     <div class="mud-tab-slider mud-tab-slider-horizontal" style="width:0px;left:0px;transition:left .3s cubic-bezier(.64,.09,.08,1);"></div>
 </div>
+
+<style>
+    .blue {
+    color: blue !important;
+}
+</style>
 
 @code {
 
@@ -138,6 +144,7 @@
     protected async Task Init()
     {
         await Js.InvokeVoidAsync("Sql.init");
+        await Js.InvokeVoidAsync("AML.colorize");
     }
 
     public async Task LoadTables(string json)
