@@ -28,7 +28,7 @@
     <RadzenSplitter Orientation="Radzen.Orientation.Vertical" Collapse=@OnCollapseDisabled Expand=@OnExpand>
         <RadzenSplitterPane>
             <RadzenSplitter Collapse=@OnCollapseDisabled Expand=@OnExpand>
-                <RadzenSplitterPane Size="14%">
+                <RadzenSplitterPane Size="12%" min-width="0">
                     <div id='infoPanel' class="card rounded-0 border-left-0">
                         <table class='table table-condensed small'>
                             <thead>
@@ -124,6 +124,9 @@
         if (firstRender)
         {
             await Task.Run(() => isLoading = false);
+            @* bool isSqlActive = false;
+            isSqlActive = await JS.InvokeAsync<bool>("Sql.isSqlActive");
+            if (isSqlActive) *@
             await Init();
             await InvokeAsync(StateHasChanged);
         }
@@ -256,13 +259,13 @@
 
     void OnCollapseDisabled(RadzenSplitterEventArgs args)
     {
-        args.Cancel = true;
+        //args.Cancel = true;
 
     }
 
     void OnResizeDisabled(RadzenSplitterResizeEventArgs args)
     {
-        args.Cancel = true;
+        //args.Cancel = true;
 
     }
 

@@ -1,13 +1,14 @@
 @page "/browse-data"
 @using MudBlazor;
-@inject IJSRuntime Js;
-@using Radzen
-@using Radzen.Blazor
-@namespace allmylinks
 @using allmylinks.Models;
 @using Newtonsoft.Json
+@using Radzen
+@using Radzen.Blazor
+@inject IJSRuntime Js;
 @inject NavigationManager UriHelper;
+@namespace allmylinks
 
+<!--suppress SpellCheckingInspection -->
 <div class="mud-tabs-toolbar-wrapper" style="transform:translateX(-0px);">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -19,7 +20,7 @@
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="browsedata" role="tabpanel" aria-labelledby="browsedata-tab">
-            <div class='btn-group btn-group-sm'>
+            <div class="btn-group btn-group-sm">
                 <div class="btn-group">
                     <button class="btn btn-primary btn-md dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="material-symbols-outlined">save</span>&nbsp;Save Results
@@ -29,15 +30,15 @@
                     </ul>
                 </div>
             </div>
-            <hr class='invisible-divider'>
-            <small id='tableDetails' class='ml-2'></small>
-            <hr class='invisible-divider'>
-            <div id='tableRecords' class='table-responsive'></div>
-            <hr class='invisible-divider'>
-            <ul id='tablePagination' class='pagination pagination-sm rounded-0'></ul>
+            <hr class="invisible-divider">
+            <small id="tableDetails" class="ml-2"></small>
+            <hr class="invisible-divider">
+            <div id="tableRecords" class="table-responsive"></div>
+            <hr class="invisible-divider">
+            <ul id="tablePagination" class="pagination pagination-sm rounded-0"></ul>
         </div>
         <div class="tab-pane fade" id="queryeditor" role="tabpanel" aria-labelledby="queryeditor-tab">
-            <div class='btn-group btn-group-sm'>
+            <div class="btn-group btn-group-sm">
                 <div class="btn-group">
                     <button class="btn btn-primary btn-md dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="material-symbols-outlined">save</span>&nbsp;Save Results
@@ -47,16 +48,20 @@
                     </ul>
                 </div>
             </div>
-            <button id='runQueryBtn' type='button' class='btn btn-sm btn-light text-primary border-primary rounded-0 ml-2' onclick="Sql.initRunQuery()">Execute Query<span class="material-symbols-outlined">database</span>
+            <button id="runQueryBtn" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.initRunQuery()">Execute Query<span class="material-symbols-outlined">database</span>
             </button>
-            <small id='tableQueryDetails' class='ml-2'></small>
-            <hr class='invisible-divider'>
-            <p class='mb-0'><textarea id='lineCounter' wrap='off' readonly>1.</textarea><textarea id='codeEditor' wrap='off'></textarea></p>
-            <div id='tableQueryRecords' class='table-responsive'></div>
-            <ul id='tableQueryPagination' class='pagination pagination-sm rounded-0'></ul>
+            <small id="tableQueryDetails" class="ml-2"></small>
+            <hr class="invisible-divider">
+            <p class="mb-0">
+            @* <textarea id='lineCounter' wrap='off' readonly>1.</textarea> *@
+            <MonacoEditor Id="codeEditor" ConstructionOptions="EditorConstructionOptions" />
+            <textarea id="codeEditor2" wrap="off" class="hide"></textarea>
+            </p>
+            <div id="tableQueryRecords" class="table-responsive"></div>
+            <ul id="tableQueryPagination" class="pagination pagination-sm rounded-0"></ul>
         </div>
     </div>
-    <div class="mud-tab-slider mud-tab-slider-horizontal" style="width:0px;left:0px;transition:left .3s cubic-bezier(.64,.09,.08,1);;"></div>
+    <div class="mud-tab-slider mud-tab-slider-horizontal" style="width:0px;left:0px;transition:left .3s cubic-bezier(.64,.09,.08,1);"></div>
 </div>
 
 @code {
@@ -96,13 +101,24 @@
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        @* if (firstRender)
-            {
+        if (firstRender)
+        {
             await Task.Run(() => isLoading = false);
             await Init();
             await InvokeAsync(StateHasChanged);
-            } *@
+        }
     }
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            AutomaticLayout = true,
+            Language = "javascript",
+            Value = "SELECT * \r\n FROM PRICES \r\n LIMIT 1",
+        };
+    }
+
 
     protected override async Task OnParametersSetAsync()
     {

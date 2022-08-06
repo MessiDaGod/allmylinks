@@ -67,23 +67,16 @@
 	var tblName = [];
 	var tableRecords = [];
 	var outputLogs = [];
+	var runQueryBtn;
 	var logsRecords;
 	var resultset2 = [];
 	var ColumnNames = [];
 	var db;
-	var runQueryBtn;
-	var exportAsJSON;
-	var exportQueryAsJSON;
-	var exportEditorQuery;
-	var runQueryBtn;
-	var exportAsJSON;
-	var exportQueryAsJSON;
-	var exportEditorQuery;
 	var codeEditor;
 	var uploadBtn;
 	var upload;
-	var outputLogs = [];
 	var tblIcon = '▦ ';
+	var errorDisplay;
 	var recordsPerPage = 100;
 	var stmt = '';
 	var resultset = [];
@@ -106,6 +99,8 @@
 	var staticTbls = [];
 	var tblcnt = 0;
 	var lastClicked = [];
+	var errorDisplay;
+	var _buffer;
 	var paginationBtnProps = {
 		'firstPageBtn': {
 			'className': 'page-item disabled',
@@ -173,18 +168,17 @@
 
 			el.classList.remove('hide');
 		},
-		line_counter: async function() {
-			if (codeEditor === null || codeEditor === undefined)
-				return;
-			let lineCount = codeEditor.value.split('\n').length;
-			let outarr = new Array();
-			for (var x = 0; x < lineCount; x++) {
-				outarr[x] = (x + 1) + '.';
-			}
-			await Promise.resolve(outarr);
-			lineCountCache = lineCount;
-			lineCounter.value = outarr.join('\n');
-		},
+        doIsSqlActive: async function() {
+            let candlesdiv = document.getElementById("sql");
+            if (candlesdiv) {
+                return !candlesdiv.classList.contains("hide");
+            }
+        },
+        isSqlActive:  async function() {
+			let isactive = await Sql.doIsSqlActive();
+
+			return !!isactive;
+          },
 		toggleTabs: async function() {
 			var mainTabs = document.getElementById('mainTabs');
 			if (mainTabs !== null) {
@@ -352,6 +346,9 @@
 			// });
 		},
 		init: async function() {
+
+			// initialize the database
+			console.log('Sql.init()');
 			var runQueryBtn;
 			var exportAsJSON;
 			var exportQueryAsJSON;
@@ -437,7 +434,7 @@
 			// ================================== Query Editor Tab ===========================
 
 			codeEditor = document.getElementById('codeEditor');
-			var lineCounter = document.getElementById('lineCounter');
+			//var lineCounter = document.getElementById('lineCounter');
 
 
 			var _buffer;
@@ -447,14 +444,14 @@
 			var outArrCache = new Array();
 
 			if (codeEditor != null && codeEditor != undefined) {
-				codeEditor.addEventListener('scroll', () => {
-					lineCounter.scrollTop = codeEditor.scrollTop;
-					lineCounter.scrollLeft = codeEditor.scrollLeft;
-				});
+				// codeEditor.addEventListener('scroll', () => {
+				// 	lineCounter.scrollTop = codeEditor.scrollTop;
+				// 	lineCounter.scrollLeft = codeEditor.scrollLeft;
+				// });
 
-				codeEditor.addEventListener('input', () => {
-					Sql.line_counter();
-				});
+				// codeEditor.addEventListener('input', () => {
+				// 	Sql.line_counter();
+				// });
 
 				codeEditor.addEventListener('keydown', (e) => {
 					let {
@@ -475,7 +472,7 @@
 			}
 
 
-			Sql.line_counter();
+			// Sql.line_counter();
 			// var fileNameDisplay = document.getElementById('fileNameDisplay');
 			// var fileSizeDisplay = document.getElementById('fileSizeDisplay');
 			// var noOfTablesDisplay = document.getElementById('noOfTablesDisplay');
@@ -483,8 +480,8 @@
 			if (upload != null && upload != undefined) {
 
 				upload.addEventListener('change', async (ev) => {
-					if (errorDisplay === null)
-						errorDisplay = document.getElementById('errorDisplay');
+					if (!errorDisplay)
+					errorDisplay = document.getElementById('errorDisplay');
 					errorDisplay.innerHTML = '';
 
 					file = ev.currentTarget.files[0];
@@ -506,8 +503,10 @@
 
 						for (let rowObj of resultset) {
 							let tblName = rowObj['tbl_name'];
+							if (staticTbls.indexOf(tblName) === -1) {
 							staticTbls.push(tblName);
 							Sql.loadTableSelectable(tblName);
+							}
 						}
 						// tblcnt = staticTbls.length;
 
@@ -850,18 +849,6 @@
 			} catch (err) {
 				throw new Error(err.message);
 			}
-		},
-		line_counter: async function() {
-			if (Sql.codeEditor === null || Sql.codeEditor === undefined)
-				return;
-			let lineCount = Sql.codeEditor.value.split('\n').length;
-			let outarr = new Array();
-			for (var x = 0; x < lineCount; x++) {
-				outarr[x] = (x + 1) + '.';
-			}
-			await Promise.resolve(outarr);
-			lineCountCache = lineCount;
-			lineCounter.value = outarr.join('\n');
 		},
 		countLines: function(textarea) {
 			if (_buffer == null) {
