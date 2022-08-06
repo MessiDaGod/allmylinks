@@ -213,6 +213,7 @@
 
             xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xmlhttp.send();
+            console.log("Plotted...");
         },
         plot2: function ( /** @type {[]} */ stick) {
             AML.addCandlestick(new AML.candleStick(

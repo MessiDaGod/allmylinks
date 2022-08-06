@@ -3,8 +3,7 @@ name: gh-pages
 on:
   push:
     branches:
-      - main
-      - sqlite
+      - sqlite3
 
 jobs:
   build:
