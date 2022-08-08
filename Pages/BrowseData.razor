@@ -57,8 +57,11 @@
             <MonacoEditor Id="codeEditor" ConstructionOptions="EditorConstructionOptions" />
             <textarea id="codeEditor2" wrap="off" class="hide"></textarea>
             </p>
+            <div id="gridjs"></div>
+            @* <div id="helloworld"></div> *@
+
             <div id="tableQueryRecords" class="table-responsive"></div>
-            <ul id="tableQueryPagination" class="pagination pagination-sm rounded-0"></ul>
+            @* <ul id="tableQueryPagination" class="pagination pagination-sm rounded-0"></ul> *@
         </div>
     </div>
     <div class="mud-tab-slider mud-tab-slider-horizontal" style="width:0px;left:0px;transition:left .3s cubic-bezier(.64,.09,.08,1);"></div>
@@ -111,6 +114,7 @@
         {
             await Task.Run(() => isLoading = false);
             await Init();
+            await LoadGrid();
             await InvokeAsync(StateHasChanged);
         }
     }
@@ -125,6 +129,14 @@
         };
     }
 
+    async Task LoadGrid(CancellationToken ct = default)
+    {
+        bool isBrowseDataActive = false;
+        isBrowseDataActive = await JS.InvokeAsync<bool>("AML.isBrowseDataActive");
+        await Js.InvokeVoidAsync("AML.logit", isBrowseDataActive ? "true" : "false");
+        if (isBrowseDataActive)
+        await JS.InvokeVoidAsync("Sql.initGrid");
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -143,6 +155,7 @@
 
     protected async Task Init()
     {
+        await Js.InvokeVoidAsync("Sql.initGrid");
         await Js.InvokeVoidAsync("Sql.init");
         await Js.InvokeVoidAsync("AML.colorize");
     }

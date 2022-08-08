@@ -83,6 +83,7 @@
 	var currentPage = 1;
 	var selected_tbl_name = '';
 	var noOfPages = 1;
+	var exportAsJSON;
 	var totalNoOfRecords = 0;
 	var offset = 0;
 	var sampleQueryStmt = 'SELECT * FROM Prices';
@@ -100,7 +101,11 @@
 	var tblcnt = 0;
 	var lastClicked = [];
 	var errorDisplay;
+	var exportQueryAsJSON;
+	var exportAsJSON;
 	var _buffer;
+	var exportEditorQuery;
+	var Json;
 	var paginationBtnProps = {
 		'firstPageBtn': {
 			'className': 'page-item disabled',
@@ -154,6 +159,112 @@
 	};
 
 	window.Sql = {
+		doGrid: function() {
+			if (Json)
+			console.log(Json);
+					const grid =  new gridjs.Grid({
+
+						columns: [{
+							id: 'id',
+							name: 'Id'
+						 }, {
+							id: 'userId',
+							name: 'UserId'
+						 }, {
+							id: 'createdAt',
+							name: 'Created At'
+						 },{
+							 id: 'open',
+							 name: 'Open'
+						  },
+						  {
+							 id: 'high',
+							 name: 'High'
+						  },
+						  {
+							 id: 'low',
+							 name: 'Low'
+						  },
+						  {
+							 id: 'close',
+							 name: 'Close'
+						  },
+						  {
+							 id: 'adjustedClose',
+							 name: 'Adjusted Close'
+						  },
+						  {
+							 id: 'volume',
+							 name: 'Volume'
+						  },
+						  {
+							 id: 'symbol',
+							 name: 'Symbol'
+						  },
+						  {
+							 id: 'pct_change',
+							 name: 'Percent Change'
+						  },
+					 ],
+						 data: [ Json ]
+					   }).render(document.getElementById("gridjs"));
+
+
+		},
+		initGrid: function() {
+
+            var url = "https://localhost:7199/btcusd.json";
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", url, true);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    Json = JSON.parse(xmlhttp.responseText);
+                }
+            };
+
+            xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xmlhttp.send();
+			Sql.doGrid();
+		},
+        tableize: function () {
+            new gridjs.Grid({
+                sort: true,
+                search: true,
+                pagination: false,
+                columns: ['iBook', 'Book'],
+                server: {
+                    url: 'https://localhost:7199/btcusd.json',
+                    handle: (res) => {
+                        return res.text().then(str => (new window.DOMParser()).parseFromString(str, "application/json"));
+                    },
+                    then: data => {
+                        var el = data.querySelectorAll('GetBookNames');
+                        if (el) {
+                            var children = el[0].children;
+                            var books = [];
+                            for (let index = 0; index < children.length; index++) {
+                                books.push(children[index]);
+                            }
+                            return Array.from(books).map(book => [book.textContent]);
+                        }
+                    }
+                }
+            }).render(document.getElementById("tableize"));
+        },
+        helloworld: function () {
+            new gridjs.Grid({
+                columns: ["Name", "Email", "Phone Number"],
+                data: [
+                    ["John", "john@example.com", "(353) 01 222 3333"],
+                    ["Mark", "mark@gmail.com", "(01) 22 888 4444"],
+                    ["Eoin", "eoin@gmail.com", "0097 22 654 00033"],
+                    ["Sarah", "sarahcdd@gmail.com", "+322 876 1233"],
+                    ["Afshin", "afshin@mail.com", "(353) 22 87 8356"]
+                ],
+                resizable: true,
+                sort: true
+            }).render(document.getElementById("helloworld"));
+        },
 		snapToQE: function() {
 			var el = document.getElementById('editor');
 			if (!el.classList.includes('hide'))
@@ -829,7 +940,6 @@
 				throw new Error(err.message);
 			}
 		},
-
 		initPaginationBtn: async function(paginationBtnType, tablePaginationEle) {
 			try {
 				let paginationBtn = document.createElement('li');
@@ -1057,6 +1167,7 @@
 				throw new Error(err.message);
 			}
 		},
+
 		renderDatatable: async function(resultset, tableRecordsEle) {
 			try {
 				tableRecordsEle.innerHTML = '';

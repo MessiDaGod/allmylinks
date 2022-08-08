@@ -146,6 +146,28 @@
                 return false;
             }
           },
+          doisBrowseDataActive: async function() {
+            var isactive = false;
+            var el =document.querySelectorAll("#queryeditor-tab");
+
+            if (Sql.isNullOrEmpty(el))
+                return false;
+
+            if (el) {
+                isactive = el[0].ariaSelected;
+            }
+            if (isactive === "true") {
+                return true;
+            } else {
+                return false;
+            }
+        },
+          isBrowseDataActive: async function() {
+            var isactive = await AML.doisBrowseDataActive();
+
+            return isactive;
+          },
+
         resolveAfter2Seconds: function() {
             return new Promise(resolve => {
               setTimeout(() => {

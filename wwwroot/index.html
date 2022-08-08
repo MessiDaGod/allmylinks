@@ -39,6 +39,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
     <link href="_content/MudBlazor/MudBlazor.min.css?v=6.0.14" rel="stylesheet" />
     <link href="css/MudBlazorDocs.min.css" rel="stylesheet" />
+	<link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+	<!-- <link href="css/vendor.css" rel="stylesheet">
+	<link href="css/icons.css" rel="stylesheet"> -->
+	<!-- <link href="css/core.css" rel="stylesheet"> -->
+
+	<!-- this link handles the spinner -->
+	<link href="css/app.css" rel="stylesheet" />
 	<title>Joe Shakely | Website</title>
 </head>
 <script>
@@ -65,6 +72,12 @@
 				<div class="rect5"></div>
 			</div>
 		</div>
+
+<!-- delete -->
+	<!-- </div>
+</div> -->
+<!-- delete -->
+
 		<script src='js/sql-browser.min.js'></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 		<script src="_content/MudBlazor/MudBlazor.min.js"></script>
@@ -74,34 +87,16 @@
 		<script>
 			navigator.serviceWorker.register('service-worker.js');
 		</script>
-		<!-- <script src='js/polyfill.js'></script>
-		<script src='js/ie10-viewport-bug-workaround.js'></script> -->
+		<script src='js/polyfill.js'></script>
+		<script src='js/ie10-viewport-bug-workaround.js'></script>
 		<div id="blazor-error-ui">
 			An unhandled error has occurred.
 			<a href="" class="reload">Reload</a>
 			<a class="dismiss"></a>
 		</div>
+		<script src="js/gridjs.umd.js"></script>
 		<script src='js/Sql.js' defer></script>
 	</div>
-	<!-- <script>
-		(function () {
-			document.addEventListener("load", function(){
-				var button = document.querySelectorAll("button[id='showcandles']")[0];
-				button.addEventListener("mousedown", function() {
-					console.log("clicked");
-					var candlesbutton = document.getElementById("candles");
-					if (candlesbutton) {
-						var aml = document.getElementById("allmylinks");
-						if (aml) {
-							aml.classList.add("hide");
-						}
-						candlesbutton.classList.remove("hide");
-						AML.plot();
-					}
-				  });
-			});
-		})();
-	</script> -->
 	<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
 	<script>require.config({ paths: { 'vs': '_content/BlazorMonaco/lib/monaco-editor/min/vs' } });</script>
 	<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
