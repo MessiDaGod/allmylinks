@@ -34,11 +34,11 @@ var DatabasePath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "d
 // var dropResult = await db.DropTableAsync<Person>();
 // var createResult = await db.CreateTableAsync<Person>();
 // List<Person> people = new();
-var person = new Person()
-{
-    FirstName = "AAPL",
-    LastName = "Mothafucka",
-};
+// var person = new Person()
+// {
+//     FirstName = "AAPL",
+//     LastName = "Mothafucka",
+// };
 
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
