@@ -1,51 +1,55 @@
 // @ts-nocheck
-(function () {
+(function() {
     'use strict';
 
     if (!Element.prototype.matches) {
         Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
     }
     if (!Element.prototype.closest) {
-        Element.prototype.closest = function ( /** @type {string} */ s) {
+        Element.prototype.closest = function(/** @type {string} */
+        s) {
             var el = this;
             do {
-                if (el.matches(s)) return el;
+                if (el.matches(s))
+                    return el;
                 el = el.parentElement || el.parentNode;
             } while (el !== null && el.nodeType === 1);
             return null;
-        };
+        }
+        ;
     }
 
-        // document.addEventListener("load", function(){
-        //     var button = document.querySelectorAll("button[id='showcandles']")[0];
-        //     document.addEventListener("click", function() {
-        //         console.log("clicked");
-        //         var candlesbutton = document.getElementById("candles");
-        //         if (candlesbutton) {
-        //             var aml = document.getElementById("allmylinks");
-        //             if (aml) {
-        //                 aml.classList.add("hide");
-        //             }
-        //             candlesbutton.classList.remove("hide");
-        //             AML.plot();
-        //         }
-        //       });
-        // });
+    // document.addEventListener("load", function(){
+    //     var button = document.querySelectorAll("button[id='showcandles']")[0];
+    //     document.addEventListener("click", function() {
+    //         console.log("clicked");
+    //         var candlesbutton = document.getElementById("candles");
+    //         if (candlesbutton) {
+    //             var aml = document.getElementById("allmylinks");
+    //             if (aml) {
+    //                 aml.classList.add("hide");
+    //             }
+    //             candlesbutton.classList.remove("hide");
+    //             AML.plot();
+    //         }
+    //       });
+    // });
 
     function toggle(sectionId, buttonId) {
         var x = document.getElementById(sectionId);
         let button = document.getElementById(buttonId);
-        if (x === undefined) { // Meaning the picture is hidden
+        if (x === undefined) {
+            // Meaning the picture is hidden
             x = document.getElementByClass("hide");
         }
         x.classList.toggle("hide");
 
         if (document.getElementById(sectionId).classList.length === 0) {
             button.textContent = ("Hide " + buttonId.replace('Button', '') + (buttonId.includes('Price') ? " BTC-USD" : ""));
-        }
-        else {
+        } else {
             button.textContent = ("Show " + buttonId.replace('Button', '') + (buttonId.includes('Price') ? " BTC-USD" : ""))
-        };
+        }
+        ;
     }
 
     class Log {
@@ -66,7 +70,7 @@
             document.getElementById("myList").appendChild(node);
         }
     }
-// <span class="material-symbols-outlined">database</span>
+    // <span class="material-symbols-outlined">database</span>
     var FS;
     var Pages = ["showallmylinks", "showsql", "showisitchristmas", "showcandles"];
     var CandlestickPage = document.getElementById("candles");
@@ -85,7 +89,6 @@
     //     }
     // }
 
-
     //   const isCandlesActive = async () => {
 
     //     const isactive = await doIsCandlesActive();
@@ -98,7 +101,7 @@
     //     }
     //   }
 
-// await isCandlesActive();
+    // await isCandlesActive();
 
     window.AML = {
         colorize: function() {
@@ -111,35 +114,38 @@
             }
         },
         addColorListener: async function() {
-      
-        // Keyup event
-        window.addEventListener('keyup', async (e) => {
-  // SQL keywords
-        var keywords = ["SELECT","FROM","WHERE","LIKE","BETWEEN","NOT LIKE","FALSE","NULL","FROM","TRUE","NOT IN", "LIMIT"];                
-        // Space key pressed
-        if (e.keyCode == 32){
-            var newHTML = "";
-            // Loop through words
-            $(this).text().replace(/[\s]+/g, " ").trim().split(" ").forEach(function(val){
-            // If word is statement
-            if (keywords.indexOf(val.trim().toUpperCase()) > -1)
-                newHTML += "<span class='statement'>" + val + "&nbsp;</span>";
-            else
-                newHTML += "<span class='other'>" + val + "&nbsp;</span>";
-            });
-            $(this).html(newHTML);
 
-            // Set cursor postion to end of text
-            var child = $(this).children();
-            var range = document.createRange();
-            var sel = window.getSelection();
-            range.setStart(child[child.length-1], 1);
-            range.collapse(true);
-            sel.removeAllRanges();
-            sel.addRange(range);
-            this.focus();
+            // Keyup event
+            window.addEventListener('keyup', async(e)=>{
+                // SQL keywords
+                var keywords = ["SELECT", "FROM", "WHERE", "LIKE", "BETWEEN", "NOT LIKE", "FALSE", "NULL", "FROM", "TRUE", "NOT IN", "LIMIT"];
+                // Space key pressed
+                if (e.keyCode == 32) {
+                    var newHTML = "";
+                    // Loop through words
+                    $(this).text().replace(/[\s]+/g, " ").trim().split(" ").forEach(function(val) {
+                        // If word is statement
+                        if (keywords.indexOf(val.trim().toUpperCase()) > -1)
+                            newHTML += "<span class='statement'>" + val + "&nbsp;</span>";
+                        else
+                            newHTML += "<span class='other'>" + val + "&nbsp;</span>";
+                    });
+                    $(this).html(newHTML);
+
+                    // Set cursor postion to end of text
+                    var child = $(this).children();
+                    var range = document.createRange();
+                    var sel = window.getSelection();
+                    if (range) {
+                        range.setStart(child[child.length - 1], 1);
+                        range.collapse(true);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                        this.focus();
+                    }
+                }
             }
-        });
+            );
         },
         setActiveDiv: function(activeDivId) {
             document.getElementById("appbar").textContent = activeDivId;
@@ -149,11 +155,11 @@
             }
         },
         events: function() {
-            document.addEventListener("load", function(){
+            document.addEventListener("load", function() {
                 var button = document.querySelectorAll("button[id='showcandles']")[0];
                 button.addEventListener("click", function() {
                     AML.setAsActive((button.id.replace('show', '')));
-                  });
+                });
             });
         },
         doIsCandlesActive: async function() {
@@ -167,19 +173,18 @@
                 }
             }
         },
-        isCandlesActive:  async function() {
+        isCandlesActive: async function() {
             var isactive = await AML.doIsCandlesActive();
 
             if (isactive) {
-              return true;
-            }
-            else {
+                return true;
+            } else {
                 return false;
             }
-          },
-          doisBrowseDataActive: async function() {
+        },
+        doisBrowseDataActive: async function() {
             var isactive = false;
-            var el =document.querySelectorAll("#queryeditor-tab");
+            var el = document.querySelectorAll("#queryeditor-tab");
 
             if (Sql.isNullOrEmpty(el))
                 return false;
@@ -193,19 +198,21 @@
                 return false;
             }
         },
-          isBrowseDataActive: async function() {
+        isBrowseDataActive: async function() {
             var isactive = await AML.doisBrowseDataActive();
 
             return isactive;
-          },
+        },
 
         resolveAfter2Seconds: function() {
-            return new Promise(resolve => {
-              setTimeout(() => {
-                console.log(typeof resolve(true));
-              }, 1000);
-            });
-          },
+            return new Promise(resolve=>{
+                setTimeout(()=>{
+                    console.log(typeof resolve(true));
+                }
+                , 1000);
+            }
+            );
+        },
         setAsActive: function(activeDivId) {
             var el = document.getElementById(activeDivId);
             if (el && el.id == "candles") {
@@ -217,21 +224,22 @@
                 el.classList.add("active");
                 var id = el.id.replace("show", "");
                 AML.showById(id);
-            };
-
+            }
+            ;
             for (var i = 0; i < Pages.length; i++) {
                 if (Pages[i] === activeDivId) {
                     el.classList.remove("hide");
                     continue;
                 }
-                    var el = document.getElementById(Pages[i]);
-                    if (el) {
-                        el.classList.remove("active");
-                        AML.hideById(el.id.replace("show", ""));
-                    }
-                };
+                var el = document.getElementById(Pages[i]);
+                if (el) {
+                    el.classList.remove("active");
+                    AML.hideById(el.id.replace("show", ""));
+                }
+            }
+            ;
         },
-        addDbLink: function () {
+        addDbLink: function() {
             var els = document.querySelectorAll("a[href='/SqlPage']");
             // els.innerHTML = "database";
             var dblink = document.createElement('span');
@@ -245,12 +253,12 @@
         toggleMenuItems: function(item) {
             var el = [];
             if (item.toLowerCase().includes("sql")) {
-            el = document.getElementById("");
+                el = document.getElementById("");
             }
             if (el)
-            el.classList.toggle('hide');
+                el.classList.toggle('hide');
         },
-        openNewWindow: function (url) {
+        openNewWindow: function(url) {
             var windowTarget = "_blank";
             let popup = window.open(url, this.windowTarget, "popup,width=1300,height=900z");
             if (!popup || popup.closed || typeof popup.closed == 'undefined') {
@@ -258,17 +266,16 @@
                     let redirectUrl = window.location.href;
                     let url = action + "?returnUrl=" + encode(redirectUrl);
                     window.location.replace(url);
-                }
-                else {
+                } else {
                     alert("Authentication popup is blocked by the browser. Please allow popups on this website and retry.")
                 }
             }
         },
-        getTwitterCookie: function (id) {
+        getTwitterCookie: function(id) {
             var cookie = document.getElementById(id).contentDocument.cookie;
             console.log(cookie);
         },
-        triggerFileDownload: function (fileName, url) {
+        triggerFileDownload: function(fileName, url) {
             const anchorElement = document.createElement('a');
             anchorElement.href = url;
             anchorElement.download = fileName ?? '';
@@ -276,74 +283,81 @@
             // anchorElement.click();
             // anchorElement.remove();
         },
-        ToggleCancel: function () {
+        ToggleCancel: function() {
             var x = document.getElementById("cancel");
             x.classList.toggle("hide");
         },
         Toggle: function(elemId) {
             var x = document.getElementById(elemId);
             if (x)
-            x.classList.toggle("hide");
+                x.classList.toggle("hide");
         },
         hideById: function(elemId) {
             var x = document.getElementById(elemId);
             if (x && !x.classList.contains("hide"))
-            x.classList.toggle("hide");
+                x.classList.toggle("hide");
         },
         showById: function(elemId) {
             var x = document.getElementById(elemId);
             if (x && x.classList.contains("hide"))
-            x.classList.remove("hide");
+                x.classList.remove("hide");
         },
-        scrollEventConsolesToTop: function () {
+        scrollEventConsolesToTop: function() {
             var myDiv = document.getElementById("event-console");
             myDiv.scrollTop = 0;
         },
-        clearGitMessage: function () {
+        clearGitMessage: function() {
             document.getElementById("gitcommit").value = null;
         },
-        doclear: function () {
+        doclear: function() {
             document.getElementById("myList").innerHTML = "";
         },
-        plot: function ( /** @type {string | URL} */ url) {
+        plot: function(/** @type {string | URL} */
+        url) {
 
             this.webSocketConnected = false;
             this.webSocketHost = "wss://stream.binance.com:9443/ws/" + "BTCUSDT" + "@kline_" + "1";
-            if (url == null) url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=50";
+            if (url == null)
+                url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=50";
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", url, true);
-            xmlhttp.onreadystatechange = function () {
+            xmlhttp.onreadystatechange = function() {
                 if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                     var json = JSON.parse(xmlhttp.responseText);
                     AML.candlestickChart = new AML.candleStickChart("candlestick");
                     for (var i = 0; i < json.length; ++i) {
-                        AML.addCandlestick(new AML.candleStick(
-                            json[i][0], // timestamp
-                            json[i][1], // open
-                            json[i][4], // close
-                            json[i][2], // high
-                            json[i][3], // low
+                        AML.addCandlestick(new AML.candleStick(json[i][0],// timestamp
+                        json[i][1],// open
+                        json[i][4],// close
+                        json[i][2],// high
+                        json[i][3],// low
                         ));
                     }
                     AML.draw();
                 }
-            };
+            }
+            ;
 
             xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xmlhttp.send();
             console.log("Plotted...");
         },
-        plot2: function ( /** @type {[]} */ stick) {
-            AML.addCandlestick(new AML.candleStick(
-                stick[0].timeStamp, // timestamp
-                stick[0].open, // open
-                stick[0].close, // close
-                stick[0].high, // high
-                stick[0].low, // low
+        plot2: function(/** @type {[]} */
+        stick) {
+            AML.addCandlestick(new AML.candleStick(stick[0].timeStamp,// timestamp
+            stick[0].open,// open
+            stick[0].close,// close
+            stick[0].high,// high
+            stick[0].low,// low
             ));
             AML.draw2();
         },
-        candleStick: function ( /** @type {string} */ timestamp, /** @type {string} */ open, /** @type {string} */ close, /** @type {string} */ high, /** @type {string} */ low) {
+        candleStick: function(/** @type {string} */
+        timestamp, /** @type {string} */
+        open, /** @type {string} */
+        close, /** @type {string} */
+        high, /** @type {string} */
+        low) {
             this.timestamp = parseInt(timestamp);
             this.open = parseFloat(open);
             this.close = parseFloat(close);
@@ -355,7 +369,8 @@
             // let el = document.querySelector('header');
             // el.setAttribute("width", window.innerWidth - 50 + "px");
         },
-        candleStickChart: function ( /** @type {string} */ canvasElementID) {
+        candleStickChart: function(/** @type {string} */
+        canvasElementID) {
             AML.canvas = document.getElementById(canvasElementID);
             // var header = document.getElementById("header");
 
@@ -365,21 +380,28 @@
             AML.canvas.width = window.innerWidth * 0.9;
             AML.canvas.height = window.innerHeight * 0.6;
 
-            if (AML.canvas.width) AML.width = parseInt(AML.canvas.width) * 0.99;
+            if (AML.canvas.width)
+                AML.width = parseInt(AML.canvas.width) * 0.99;
             AML.height = parseInt(AML.canvas.height) * 0.99;
             AML.ctx = AML.canvas.getContext("2d");
             // header.ctx = header.getContext("2d");
 
-            AML.canvas.addEventListener("mousemove", ( /** @type {any} */ e) => {
+            AML.canvas.addEventListener("mousemove", (/** @type {any} */
+            e)=>{
                 AML.mouseMove(e);
-            });
-            AML.canvas.addEventListener("mouseout", ( /** @type {any} */ e) => {
+            }
+            );
+            AML.canvas.addEventListener("mouseout", (/** @type {any} */
+            e)=>{
                 AML.mouseOut(e);
-            });
+            }
+            );
 
-            addEventListener("resize", ( /** @type {any} */ e) => {
+            addEventListener("resize", (/** @type {any} */
+            e)=>{
                 AML.resize(e);
-            });
+            }
+            );
 
             // AML.canvas.addEventListener("wheel", ( /** @type {{ preventDefault: () => void; }} */ e) =>
             // {
@@ -427,71 +449,83 @@
             AML.technicalIndicators = [];
             AML.candlesticks = [];
         },
-        resize: function () {
+        resize: function() {
             AML.plot("https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=50");
         },
-        scroll: function ( /** @type {{ deltaY: number; }} */ e) {
+        scroll: function(/** @type {{ deltaY: number; }} */
+        e) {
             let url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=50";
             let split = url.split('&');
             let newLimit = 0;
             let cnt = 0;
             if (e.deltaY > 0)
                 AML.zoomStartID = 1;
-            else AML.zoomStartID = -1;
+            else
+                AML.zoomStartID = -1;
 
             for (let index = 0; index < split.length; index++) {
                 const element = split[index];
                 if (!element.includes('limit'))
                     continue;
-                else newLimit = parseInt(element.replace('limit=', ''));
+                else
+                    newLimit = parseInt(element.replace('limit=', ''));
             }
 
             //AML.draw();
         },
-        addCandlestick: function ( /** @type {any} */ candlestick) {
+        addCandlestick: function(/** @type {any} */
+        candlestick) {
             AML.candlesticks.push(candlestick);
         },
-        addOneCandlestick: function ( /** @type {any} */ candlestick) {
+        addOneCandlestick: function(/** @type {any} */
+        candlestick) {
             AML.candlesticks.push(candlestick);
         },
-        mouseMove: function ( /** @type {any} */ e) {
+        mouseMove: function(/** @type {any} */
+        e) {
             // document.getElementById("myList").innerHTML = "";
             // document.getElementById('myList').style.color = "white";
-            var getMousePos = ( /** @type {{ clientX: number; clientY: number; }} */ e) => {
+            var getMousePos = (/** @type {{ clientX: number; clientY: number; }} */
+            e)=>{
                 var rect = AML.canvas.getBoundingClientRect();
                 return {
                     x: e.clientX - rect.left,
                     y: e.clientY - rect.top
                 };
-            };
+            }
+            ;
             AML.mousePosition = getMousePos(e);
             AML.mousePosition.x += AML.candleWidth / 2;
             AML.b_drawMouseOverlay = true;
-            if (AML.mousePosition.x < AML.marginLeft) AML.b_drawMouseOverlay = false;
-            if (AML.mousePosition.x > AML.width - AML.marginRight + AML.candleWidth) AML.b_drawMouseOverlay = false;
-            if (AML.mousePosition.y > AML.height - AML.marginBottom) AML.b_drawMouseOverlay = false;
+            if (AML.mousePosition.x < AML.marginLeft)
+                AML.b_drawMouseOverlay = false;
+            if (AML.mousePosition.x > AML.width - AML.marginRight + AML.candleWidth)
+                AML.b_drawMouseOverlay = false;
+            if (AML.mousePosition.y > AML.height - AML.marginBottom)
+                AML.b_drawMouseOverlay = false;
             if (AML.b_drawMouseOverlay) {
                 AML.yMouseHover = AML.yToValueCoords(AML.mousePosition.y);
                 AML.xMouseHover = AML.xToValueCoords(AML.mousePosition.x);
                 // snap to candlesticks
                 var candlestickDelta = AML.candlesticks[1].timestamp - AML.candlesticks[0].timestamp;
-                AML.hoveredCandlestickID = Math.floor(
-                    (AML.xMouseHover - AML.candlesticks[0].timestamp) / candlestickDelta);
+                AML.hoveredCandlestickID = Math.floor((AML.xMouseHover - AML.candlesticks[0].timestamp) / candlestickDelta);
                 AML.xMouseHover = Math.floor(AML.xMouseHover / candlestickDelta) * candlestickDelta;
                 AML.mousePosition.x = AML.xToPixelCoords(AML.xMouseHover);
                 AML.draw();
-            } else AML.draw();
+            } else
+                AML.draw();
         },
-        mouseOut: function ( /** @type {any} */ e) {
+        mouseOut: function(/** @type {any} */
+        e) {
             AML.b_drawMouseOverlay = false;
             AML.draw();
         },
-        draw2: function () {
+        draw2: function() {
             AML.calculateYRange();
             AML.calculateXRange();
             AML.drawGrid();
         },
-        draw: function () {
+        draw: function() {
             // document.getElementById('candlestick').style.width = "90%";
             AML.ctx.clearRect(0, 0, AML.width, AML.height);
             // header.ctx.clearRect(0, 0, header.width, header.height);
@@ -524,8 +558,10 @@
                 let color = (AML.candlesticks[i].close > AML.candlesticks[i].open) ? AML.greenColor : AML.redColor;
 
                 if (i == AML.hoveredCandlestickID) {
-                    if (color == AML.greenColor) color = AML.greenHoverColor;
-                    else if (color == AML.redColor) color = AML.redHoverColor;
+                    if (color == AML.greenColor)
+                        color = AML.greenHoverColor;
+                    else if (color == AML.redColor)
+                        color = AML.redHoverColor;
                 }
 
                 AML.drawLine(AML.xToPixelCoords(AML.candlesticks[i].timestamp), AML.yToPixelCoords(AML.candlesticks[i].low), AML.xToPixelCoords(AML.candlesticks[i].timestamp), AML.yToPixelCoords(AML.candlesticks[i].high), color);
@@ -533,14 +569,15 @@
                 AML.fillRect(AML.xToPixelCoords(AML.candlesticks[i].timestamp) - Math.floor(AML.candleWidth / 2), AML.yToPixelCoords(AML.candlesticks[i].open), AML.candleWidth, AML.yToPixelCoords(AML.candlesticks[i].close) - AML.yToPixelCoords(AML.candlesticks[i].open), color == AML.greenColor ? AML.canvas.style.backgroundColor : AML.redColor);
             }
 
-
             for (let i = 0; i < AML.candlesticks.length; ++i) {
                 if (AML.candlesticks[i].close > AML.candlesticks[i].open)
                     continue;
                 let color = AML.candlesticks[i].close > AML.candlesticks[i].open ? AML.greenColor : AML.redColor;
                 if (i == AML.hoveredCandlestickID) {
-                    if (color == AML.greenColor) color = AML.greenHoverColor;
-                    else if (color == AML.redColor) color = AML.redHoverColor;
+                    if (color == AML.greenColor)
+                        color = AML.greenHoverColor;
+                    else if (color == AML.redColor)
+                        color = AML.redHoverColor;
                 }
                 // draw the wick
                 AML.drawLine(AML.xToPixelCoords(AML.candlesticks[i].timestamp), AML.yToPixelCoords(AML.candlesticks[i].low), AML.xToPixelCoords(AML.candlesticks[i].timestamp), AML.yToPixelCoords(AML.candlesticks[i].high), color);
@@ -558,8 +595,10 @@
 
                 let color = AML.candlesticks[i].close > AML.candlesticks[i].open ? AML.greenColor : AML.redColor;
                 if (i == AML.hoveredCandlestickID) {
-                    if (color == AML.greenColor) color = AML.greenHoverColor;
-                    else if (color == AML.redColor) color = AML.redHoverColor;
+                    if (color == AML.greenColor)
+                        color = AML.greenHoverColor;
+                    else if (color == AML.redColor)
+                        color = AML.redHoverColor;
                 }
                 AML.ctx.setLineDash([]);
                 // draw the wick
@@ -609,7 +648,6 @@
             //         // new Log(AML.candlesticks.open);
             //     }
 
-
             // draw mouse hover
             if (AML.b_drawMouseOverlay) {
                 // price line
@@ -648,13 +686,13 @@
             //     AML.plot()
             // }, millisecondsToWait);
         },
-        fmt: function (number) {
+        fmt: function(number) {
             return number.toLocaleString('en-US', {
                 style: 'currency',
                 currency: 'USD'
             });
         },
-        setGreenStroke: function () {
+        setGreenStroke: function() {
 
             AML.ctx.shadowColor = '#00ff00';
             AML.ctx.shadowBlur = 1;
@@ -662,14 +700,14 @@
             AML.ctx.lineWidth = 1;
             AML.ctx.strokeStyle = '#38f';
         },
-        clearStroke: function () {
+        clearStroke: function() {
             AML.ctx.shadowColor = '';
             AML.ctx.shadowBlur = 0;
             AML.ctx.lineJoin = '';
             AML.ctx.lineWidth = 1;
             AML.ctx.strokeStyle = "";
         },
-        onInit: function (candlestickChart) {
+        onInit: function(candlestickChart) {
             for (var i = 0; i < candlestickChart.candlesticks.length; ++i) {
                 // average the number of samples
                 var avg = 0;
@@ -682,18 +720,21 @@
                 this.data.push(avg);
             }
         },
-        addTechnicalIndicator: function ( /** @type {{ onInit: (arg0: any) => void; }} */ indicator) {
+        addTechnicalIndicator: function(/** @type {{ onInit: (arg0: any) => void; }} */
+        indicator) {
             indicator.onInit(this);
             this.technicalIndicators.push(indicator);
         },
-        getCurrentPrice: function () {
+        getCurrentPrice: function() {
             var el = document.getElementById("candleprice");
-            if (el != null || el != undefined) return el.textContent;
+            if (el != null || el != undefined)
+                return el.textContent;
         },
-        setCurrentPrice: function ( /** @type {[]} */ url) {
+        setCurrentPrice: function(/** @type {[]} */
+        url) {
             AML.plot(url);
         },
-        drawGrid: function () {
+        drawGrid: function() {
 
             // roughly divide the yRange into cells
             var yGridSize = AML.yRange / AML.yGridCells;
@@ -701,8 +742,10 @@
             var currentprice = AML.candlesticks[AML.candlesticks.length - 1].close;
             // try to find a nice number to round to
             var niceNumber = Math.pow(10, Math.ceil(Math.log10(yGridSize)));
-            if (yGridSize < 0.25 * niceNumber) niceNumber = 0.25 * niceNumber;
-            else if (yGridSize < 0.5 * niceNumber) niceNumber = 0.5 * niceNumber;
+            if (yGridSize < 0.25 * niceNumber)
+                niceNumber = 0.25 * niceNumber;
+            else if (yGridSize < 0.5 * niceNumber)
+                niceNumber = 0.5 * niceNumber;
             // find next largest nice number above yStart
             let yStartRoundNumber = Math.ceil(AML.yStart / niceNumber) * niceNumber;
             // find next lowest nice number below yEnd
@@ -725,15 +768,18 @@
             var xGridSize = AML.xRange / AML.xGridCells;
             // try to find a nice number to round to
             niceNumber = Math.pow(10, Math.ceil(Math.log10(xGridSize)));
-            if (xGridSize < 0.25 * niceNumber) niceNumber = 0.25 * niceNumber;
-            else if (xGridSize < 0.5 * niceNumber) niceNumber = 0.5 * niceNumber;
+            if (xGridSize < 0.25 * niceNumber)
+                niceNumber = 0.25 * niceNumber;
+            else if (xGridSize < 0.5 * niceNumber)
+                niceNumber = 0.5 * niceNumber;
             // find next largest nice number above yStart
             var xStartRoundNumber = Math.ceil(AML.xStart / niceNumber) * niceNumber;
             // find next lowest nice number below yEnd
             var xEndRoundNumber = Math.floor(AML.xEnd / niceNumber) * niceNumber;
             // if the total x range is more than 5 days, format the timestamp as date instead of hours
             var b_formatAsDate = false;
-            if (AML.xRange > 60 * 60 * 24 * 1000 * 5) b_formatAsDate = true;
+            if (AML.xRange > 60 * 60 * 24 * 1000 * 5)
+                b_formatAsDate = true;
             /////////////////////////////////////////////////////////////////////////////////////////////////////
             // DRAWING x AXIS LABELS
             for (var x = xStartRoundNumber; x <= xEndRoundNumber; x += niceNumber) {
@@ -754,7 +800,7 @@
                 AML.ctx.fillText(dateStr, AML.xToPixelCoords(x) + 5, AML.height - 25);
             }
         },
-        calculateYRange: function () {
+        calculateYRange: function() {
             for (var i = 0; i < AML.candlesticks.length; ++i) {
                 if (i == 0) {
                     AML.yStart = AML.candlesticks[i].low;
@@ -770,24 +816,33 @@
             }
             AML.yRange = AML.yEnd - AML.yStart;
         },
-        calculateXRange: function () {
+        calculateXRange: function() {
             AML.xStart = AML.candlesticks[0].timestamp;
             AML.xEnd = AML.candlesticks[AML.candlesticks.length - 1].timestamp;
             AML.xRange = (AML.xEnd - AML.xStart) * 0.9;
         },
-        yToPixelCoords: function ( /** @type {number} */ y) {
+        yToPixelCoords: function(/** @type {number} */
+        y) {
             return (AML.height - AML.marginBottom - ((y - AML.yStart) * AML.yPixelRange) / AML.yRange);
         },
-        xToPixelCoords: function ( /** @type {number} */ x) {
+        xToPixelCoords: function(/** @type {number} */
+        x) {
             return (AML.marginLeft + ((x - AML.xStart) * AML.xPixelRange) / AML.xRange);
         },
-        yToValueCoords: function ( /** @type {number} */ y) {
+        yToValueCoords: function(/** @type {number} */
+        y) {
             return (AML.yStart + ((AML.height - AML.marginBottom - y) * AML.yRange) / AML.yPixelRange);
         },
-        xToValueCoords: function ( /** @type {number} */ x) {
+        xToValueCoords: function(/** @type {number} */
+        x) {
             return (AML.xStart + ((x - AML.marginLeft) * AML.xRange) / AML.xPixelRange);
         },
-        drawLine: function ( /** @type {number} */ xStart, /** @type {number} */ yStart, /** @type {number} */ xEnd, /** @type {number} */ yEnd, /** @type {any} */ color) {
+        drawLine: function(/** @type {number} */
+        xStart, /** @type {number} */
+        yStart, /** @type {number} */
+        xEnd, /** @type {number} */
+        yEnd, /** @type {any} */
+        color) {
             AML.ctx.beginPath();
             // to get a crisp 1 pixel wide line, we need to add 0.5 to the coords
             AML.ctx.moveTo(xStart + 0.5, yStart + 0.5);
@@ -795,19 +850,34 @@
             AML.ctx.strokeStyle = color;
             AML.ctx.stroke();
         },
-        fillRect: function ( /** @type {any} */ x, /** @type {any} */ y, /** @type {any} */ width, /** @type {any} */ height, /** @type {any} */ color) {
+        fillRect: function(/** @type {any} */
+        x, /** @type {any} */
+        y, /** @type {any} */
+        width, /** @type {any} */
+        height, /** @type {any} */
+        color) {
             AML.ctx.beginPath();
             AML.ctx.fillStyle = color;
             AML.ctx.rect(x, y, width, height);
             AML.ctx.fill();
         },
-        drawRect: function ( /** @type {any} */ x, /** @type {any} */ y, /** @type {any} */ width, /** @type {any} */ height, /** @type {any} */ color) {
+        drawRect: function(/** @type {any} */
+        x, /** @type {any} */
+        y, /** @type {any} */
+        width, /** @type {any} */
+        height, /** @type {any} */
+        color) {
             AML.ctx.beginPath();
             AML.ctx.strokeStyle = color;
             AML.ctx.rect(x, y, width, height);
             AML.ctx.stroke();
         },
-        updateCandlestick: function ( /** @type {number} */ candlestickID, /** @type {any} */ open, /** @type {any} */ close, /** @type {any} */ high, /** @type {any} */ low) {
+        updateCandlestick: function(/** @type {number} */
+        candlestickID, /** @type {any} */
+        open, /** @type {any} */
+        close, /** @type {any} */
+        high, /** @type {any} */
+        low) {
             if (candlestickID >= 0 && candlestickID < this.candlesticks.length) {
                 this.candlesticks[candlestickID].update(open, close, high, low);
                 for (var i = 0; i < this.technicalIndicators.length; ++i) {
@@ -815,13 +885,18 @@
                 }
             }
         },
-        MovingAverage: function ( /** @type {any} */ samples, /** @type {any} */ color, /** @type {any} */ lineWidth) {
+        MovingAverage: function(/** @type {any} */
+        samples, /** @type {any} */
+        color, /** @type {any} */
+        lineWidth) {
             this.samples = samples;
             this.color = color;
             this.lineWidth = lineWidth;
             this.data = [];
         },
-        onAddCandlestick: function ( /** @type {{ candlesticks: { [x: string]: { close: number; }; }; }} */ candlestickChart, /** @type {number} */ candlestickID) {
+        onAddCandlestick: function(/** @type {{ candlesticks: { [x: string]: { close: number; }; }; }} */
+        candlestickChart, /** @type {number} */
+        candlestickID) {
             // average the number of samples
             var avg = 0;
             var counter = 0;
@@ -832,7 +907,9 @@
             avg /= counter;
             this.data.push(avg);
         },
-        onUpdateCandlestick: function ( /** @type {{ candlesticks: { [x: string]: { close: number; }; }; }} */ candlestickChart, /** @type {number} */ candlestickID) {
+        onUpdateCandlestick: function(/** @type {{ candlesticks: { [x: string]: { close: number; }; }; }} */
+        candlestickChart, /** @type {number} */
+        candlestickID) {
             // average the number of samples
             var avg = 0;
             var counter = 0;
@@ -843,7 +920,8 @@
             avg /= counter;
             this.data[candlestickID] = avg;
         },
-        MovingAverageDraw: function ( /** @type {{ context: { lineWidth: any; }; zoomStartID: any; drawLine: (arg0: any, arg1: any, arg2: any, arg3: any, arg4: any) => void; xToPixelCoords: (arg0: any) => any; candlesticks: { [x: string]: { timestamp: any; }; }; yToPixelCoords: (arg0: any) => any; }} */ candlestickChart) {
+        MovingAverageDraw: function(/** @type {{ context: { lineWidth: any; }; zoomStartID: any; drawLine: (arg0: any, arg1: any, arg2: any, arg3: any, arg4: any) => void; xToPixelCoords: (arg0: any) => any; candlesticks: { [x: string]: { timestamp: any; }; }; yToPixelCoords: (arg0: any) => any; }} */
+        candlestickChart) {
             var oldLineWidth = candlestickChart.context.lineWidth;
             candlestickChart.context.lineWidth = this.lineWidth;
             for (var i = candlestickChart.zoomStartID; i < this.data.length - 1; ++i) {
@@ -851,26 +929,35 @@
             }
             candlestickChart.context.lineWidth = oldLineWidth;
         },
-        formatDate: function ( /** @type {{ getDate: () => any; getMonth: () => number; getHours: () => any; getMinutes: () => any; getFullYear: () => string; }} */ date) {
+        formatDate: function(/** @type {{ getDate: () => any; getMonth: () => number; getHours: () => any; getMinutes: () => any; getFullYear: () => string; }} */
+        date) {
             AML.ctx.fillStyle = AML.gridTextColor;
             var day = date.getDate();
             var month = date.getMonth() + 1;
             var hours = date.getHours();
             var minutes = date.getMinutes();
-            if (minutes < 10) minutes = "0" + minutes;
+            if (minutes < 10)
+                minutes = "0" + minutes;
             return (month + "/" + day + "/" + date.getFullYear() + " - " + hours + ":" + minutes);
         },
-        roundPriceValue: function ( /** @type {number} */ value) {
-            if (value > 1.0) return ((Math.round(value * 100) / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"));
-            if (value > 0.001) return (Math.round(value * 1000) / 1000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
-            if (value > 0.00001) return (Math.round(value * 100000) / 100000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            if (value > 0.0000001) return (Math.round(value * 10000000) / 10000000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            else return (Math.round(value * 1000000000) / 1000000000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        roundPriceValue: function(/** @type {number} */
+        value) {
+            if (value > 1.0)
+                return ((Math.round(value * 100) / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"));
+            if (value > 0.001)
+                return (Math.round(value * 1000) / 1000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+            if (value > 0.00001)
+                return (Math.round(value * 100000) / 100000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            if (value > 0.0000001)
+                return (Math.round(value * 10000000) / 10000000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            else
+                return (Math.round(value * 1000000000) / 1000000000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
         },
-        setCanvasSize: function () {
-            if (document.getElementById("candlestick") && document.getElementById("candlestick").style.width != "1600") document.getElementById("candlestick").style.width = window.innerWidth * 0.95;
+        setCanvasSize: function() {
+            if (document.getElementById("candlestick") && document.getElementById("candlestick").style.width != "1600")
+                document.getElementById("candlestick").style.width = window.innerWidth * 0.95;
         },
-        updateTitle: function () {
+        updateTitle: function() {
             // new Log(AML.getCurrentPrice());
             document.title = AML.getCurrentPrice();
         },
@@ -879,27 +966,26 @@
                 window.Module.FS.mkdir('/database');
                 window.Module.FS.mount(window.Module.FS.IDBFS, {}, '/database');
                 return AML.syncDatabase(true);
-            }
-            catch (error) {
+            } catch (error) {
                 console.log(error);
             }
         },
         syncDatabase: function(populate) {
             try {
-            return new Promise((resolve, reject) => {
-                window.Module.FS.syncfs(populate, (err) => {
-                    if (err) {
-                        console.log('syncfs failed. Error:', err);
-                        reject(err);
+                return new Promise((resolve,reject)=>{
+                    window.Module.FS.syncfs(populate, (err)=>{
+                        if (err) {
+                            console.log('syncfs failed. Error:', err);
+                            reject(err);
+                        } else {
+                            console.log('synced successfull.');
+                            resolve();
+                        }
                     }
-                    else {
-                        console.log('synced successfull.');
-                        resolve();
-                    }
-                });
-            });
-            }
-            catch (error) {
+                    );
+                }
+                );
+            } catch (error) {
                 console.log('failed to sync database.');
             }
         },

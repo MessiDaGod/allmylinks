@@ -1334,16 +1334,16 @@
         },
         resultsJson: async function(id) {
             if (db && !id) {
-                var activetable = document.getElementById('activetable').innerText;
+				let activetable = document.getElementById('activetable').innerText;
                 // exportAsJSON.addEventListener('click', (ev) => {
                 try {
-                    let jsonObj = Sql.getResultSetAsRowJSON(db, 'SELECT * FROM `' + activetable + '`');
+                    let jsonObj = Sql.getResultSetAsRowJSON(db, document.getElementById('codeEditor').value);
                     let jsonStr = JSON.stringify(jsonObj);
                     let textblob = new Blob([jsonStr],{
                         type: 'application/json'
                     });
                     let dwnlnk = document.createElement('a');
-                    dwnlnk.download = `${activetable}.json`;
+                    dwnlnk.download = `${document.getElementById('activetable').innerText}.json`;
                     if (window.webkitURL != null) {
                         dwnlnk.href = window.webkitURL.createObjectURL(textblob);
                     }
@@ -1356,13 +1356,24 @@
                 }
             }
             if (db && id) {
+				var query = "";
+				var lines = document.querySelectorAll(".view-line");
+				if (lines) {
+					for (let index = 0; index < lines.length; index++) {
+						const line = lines[index];
+						if (index === lines.length - 1)
+							query += line.innerText + ";";
+						else
+							query += line.innerText + " ";
+					}
+				}
                 var code = document.getElementById(id);
                 const regex = new RegExp('(?<=from)\\s+(\\w+)','gm');
                 const str = code.value;
                 let m;
                 let tableName = '';
 
-                while ((m = regex.exec(str)) !== null) {
+                while ((m = regex.exec(query)) !== null) {
                     // This is necessary to avoid infinite loops with zero-width matches
                     if (m.index === regex.lastIndex) {
                         regex.lastIndex++;
@@ -1379,7 +1390,7 @@
                 if (code && !Sql.isNullOrEmpty(code.value))
                     try {
                         // let jsonObj = Sql.getResultSetAsRowJSON(db, 'SELECT * FROM `' + tableName + '`');
-                        let jsonObj = Sql.getResultSetAsRowJSON(db, str);
+                        let jsonObj = Sql.getResultSetAsRowJSON(db, query);
                         let jsonStr = JSON.stringify(jsonObj);
                         let textblob = new Blob([jsonStr],{
                             type: 'application/json'

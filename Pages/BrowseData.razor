@@ -27,7 +27,8 @@
                         <span class="material-symbols-outlined">save</span>&nbsp;Save Results
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item active" onclick="Sql.resultsJson()"><span class="material-symbols-outlined">file_download</span> JSON</a></li>
+                        <li><a class="dropdown-item" onclick="Sql.resultsJson()"><span class="material-symbols-outlined">file_download</span> JSON</a></li>
+                        <li><a class="dropdown-item" onclick="Sql.resultsJson('codeEditor')"><span class="material-symbols-outlined">file_download</span> Excel</a></li>
                     </ul>
                 </div>
             </div>
@@ -45,7 +46,8 @@
                         <span class="material-symbols-outlined">save</span>&nbsp;Save Results
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item active" onclick="Sql.resultsJson('codeEditor')"><span class="material-symbols-outlined">file_download</span> JSON</a></li>
+                        <li><a class="dropdown-item" onclick="Sql.resultsJson('codeEditor')"><span class="material-symbols-outlined">file_download</span> JSON</a></li>
+                        <li><a class="dropdown-item" onclick="Sql.resultsJson('codeEditor')"><span class="material-symbols-outlined">file_download</span> Excel</a></li>
                     </ul>
                 </div>
             </div>
@@ -54,15 +56,14 @@
             <small id="tableQueryDetails" class="ml-2"></small>
             <hr class="invisible-divider">
             <p class="mb-0">
-            @* <textarea id='lineCounter' wrap='off' readonly>1.</textarea> *@
+
             <MonacoEditor Id="codeEditor" ConstructionOptions="EditorConstructionOptions" />
             <textarea id="codeEditor2" wrap="off" class="hide"></textarea>
             </p>
             <div id="gridjs"></div>
-            @* <div id="helloworld"></div> *@
+
 
             <div id="tableQueryRecords" class="table-responsive"></div>
-            @* <ul id="tableQueryPagination" class="pagination pagination-sm rounded-0"></ul> *@
         </div>
     </div>
     <div class="mud-tab-slider mud-tab-slider-horizontal" style="width:0px;left:0px;transition:left .3s cubic-bezier(.64,.09,.08,1);"></div>
@@ -71,7 +72,10 @@
 <style>
     .blue {
     color: blue !important;
-}
+    }
+    .tab-pane {
+        overflow-y: scroll;
+    }
 </style>
 
 @code {
