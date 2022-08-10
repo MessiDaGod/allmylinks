@@ -5,15 +5,17 @@ using Microsoft.AspNetCore.Hosting;
 using Stl.Fusion;
 using allmylinks.Services;
 using allmylinks.Services.UserPreferences;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace allmylinks
 {
     public class Startup
     {
         private IConfiguration Cfg { get; }
+        private IWebAssemblyHostEnvironment Env { get; }
         private ILogger Log { get; set; } = NullLogger<Startup>.Instance;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebAssemblyHostEnvironment env)
         {
             Cfg = configuration;
         }
