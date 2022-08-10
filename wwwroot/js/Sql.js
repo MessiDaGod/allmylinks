@@ -234,10 +234,10 @@
                 sort: true,
                 search: true,
                 pagination: false,
+                resizable: true,
+                sort: true,
                 columns: ["Name", "Email", "Phone Number"],
                 data: [["John", "john@example.com", "(353) 01 222 3333"], ["Mark", "mark@gmail.com", "(01) 22 888 4444"], ["Eoin", "eoin@gmail.com", "0097 22 654 00033"], ["Sarah", "sarahcdd@gmail.com", "+322 876 1233"], ["Afshin", "afshin@mail.com", "(353) 22 87 8356"]],
-                resizable: true,
-                sort: true
             }).render(document.getElementById("helloworld"));
         },
         camelize: function (str) {
@@ -292,9 +292,16 @@
                 msg.classList.toggle('hide');
             }
         },
-        initRunQuery: async function() {
+        toggleHelloWorld: function() {
+            var el = document.getElementById('helloworld');
+            if (el !== null && el.innerHTML.length === 0) {
+                Sql.helloworld();
+            }
+            if (el)
+            el.classList.toggle('hide');
 
-            Sql.helloworld();
+        },
+        initRunQuery: async function() {
             var query = "";
             var lines = document.querySelectorAll(".view-line");
             var codeEditor = document.getElementById('codeEditor');
@@ -318,7 +325,8 @@
                 var failingqueryStmt = query;
                 originalQueryStmt = queryStmt.trim();
                 var failingOriginalQueryStmt = failingqueryStmt.trim();
-                const regex = /LIMIT\s(\w+)/gmi;
+                var regex = /LIMIT\s(\w+)/gmi;
+                var selectTableName;
                 let m;
                 var limit = 0;
 
@@ -331,7 +339,20 @@
                     // The result can be accessed through the `m`-variable.
                     m.forEach((match,groupIndex)=>{
                         limit = m[1];
-                        console.log(m[1]);
+                    }
+                    );
+                }
+                regex = /FROM\s(\w+)/gmi;
+                while ((m = regex.exec(query)) !== null) {
+                    // This is necessary to avoid infinite loops with zero-width matches
+                    if (m.index === regex.lastIndex) {
+                        regex.lastIndex++;
+                    }
+
+                    // The result can be accessed through the `m`-variable.
+                    m.forEach((match,groupIndex)=>{
+                        selectTableName = m[1];
+                        console.log(selectTableName);
                     }
                     );
                 }
@@ -355,14 +376,14 @@
                 tableQueryDetails.innerHTML = '';
                 // Sql.removeAllChildNodes(tableQueryPagination);
 
-                queryStmt = 'SELECT * FROM (' + originalQueryStmt + ')' + (limit > 0 ? ' LIMIT ' + limit : "");
+                queryStmt = 'SELECT * FROM (SELECT * FROM ' + selectTableName + ')' + (limit > 0 ? ' LIMIT ' + limit : "");
                 var failing = 'SELECT * FROM (' + failingOriginalQueryStmt + ')' + (limit > 0 ? ' LIMIT ' + limit : "");
                 // failing = db.prepare(failing);
                 console.log("Success statement: " + queryStmt);
                 console.log("Failing statement: " + failing);
 
                 queryResultset = db.exec(queryStmt);
-                await Sql.renderDatatable2(queryResultset, tableQueryRecords);
+                await Sql.renderDatatable(queryResultset, tableQueryRecords);
                 // await Sql.renderDatatable(queryResultset, tableQueryRecords);
 
             } catch (err) {
@@ -1146,49 +1167,7 @@
                 throw new Error(err.message);
             }
         },
-
         renderDatatable: async function(resultset, tableRecordsEle) {
-            try {
-                tableRecordsEle.innerHTML = '';
-
-                let tableHtmlStr = '';
-                tableHtmlStr += '<table class="table table-striped table-condensed small table-bordered">';
-                tableHtmlStr += '<thead>';
-                tableHtmlStr += '<tr><th></th><th>' + resultset[0]['columns'].join('</th><th>') + '</th></tr>';
-                tableHtmlStr += '</thead>';
-                tableHtmlStr += '<tbody>';
-                let tableValues = resultset[0]['values'];
-                for (let v in tableValues) {
-
-                    tableHtmlStr += '<tr><th>' + (parseInt(v) + 1) + '</th><td>' + tableValues[v].join('</td><td>') + '</td></tr>';
-                }
-                tableHtmlStr += '</tbody>';
-                tableHtmlStr += '</table>';
-                tableHtmlStr += '</div>';
-                tableRecordsEle.innerHTML = tableHtmlStr;
-
-                errorDisplay.textContent = '';
-                // await Sql.addEventListeners();
-                await Sql.setTableCount();
-                await Sql.setActiveTable();
-                var el = document.querySelectorAll("#tableRecords>table")[0];
-                if (el && el.rows.length > 0) {
-                    var active = document.getElementById("activetable");
-                    if (active) {
-                        var activebutton = document.getElementById(active.innerText);
-                        if (activebutton) {
-                            activebutton.classList.add("active");
-                            if (lastClicked.length === 0)
-                                lastClicked.push(active.innerText);
-                        }
-                    }
-                }
-                return await Promise.resolve('success');
-            } catch (err) {
-                throw new Error(err.message);
-            }
-        },
-        renderDatatable2: async function(resultset, tableRecordsEle) {
             try {
                 tableRecordsEle.innerHTML = '';
 
