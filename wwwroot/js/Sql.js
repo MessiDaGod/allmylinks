@@ -33,35 +33,6 @@
 		}
 	}
 
-	// SQL keywords
-	var keywords = ["SELECT","FROM","WHERE","LIKE","BETWEEN","NOT LIKE","FALSE","NULL","FROM","TRUE","NOT IN", "LIMIT"];
-	// Keyup event
-	$("#queryEditor").on("keyup", function(e){
-	// Space key pressed
-	if (e.keyCode == 32){
-		var newHTML = "";
-		// Loop through words
-		$(this).text().replace(/[\s]+/g, " ").trim().split(" ").forEach(function(val){
-		// If word is statement
-		if (keywords.indexOf(val.trim().toUpperCase()) > -1)
-			newHTML += "<span class='statement'>" + val + "&nbsp;</span>";
-		else
-			newHTML += "<span class='other'>" + val + "&nbsp;</span>";
-		});
-		$(this).html(newHTML);
-
-		// Set cursor postion to end of text
-		var child = $(this).children();
-		var range = document.createRange();
-		var sel = window.getSelection();
-		range.setStart(child[child.length-1], 1);
-		range.collapse(true);
-		sel.removeAllRanges();
-		sel.addRange(range);
-		this.focus();
-	}
-	});
-
 	var file = '';
 	var db2;
 	var tblName = [];
@@ -314,80 +285,115 @@
 		},
 		initRunQuery: async function() {
 
+			var query = "";
+			var lines = document.querySelectorAll(".view-line");
+
+			if (lines)
+			{
+				for (let index = 0; index < lines.length; index++) {
+					const line = lines[index];
+					if (index === lines.length - 1)
+					query += line.innerText + ";";
+					else query += line.innerText + " ";
+				}
+			}
 			runQueryBtn = document.getElementById('runQueryBtn');
-			// if (runQueryBtn != null && runQueryBtn != undefined)
-			//     runQueryBtn.addEventListener('click', async () => {
+			if (codeEditor)
+				codeEditor.value = query;
 			try {
+				errorDisplay.innerHTML = '';
 				codeEditor = document.getElementById('codeEditor');
+
 				queryStmt = codeEditor.value;
 				originalQueryStmt = queryStmt.trim();
+				const regex = /LIMIT\s(\w+)/gmi;
+				let m;
+				var limit = 0;
+
+				while ((m = regex.exec(query)) !== null) {
+					// This is necessary to avoid infinite loops with zero-width matches
+					if (m.index === regex.lastIndex) {
+						regex.lastIndex++;
+					}
+
+					// The result can be accessed through the `m`-variable.
+					m.forEach((match, groupIndex) => {
+						limit = m[1];
+						console.log(m[1]);
+					});
+				}
+
 				if (originalQueryStmt.charAt(originalQueryStmt.length - 1) == ';') {
 					originalQueryStmt = originalQueryStmt.substr(0, originalQueryStmt.length - 1);
 				}
-				// ================================================
+
+				if (originalQueryStmt.indexOf("LIMIT") > 0) {
+					originalQueryStmt = originalQueryStmt.substr(0, originalQueryStmt.indexOf("LIMIT")).trim();
+				}
+				// // ================================================
 				queryStmt = 'SELECT COUNT(*) FROM (' + originalQueryStmt + ')';
-				queryResultset = db.exec(queryStmt);
-				// ================================================
+				queryResultset = db.exec(queryStmt.replaceAll("\"", "").replaceAll("'", ""));
+				// // ================================================
 				tableQueryDetails.innerHTML = '';
-				Sql.removeAllChildNodes(tableQueryPagination);
-				// ================================================
-				currentQueryPage = 1;
-				queryOffset = (currentQueryPage - 1) * recordsPerPage;
-				// ================================================
-				totalNoOfQueryRecords = queryResultset[0]['values'][0];
-				totalNoOfQueryRecords = parseInt(totalNoOfQueryRecords);
-				noOfQueryPages = totalNoOfQueryRecords / recordsPerPage;
-				noOfQueryPages = Math.ceil(noOfQueryPages);
-				// ================================================
-				tableQueryDetails.innerHTML = `${tblIcon} Total no. of records: <kbd>${totalNoOfQueryRecords}</kbd> Displaying records <kbd>${queryOffset} ― ${queryOffset+recordsPerPage}</kbd>`;
-				// ================================================
-				firstQueryPageBtn = await Sql.initPaginationBtn('firstQueryPageBtn', tableQueryPagination);
-				// ================================================
-				prevQueryPageBtn = await Sql.initPaginationBtn('prevQueryPageBtn', tableQueryPagination);
-				// ================================================
-				currentQueryPageNo = await Sql.initInputPageNo(tableQueryPagination, 'currentQueryPageNo', currentQueryPage, noOfQueryPages);
-				// ================================================
-				nextQueryPageBtn = await Sql.initPaginationBtn('nextQueryPageBtn', tableQueryPagination);
-				// ================================================
-				lastQueryPageBtn = await Sql.initPaginationBtn('lastQueryPageBtn', tableQueryPagination);
-				// ================================================
+				// Sql.removeAllChildNodes(tableQueryPagination);
+				// // ================================================
+				// currentQueryPage = 1;
+				// queryOffset = (currentQueryPage - 1) * recordsPerPage;
+				// // ================================================
+				// totalNoOfQueryRecords = queryResultset[0]['values'][0];
+				// totalNoOfQueryRecords = parseInt(totalNoOfQueryRecords);
+				// noOfQueryPages = totalNoOfQueryRecords / recordsPerPage;
+				// noOfQueryPages = Math.ceil(noOfQueryPages);
+				// // ================================================
+				// tableQueryDetails.innerHTML = `${tblIcon} Total no. of records: <kbd>${totalNoOfQueryRecords}</kbd> Displaying records <kbd>${queryOffset} ― ${queryOffset+recordsPerPage}</kbd>`;
+				// // // ================================================
+				// // firstQueryPageBtn = await Sql.initPaginationBtn('firstQueryPageBtn', tableQueryPagination);
+				// // // ================================================
+				// // prevQueryPageBtn = await Sql.initPaginationBtn('prevQueryPageBtn', tableQueryPagination);
+				// // // ================================================
+				// // currentQueryPageNo = await Sql.initInputPageNo(tableQueryPagination, 'currentQueryPageNo', currentQueryPage, noOfQueryPages);
+				// // // ================================================
+				// // nextQueryPageBtn = await Sql.initPaginationBtn('nextQueryPageBtn', tableQueryPagination);
+				// // // ================================================
+				// // lastQueryPageBtn = await Sql.initPaginationBtn('lastQueryPageBtn', tableQueryPagination);
+				// // ================================================
 				// render datatable records
-				queryStmt = 'SELECT * FROM (' + originalQueryStmt + ') LIMIT ' + queryOffset + ',' + recordsPerPage;
+				queryStmt = 'SELECT * FROM (' + originalQueryStmt + ')' + (limit > 0 ? ' LIMIT ' + limit : "");
 				queryResultset = db.exec(queryStmt);
 				await Sql.renderDatatable(queryResultset, tableQueryRecords);
 
-				//currentQueryPageNo.addEventListener('change', (evt0) => {
-				//evt0.stopPropagation();
-				currentQueryPage = 1
-				Sql.setQueryPaginationClass();
-				//});
-				//firstQueryPageBtn.addEventListener('click', (evt1) => {
-				//evt1.stopPropagation();
-				currentQueryPage = 1;
-				Sql.setQueryPaginationClass();
-				//});
-				//prevQueryPageBtn.addEventListener('click', (evt2) => {
-				//evt2.stopPropagation();
-				if (currentQueryPage > 1) {
-					currentQueryPage = currentQueryPage - 1;
-					Sql.setQueryPaginationClass();
-				}
-				//});
-				//nextQueryPageBtn.addEventListener('click', (evt3) => {
-				//evt3.stopPropagation();
-				if (currentQueryPage < noOfQueryPages) {
-					currentQueryPage = currentQueryPage + 1;
-					Sql.setQueryPaginationClass();
-				}
-				// });
-				//lastQueryPageBtn.addEventListener('click', (evt4) => {
-				//evt4.stopPropagation();
-				currentQueryPage = noOfQueryPages;
-				Sql.setQueryPaginationClass();
-				// });
+				// // //currentQueryPageNo.addEventListener('change', (evt0) => {
+				// // //evt0.stopPropagation();
+				// // // currentQueryPage = 1
+				// // // Sql.setQueryPaginationClass();
+				// // //});
+				// // //firstQueryPageBtn.addEventListener('click', (evt1) => {
+				// // //evt1.stopPropagation();
+				// // currentQueryPage = 1;
+				// // Sql.setQueryPaginationClass();
+				// // //});
+				// // //prevQueryPageBtn.addEventListener('click', (evt2) => {
+				// // //evt2.stopPropagation();
+				// // if (currentQueryPage > 1) {
+				// // 	currentQueryPage = currentQueryPage - 1;
+				// // 	Sql.setQueryPaginationClass();
+				// // }
+				// // //});
+				// // //nextQueryPageBtn.addEventListener('click', (evt3) => {
+				// // //evt3.stopPropagation();
+				// // if (currentQueryPage < noOfQueryPages) {
+				// // 	currentQueryPage = currentQueryPage + 1;
+				// // 	Sql.setQueryPaginationClass();
+				// // }
+				// // // });
+				// // //lastQueryPageBtn.addEventListener('click', (evt4) => {
+				// // //evt4.stopPropagation();
+				// // currentQueryPage = noOfQueryPages;
+				// // Sql.setQueryPaginationClass();
+				// // });
 			} catch (err) {
 				errorDisplay.innerHTML = '';
-				errorDisplay.innerHTML = `⚠ ERROR: ${err.message}`;
+				errorDisplay.innerHTML = `⚠ ERROR: ${err.stack}`;
 				Sql.appendLogOutput(err.message, 'ERROR');
 			}
 			// }, false);
@@ -494,6 +500,8 @@
 			document.addEventListener('DOMContentLoaded', async () => {
 				console.log('DOMContentLoaded');
 
+				await AML.addColorListener();
+
 				if (!window.FileReader) {
 					errorDisplay.innerHTML = '⛔ WARNING: Your browser does not support HTML5 \'FileReader\' function required to open a file.';
 					appendLogOutput('Your browser does not support HTML5 \'FileReader\' function required to open a file', 'WARNING');
@@ -509,7 +517,7 @@
 
 				var mainTabs = document.getElementById('mainTabs');
 				var mainTabsCollection = mainTabs.getElementsByTagName('a');
-				Array.from(mainTabsCollection).forEach(tab => new BSN.Tab(tab));
+				// Array.from(mainTabsCollection).forEach(tab => new BSN.Tab(tab));
 
 				if (uploadBtn != null && uploadBtn != undefined)
 					uploadBtn.addEventListener('click', () => {
@@ -535,7 +543,7 @@
 
 				var tableQueryDetails = document.getElementById('tableQueryDetails');
 				var tableQueryRecords = document.getElementById('tableQueryRecords');
-				var tableQueryPagination = document.getElementById('tableQueryPagination');
+				// var tableQueryPagination = document.getElementById('tableQueryPagination');
 
 				exportQueryAsJSON = document.getElementById('exportQueryAsJSON');
 				exportEditorQuery = document.getElementById('exportEditorQuery');
@@ -1188,7 +1196,7 @@
 				tableRecordsEle.innerHTML = tableHtmlStr;
 
 				errorDisplay.innerHTML = '';
-				await Sql.addEventListeners();
+				// await Sql.addEventListeners();
 				await Sql.setTableCount();
 				await Sql.setActiveTable();
 				var el = document.querySelectorAll("#tableRecords>table")[0];
@@ -1284,15 +1292,15 @@
 						// ================================================
 						tableDetails.innerHTML = `${tblIcon}${selected_tbl_name} ⯈ Total no. of records: <kbd>${totalNoOfRecords}</kbd> ⯈ Displaying records <kbd>${offset} ― ${offset+recordsPerPage}</kbd>`;
 						// ================================================
-						firstPageBtn = await Sql.initPaginationBtn('firstPageBtn', tablePagination);
-						// ================================================
-						prevPageBtn = await Sql.initPaginationBtn('prevPageBtn', tablePagination);
-						// ================================================
-						currentPageNo = await Sql.initInputPageNo(tablePagination, 'currentPageNo', currentPage, noOfPages);
-						// ================================================
-						nextPageBtn = await Sql.initPaginationBtn('nextPageBtn', tablePagination);
-						// ================================================
-						lastPageBtn = await Sql.initPaginationBtn('lastPageBtn', tablePagination);
+						// firstPageBtn = await Sql.initPaginationBtn('firstPageBtn', tablePagination);
+						// // ================================================
+						// prevPageBtn = await Sql.initPaginationBtn('prevPageBtn', tablePagination);
+						// // ================================================
+						// currentPageNo = await Sql.initInputPageNo(tablePagination, 'currentPageNo', currentPage, noOfPages);
+						// // ================================================
+						// nextPageBtn = await Sql.initPaginationBtn('nextPageBtn', tablePagination);
+						// // ================================================
+						// lastPageBtn = await Sql.initPaginationBtn('lastPageBtn', tablePagination);
 						// ================================================
 
 						currentPageNo.addEventListener('change', (evt0) => {

@@ -1,7 +1,8 @@
 @page "/browse-data"
 @using MudBlazor;
 @using allmylinks.Models;
-@using Newtonsoft.Json
+@using Newtonsoft.Json;
+@using BlazorMonaco;
 @using Radzen
 @using Radzen.Blazor
 @inject IJSRuntime Js;
@@ -115,6 +116,7 @@
             await Task.Run(() => isLoading = false);
             await Init();
             await LoadGrid();
+            await Js.InvokeVoidAsync("AML.colorize");
             await InvokeAsync(StateHasChanged);
         }
     }
@@ -125,7 +127,7 @@
         {
             AutomaticLayout = true,
             Language = "javascript",
-            Value = "SELECT *\nFROM PRICES\nLIMIT 1",
+            Value = "SELECT * FROM Prices LIMIT 1",
         };
     }
 
@@ -157,7 +159,6 @@
     {
         await Js.InvokeVoidAsync("Sql.initGrid");
         await Js.InvokeVoidAsync("Sql.init");
-        await Js.InvokeVoidAsync("AML.colorize");
     }
 
     public async Task LoadTables(string json)
@@ -237,6 +238,12 @@
     {
         showCallAlert = true;
         showLeaveAlert = true;
+    }
+
+    [JSInvokable]
+    async Task UpdateQueryColor()
+    {
+        await Js.InvokeVoidAsync("AML.colorize");
     }
 
     void OnCollapse(RadzenSplitterEventArgs args)

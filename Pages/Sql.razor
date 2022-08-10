@@ -60,7 +60,7 @@
                     </div>
                 </RadzenSplitterPane>
                 <RadzenSplitterPane>
-                    <p id='errorDisplay' class='m-0 p-0 small text-danger'></p>
+                    <p id='errorDisplay' class='m-0 p-0 large text-danger'></p>
                     <div id='mainTabsWrapper' class='card rounded-0 border-right-0'>
                         <div id='mainTabs' role='tablist' class="hide">
                             <BrowseData />
@@ -117,6 +117,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await Js.InvokeVoidAsync("AML.addColorListener");
         await base.OnInitializedAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
