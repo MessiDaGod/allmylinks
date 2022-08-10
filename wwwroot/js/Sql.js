@@ -231,12 +231,20 @@
         },
         helloworld: function() {
             new gridjs.Grid({
+                sort: true,
+                search: true,
+                pagination: false,
                 columns: ["Name", "Email", "Phone Number"],
                 data: [["John", "john@example.com", "(353) 01 222 3333"], ["Mark", "mark@gmail.com", "(01) 22 888 4444"], ["Eoin", "eoin@gmail.com", "0097 22 654 00033"], ["Sarah", "sarahcdd@gmail.com", "+322 876 1233"], ["Afshin", "afshin@mail.com", "(353) 22 87 8356"]],
                 resizable: true,
                 sort: true
             }).render(document.getElementById("helloworld"));
         },
+        camelize: function (str) {
+            return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+              return index === 0 ? word.toLowerCase() : word.toUpperCase();
+            }).replace(/\s+/g, '');
+          },
         snapToQE: function() {
             var el = document.getElementById('editor');
             if (!el.classList.includes('hide'))
@@ -286,6 +294,7 @@
         },
         initRunQuery: async function() {
 
+            Sql.helloworld();
             var query = "";
             var lines = document.querySelectorAll(".view-line");
             var codeEditor = document.getElementById('codeEditor');
@@ -352,8 +361,9 @@
                 console.log("Success statement: " + queryStmt);
                 console.log("Failing statement: " + failing);
 
-                queryResultset = db.exec("SELECT * FROM Person;");
-                await Sql.renderDatatable(queryResultset, tableQueryRecords);
+                queryResultset = db.exec(queryStmt);
+                await Sql.renderDatatable2(queryResultset, tableQueryRecords);
+                // await Sql.renderDatatable(queryResultset, tableQueryRecords);
 
             } catch (err) {
                 errorDisplay.textContent = '';
@@ -1182,40 +1192,48 @@
             try {
                 tableRecordsEle.innerHTML = '';
 
-                var header1 = "<div role=\"complementary\" class=\"gridjs gridjs-container\" style=\"width: 100%;\"> \n" +
-                "<div class=\"gridjs-wrapper\" style=\"height: auto;\"> \n" +
-                "    <table role=\"grid\" class=\"gridjs-table\" style=\"height: auto;\"> \n" +
-                "        <thead class=\"gridjs-thead\"> \n" +
-                "        <tr class=\"gridjs-tr\"> ";
+                var header1 = "<div role=\"complementary\" class=\"gridjs gridjs-container\" style=\"width: 100%;\">\n" +
+                "<div class=\"gridjs-head\">\n" +
+                "<div class=\"gridjs-search\"><input type=\"search\" placeholder=\"Type a keyword...\" aria-label=\"Type a keyword...\" class=\"gridjs-input gridjs-search-input\"></div>\n" +
+                "</div>\n" +
+                "<div class=\"gridjs-wrapper\" style=\"height: auto;\">\n" +
+                "<table role=\"grid\" class=\"gridjs-table\" style=\"height: auto;\">\n" +
+                "<thead class=\"gridjs-thead\">\n" +
+                "<tr class=\"gridjs-tr\">\n";
 
                 var headerColumns = "";
+                var valuesHeader = "";
 
-                var closeTable = " </tr> \n" +
-                    "</thead>\n" +
+                var values = "</thead>\n" +"<tbody class=\"gridjs-tbody\">\n <tr class=\"gridjs-tr\">\n";
+
+                var closeTable =
                     "<tbody class=\"gridjs-tbody\"></tbody>\n" +
                 "</table>\n" +
                 "</div>\n" +
                 "<div id=\"gridjs-temp\" class=\"gridjs-temp\"></div>\n" +
                 "</div>";
 
-                // let tableHtmlStr = '';
-                // tableHtmlStr += '<table class="table table-striped table-condensed small table-bordered">';
-                // tableHtmlStr += '<thead>';
-                // tableHtmlStr += '<tr><th></th><th>' + resultset[0]['columns'].join('</th><th>') + '</th></tr>';
-                // tableHtmlStr += '</thead>';
-                // tableHtmlStr += '<tbody>';
                 let tableValues = resultset[0]['values'];
-                for (let v in tableValues) {
-                    headerColumns += "<th data-column-id=\"" + tableValues[v] + "\" class=\"gridjs-th\">\n" +
-                    "<div class=\"gridjs-th-content\">" + tableValues[v] + "</div>\n" +
-                    "</th>";
+                let columnNames = resultset[0]['columns'];
 
-                    // tableHtmlStr += '<tr><th>' + (parseInt(v) + 1) + '</th><td>' + tableValues[v].join('</td><td>') + '</td></tr>';
+                    for (let j = 0; j < resultset[0]['columns'].length; j++) {
+                        headerColumns += "<th data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-th gridjs-th-sort\" tabindex=\"0\" style=\"min-width: 100px;\">\n" +
+                        "<div class=\"gridjs-th-content\">" + resultset[0]['columns'][j] + "</div><button tabindex=\"-1\" aria-label=\"Sort column ascending\" \n" +
+                        "title=\"Sort column ascending\" class=\"gridjs-sort gridjs-sort-neutral\"></button>\n" +
+                        "<div class=\"gridjs-th gridjs-resizable\"></div>\n" +
+                    "</th>\n";
+                    }
+
+
+                for (let i = 0; i < resultset[0]['values'].length; i++) {
+
+                    for (let j = 0; j < resultset[0]['columns'].length; j++) {
+                        values += "<td data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-td\">" + tableValues[i][j]+ "</td>\n";
+                    }
+                    values += "</tr>\n";
                 }
-                // tableHtmlStr += '</tbody>';
-                // tableHtmlStr += '</table>';
-                // tableHtmlStr += '</div>';
-                tableRecordsEle.innerHTML = header1 + headerColumns + closeTable;
+
+                tableRecordsEle.innerHTML = header1 + headerColumns + values + closeTable;
 
                 errorDisplay.textContent = '';
                 // await Sql.addEventListeners();
