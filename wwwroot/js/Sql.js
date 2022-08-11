@@ -1137,7 +1137,6 @@
         resultsJson: async function(id) {
             if (db && !id) {
                 let activetable = document.getElementById('activetable').innerText;
-                // exportAsJSON.addEventListener('click', (ev) => {
                 try {
                     let jsonObj = Sql.getResultSetAsRowJSON(db, document.getElementById('codeEditor').value);
                     let jsonStr = JSON.stringify(jsonObj);
