@@ -79,57 +79,6 @@
     var _buffer;
     var exportEditorQuery;
     var Json;
-    var paginationBtnProps = {
-        'firstPageBtn': {
-            'className': 'page-item disabled',
-            'linkClassName': 'page-link',
-            'linkTitle': 'first',
-            'linkInnerText': '⏮'
-        },
-        'prevPageBtn': {
-            'className': 'page-item disabled',
-            'linkClassName': 'page-link',
-            'linkTitle': 'previous',
-            'linkInnerText': '⏪'
-        },
-        'nextPageBtn': {
-            'className': 'page-item',
-            'linkClassName': 'page-link',
-            'linkTitle': 'next',
-            'linkInnerText': '⏩'
-        },
-        'lastPageBtn': {
-            'className': 'page-item',
-            'linkClassName': 'page-link',
-            'linkTitle': 'last',
-            'linkInnerText': '⏭'
-        },
-        // =====================
-        'firstQueryPageBtn': {
-            'className': 'page-item disabled',
-            'linkClassName': 'page-link',
-            'linkTitle': 'first',
-            'linkInnerText': '⏮'
-        },
-        'prevQueryPageBtn': {
-            'className': 'page-item disabled',
-            'linkClassName': 'page-link',
-            'linkTitle': 'previous',
-            'linkInnerText': '⏪'
-        },
-        'nextQueryPageBtn': {
-            'className': 'page-item',
-            'linkClassName': 'page-link',
-            'linkTitle': 'next',
-            'linkInnerText': '⏩'
-        },
-        'lastQueryPageBtn': {
-            'className': 'page-item',
-            'linkClassName': 'page-link',
-            'linkTitle': 'last',
-            'linkInnerText': '⏭'
-        }
-    };
 
     // var dbFile = "https://localhost:7199/main.db";
     // const xhr = new XMLHttpRequest();
@@ -229,6 +178,74 @@
                 }
             }).render(document.getElementById("tableize"));
         },
+        renderDatatable: async function(resultset, tableRecordsEle) {
+            try {
+                tableRecordsEle.innerHTML = '';
+
+                var header1 = "<div role=\"complementary\" class=\"gridjs gridjs-container\" style=\"width: 100%;\">\n" +
+                "<div class=\"gridjs-head\">\n" +
+                "<div class=\"gridjs-search\"><input type=\"search\" placeholder=\"Type a keyword...\" aria-label=\"Type a keyword...\" class=\"gridjs-input gridjs-search-input\"></div>\n" +
+                "</div>\n" +
+                "<div class=\"gridjs-wrapper\" style=\"height: auto;\">\n" +
+                "<table role=\"grid\" class=\"gridjs-table\" style=\"height: auto;\">\n" +
+                "<thead class=\"gridjs-thead\">\n" +
+                "<tr class=\"gridjs-tr\">\n";
+
+                var headerColumns = "";
+                var valuesHeader = "";
+
+                var values = "</thead>\n" +"<tbody class=\"gridjs-tbody\">\n <tr class=\"gridjs-tr\">\n";
+
+                var closeTable =
+                    "<tbody class=\"gridjs-tbody\"></tbody>\n" +
+                "</table>\n" +
+                "</div>\n" +
+                "<div id=\"gridjs-temp\" class=\"gridjs-temp\"></div>\n" +
+                "</div>";
+
+                let tableValues = resultset[0]['values'];
+                let columnNames = resultset[0]['columns'];
+
+                    for (let j = 0; j < resultset[0]['columns'].length; j++) {
+                        headerColumns += "<th data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-th gridjs-th-sort\" tabindex=\"0\" style=\"min-width: 100px;\">\n" +
+                        "<div class=\"gridjs-th-content\">" + resultset[0]['columns'][j] + "</div><button tabindex=\"-1\" aria-label=\"Sort column ascending\" \n" +
+                        "title=\"Sort column ascending\" class=\"gridjs-sort gridjs-sort-neutral\"></button>\n" +
+                        "<div class=\"gridjs-th gridjs-resizable\"></div>\n" +
+                    "</th>\n";
+                    }
+
+
+                for (let i = 0; i < resultset[0]['values'].length; i++) {
+
+                    for (let j = 0; j < resultset[0]['columns'].length; j++) {
+                        values += "<td data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-td\">" + tableValues[i][j]+ "</td>\n";
+                    }
+                    values += "</tr>\n";
+                }
+
+                tableRecordsEle.innerHTML = header1 + headerColumns + values + closeTable;
+
+                errorDisplay.textContent = '';
+                // await Sql.addEventListeners();
+                await Sql.setTableCount();
+                await Sql.setActiveTable();
+                var el = document.querySelectorAll("#tableRecords>table")[0];
+                if (el && el.rows.length > 0) {
+                    var active = document.getElementById("activetable");
+                    if (active) {
+                        var activebutton = document.getElementById(active.innerText);
+                        if (activebutton) {
+                            activebutton.classList.add("active");
+                            if (lastClicked.length === 0)
+                                lastClicked.push(active.innerText);
+                        }
+                    }
+                }
+                return await Promise.resolve('success');
+            } catch (err) {
+                throw new Error(err.message);
+            }
+        },
         helloworld: function() {
             new gridjs.Grid({
                 sort: true,
@@ -321,9 +338,7 @@
                 errorDisplay.textContent = '';
 
                 queryStmt = codeEditor.value;
-                var failingqueryStmt = query;
                 originalQueryStmt = queryStmt.trim();
-                var failingOriginalQueryStmt = failingqueryStmt.trim();
                 var regex = /LIMIT\s(\w+)/gmi;
                 var selectTableName;
                 let m;
@@ -364,22 +379,10 @@
                     originalQueryStmt = originalQueryStmt.substr(0, originalQueryStmt.indexOf("LIMIT")).trim();
                 }
 
-                if (failingOriginalQueryStmt.charAt(failingOriginalQueryStmt.length - 1) == ';') {
-                    failingOriginalQueryStmt = failingOriginalQueryStmt.substr(0, failingOriginalQueryStmt.length - 1);
-                }
-
-                if (failingOriginalQueryStmt.indexOf("LIMIT") > 0) {
-                    failingOriginalQueryStmt = failingOriginalQueryStmt.substr(0, failingOriginalQueryStmt.indexOf("LIMIT")).trim();
-                }
-
                 tableQueryDetails.innerHTML = '';
                 // Sql.removeAllChildNodes(tableQueryPagination);
 
                 queryStmt = 'SELECT * FROM (SELECT * FROM ' + selectTableName + ')' + (limit > 0 ? ' LIMIT ' + limit : "");
-                var failing = 'SELECT * FROM (' + failingOriginalQueryStmt + ')' + (limit > 0 ? ' LIMIT ' + limit : "");
-                // failing = db.prepare(failing);
-                console.log("Success statement: " + queryStmt);
-                console.log("Failing statement: " + failing);
 
                 queryResultset = db.exec(queryStmt);
                 await Sql.renderDatatable(queryResultset, tableQueryRecords);
@@ -542,8 +545,7 @@
                 exportQueryAsJSON = document.getElementById('exportQueryAsJSON');
                 exportEditorQuery = document.getElementById('exportEditorQuery');
 
-            }
-            )
+            });
 
             // ================================== Query Editor Tab ===========================
 
@@ -557,14 +559,6 @@
             var outArrCache = new Array();
 
             if (codeEditor != null && codeEditor != undefined) {
-                // codeEditor.addEventListener('scroll', () => {
-                // 	lineCounter.scrollTop = codeEditor.scrollTop;
-                // 	lineCounter.scrollLeft = codeEditor.scrollLeft;
-                // });
-
-                // codeEditor.addEventListener('input', () => {
-                // 	Sql.line_counter();
-                // });
 
                 codeEditor.addEventListener('keydown', (e)=>{
                     let {keyCode} = e;
@@ -580,11 +574,6 @@
                 codeEditor.value = sampleQueryStmt;
             }
 
-            // Sql.line_counter();
-            // var fileNameDisplay = document.getElementById('fileNameDisplay');
-            // var fileSizeDisplay = document.getElementById('fileSizeDisplay');
-            // var noOfTablesDisplay = document.getElementById('noOfTablesDisplay');
-
             if (upload != null && upload != undefined) {
 
                 upload.addEventListener('change', async(ev)=>{
@@ -597,8 +586,6 @@
                         return;
 
                     try {
-                        // fileNameDisplay.innerText = file.name;
-                        // fileSizeDisplay.innerText = `${parseInt(file.size/1024)} ㎅`;
 
                         let arrayBuffer = await Sql.readFileAsArrayBuffer(file);
                         let uInt8Array = new Uint8Array(arrayBuffer);
@@ -733,19 +720,6 @@
                                 totalNoOfRecords = parseInt(totalNoOfRecords);
                                 noOfPages = totalNoOfRecords / recordsPerPage;
                                 noOfPages = Math.ceil(noOfPages);
-                                // ================================================
-                                // tableDetails.innerHTML = `${tblIcon}${selected_tbl_name} Total # of records: <kbd>${totalNoOfRecords}</kbd> Displaying records <kbd>${offset} ― ${offset + recordsPerPage}</kbd>`;
-                                // // ================================================
-                                // firstPageBtn = await Sql.initPaginationBtn('firstPageBtn', tablePagination);
-                                // // ================================================
-                                // prevPageBtn = await Sql.initPaginationBtn('prevPageBtn', tablePagination);
-                                // // ================================================
-                                // currentPageNo = await Sql.initInputPageNo(tablePagination, 'currentPageNo', currentPage, noOfPages);
-                                // // ================================================
-                                // nextPageBtn = await Sql.initPaginationBtn('nextPageBtn', tablePagination);
-                                // // ================================================
-                                // lastPageBtn = await Sql.initPaginationBtn('lastPageBtn', tablePagination);
-                                // ================================================
 
                                 // render datatable records
                                 stmt = 'SELECT * FROM `' + selected_tbl_name + '` LIMIT ' + offset + ',' + recordsPerPage;
@@ -753,48 +727,7 @@
                                 await Sql.RenderDatabaseTables(resultset2);
                                 // await Sql.sendToBlazor();
                                 await Sql.renderDatatable(resultset2, document.getElementById('tableRecords'));
-                                // if (currentPageNo != null) {
-                                //     // currentPageNo.addEventListener('change', (evt0) => {
-                                //     //     evt0.stopPropagation();
-                                //     currentPage = 1
-                                //     Sql.setPaginationClass();
-                                //     //});
-                                // }
 
-                                // if (firstPageBtn != null) {
-                                //     // firstPageBtn.addEventListener('click', (evt1) => {
-                                //     //     evt1.stopPropagation();
-                                //     firstPageBtn = 1;
-                                //     Sql.setPaginationClass();
-                                //     //});
-                                // }
-
-                                // if (prevPageBtn != null) {
-                                //     // prevPageBtn.addEventListener('click', (evt2) => {
-                                //     //     evt2.stopPropagation();
-                                //     if (currentPage > 1) {
-                                //         currentPage = currentPage - 1;
-                                //         Sql.setPaginationClass();
-                                //     }
-                                //     //});
-                                // }
-                                // if (nextPageBtn != null) {
-                                //     // nextPageBtn.addEventListener('click', (evt3) => {
-                                //     //     evt3.stopPropagation();
-                                //     if (currentPage < noOfPages) {
-                                //         currentPage = currentPage + 1;
-                                //         Sql.setPaginationClass();
-                                //     }
-                                //     //});
-                                // }
-                                // if (lastPageBtn != null) {
-                                //     // lastPageBtn.addEventListener('click', (evt4) => {
-                                //     //     evt4.stopPropagation();
-                                //     currentPage = noOfPages;
-                                //     Sql.setPaginationClass();
-                                //     //});
-                                //     // }, false);
-                                // }
                             } catch (err) {
                                 throw new Error(err.message);
                             }
@@ -829,72 +762,17 @@
                 totalNoOfRecords = parseInt(totalNoOfRecords);
                 noOfPages = totalNoOfRecords / recordsPerPage;
                 noOfPages = Math.ceil(noOfPages);
-                // ================================================
-                // tableDetails.innerHTML = `${tblIcon}${selected_tbl_name} Total no. of records: <kbd>${totalNoOfRecords}</kbd> Displaying records <kbd>${offset} ― ${offset + recordsPerPage}</kbd>`;
-                // // ================================================
-                // firstPageBtn = await Sql.initPaginationBtn('firstPageBtn', tablePagination);
-                // // ================================================
-                // prevPageBtn = await Sql.initPaginationBtn('prevPageBtn', tablePagination);
-                // // ================================================
-                // currentPageNo = await Sql.initInputPageNo(tablePagination, 'currentPageNo', currentPage, noOfPages);
-                // // ================================================
-                // nextPageBtn = await Sql.initPaginationBtn('nextPageBtn', tablePagination);
-                // // ================================================
-                // lastPageBtn = await Sql.initPaginationBtn('lastPageBtn', tablePagination);
-                // ================================================
+
 
                 // render datatable records
                 stmt = 'SELECT * FROM `' + selected_tbl_name + '` LIMIT ' + offset + ',' + recordsPerPage;
                 resultset2 = db2.exec(stmt);
                 await Sql.RenderDatabaseTables(resultset2);
                 await Sql.renderDatatable(resultset2, document.getElementById('tableRecords'));
-                // if (currentPageNo != null) {
-                //     // currentPageNo.addEventListener('change', (evt0) => {
-                //     //     evt0.stopPropagation();
-                //     currentPage = 1
-                //     Sql.setPaginationClass();
-                //     //});
-                // }
-
-                // if (firstPageBtn != null) {
-                //     // firstPageBtn.addEventListener('click', (evt1) => {
-                //     //     evt1.stopPropagation();
-                //     firstPageBtn = 1;
-                //     Sql.setPaginationClass();
-                //     //});
-                // }
-
-                // if (prevPageBtn != null) {
-                //     // prevPageBtn.addEventListener('click', (evt2) => {
-                //     //     evt2.stopPropagation();
-                //     if (currentPage > 1) {
-                //         currentPage = currentPage - 1;
-                //         Sql.setPaginationClass();
-                //     }
-                //     //});
-                // }
-                // if (nextPageBtn != null) {
-                //     // nextPageBtn.addEventListener('click', (evt3) => {
-                //     //     evt3.stopPropagation();
-                //     if (currentPage < noOfPages) {
-                //         currentPage = currentPage + 1;
-                //         Sql.setPaginationClass();
-                //     }
-                //     //});
-                // }
-                // if (lastPageBtn != null) {
-                //     // lastPageBtn.addEventListener('click', (evt4) => {
-                //     //     evt4.stopPropagation();
-                //     currentPage = noOfPages;
-                //     Sql.setPaginationClass();
-                //     //});
-                //     // }, false);
-                // }
             } catch (err) {
                 throw new Error(err.message);
             }
         },
-        // },
         getCurrentDatetimeStamp: function() {
             const dateObject = new Date(Date.now());
 
@@ -936,26 +814,6 @@
                 outputLogs.push(logObj);
                 if (logsRecords)
                     logsRecords.innerText = JSON.stringify(outputLogs, null, 2);
-            } catch (err) {
-                throw new Error(err.message);
-            }
-        },
-        initPaginationBtn: async function(paginationBtnType, tablePaginationEle) {
-            try {
-                let paginationBtn = document.createElement('li');
-                paginationBtn.id = paginationBtnType;
-                paginationBtn.className = paginationBtnProps[paginationBtnType]['className'];
-
-                let pageBtnLink = document.createElement('a');
-                pageBtnLink.className = paginationBtnProps[paginationBtnType]['linkClassName'];
-                pageBtnLink.setAttribute('title', paginationBtnProps[paginationBtnType]['linkTitle']);
-                pageBtnLink.innerText = paginationBtnProps[paginationBtnType]['linkInnerText'];
-
-                if (tablePaginationEle != null && paginationBtn != null) {
-                    tablePaginationEle.appendChild(paginationBtn);
-                    paginationBtn.appendChild(pageBtnLink);
-                }
-                return await Promise.resolve(paginationBtn);
             } catch (err) {
                 throw new Error(err.message);
             }
@@ -1166,74 +1024,6 @@
                 throw new Error(err.message);
             }
         },
-        renderDatatable: async function(resultset, tableRecordsEle) {
-            try {
-                tableRecordsEle.innerHTML = '';
-
-                var header1 = "<div role=\"complementary\" class=\"gridjs gridjs-container\" style=\"width: 100%;\">\n" +
-                "<div class=\"gridjs-head\">\n" +
-                "<div class=\"gridjs-search\"><input type=\"search\" placeholder=\"Type a keyword...\" aria-label=\"Type a keyword...\" class=\"gridjs-input gridjs-search-input\"></div>\n" +
-                "</div>\n" +
-                "<div class=\"gridjs-wrapper\" style=\"height: auto;\">\n" +
-                "<table role=\"grid\" class=\"gridjs-table\" style=\"height: auto;\">\n" +
-                "<thead class=\"gridjs-thead\">\n" +
-                "<tr class=\"gridjs-tr\">\n";
-
-                var headerColumns = "";
-                var valuesHeader = "";
-
-                var values = "</thead>\n" +"<tbody class=\"gridjs-tbody\">\n <tr class=\"gridjs-tr\">\n";
-
-                var closeTable =
-                    "<tbody class=\"gridjs-tbody\"></tbody>\n" +
-                "</table>\n" +
-                "</div>\n" +
-                "<div id=\"gridjs-temp\" class=\"gridjs-temp\"></div>\n" +
-                "</div>";
-
-                let tableValues = resultset[0]['values'];
-                let columnNames = resultset[0]['columns'];
-
-                    for (let j = 0; j < resultset[0]['columns'].length; j++) {
-                        headerColumns += "<th data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-th gridjs-th-sort\" tabindex=\"0\" style=\"min-width: 100px;\">\n" +
-                        "<div class=\"gridjs-th-content\">" + resultset[0]['columns'][j] + "</div><button tabindex=\"-1\" aria-label=\"Sort column ascending\" \n" +
-                        "title=\"Sort column ascending\" class=\"gridjs-sort gridjs-sort-neutral\"></button>\n" +
-                        "<div class=\"gridjs-th gridjs-resizable\"></div>\n" +
-                    "</th>\n";
-                    }
-
-
-                for (let i = 0; i < resultset[0]['values'].length; i++) {
-
-                    for (let j = 0; j < resultset[0]['columns'].length; j++) {
-                        values += "<td data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-td\">" + tableValues[i][j]+ "</td>\n";
-                    }
-                    values += "</tr>\n";
-                }
-
-                tableRecordsEle.innerHTML = header1 + headerColumns + values + closeTable;
-
-                errorDisplay.textContent = '';
-                // await Sql.addEventListeners();
-                await Sql.setTableCount();
-                await Sql.setActiveTable();
-                var el = document.querySelectorAll("#tableRecords>table")[0];
-                if (el && el.rows.length > 0) {
-                    var active = document.getElementById("activetable");
-                    if (active) {
-                        var activebutton = document.getElementById(active.innerText);
-                        if (activebutton) {
-                            activebutton.classList.add("active");
-                            if (lastClicked.length === 0)
-                                lastClicked.push(active.innerText);
-                        }
-                    }
-                }
-                return await Promise.resolve('success');
-            } catch (err) {
-                throw new Error(err.message);
-            }
-        },
         setQueryPaginationClass: async function() {
             try {
                 currentQueryPageNo.value = currentQueryPage;
@@ -1398,11 +1188,13 @@
                             query += line.innerText + " ";
                     }
                 }
-                var code = document.getElementById(id);
-                const regex = new RegExp('(?<=from)\\s+(\\w+)','gm');
-                const str = code.value;
+                queryStmt = codeEditor.value;
+                originalQueryStmt = queryStmt.trim();
+                var regex = /LIMIT\s(\w+)/gmi;
+                var selectTableName;
                 let m;
-                let tableName = '';
+                var limit = 0;
+                var code = document.getElementById(id);
 
                 while ((m = regex.exec(query)) !== null) {
                     // This is necessary to avoid infinite loops with zero-width matches
@@ -1412,22 +1204,47 @@
 
                     // The result can be accessed through the `m`-variable.
                     m.forEach((match,groupIndex)=>{
-                        console.log(`Found match, group ${groupIndex}: ${match}`);
-                        tableName = match.replaceAll(' ', '');
+                        limit = m[1];
+                    }
+                    );
+                }
+                regex = /FROM\s(\w+)/gmi;
+                while ((m = regex.exec(query)) !== null) {
+                    // This is necessary to avoid infinite loops with zero-width matches
+                    if (m.index === regex.lastIndex) {
+                        regex.lastIndex++;
+                    }
+
+                    // The result can be accessed through the `m`-variable.
+                    m.forEach((match,groupIndex)=>{
+                        selectTableName = m[1];
                     }
                     );
                 }
 
+                if (originalQueryStmt.charAt(originalQueryStmt.length - 1) == ';') {
+                    originalQueryStmt = originalQueryStmt.substr(0, originalQueryStmt.length - 1);
+                }
+
+                if (originalQueryStmt.indexOf("LIMIT") > 0) {
+                    originalQueryStmt = originalQueryStmt.substr(0, originalQueryStmt.indexOf("LIMIT")).trim();
+                }
+
+                tableQueryDetails.innerHTML = '';
+                // Sql.removeAllChildNodes(tableQueryPagination);
+
+                queryStmt = 'SELECT * FROM (SELECT * FROM ' + selectTableName + ')' + (limit > 0 ? ' LIMIT ' + limit : "");
+
                 if (code && !Sql.isNullOrEmpty(code.value))
                     try {
                         // let jsonObj = Sql.getResultSetAsRowJSON(db, 'SELECT * FROM `' + tableName + '`');
-                        let jsonObj = Sql.getResultSetAsRowJSON(db, query);
+                        let jsonObj = Sql.getResultSetAsRowJSON(db, queryStmt);
                         let jsonStr = JSON.stringify(jsonObj);
                         let textblob = new Blob([jsonStr],{
                             type: 'application/json'
                         });
                         let dwnlnk = document.createElement('a');
-                        dwnlnk.download = `${tableName}.json`;
+                        dwnlnk.download = `${selectTableName}.json`;
                         if (window.webkitURL != null) {
                             dwnlnk.href = window.webkitURL.createObjectURL(textblob);
                         }
