@@ -944,7 +944,8 @@
                 let tableDetailsHtmlStr = `${tblIcon}${selected_tbl_name} Total no. of records: <kbd>${totalNoOfRecords}</kbd> Displaying records <kbd>${offset} ― ${offset + recordsPerPage}</kbd>`;
                 tableDetails.innerHTML = tableDetailsHtmlStr;
 
-            } catch (err) {//     throw new Error(err.message);
+            } catch (err) {
+                throw new Error(err.message);
             }
         },
         setTableCount: async function() {
@@ -954,8 +955,6 @@
             if (tblcnt === 0) {
                 tblcnt = tableCount;
             }
-            // if (tableCount === tblcnt && tableCount > 0)
-            // 	await Sql.setActiveTable();
         },
         getColumns: async function(table) {
             try {
@@ -972,7 +971,6 @@
                         obj[_columns[v]] = valArr[v];
                     }
                     rowJSONOutput.push(obj);
-                    // console.log(obj.sql);
                 }
                 for (let index = 0; index < ColumnNames.length; index++) {
                     var cols = ColumnNames[index].toString();
@@ -982,10 +980,6 @@
                         ColumnNames = /\(([^)]*)\)/.exec(extractQuote)[1].split(',');
                     }
                 }
-                // for (let i = 0; i < ColumnNames.length; i++) {
-                //     console.log(ColumnNames[i].toString());
-                // }
-
                 return ColumnNames;
             } catch (err) {
                 throw new Error(err.message);
@@ -1009,7 +1003,6 @@
                         obj[_columns[v]] = valArr[v];
                     }
                     rowJSONOutput.push(obj);
-                    // console.log(obj.sql);
                 }
                 for (let index = 0; index < ColumnNames.length; index++) {
                     var cols = ColumnNames[index].toString();
@@ -1100,18 +1093,6 @@
                         noOfPages = Math.ceil(noOfPages);
                         // ================================================
                         tableDetails.innerHTML = `${tblIcon}${selected_tbl_name} ⯈ Total no. of records: <kbd>${totalNoOfRecords}</kbd> ⯈ Displaying records <kbd>${offset} ― ${offset + recordsPerPage}</kbd>`;
-                        // ================================================
-                        // firstPageBtn = await Sql.initPaginationBtn('firstPageBtn', tablePagination);
-                        // // ================================================
-                        // prevPageBtn = await Sql.initPaginationBtn('prevPageBtn', tablePagination);
-                        // // ================================================
-                        // currentPageNo = await Sql.initInputPageNo(tablePagination, 'currentPageNo', currentPage, noOfPages);
-                        // // ================================================
-                        // nextPageBtn = await Sql.initPaginationBtn('nextPageBtn', tablePagination);
-                        // // ================================================
-                        // lastPageBtn = await Sql.initPaginationBtn('lastPageBtn', tablePagination);
-                        // ================================================
-
                         currentPageNo.addEventListener('change', (evt0)=>{
                             evt0.stopPropagation();
                             currentPage = parseInt(evt0.target.value);
