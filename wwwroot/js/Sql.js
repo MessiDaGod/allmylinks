@@ -1092,7 +1092,7 @@
                         noOfPages = totalNoOfRecords / recordsPerPage;
                         noOfPages = Math.ceil(noOfPages);
                         // ================================================
-                        tableDetails.innerHTML = `${tblIcon}${selected_tbl_name} ⯈ Total no. of records: <kbd>${totalNoOfRecords}</kbd> ⯈ Displaying records <kbd>${offset} ― ${offset + recordsPerPage}</kbd>`;
+                        tableDetails.innerHTML = `${tblIcon}${selected_tbl_name} Total no. of records: <kbd>${totalNoOfRecords}</kbd>Displaying records <kbd>${offset} ― ${offset + recordsPerPage}</kbd>`;
                         currentPageNo.addEventListener('change', (evt0)=>{
                             evt0.stopPropagation();
                             currentPage = parseInt(evt0.target.value);

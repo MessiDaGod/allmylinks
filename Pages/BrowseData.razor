@@ -127,12 +127,18 @@
         }
     }
 
+    async Task InitMonaco()
+    {
+        var model = new TextModel();
+        model.Id = "sql";
+        await MonacoEditor.SetModelLanguage(model, "sql");
+    }
     private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
     {
         return new StandaloneEditorConstructionOptions
         {
             AutomaticLayout = true,
-            Language = "javascript",
+            Language = "sql",
             Value = "SELECT * FROM Prices LIMIT 1",
         };
     }
