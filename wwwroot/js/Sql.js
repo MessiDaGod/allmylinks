@@ -207,7 +207,7 @@
                 let columnNames = resultset[0]['columns'];
 
                     for (let j = 0; j < resultset[0]['columns'].length; j++) {
-                        headerColumns += "<th data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-th gridjs-th-sort\" tabindex=\"0\" style=\"min-width: 100px;\">\n" +
+                        headerColumns += "<th data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-th gridjs-th-sort\" tabindex=\"0\" style=\"min-width: 150px;\">\n" +
                         "<div class=\"gridjs-th-content\">" + resultset[0]['columns'][j] + "</div><button tabindex=\"-1\" aria-label=\"Sort column ascending\" \n" +
                         "title=\"Sort column ascending\" class=\"gridjs-sort gridjs-sort-neutral\"></button>\n" +
                         "<div class=\"gridjs-th gridjs-resizable\"></div>\n" +
@@ -218,7 +218,9 @@
                 for (let i = 0; i < resultset[0]['values'].length; i++) {
 
                     for (let j = 0; j < resultset[0]['columns'].length; j++) {
-                        values += "<td data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-td\">" + tableValues[i][j]+ "</td>\n";
+                        var value = tableValues[i][j];
+                        value = (typeof value === "number" && resultset[0]['columns'][j] !== "Volume" && !resultset[0]['columns'][j].includes("Id") ? AML.fmt(value) : value);
+                        values += "<td data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-td\">" + (value.toString().includes(':') ? Sql.formatDate(value) : value) + "</td>\n";
                     }
                     values += "</tr>\n";
                 }
@@ -317,6 +319,17 @@
             el.classList.toggle('hide');
 
         },
+      formatDate: function(date) {
+            var d = new Date(date);
+            // var hours = date.getHours();
+            // var minutes = date.getMinutes();
+            // var ampm = hours >= 12 ? 'pm' : 'am';
+            // hours = hours % 12;
+            // hours = hours ? hours : 12; // the hour '0' should be '12'
+            // minutes = minutes < 10 ? '0'+minutes : minutes;
+            // var strTime = hours + ':' + minutes + ' ' + ampm;
+            return (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
+          },
         initRunQuery: async function() {
             var query = "";
             var lines = document.querySelectorAll(".view-line");
@@ -604,8 +617,9 @@
                                 Sql.loadTableSelectable(tblName);
                             }
                         }
-                        // tblcnt = staticTbls.length;
-
+                        // // tblcnt = staticTbls.length;
+                        // if (tblcnt === 0)
+                        // await Sql.setActiveTable(selected_tbl_name);
                     } catch (err) {
                         errorDisplay.textContent = '';
                         errorDisplay.textContent = `⚠ ERROR: ${err.message}`;
@@ -769,6 +783,7 @@
                 resultset2 = db2.exec(stmt);
                 await Sql.RenderDatabaseTables(resultset2);
                 await Sql.renderDatatable(resultset2, document.getElementById('tableRecords'));
+                Sql.setActiveTable(selected_tbl_name);
             } catch (err) {
                 throw new Error(err.message);
             }
@@ -1138,7 +1153,7 @@
             if (db && !id) {
                 let activetable = document.getElementById('activetable').innerText;
                 try {
-                    let jsonObj = Sql.getResultSetAsRowJSON(db, document.getElementById('codeEditor').value);
+                    let jsonObj = Sql.getResultSetAsRowJSON(db, "SELECT * FROM " + document.getElementById('activetable').innerHTML + ";");
                     let jsonStr = JSON.stringify(jsonObj);
                     let textblob = new Blob([jsonStr],{
                         type: 'application/json'
