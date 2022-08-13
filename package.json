@@ -20,6 +20,7 @@
   "homepage": "https://github.com/MessiDaGod/AllMyLinks#readme",
   "devDependencies": {
     "express": "^4.18.1",
+    "gulp": "^4.0.2",
     "open": "^8.4.0",
     "path": "^0.12.7"
   },

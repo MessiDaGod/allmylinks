@@ -225,6 +225,8 @@
                     values += "</tr>\n";
                 }
 
+
+
                 tableRecordsEle.innerHTML = header1 + headerColumns + values + closeTable;
 
                 errorDisplay.textContent = '';
@@ -243,10 +245,119 @@
                         }
                     }
                 }
+                Sql.initresize();
                 return await Promise.resolve('success');
             } catch (err) {
                 throw new Error(err.message);
             }
+        },
+        initresize: function() {
+           // var query = document.querySelectorAll("th[data-column-id")[3];
+
+            // var el = document.getElementsByClassName("gridjs-th gridjs-th-sort");
+
+
+            // console.log(el);
+
+            // for (let index = 0; index < el.length; index++) {
+            //         console.log(el[index]);
+            //         el[index].clientWdith = 100;
+            //         el[index].style = "min-width: 100px;";
+            // }
+
+            //var tables = document.getElementsByClassName('flexiCol');
+            var tables = document.getElementsByTagName('table');
+            for (var i=0; i<tables.length;i++){
+             resizableGrid(tables[i]);
+            }
+
+            function resizableGrid(table) {
+             var row = table.getElementsByTagName('tr')[0],
+             cols = row ? row.children : undefined;
+             if (!cols) return;
+
+             table.style.overflow = 'hidden';
+
+             var tableHeight = table.offsetHeight;
+
+             for (var i=0;i<cols.length;i++){
+              var div = createDiv(tableHeight);
+              cols[i].appendChild(div);
+              cols[i].style.position = 'relative';
+              setListeners(div);
+             }
+
+             function setListeners(div){
+              var pageX,curCol,nxtCol,curColWidth,nxtColWidth;
+
+              div.addEventListener('mousedown', function (e) {
+               curCol = e.target.parentElement;
+               nxtCol = curCol.nextElementSibling;
+               pageX = e.pageX;
+
+               var padding = paddingDiff(curCol);
+
+               curColWidth = curCol.offsetWidth - padding;
+               if (nxtCol)
+                nxtColWidth = nxtCol.offsetWidth - padding;
+              });
+
+              div.addEventListener('mouseover', function (e) {
+               e.target.style.borderRight = '2px solid #0000ff';
+              })
+
+              div.addEventListener('mouseout', function (e) {
+               e.target.style.borderRight = '';
+              })
+
+              document.addEventListener('mousemove', function (e) {
+               if (curCol) {
+                var diffX = e.pageX - pageX;
+
+                if (nxtCol)
+                 nxtCol.style.width = (nxtColWidth - (diffX))+'px';
+
+                curCol.style.width = (curColWidth + diffX)+'px';
+               }
+              });
+
+              document.addEventListener('mouseup', function (e) {
+               curCol = undefined;
+               nxtCol = undefined;
+               pageX = undefined;
+               nxtColWidth = undefined;
+               curColWidth = undefined
+              });
+             }
+
+             function createDiv(height){
+              var div = document.createElement('div');
+              div.style.top = 0;
+              div.style.right = 0;
+              div.style.width = '5px';
+              div.style.position = 'absolute';
+              div.style.cursor = 'col-resize';
+              div.style.userSelect = 'none';
+              div.style.height = height + 'px';
+              return div;
+             };
+
+             function paddingDiff(col){
+
+                if (getStyleVal(col,'box-sizing') == 'border-box'){
+                 return 0;
+                }
+
+                var padLeft = getStyleVal(col,'padding-left');
+                var padRight = getStyleVal(col,'padding-right');
+                return (parseInt(padLeft) + parseInt(padRight));
+
+               }
+
+               function getStyleVal(elm,css){
+                return (window.getComputedStyle(elm, null).getPropertyValue(css))
+               }
+              };
         },
         helloworld: function() {
             new gridjs.Grid({
@@ -257,6 +368,8 @@
                 columns: ["Name", "Email", "Phone Number"],
                 data: [["John", "john@example.com", "(353) 01 222 3333"], ["Mark", "mark@gmail.com", "(01) 22 888 4444"], ["Eoin", "eoin@gmail.com", "0097 22 654 00033"], ["Sarah", "sarahcdd@gmail.com", "+322 876 1233"], ["Afshin", "afshin@mail.com", "(353) 22 87 8356"]],
             }).render(document.getElementById("helloworld"));
+
+            Sql.initresize();
         },
         camelize: function (str) {
             return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
@@ -314,6 +427,7 @@
             var el = document.getElementById('helloworld');
             if (el !== null && el.innerHTML.length === 0) {
                 Sql.helloworld();
+                el.classList.add("hide");
             }
             if (el)
             el.classList.toggle('hide');
