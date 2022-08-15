@@ -46,12 +46,11 @@
 	<!-- this link handles the spinner -->
 	<link href="css/app.css" rel="stylesheet" />
 	<title>Joe Shakely | Website</title>
-
-</head>
+    <script src="DemoSupportFiles/jquery-1.5.2.min.js"></script>
     <script src="DemoSupportFiles/formattingengine.js"></script>
-    <!-- <script>
-        debugger;
-        var Sql = function () {
+
+    <script>
+        var PageService = function () {
             var EnableUI = function () {
                 $("#inputString").removeAttr("disabled");
                 $("#inputString").change(inputChanged);
@@ -112,9 +111,37 @@
         };
         }();
 
-    </script> -->
+    </script>
+    <script>
+        $(function () {
+            var minflag = false;
+            var debugflag = false;
 
+            var scriptURLList = [
+                'JSLibReference/' + (debugflag ? "Debug/" : "Release/") + 'PoorMansTSqlFormatterJS.' + (minflag ? "min." : "") + 'js',
+                'DemoSupportFiles/formattingmapper.js'
+            ];
+
+            $("#formatAsYouGo").change(PageService.CheckSettings);
+            PageService.CheckSettings();
+
+            //TODO: not implemented yet!!
+            var formatInPlace = false;
+
+            JsFormattingEngine.LoadEnvironment(
+              document.location.href.split("?")[0].replace('DemoPage.html', ''),
+              'DemoSupportFiles/formattingworker.js',
+              scriptURLList,
+              function () { PageService.EnableUI(); },
+              function (paramLength, outputString) { PageService.SetOutputPanelContent(outputString); },
+              function (errorMessage) { PageService.SetOutputPanelContent("Error: " + errorMessage); }
+            );
+
+        });
+    </script>
 </head>
+
+
 <script>
 	window.getUserAgent = () => {
 		return navigator.userAgent;
@@ -151,34 +178,6 @@
 		<script src='js/polyfill.js'></script>
 		<script src='js/ie10-viewport-bug-workaround.js'></script>
 		<script src='js/Sql.js'></script>
-        <script>
-            debugger;
-            $(function () {
-                var minflag = false;
-                var debugflag = false;
-
-                var scriptURLList = [
-                    'JSLibReference/' + (debugflag ? "Debug/" : "Release/") + 'PoorMansTSqlFormatterJS.' + (minflag ? "min." : "") + 'js',
-                    'DemoSupportFiles/formattingmapper.js'
-                ];
-
-                $("#formatAsYouGo").change(Sql.CheckSettings);
-                Sql.CheckSettings();
-
-                //TODO: not implemented yet!!
-                var formatInPlace = false;
-
-                JsFormattingEngine.LoadEnvironment(
-                  document.location.href.split("?")[0].replace('DemoPage.html', ''),
-                  'DemoSupportFiles/formattingworker.js',
-                  scriptURLList,
-                  function () { Sql.EnableUI(); },
-                  function (paramLength, outputString) { Sql.SetOutputPanelContent(outputString); },
-                  function (errorMessage) { Sql.SetOutputPanelContent("Error: " + errorMessage); }
-                );
-
-            });
-        </script>
 		<div id="blazor-error-ui">
 			An unhandled error has occurred.
 			<a href="" class="reload">Reload</a>

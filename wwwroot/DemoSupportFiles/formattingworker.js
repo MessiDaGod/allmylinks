@@ -1,4 +1,4 @@
-﻿var tokenizer;
+var tokenizer;
 var parser;
 var textFormatter;
 var pageFormatter;
@@ -11,7 +11,7 @@ self.addEventListener('message', function (e) {
       self.postMessage(Startup(data.urlPrefix, data.scriptURLs));
       break;
     case 'format':
-      self.postMessage(Format(data.paramLength, data.options, data.inputSql));
+      self.postMessage(Format(data.paramLength, data.options, data.options.inputSql));
       break;
     default:
       HandleError('Unknown command: ' + data.commandToRun);

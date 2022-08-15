@@ -193,7 +193,7 @@
                 let columnNames = resultset[0]['columns'];
 
                 for (let j = 0; j < resultset[0]['columns'].length; j++) {
-                    headerColumns += "<th data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-th gridjs-th-sort\" tabindex=\"0\" style=\"min-width: 150px;\">\n" + "<div class=\"gridjs-th-content\">" + resultset[0]['columns'][j] + "</div><button tabindex=\"-1\" aria-label=\"Sort column ascending\" \n" + "title=\"Sort column ascending\" class=\"gridjs-sort gridjs-sort-neutral\"></button>\n" + "<div class=\"gridjs-th gridjs-resizable\"></div>\n" + "</th>\n";
+                    headerColumns += "<th data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-th gridjs-th-sort\" tabindex=\"0\">\n" + "<div class=\"gridjs-th-content\">" + resultset[0]['columns'][j] + "</div><button tabindex=\"-1\" aria-label=\"Sort column ascending\" \n" + "title=\"Sort column ascending\" class=\"gridjs-sort gridjs-sort-neutral\"></button>\n" + "<div class=\"gridjs-th gridjs-resizable\"></div>\n" + "</th>\n";
                 }
 
                 for (let i = 0; i < resultset[0]['values'].length; i++) {
@@ -426,11 +426,12 @@
             $("#codeEditor").removeAttr("disabled");
             $("#codeEditor").change(Sql.inputChanged);
             $("#codeEditor").blur(Sql.inputChanged);
+            Sql.inputChanged();
         },
         formatSql: function() {
             errorDisplay.textContent = '';
             try {
-                Sql.EnableUI();
+                Sql.DoFormat();
             }
             catch (err) {
                 errorDisplay.textContent = '';
@@ -444,7 +445,21 @@
         },
 
         DoFormat: function() {
-            JsFormattingEngine.RequestFormatting("codeEditor=" + encodeURIComponent($("#codeEditor").val()) + "&expandCommaLists=true&trailingCommas=true&spaceAfterExpandedComma=false&expandBooleanExpressions=true&expandCaseStatements=true&expandBetweenConditions=true&expandInLists=true&breakJoinOnSections=false&uppercaseKeywords=true&coloring=true&keywordStandardization=false&randomizeColor=false&randomizeLineLengths=false&randomizeKeywordCase=false&preserveComments=false&enableKeywordSubstitution=false&formattingType=standard&indent=%5Ct&spacesPerTab=4&maxLineWidth=999&statementBreaks=2&clauseBreaks=1&language=&jsengine=true&reFormat=true&obfuscate=false");
+            var query = "";
+            var lines = document.querySelectorAll(".view-line");
+            codeEditor = document.getElementById('codeEditor');
+
+            if (lines) {
+                for (let index = 0; index < lines.length; index++) {
+                    const line = lines[index];
+                    if (index === lines.length - 1)
+                        query += line.innerText.replaceAll(';', '') + ";";
+                    else
+                        query += line.innerText + " ";
+                }
+                codeEditor.value = query;
+            }
+            JsFormattingEngine.RequestFormatting("inputSql=" + encodeURIComponent($("#codeEditor").val()) + "&expandCommaLists=true&trailingCommas=true&spaceAfterExpandedComma=false&expandBooleanExpressions=true&expandCaseStatements=true&expandBetweenConditions=true&expandInLists=true&breakJoinOnSections=false&uppercaseKeywords=true&coloring=true&keywordStandardization=false&randomizeColor=false&randomizeLineLengths=false&randomizeKeywordCase=false&preserveComments=false&enableKeywordSubstitution=false&formattingType=standard&indent=%5Ct&spacesPerTab=4&maxLineWidth=999&statementBreaks=2&clauseBreaks=1&language=&jsengine=true&reFormat=true&obfuscate=false");
         },
 
         //var inputKeyEventFireFormat = function () {
