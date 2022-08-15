@@ -33,6 +33,8 @@
 		}
 	</style>
 	<script src="js/jquery.min.js"></script>
+    <!-- <script src="DemoSupportFiles/jquery-1.5.2.min.js"></script> -->
+
 	<link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
 	<link href='css/main.css' rel='stylesheet' type='text/css' />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
@@ -44,6 +46,74 @@
 	<!-- this link handles the spinner -->
 	<link href="css/app.css" rel="stylesheet" />
 	<title>Joe Shakely | Website</title>
+
+</head>
+    <script src="DemoSupportFiles/formattingengine.js"></script>
+    <!-- <script>
+        debugger;
+        var Sql = function () {
+            var EnableUI = function () {
+                $("#inputString").removeAttr("disabled");
+                $("#inputString").change(inputChanged);
+                $("#inputString").blur(inputChanged);
+            }
+
+            var inputChanged = function () {
+                SetOutputPanelContent("Getting formatted SQL, please wait...");
+                DoFormat();
+            }
+
+            var DoFormat = function () {
+                JsFormattingEngine.RequestFormatting("inputString=" + encodeURIComponent($("#inputString").val()) + "&expandCommaLists=true&trailingCommas=true&spaceAfterExpandedComma=false&expandBooleanExpressions=true&expandCaseStatements=true&expandBetweenConditions=true&expandInLists=true&breakJoinOnSections=false&uppercaseKeywords=true&coloring=true&keywordStandardization=false&randomizeColor=false&randomizeLineLengths=false&randomizeKeywordCase=false&preserveComments=false&enableKeywordSubstitution=false&formattingType=standard&indent=%5Ct&spacesPerTab=4&maxLineWidth=999&statementBreaks=2&clauseBreaks=1&language=&jsengine=true&reFormat=true&obfuscate=false");
+            }
+
+            //var inputKeyEventFireFormat = function () {
+            //    doFormatInPlace();
+            //    formatToOutDiv();
+            //}
+
+            var SetOutputPanelContent = function (outputData) {
+                $("#outputDiv").html(outputData);
+            }
+
+            var NotifyFormattingResult = function (formattingResult) {
+                //TODO: add safety here, against race conditions etc.
+                SetOutputPanelContent(formattingResult.outputSqlHtml);
+            }
+
+            var CheckSettings = function () {
+                if ($("#formatAsYouGo:checked").val())
+                    $('#inputString').keyup(DoFormat)
+                else
+                    //untested...
+                    $("#inputString").keyup(null);
+            }
+
+            var formatToOutDiv = function () {
+                setOutput(formattedText);
+            }
+
+            var doFormatInPlace = function () {
+                if (formatInPlace) {
+                    var tokenizedData = tokenizer.TokenizeSQL(inputData);
+                    var parsedData = parser.ParseSQL(tokenizedData);
+                    var formattedText = textFormatter.FormatSQLTree(parsedData);
+
+                    $("#inputString").val(formattedText);
+                }
+            }
+
+
+            return {
+                EnableUI: EnableUI,
+                SetOutputPanelContent: SetOutputPanelContent,
+                NotifyFormattingResult: NotifyFormattingResult,
+                CheckSettings: CheckSettings
+        };
+        }();
+
+    </script> -->
+
 </head>
 <script>
 	window.getUserAgent = () => {
@@ -81,6 +151,34 @@
 		<script src='js/polyfill.js'></script>
 		<script src='js/ie10-viewport-bug-workaround.js'></script>
 		<script src='js/Sql.js'></script>
+        <script>
+            debugger;
+            $(function () {
+                var minflag = false;
+                var debugflag = false;
+
+                var scriptURLList = [
+                    'JSLibReference/' + (debugflag ? "Debug/" : "Release/") + 'PoorMansTSqlFormatterJS.' + (minflag ? "min." : "") + 'js',
+                    'DemoSupportFiles/formattingmapper.js'
+                ];
+
+                $("#formatAsYouGo").change(Sql.CheckSettings);
+                Sql.CheckSettings();
+
+                //TODO: not implemented yet!!
+                var formatInPlace = false;
+
+                JsFormattingEngine.LoadEnvironment(
+                  document.location.href.split("?")[0].replace('DemoPage.html', ''),
+                  'DemoSupportFiles/formattingworker.js',
+                  scriptURLList,
+                  function () { Sql.EnableUI(); },
+                  function (paramLength, outputString) { Sql.SetOutputPanelContent(outputString); },
+                  function (errorMessage) { Sql.SetOutputPanelContent("Error: " + errorMessage); }
+                );
+
+            });
+        </script>
 		<div id="blazor-error-ui">
 			An unhandled error has occurred.
 			<a href="" class="reload">Reload</a>
@@ -91,6 +189,6 @@
 	<script>require.config({ paths: { 'vs': 'BlazorMonaco/lib/monaco-editor/min/vs' } });</script>
 	<script src="BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
 	<script src="BlazorMonaco/jsInterop.js"></script>
-	<script src="_framework/blazor.webassembly.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
 </body>
 </html>

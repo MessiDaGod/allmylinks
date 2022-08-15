@@ -103,6 +103,8 @@
 
     // await isCandlesActive();
 
+    // var child = [];
+
     window.AML = {
         colorize: function() {
             var lines = document.querySelectorAll("[class^=mtk]");

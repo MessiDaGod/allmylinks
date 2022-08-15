@@ -39,7 +39,7 @@ public class Prices
     public string? Symbol { get; set; }
     public double Pct_Change { get; set; } = 0.0;
 
-    public override string ToString() => $@"{{ Prices: {{""Id"": ""{Id}"",""UserId"": ""{UserId}"",""CreatedAt"": ""{CreatedAt}"", ""Date"": ""{Date}"", ""Open"": ""{Open}"", ""High"": ""{High}"", ""Low"": ""{Low}"", ""Close"": ""{Close}"", ""AdjustedClose"": ""{AdjustedClose}"", ""Volume"": ""{Volume}"", ""Pct_Change"": ""{Pct_Change}"" }} }}" + "\n";
+    public override string ToString() => $@"[""Id"": ""{Id}"",""UserId"": ""{UserId}"",""CreatedAt"": ""{CreatedAt}"", ""Date"": ""{Date}"", ""Open"": ""{Open}"", ""High"": ""{High}"", ""Low"": ""{Low}"", ""Close"": ""{Close}"", ""AdjustedClose"": ""{AdjustedClose}"", ""Volume"": ""{Volume}"", ""Pct_Change"": ""{Pct_Change}"" ]," + "\n";
 }
 public enum SymbolType
 {

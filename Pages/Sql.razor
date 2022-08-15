@@ -117,7 +117,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Js.InvokeVoidAsync("AML.addColorListener");
+        @* await Js.InvokeVoidAsync("AML.addColorListener"); *@
         await base.OnInitializedAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)

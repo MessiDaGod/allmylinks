@@ -5,8 +5,8 @@
         Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
     }
     if (!Element.prototype.closest) {
-        Element.prototype.closest = function(/** @type {string} */
-        s) {
+        Element.prototype.closest = function( /** @type {string} */
+            s) {
             var el = this;
             do {
                 if (el.matches(s))
@@ -14,8 +14,7 @@
                 el = el.parentElement || el.parentNode;
             } while (el !== null && el.nodeType === 1);
             return null;
-        }
-        ;
+        };
     }
 
     class Price {
@@ -56,7 +55,6 @@
     var currentPage = 1;
     var selected_tbl_name = '';
     var noOfPages = 1;
-    var exportAsJSON;
     var totalNoOfRecords = 0;
     var offset = 0;
     var sampleQueryStmt = 'SELECT * FROM Prices';
@@ -79,6 +77,8 @@
     var _buffer;
     var exportEditorQuery;
     var Json;
+    var isSqlInit = false;
+    // var Sql = {};
 
     // var dbFile = "https://localhost:7199/main.db";
     // const xhr = new XMLHttpRequest();
@@ -145,8 +145,7 @@
                 if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                     Json = JSON.parse(xmlhttp.responseText);
                 }
-            }
-            ;
+            };
 
             xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xmlhttp.send();
@@ -160,60 +159,42 @@
                 columns: ['iBook', 'Book'],
                 server: {
                     url: 'https://localhost:7199/btcusd.json',
-                    handle: (res)=>{
-                        return res.text().then(str=>(new window.DOMParser()).parseFromString(str, "application/json"));
-                    }
-                    ,
-                    then: data=>{
-                        var el = data.querySelectorAll('GetBookNames');
+                    handle: (res) => {
+                        return res.text().then(str => (new window.DOMParser()).parseFromString(str, "application/json"));
+                    },
+                    then: data => {
+                        let el = data.querySelectorAll('GetBookNames');
                         if (el) {
-                            var children = el[0].children;
-                            var books = [];
+                            let children = el[0].children;
+                            let books = [];
                             for (let index = 0; index < children.length; index++) {
                                 books.push(children[index]);
                             }
-                            return Array.from(books).map(book=>[book.textContent]);
+                            return Array.from(books).map(book => [book.textContent]);
                         }
                     }
                 }
-            }).render(document.getElementById("tableize"));
+            }).Grid.render(document.getElementById("tableize"));
         },
         renderDatatable: async function(resultset, tableRecordsEle) {
             try {
                 tableRecordsEle.innerHTML = '';
 
-                var header1 = "<div role=\"complementary\" class=\"gridjs gridjs-container\" style=\"width: 100%;\">\n" +
-                "<div class=\"gridjs-head\">\n" +
-                "<div class=\"gridjs-search\"><input type=\"search\" placeholder=\"Type a keyword...\" aria-label=\"Type a keyword...\" class=\"gridjs-input gridjs-search-input\"></div>\n" +
-                "</div>\n" +
-                "<div class=\"gridjs-wrapper\" style=\"height: auto;\">\n" +
-                "<table role=\"grid\" class=\"gridjs-table\" style=\"height: auto;\">\n" +
-                "<thead class=\"gridjs-thead\">\n" +
-                "<tr class=\"gridjs-tr\">\n";
+                var header1 = "<div role=\"complementary\" class=\"gridjs gridjs-container\" style=\"width: 100%;\">\n" + "<div class=\"gridjs-head\">\n" + "<div class=\"gridjs-search\"><input type=\"search\" placeholder=\"Type a keyword...\" aria-label=\"Type a keyword...\" class=\"gridjs-input gridjs-search-input\"></div>\n" + "</div>\n" + "<div class=\"gridjs-wrapper\" style=\"height: auto;\">\n" + "<table role=\"grid\" class=\"gridjs-table\" style=\"height: auto;\">\n" + "<thead class=\"gridjs-thead\">\n" + "<tr class=\"gridjs-tr\">\n";
 
-                var headerColumns = "";
-                var valuesHeader = "";
+                let headerColumns = "";
+                let valuesHeader = "";
 
-                var values = "</thead>\n" +"<tbody class=\"gridjs-tbody\">\n <tr class=\"gridjs-tr\">\n";
+                let values = "</thead>\n" + "<tbody class=\"gridjs-tbody\">\n <tr class=\"gridjs-tr\">\n";
 
-                var closeTable =
-                    "<tbody class=\"gridjs-tbody\"></tbody>\n" +
-                "</table>\n" +
-                "</div>\n" +
-                "<div id=\"gridjs-temp\" class=\"gridjs-temp\"></div>\n" +
-                "</div>";
+                let closeTable = "<tbody class=\"gridjs-tbody\"></tbody>\n" + "</table>\n" + "</div>\n" + "<div id=\"gridjs-temp\" class=\"gridjs-temp\"></div>\n" + "</div>";
 
                 let tableValues = resultset[0]['values'];
                 let columnNames = resultset[0]['columns'];
 
-                    for (let j = 0; j < resultset[0]['columns'].length; j++) {
-                        headerColumns += "<th data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-th gridjs-th-sort\" tabindex=\"0\" style=\"min-width: 150px;\">\n" +
-                        "<div class=\"gridjs-th-content\">" + resultset[0]['columns'][j] + "</div><button tabindex=\"-1\" aria-label=\"Sort column ascending\" \n" +
-                        "title=\"Sort column ascending\" class=\"gridjs-sort gridjs-sort-neutral\"></button>\n" +
-                        "<div class=\"gridjs-th gridjs-resizable\"></div>\n" +
-                    "</th>\n";
-                    }
-
+                for (let j = 0; j < resultset[0]['columns'].length; j++) {
+                    headerColumns += "<th data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-th gridjs-th-sort\" tabindex=\"0\" style=\"min-width: 150px;\">\n" + "<div class=\"gridjs-th-content\">" + resultset[0]['columns'][j] + "</div><button tabindex=\"-1\" aria-label=\"Sort column ascending\" \n" + "title=\"Sort column ascending\" class=\"gridjs-sort gridjs-sort-neutral\"></button>\n" + "<div class=\"gridjs-th gridjs-resizable\"></div>\n" + "</th>\n";
+                }
 
                 for (let i = 0; i < resultset[0]['values'].length; i++) {
 
@@ -224,8 +205,6 @@
                     }
                     values += "</tr>\n";
                 }
-
-
 
                 tableRecordsEle.innerHTML = header1 + headerColumns + values + closeTable;
 
@@ -252,10 +231,9 @@
             }
         },
         initresize: function() {
-           // var query = document.querySelectorAll("th[data-column-id")[3];
+            // var query = document.querySelectorAll("th[data-column-id")[3];
 
             // var el = document.getElementsByClassName("gridjs-th gridjs-th-sort");
-
 
             // console.log(el);
 
@@ -267,97 +245,98 @@
 
             //var tables = document.getElementsByClassName('flexiCol');
             var tables = document.getElementsByTagName('table');
-            for (var i=0; i<tables.length;i++){
-             resizableGrid(tables[i]);
+            for (var i = 0; i < tables.length; i++) {
+                resizableGrid(tables[i]);
             }
 
             function resizableGrid(table) {
-             var row = table.getElementsByTagName('tr')[0],
-             cols = row ? row.children : undefined;
-             if (!cols) return;
+                var row = table.getElementsByTagName('tr')[0],
+                    cols = row ? row.children : undefined;
+                if (!cols)
+                    return;
 
-             table.style.overflow = 'hidden';
+                table.style.overflow = 'hidden';
 
-             var tableHeight = table.offsetHeight;
+                var tableHeight = table.offsetHeight;
 
-             for (var i=0;i<cols.length;i++){
-              var div = createDiv(tableHeight);
-              cols[i].appendChild(div);
-              cols[i].style.position = 'relative';
-              setListeners(div);
-             }
-
-             function setListeners(div){
-              var pageX,curCol,nxtCol,curColWidth,nxtColWidth;
-
-              div.addEventListener('mousedown', function (e) {
-               curCol = e.target.parentElement;
-               nxtCol = curCol.nextElementSibling;
-               pageX = e.pageX;
-
-               var padding = paddingDiff(curCol);
-
-               curColWidth = curCol.offsetWidth - padding;
-               if (nxtCol)
-                nxtColWidth = nxtCol.offsetWidth - padding;
-              });
-
-              div.addEventListener('mouseover', function (e) {
-               e.target.style.borderRight = '2px solid #0000ff';
-              })
-
-              div.addEventListener('mouseout', function (e) {
-               e.target.style.borderRight = '';
-              })
-
-              document.addEventListener('mousemove', function (e) {
-               if (curCol) {
-                var diffX = e.pageX - pageX;
-
-                if (nxtCol)
-                 nxtCol.style.width = (nxtColWidth - (diffX))+'px';
-
-                curCol.style.width = (curColWidth + diffX)+'px';
-               }
-              });
-
-              document.addEventListener('mouseup', function (e) {
-               curCol = undefined;
-               nxtCol = undefined;
-               pageX = undefined;
-               nxtColWidth = undefined;
-               curColWidth = undefined
-              });
-             }
-
-             function createDiv(height){
-              var div = document.createElement('div');
-              div.style.top = 0;
-              div.style.right = 0;
-              div.style.width = '5px';
-              div.style.position = 'absolute';
-              div.style.cursor = 'col-resize';
-              div.style.userSelect = 'none';
-              div.style.height = height + 'px';
-              return div;
-             };
-
-             function paddingDiff(col){
-
-                if (getStyleVal(col,'box-sizing') == 'border-box'){
-                 return 0;
+                for (var i = 0; i < cols.length; i++) {
+                    var div = createDiv(tableHeight);
+                    cols[i].appendChild(div);
+                    cols[i].style.position = 'relative';
+                    setListeners(div);
                 }
 
-                var padLeft = getStyleVal(col,'padding-left');
-                var padRight = getStyleVal(col,'padding-right');
-                return (parseInt(padLeft) + parseInt(padRight));
+                function setListeners(div) {
+                    var pageX, curCol, nxtCol, curColWidth, nxtColWidth;
 
-               }
+                    div.addEventListener('mousedown', function(e) {
+                        curCol = e.target.parentElement;
+                        nxtCol = curCol.nextElementSibling;
+                        pageX = e.pageX;
 
-               function getStyleVal(elm,css){
-                return (window.getComputedStyle(elm, null).getPropertyValue(css))
-               }
-              };
+                        var padding = paddingDiff(curCol);
+
+                        curColWidth = curCol.offsetWidth - padding;
+                        if (nxtCol)
+                            nxtColWidth = nxtCol.offsetWidth - padding;
+                    });
+
+                    div.addEventListener('mouseover', function(e) {
+                        e.target.style.borderRight = '2px solid #0000ff';
+                    })
+
+                    div.addEventListener('mouseout', function(e) {
+                        e.target.style.borderRight = '';
+                    })
+
+                    document.addEventListener('mousemove', function(e) {
+                        if (curCol) {
+                            var diffX = e.pageX - pageX;
+
+                            if (nxtCol)
+                                nxtCol.style.width = (nxtColWidth - (diffX)) + 'px';
+
+                            curCol.style.width = (curColWidth + diffX) + 'px';
+                        }
+                    });
+
+                    document.addEventListener('mouseup', function(e) {
+                        curCol = undefined;
+                        nxtCol = undefined;
+                        pageX = undefined;
+                        nxtColWidth = undefined;
+                        curColWidth = undefined
+                    });
+                }
+
+                function createDiv(height) {
+                    var div = document.createElement('div');
+                    div.style.top = 0;
+                    div.style.right = 0;
+                    div.style.width = '5px';
+                    div.style.position = 'absolute';
+                    div.style.cursor = 'col-resize';
+                    div.style.userSelect = 'none';
+                    div.style.height = height + 'px';
+                    return div;
+                };
+
+                function paddingDiff(col) {
+
+                    if (getStyleVal(col, 'box-sizing') == 'border-box') {
+                        return 0;
+                    }
+
+                    var padLeft = getStyleVal(col, 'padding-left');
+                    var padRight = getStyleVal(col, 'padding-right');
+                    return (parseInt(padLeft) + parseInt(padRight));
+
+                }
+
+                function getStyleVal(elm, css) {
+                    return (window.getComputedStyle(elm, null).getPropertyValue(css))
+                }
+            };
         },
         helloworld: function() {
             new gridjs.Grid({
@@ -366,16 +345,22 @@
                 pagination: false,
                 resizable: true,
                 columns: ["Name", "Email", "Phone Number"],
-                data: [["John", "john@example.com", "(353) 01 222 3333"], ["Mark", "mark@gmail.com", "(01) 22 888 4444"], ["Eoin", "eoin@gmail.com", "0097 22 654 00033"], ["Sarah", "sarahcdd@gmail.com", "+322 876 1233"], ["Afshin", "afshin@mail.com", "(353) 22 87 8356"]],
+                data: [
+                    ["John", "john@example.com", "(353) 01 222 3333"],
+                    ["Mark", "mark@gmail.com", "(01) 22 888 4444"],
+                    ["Eoin", "eoin@gmail.com", "0097 22 654 00033"],
+                    ["Sarah", "sarahcdd@gmail.com", "+322 876 1233"],
+                    ["Afshin", "afshin@mail.com", "(353) 22 87 8356"]
+                ],
             }).render(document.getElementById("helloworld"));
 
             Sql.initresize();
         },
-        camelize: function (str) {
+        camelize: function(str) {
             return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
-              return index === 0 ? word.toLowerCase() : word.toUpperCase();
+                return index === 0 ? word.toLowerCase() : word.toUpperCase();
             }).replace(/\s+/g, '');
-          },
+        },
         snapToQE: function() {
             var el = document.getElementById('editor');
             if (!el.classList.includes('hide'))
@@ -430,37 +415,90 @@
                 el.classList.add("hide");
             }
             if (el)
-            el.classList.toggle('hide');
+                el.classList.toggle('hide');
 
         },
-      formatDate: function(date) {
+        formatDate: function(date) {
             var d = new Date(date);
-            // var hours = date.getHours();
-            // var minutes = date.getMinutes();
-            // var ampm = hours >= 12 ? 'pm' : 'am';
-            // hours = hours % 12;
-            // hours = hours ? hours : 12; // the hour '0' should be '12'
-            // minutes = minutes < 10 ? '0'+minutes : minutes;
-            // var strTime = hours + ':' + minutes + ' ' + ampm;
-            return (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
-          },
+            return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+        },
+        EnableUI: function() {
+            $("#codeEditor").removeAttr("disabled");
+            $("#codeEditor").change(Sql.inputChanged);
+            $("#codeEditor").blur(Sql.inputChanged);
+        },
+        formatSql: function() {
+            errorDisplay.textContent = '';
+            try {
+                Sql.EnableUI();
+            }
+            catch (err) {
+                errorDisplay.textContent = '';
+                errorDisplay.textContent = `⚠ ERROR: ${err.stack}`;
+                Sql.appendLogOutput(err.message, 'ERROR');
+            }
+        },
+        inputChanged: function() {
+            Sql.SetOutputPanelContent("Getting formatted SQL, please wait...");
+            Sql.DoFormat();
+        },
+
+        DoFormat: function() {
+            JsFormattingEngine.RequestFormatting("codeEditor=" + encodeURIComponent($("#codeEditor").val()) + "&expandCommaLists=true&trailingCommas=true&spaceAfterExpandedComma=false&expandBooleanExpressions=true&expandCaseStatements=true&expandBetweenConditions=true&expandInLists=true&breakJoinOnSections=false&uppercaseKeywords=true&coloring=true&keywordStandardization=false&randomizeColor=false&randomizeLineLengths=false&randomizeKeywordCase=false&preserveComments=false&enableKeywordSubstitution=false&formattingType=standard&indent=%5Ct&spacesPerTab=4&maxLineWidth=999&statementBreaks=2&clauseBreaks=1&language=&jsengine=true&reFormat=true&obfuscate=false");
+        },
+
+        //var inputKeyEventFireFormat = function () {
+        //    doFormatInPlace();
+        //    formatToOutDiv();
+        //}
+
+        SetOutputPanelContent: function(outputData) {
+            $("#outputDiv").html(outputData);
+        },
+
+        NotifyFormattingResult: function(formattingResult) {
+            //TODO: add safety here, against race conditions etc.
+            Sql.SetOutputPanelContent(formattingResult.outputSqlHtml);
+        },
+
+        CheckSettings: function() {
+            if ($("#formatAsYouGo:checked").val())
+                $('#codeEditor').keyup(Sql.DoFormat)
+            else
+                //untested...
+                $("#codeEditor").keyup(null);
+        },
+
+        formatToOutDiv: function() {
+            Sql.setOutput(formattedText);
+        },
+
+        doFormatInPlace: function() {
+            if (formatInPlace) {
+                var tokenizedData = tokenizer.TokenizeSQL(inputData);
+                var parsedData = parser.ParseSQL(tokenizedData);
+                var formattedText = textFormatter.FormatSQLTree(parsedData);
+
+                $("#codeEditor").val(formattedText);
+            }
+        },
         initRunQuery: async function() {
             var query = "";
             var lines = document.querySelectorAll(".view-line");
-            var codeEditor = document.getElementById('codeEditor');
-            var code2 = document.getElementById('codeEditor2');
+            codeEditor = document.getElementById('codeEditor');
+
             if (lines) {
                 for (let index = 0; index < lines.length; index++) {
                     const line = lines[index];
                     if (index === lines.length - 1)
-                        query += line.innerText + ";";
+                        query += line.innerText.replaceAll(';', '') + ";";
                     else
                         query += line.innerText + " ";
                 }
+                codeEditor.value = query;
             }
             runQueryBtn = document.getElementById('runQueryBtn');
-            // if (codeEditor)
-            //     codeEditor.value = query;
+
             try {
                 errorDisplay.textContent = '';
 
@@ -478,10 +516,9 @@
                     }
 
                     // The result can be accessed through the `m`-variable.
-                    m.forEach((match,groupIndex)=>{
+                    m.forEach((match, groupIndex) => {
                         limit = m[1];
-                    }
-                    );
+                    });
                 }
                 regex = /FROM\s(\w+)/gmi;
                 while ((m = regex.exec(query)) !== null) {
@@ -491,11 +528,10 @@
                     }
 
                     // The result can be accessed through the `m`-variable.
-                    m.forEach((match,groupIndex)=>{
+                    m.forEach((match, groupIndex) => {
                         selectTableName = m[1];
                         console.log(selectTableName);
-                    }
-                    );
+                    });
                 }
 
                 if (originalQueryStmt.charAt(originalQueryStmt.length - 1) == ';') {
@@ -507,27 +543,24 @@
                 }
 
                 tableQueryDetails.innerHTML = '';
-                // Sql.removeAllChildNodes(tableQueryPagination);
 
                 queryStmt = 'SELECT * FROM (SELECT * FROM ' + selectTableName + ')' + (limit > 0 ? ' LIMIT ' + limit : "");
 
                 queryResultset = db.exec(queryStmt);
                 await Sql.renderDatatable(queryResultset, tableQueryRecords);
-                // await Sql.renderDatatable(queryResultset, tableQueryRecords);
 
             } catch (err) {
                 errorDisplay.textContent = '';
                 errorDisplay.textContent = `⚠ ERROR: ${err.stack}`;
                 Sql.appendLogOutput(err.message, 'ERROR');
             }
-            // }, false);
 
             if (exportAsJSON != null && exportAsJSON != undefined)
-                // exportAsJSON.addEventListener('click', (ev) => {
+
                 try {
                     let jsonObj = Sql.getResultSetAsRowJSON(db, 'SELECT * FROM `' + selected_tbl_name + '`');
                     let jsonStr = JSON.stringify(jsonObj);
-                    let textblob = new Blob([jsonStr],{
+                    let textblob = new Blob([jsonStr], {
                         type: 'application/json'
                     });
                     let dwnlnk = document.createElement('a');
@@ -549,7 +582,7 @@
                 try {
                     let jsonObj = Sql.getResultSetAsRowJSON(db, 'SELECT * FROM (' + originalQueryStmt + ')');
                     let jsonStr = JSON.stringify(jsonObj);
-                    let textblob = new Blob([jsonStr],{
+                    let textblob = new Blob([jsonStr], {
                         type: 'application/json'
                     });
                     let dwnlnk = document.createElement('a');
@@ -569,7 +602,7 @@
                 // exportEditorQuery.addEventListener('click', (ev) => {
                 try {
                     let queryStr = codeEditor.value;
-                    let textblob = new Blob([queryStr],{
+                    let textblob = new Blob([queryStr], {
                         type: 'text/plain'
                     });
                     let dwnlnk = document.createElement('a');
@@ -588,161 +621,170 @@
         },
         init: async function() {
 
-            // initialize the database
-            console.log('Sql.init()');
-            var runQueryBtn;
-            var exportAsJSON;
-            var exportQueryAsJSON;
-            var exportEditorQuery;
-            var uploadBtn = document.getElementById('upload-btn');
-            var upload = document.getElementById('upload');
-            var outputLogs = [];
-            var tblIcon = '▦ ';
-            var recordsPerPage = 100;
-            var stmt = '';
-            var resultset = [];
-            var currentPage = 1;
-            var selected_tbl_name = '';
-            var noOfPages = 1;
-            var totalNoOfRecords = 0;
-            var offset = 0;
-            var sampleQueryStmt = 'SELECT * FROM Prices';
-            var firstQueryPageBtn, prevQueryPageBtn, currentQueryPageNo, nextQueryPageBtn, lastQueryPageBtn;
-            var firstPageBtn, prevPageBtn, currentPageNo, nextPageBtn, lastPageBtn;
-            var queryStmt = '';
-            var queryResultset = [];
-            var currentQueryPage = 1;
-            var originalQueryStmt = '';
-            var noOfQueryPages = 1;
-            var totalNoOfQueryRecords = 0;
-            var queryOffset = 0;
+            if (!isSqlInit) {
+                console.log('Sql.init()');
+                var runQueryBtn;
+                var exportAsJSON;
+                var exportQueryAsJSON;
+                var exportEditorQuery;
+                var uploadBtn = document.getElementById('upload-btn');
+                var upload = document.getElementById('upload');
+                var outputLogs = [];
+                var tblIcon = '▦ ';
+                var recordsPerPage = 100;
+                var stmt = '';
+                var resultset = [];
+                var currentPage = 1;
+                var selected_tbl_name = '';
+                var noOfPages = 1;
+                var totalNoOfRecords = 0;
+                var offset = 0;
+                var sampleQueryStmt = 'SELECT * FROM Prices';
+                var firstQueryPageBtn, prevQueryPageBtn, currentQueryPageNo, nextQueryPageBtn, lastQueryPageBtn;
+                var firstPageBtn, prevPageBtn, currentPageNo, nextPageBtn, lastPageBtn;
+                var queryStmt = '';
+                var queryResultset = [];
+                var currentQueryPage = 1;
+                var originalQueryStmt = '';
+                var noOfQueryPages = 1;
+                var totalNoOfQueryRecords = 0;
+                var queryOffset = 0;
 
-            // if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
-            //     return;
-            // } else {
-            document.addEventListener('DOMContentLoaded', async()=>{
-                console.log('DOMContentLoaded');
+                // if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
+                //     return;
+                // } else {
+                document.addEventListener('DOMContentLoaded', async () => {
+                    console.log('DOMContentLoaded');
 
-                await AML.addColorListener();
+                    await AML.addColorListener();
 
-                if (!window.FileReader) {
-                    errorDisplay.textContent = '⛔ WARNING: Your browser does not support HTML5 \'FileReader\' function required to open a file.';
-                    appendLogOutput('Your browser does not support HTML5 \'FileReader\' function required to open a file', 'WARNING');
-                    return;
-                }
-                if (!window.Blob) {
-                    errorDisplay.textContent = '⛔ WARNING: Your browser does not support HTML5 \'Blob\' function required to save a file.';
-                    appendLogOutput('Your browser does not support HTML5 \'Blob\' function required to save a file.', 'WARNING');
-                    return;
-                }
-
-                logsRecords = document.getElementById('logsRecords');
-
-                var mainTabs = document.getElementById('mainTabs');
-                var mainTabsCollection = mainTabs.getElementsByTagName('a');
-                // Array.from(mainTabsCollection).forEach(tab => new BSN.Tab(tab));
-
-                if (uploadBtn != null && uploadBtn != undefined)
-                    uploadBtn.addEventListener('click', ()=>{
-                        let clickEvent = new MouseEvent('click',{
-                            view: window,
-                            bubbles: false,
-                            cancelable: false
-                        });
-                        upload.dispatchEvent(clickEvent);
-                    }
-                    , false);
-
-                var dbTableDetails = document.getElementById('dbTableDetails');
-                var errorDisplay = document.getElementById('errorDisplay');
-
-                // =============== BROWSE TAB =============================
-
-                var tableDetails = document.getElementById('tableDetails');
-                tableRecords = document.getElementById('tableRecords');
-                var tablePagination = document.getElementById('tablePagination');
-                exportAsJSON = document.getElementById('exportAsJSON');
-
-                // =============== QUERY TAB =============================
-
-                var tableQueryDetails = document.getElementById('tableQueryDetails');
-                var tableQueryRecords = document.getElementById('tableQueryRecords');
-                // var tableQueryPagination = document.getElementById('tableQueryPagination');
-
-                exportQueryAsJSON = document.getElementById('exportQueryAsJSON');
-                exportEditorQuery = document.getElementById('exportEditorQuery');
-
-            });
-
-            // ================================== Query Editor Tab ===========================
-
-            codeEditor = document.getElementById('codeEditor');
-            //var lineCounter = document.getElementById('lineCounter');
-
-            var _buffer;
-
-            var onFirstLoad = true;
-            var lineCountCache = 0;
-            var outArrCache = new Array();
-
-            if (codeEditor != null && codeEditor != undefined) {
-
-                codeEditor.addEventListener('keydown', (e)=>{
-                    let {keyCode} = e;
-                    let {value, selectionStart, selectionEnd} = codeEditor;
-                    if (keyCode === 9) {
-                        // TAB = 9
-                        e.preventDefault();
-                        codeEditor.value = value.slice(0, selectionStart) + '\t' + value.slice(selectionEnd);
-                        codeEditor.setSelectionRange(selectionStart + 2, selectionStart + 1)
-                    }
-                }
-                );
-                codeEditor.value = sampleQueryStmt;
-            }
-
-            if (upload != null && upload != undefined) {
-
-                upload.addEventListener('change', async(ev)=>{
-                    if (!errorDisplay)
-                        errorDisplay = document.getElementById('errorDisplay');
-                    errorDisplay.textContent = '';
-
-                    file = ev.currentTarget.files[0];
-                    if (!file || !file.name.includes(".db"))
+                    if (!window.FileReader) {
+                        errorDisplay.textContent = '⛔ WARNING: Your browser does not support HTML5 \'FileReader\' function required to open a file.';
+                        appendLogOutput('Your browser does not support HTML5 \'FileReader\' function required to open a file', 'WARNING');
                         return;
-
-                    try {
-
-                        let arrayBuffer = await Sql.readFileAsArrayBuffer(file);
-                        let uInt8Array = new Uint8Array(arrayBuffer);
-                        db = new SQL.Database(uInt8Array);
-                        db2 = db;
-                        stmt = 'SELECT * FROM sqlite_master WHERE type=\'table\'';
-                        resultset = Sql.getResultSetAsRowJSON(db, stmt);
-
-                        let noOfTables = resultset.length;
-                        // noOfTablesDisplay.innerHTML = `<kbd>${noOfTables}</kdb>`;
-
-                        for (let rowObj of resultset) {
-                            let tblName = rowObj['tbl_name'];
-                            if (staticTbls.indexOf(tblName) === -1) {
-                                staticTbls.push(tblName);
-                                Sql.loadTableSelectable(tblName);
-                            }
-                        }
-                        // // tblcnt = staticTbls.length;
-                        // if (tblcnt === 0)
-                        // await Sql.setActiveTable(selected_tbl_name);
-                    } catch (err) {
-                        errorDisplay.textContent = '';
-                        errorDisplay.textContent = `⚠ ERROR: ${err.message}`;
-
-                        Sql.appendLogOutput(err.message, 'ERROR');
                     }
+                    if (!window.Blob) {
+                        errorDisplay.textContent = '⛔ WARNING: Your browser does not support HTML5 \'Blob\' function required to save a file.';
+                        appendLogOutput('Your browser does not support HTML5 \'Blob\' function required to save a file.', 'WARNING');
+                        return;
+                    }
+
+                    logsRecords = document.getElementById('logsRecords');
+
+                    var mainTabs = document.getElementById('mainTabs');
+                    var mainTabsCollection = mainTabs.getElementsByTagName('a');
+                    // Array.from(mainTabsCollection).forEach(tab => new BSN.Tab(tab));
+
+                    if (uploadBtn != null && uploadBtn != undefined)
+                        uploadBtn.addEventListener('click', () => {
+                            let clickEvent = new MouseEvent('click', {
+                                view: window,
+                                bubbles: false,
+                                cancelable: false
+                            });
+                            upload.dispatchEvent(clickEvent);
+                        }, false);
+
+                    var dbTableDetails = document.getElementById('dbTableDetails');
+                    var errorDisplay = document.getElementById('errorDisplay');
+
+                    // =============== BROWSE TAB =============================
+
+                    var tableDetails = document.getElementById('tableDetails');
+                    tableRecords = document.getElementById('tableRecords');
+                    var tablePagination = document.getElementById('tablePagination');
+                    exportAsJSON = document.getElementById('exportAsJSON');
+
+                    // =============== QUERY TAB =============================
+
+                    var tableQueryDetails = document.getElementById('tableQueryDetails');
+                    var tableQueryRecords = document.getElementById('tableQueryRecords');
+                    // var tableQueryPagination = document.getElementById('tableQueryPagination');
+
+                    exportQueryAsJSON = document.getElementById('exportQueryAsJSON');
+                    exportEditorQuery = document.getElementById('exportEditorQuery');
+
+                });
+
+                // ================================== Query Editor Tab ===========================
+
+                // codeEditor = document.getElementById('codeEditor');
+                // if (codeEditor) {
+                //     //var lineCounter = document.getElementById('lineCounter');
+
+                //     var _buffer;
+
+                //     var onFirstLoad = true;
+                //     var lineCountCache = 0;
+                //     var outArrCache = new Array();
+
+                //     if (codeEditor != null && codeEditor != undefined) {
+
+                //         codeEditor.addEventListener('keydown', (e) => {
+                //             var {
+                //                 keyCode
+                //             } = e;
+                //             var {
+                //                 value,
+                //                 selectionStart,
+                //                 selectionEnd
+                //             } = codeEditor;
+                //             if (keyCode === 9) {
+                //                 // TAB = 9
+                //                 e.preventDefault();
+                //                 codeEditor.value = value.slice(0, selectionStart) + '\t' + value.slice(selectionEnd);
+                //                 codeEditor.setSelectionRange(selectionStart + 2, selectionStart + 1)
+                //             }
+                //         });
+                //         codeEditor.value = sampleQueryStmt;
+                //     }
+                // }
+
+                if (upload != null && upload != undefined) {
+
+                    upload.addEventListener('change', async (ev) => {
+                        if (!errorDisplay)
+                            errorDisplay = document.getElementById('errorDisplay');
+                        errorDisplay.textContent = '';
+
+                        file = ev.currentTarget.files[0];
+                        if (!file || !file.name.includes(".db"))
+                            return;
+
+                        try {
+
+                            let arrayBuffer = await Sql.readFileAsArrayBuffer(file);
+                            let uInt8Array = new Uint8Array(arrayBuffer);
+                            db = new SQL.Database(uInt8Array);
+                            db2 = db;
+                            stmt = 'SELECT * FROM sqlite_master WHERE type=\'table\'';
+                            resultset = Sql.getResultSetAsRowJSON(db, stmt);
+
+                            let noOfTables = resultset.length;
+                            // noOfTablesDisplay.innerHTML = `<kbd>${noOfTables}</kdb>`;
+
+                            for (let rowObj of resultset) {
+                                let tblName = rowObj['tbl_name'];
+                                if (staticTbls.indexOf(tblName) === -1) {
+                                    staticTbls.push(tblName);
+                                    Sql.loadTableSelectable(tblName);
+                                }
+                            }
+                            // // tblcnt = staticTbls.length;
+                            // if (tblcnt === 0)
+                            // await Sql.setActiveTable(selected_tbl_name);
+                        } catch (err) {
+                            errorDisplay.textContent = '';
+                            errorDisplay.textContent = `⚠ ERROR: ${err.message}`;
+
+                            Sql.appendLogOutput(err.message, 'ERROR');
+                        }
+                    }, false);
+                    // upload file change event
                 }
-                , false);
-                // upload file change event
+                return new Promise((resolve, reject) => {
+                    isSqlInit = true;
+                });
             }
         },
         getPrices: async function() {
@@ -890,7 +932,6 @@
                 totalNoOfRecords = parseInt(totalNoOfRecords);
                 noOfPages = totalNoOfRecords / recordsPerPage;
                 noOfPages = Math.ceil(noOfPages);
-
 
                 // render datatable records
                 stmt = 'SELECT * FROM `' + selected_tbl_name + '` LIMIT ' + offset + ',' + recordsPerPage;
@@ -1193,13 +1234,12 @@
         readFileAsArrayBuffer: async function(file) {
             if (!file.name.toLowerCase().includes(".db"))
                 return;
-            return new Promise((resolve,reject)=>{
+            return new Promise((resolve, reject) => {
                 let fileredr = new FileReader();
-                fileredr.onload = ()=>resolve(fileredr.result);
-                fileredr.onerror = ()=>reject(fileredr);
+                fileredr.onload = () => resolve(fileredr.result);
+                fileredr.onerror = () => reject(fileredr);
                 fileredr.readAsArrayBuffer(file);
-            }
-            );
+            });
         },
         setQuery: async function(tblName) {
             var x = document.getElementById('codeEditor');
@@ -1212,7 +1252,7 @@
             let tblClickableBtn = document.getElementById('tblClickableBtn');
             if (tblClickableBtn != null && tblClickableBtn != undefined) {
                 try {
-                    tblClickableBtn.addEventListener('click', async(e)=>{
+                    tblClickableBtn.addEventListener('click', async (e) => {
                         e.stopPropagation();
 
                         // ================================================
@@ -1222,42 +1262,36 @@
                         noOfPages = Math.ceil(noOfPages);
                         // ================================================
                         tableDetails.innerHTML = `${tblIcon}${selected_tbl_name} Total no. of records: <kbd>${totalNoOfRecords}</kbd>Displaying records <kbd>${offset} ― ${offset + recordsPerPage}</kbd>`;
-                        currentPageNo.addEventListener('change', (evt0)=>{
+                        currentPageNo.addEventListener('change', (evt0) => {
                             evt0.stopPropagation();
                             currentPage = parseInt(evt0.target.value);
                             setPaginationClass();
-                        }
-                        );
-                        firstPageBtn.addEventListener('click', (evt1)=>{
+                        });
+                        firstPageBtn.addEventListener('click', (evt1) => {
                             evt1.stopPropagation();
                             currentPage = 1;
                             setPaginationClass();
-                        }
-                        );
-                        prevPageBtn.addEventListener('click', (evt2)=>{
+                        });
+                        prevPageBtn.addEventListener('click', (evt2) => {
                             evt2.stopPropagation();
                             if (currentPage > 1) {
                                 currentPage = currentPage - 1;
                                 setPaginationClass();
                             }
-                        }
-                        );
-                        nextPageBtn.addEventListener('click', (evt3)=>{
+                        });
+                        nextPageBtn.addEventListener('click', (evt3) => {
                             evt3.stopPropagation();
                             if (currentPage < noOfPages) {
                                 currentPage = currentPage + 1;
                                 setPaginationClass();
                             }
-                        }
-                        );
-                        lastPageBtn.addEventListener('click', (evt4)=>{
+                        });
+                        lastPageBtn.addEventListener('click', (evt4) => {
                             evt4.stopPropagation();
                             currentPage = noOfPages;
                             setPaginationClass();
-                        }
-                        );
-                    }
-                    , false);
+                        });
+                    }, false);
                 } catch (err) {
                     throw new Error(err.message);
                 }
@@ -1269,7 +1303,7 @@
                 try {
                     let jsonObj = Sql.getResultSetAsRowJSON(db, "SELECT * FROM " + document.getElementById('activetable').innerHTML + ";");
                     let jsonStr = JSON.stringify(jsonObj);
-                    let textblob = new Blob([jsonStr],{
+                    let textblob = new Blob([jsonStr], {
                         type: 'application/json'
                     });
                     let dwnlnk = document.createElement('a');
@@ -1312,10 +1346,9 @@
                     }
 
                     // The result can be accessed through the `m`-variable.
-                    m.forEach((match,groupIndex)=>{
+                    m.forEach((match, groupIndex) => {
                         limit = m[1];
-                    }
-                    );
+                    });
                 }
                 regex = /FROM\s(\w+)/gmi;
                 while ((m = regex.exec(query)) !== null) {
@@ -1325,10 +1358,9 @@
                     }
 
                     // The result can be accessed through the `m`-variable.
-                    m.forEach((match,groupIndex)=>{
+                    m.forEach((match, groupIndex) => {
                         selectTableName = m[1];
-                    }
-                    );
+                    });
                 }
 
                 if (originalQueryStmt.charAt(originalQueryStmt.length - 1) == ';') {
@@ -1349,7 +1381,7 @@
                         // let jsonObj = Sql.getResultSetAsRowJSON(db, 'SELECT * FROM `' + tableName + '`');
                         let jsonObj = Sql.getResultSetAsRowJSON(db, queryStmt);
                         let jsonStr = JSON.stringify(jsonObj);
-                        let textblob = new Blob([jsonStr],{
+                        let textblob = new Blob([jsonStr], {
                             type: 'application/json'
                         });
                         let dwnlnk = document.createElement('a');

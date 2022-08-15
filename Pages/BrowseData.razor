@@ -3,6 +3,7 @@
 @using allmylinks.Models;
 @using Newtonsoft.Json;
 @using BlazorMonaco;
+@using allmylinks.Services;
 @using Radzen
 @using Radzen.Blazor
 @inject IJSRuntime Js;
@@ -54,17 +55,28 @@
             </div>
             <button id="runQueryBtn" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.initRunQuery()">Execute Query<span class="material-symbols-outlined">database</span>
             </button>
+            <button id="formatsql" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.formatSql()">Format SQL<span class="material-symbols-outlined">database</span>
+            </button>
             <button id="toggleHelloworld" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.toggleHelloWorld()">Toggle Hello World<span class="material-symbols-outlined">database</span></button>
             <small id="tableQueryDetails" class="ml-2"></small>
             <hr class="invisible-divider">
-            <p class="mb-0">
-
-            <MonacoEditor Id="codeEditor" ConstructionOptions="EditorConstructionOptions" />
-            <textarea id="codeEditor2" wrap="off" class="hide"></textarea>
-            </p>
+            <header>
+                <nav class="float-right">
+                    <ul>
+                        <li><label><input type="checkbox" name="EnableFormatAsYouGo" id="formatAsYouGo" checked/> Format as-you-go</label></li>
+                    </ul>
+                </nav>
+            </header>
+            <div class="row">
+                <div class="col-6">
+                    <div id="outputDiv" class="monaco-editor-container"></div>
+                </div>
+                <div class="col-6">
+                <MonacoEditor Id="codeEditor" ConstructionOptions="EditorConstructionOptions"/>
+                </div>
+            </div>
             <div id="helloworld"></div>
-            <div id="tableQueryRecords"></div>
-
+            <div id="tableQueryRecords" class="decorationsOverviewRuler"></div>
         </div>
     </div>
 </div>
@@ -109,7 +121,6 @@
         public object[] values { get; set; } = null!;
     }
 
-    [Inject] IJSRuntime JS { get; set; }
     public IEnumerable<Person?>? Persons;
     public static string TableNameFromJS { get; set; } = string.Empty;
     public static string JSON { get; set; } = string.Empty;
@@ -120,9 +131,13 @@
 
     bool allowRowSelectOnRowClick = true;
     bool isLoading = false;
-
+    protected static IJSRuntime staticJsRuntime { get; set; }
+    protected DotNetObjectReference<BrowseData> jsObjectRef { get; set; }
     protected override async Task OnInitializedAsync()
     {
+        staticJsRuntime = Js;
+        jsObjectRef = DotNetObjectReference.Create(this);
+        @* await Js.InvokeVoidAsync("AML.addColorListener"); *@
         await base.OnInitializedAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -137,9 +152,11 @@
 
     async Task InitMonaco()
     {
-        var model = new TextModel();
-        model.Id = "sql";
-        await MonacoEditor.SetModelLanguage(model, "sql");
+        var model = new TextModel
+        {
+            Id = "sql"
+        };
+        await MonacoEditorBase.SetModelLanguage(model, "sql");
     }
     private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
     {
@@ -147,17 +164,22 @@
         {
             AutomaticLayout = true,
             Language = "sql",
-            Value = "SELECT * FROM Prices LIMIT 1",
+            Value = $"SELECT * FROM Prices LIMIT 1;",
         };
     }
 
     async Task LoadGrid(CancellationToken ct = default)
     {
         bool isBrowseDataActive = false;
-        isBrowseDataActive = await JS.InvokeAsync<bool>("AML.isBrowseDataActive");
-        await Js.InvokeVoidAsync("AML.logit", isBrowseDataActive ? "true" : "false");
+        isBrowseDataActive = await Js.InvokeAsync<bool>("AML.isBrowseDataActive", ct).ConfigureAwait(false);
+        await Js.InvokeVoidAsync("AML.logit", ct, isBrowseDataActive ? "true" : "false", ct).ConfigureAwait(false);
         if (isBrowseDataActive)
-        await JS.InvokeVoidAsync("Sql.initGrid");
+            await Js.InvokeVoidAsync("Sql.initGrid", ct).ConfigureAwait(false);
+    }
+
+    private async Task LogIt(string message)
+    {
+        await Js.InvokeVoidAsync("AML.logit", message);
     }
 
     protected override async Task OnParametersSetAsync()
@@ -180,25 +202,6 @@
         // await Js.InvokeVoidAsync("Sql.initGrid");
         await Js.InvokeVoidAsync("Sql.init");
     }
-
-    public async Task LoadTables(string json)
-    {
-        if (TableNameFromJS == "Prices")
-        {
-            Prices[]? prices = JsonConvert.DeserializeObject<Prices[]>(json);
-            for (int j = 0; j < prices.Length; j++)
-            {
-                await LogIt(prices[j].Close.ToString());
-            }
-            return;
-        }
-    }
-
-    public async Task LogIt(string message)
-    {
-        await Js.InvokeAsync<string>("AML.logit", message);
-    }
-
 
     protected async Task InitRunQuery()
     {
@@ -258,6 +261,17 @@
     {
         showCallAlert = true;
         showLeaveAlert = true;
+    }
+
+    [JSInvokable]
+    public static async Task LoadTables(string json)
+    {
+        var prices = JsonConvert.DeserializeObject<Prices[]>(json);
+        for (int j = 0; j < prices.Length; j++)
+        {
+            await Task.Run(() => Console.WriteLine(prices[j].ToString()));
+        }
+        return;
     }
 
     [JSInvokable]

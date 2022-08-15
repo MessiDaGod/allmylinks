@@ -59,6 +59,10 @@
     <Content Remove="Pages\Index.razor" />
     <Content Remove="Pages\Redirect.razor" />
     <Content Remove="artifacts\**" />
+    <Content Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\bin\**" />
+    <Content Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\**" />
+    <Content Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\**" />
+    <Content Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\**" />
   </ItemGroup>
 
   <!-- <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
@@ -90,6 +94,10 @@
     <None Remove="Microsoft.AspNetCore.Hosting" />
     <None Remove="Microsoft.AspNetCore.Hosting.Abstractions" />
     <None Remove="artifacts\**" />
+    <None Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\bin\**" />
+    <None Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\**" />
+    <None Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\**" />
+    <None Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\**" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\main.db">
@@ -98,9 +106,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="artifacts\**" />
+    <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\bin\**" />
+    <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\**" />
+    <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\**" />
+    <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\**" />
+    <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\Properties\AssemblyInfo.cs" />
+    <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="artifacts\**" />
+    <EmbeddedResource Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\bin\**" />
+    <EmbeddedResource Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\**" />
+    <EmbeddedResource Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\**" />
+    <EmbeddedResource Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\**" />
   </ItemGroup>
   <ItemGroup>
     <_ContentIncludedByDefault Remove="artifacts\bin\Stl.CommandR.RegisterAttributes\net6.0\Stl.CommandR.RegisterAttributes.deps.json" />
@@ -143,5 +161,24 @@
     <_ContentIncludedByDefault Remove="artifacts\obj\Stl.RegisterAttributes\Stl.RegisterAttributes.csproj.nuget.dgspec.json" />
     <_ContentIncludedByDefault Remove="artifacts\obj\Stl\project.assets.json" />
     <_ContentIncludedByDefault Remove="artifacts\obj\Stl\Stl.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\bin\Debug\net6.0\PoorMansTSqlFormatterJS.deps.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\PoorMansTSqlFormatterJS.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\Debug\net6.0\PoorMansTSqlFormatterLib.deps.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\PoorMansTSqlFormatterLib.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\Bridge.Resources.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\global.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\global.json" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Projects\PoorMansSqlFormatter\PoorMansTSqlFormatterLib\PoorMansTSqlFormatterLib.csproj" />
+  </ItemGroup>
+<!--  <ItemGroup>-->
+<!--    <Reference Include="PoorMansTSqlFormatterWebDemo">-->
+<!--      <HintPath>..\PoorMansTSqlFormatter\PoorMansTSqlFormatterWebDemo\bin\PoorMansTSqlFormatterWebDemo.dll</HintPath>-->
+<!--    </Reference>-->
+<!--  </ItemGroup>-->
 </Project>
