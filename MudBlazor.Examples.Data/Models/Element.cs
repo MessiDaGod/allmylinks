@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace MudBlazor.Examples.Data.Models
 {
@@ -19,7 +18,7 @@ namespace MudBlazor.Examples.Data.Models
         /// <summary>
         /// Overriding Equals is essential for use with Select and Table because they use HashSets internally
         /// </summary>
-        public override bool Equals(object? obj) => object.Equals(GetHashCode(), obj?.GetHashCode());
+        public override bool Equals(object? obj) => Equals(GetHashCode(), obj?.GetHashCode());
 
         /// <summary>
         /// Overriding GetHashCode is essential for use with Select and Table because they use HashSets internally

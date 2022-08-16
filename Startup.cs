@@ -1,11 +1,9 @@
 ﻿// joeshakely
-using System;
-using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.AspNetCore.Hosting;
-using Stl.Fusion;
-using allmylinks.Services;
+
 using allmylinks.Services.UserPreferences;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Logging.Abstractions;
+using Stl.Fusion;
 
 namespace allmylinks
 {

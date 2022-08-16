@@ -1,20 +1,20 @@
+using allmylinks;
+using allmylinks.Abstractions;
+using allmylinks.Extensions;
+using allmylinks.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using allmylinks;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using MudBlazor.Services;
 using Radzen;
-using allmylinks.Services;
-using allmylinks.Extensions;
-using Stl.OS;
 using Stl.DependencyInjection;
 using Stl.Fusion;
-using Stl.Fusion.Client;
-using Stl.Fusion.Blazor;
-using Stl.Fusion.Extensions;
 using Stl.Fusion.Authentication;
-using allmylinks.Abstractions;
+using Stl.Fusion.Blazor;
+using Stl.Fusion.Client;
+using Stl.Fusion.Extensions;
+using Stl.OS;
 
 internal class Program
 {

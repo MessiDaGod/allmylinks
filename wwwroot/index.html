@@ -48,8 +48,9 @@
 	<title>Joe Shakely | Website</title>
     <script src="DemoSupportFiles/jquery-1.5.2.min.js"></script>
     <script src="DemoSupportFiles/formattingengine.js"></script>
+    <script src="DemoSupportFiles/initFormatting.js"></script>
 
-    <script>
+    <script type="text/javascript">
         var PageService = function () {
             var EnableUI = function () {
                 $("#inputString").removeAttr("disabled");
@@ -127,9 +128,9 @@
 
             //TODO: not implemented yet!!
             var formatInPlace = false;
-
+            debugger;
             JsFormattingEngine.LoadEnvironment(
-              document.location.href.split("?")[0].replace('DemoPage.html', ''),
+              document.location.href.split("?")[0].replace('index.html', ''),
               'DemoSupportFiles/formattingworker.js',
               scriptURLList,
               function () { PageService.EnableUI(); },
@@ -140,8 +141,6 @@
         });
     </script>
 </head>
-
-
 <script>
 	window.getUserAgent = () => {
 		return navigator.userAgent;

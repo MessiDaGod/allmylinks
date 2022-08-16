@@ -1,4 +1,5 @@
 // joeshakely
+
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,9 +50,8 @@ public enum SymbolType
 
 public record SymbolField
 {
-    public SymbolField() { }
     public string ID { get; set; }
-    public string? Text { get; set; } = null!;
+    public string? Text { get; set; }
     public SymbolType Type { get; set; } = SymbolType.Crypto;
 
     public override string ToString() => $"{ID}";

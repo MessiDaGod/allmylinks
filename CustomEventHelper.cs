@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
 public class CustomEventHelper

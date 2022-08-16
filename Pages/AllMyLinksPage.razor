@@ -1,8 +1,5 @@
 @page "/"
 @layout LandingLayout
-@using allmylinks.Components.LandingPage;
-@using MudBlazor;
-@using allmylinks.Components;
 
 <PageTitle>All My Links</PageTitle>
 <allmylinks.Pages.AllMyLInks />
@@ -25,11 +22,8 @@
     {
         if (_showTestimonials)
         {
-            return $"lp-testimonials";
+            return "lp-testimonials";
         }
-        else
-        {
-            return $"lp-testimonials hide-testimonials";
-        }
+        return "lp-testimonials hide-testimonials";
     }
 }

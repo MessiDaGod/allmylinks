@@ -1,14 +1,9 @@
 @page "/browse-data"
-@using MudBlazor;
-@using allmylinks.Models;
-@using Newtonsoft.Json;
-@using BlazorMonaco;
-@using allmylinks.Services;
-@using Radzen
-@using Radzen.Blazor
+@using Newtonsoft.Json
 @inject IJSRuntime Js;
 @inject NavigationManager UriHelper;
 @namespace allmylinks
+
 
 <!--suppress SpellCheckingInspection -->
 <div class="mud-tabs-toolbar-wrapper" style="transform:translateX(-0px);">
@@ -20,7 +15,6 @@
             <button class="nav-link" id="queryeditor-tab" data-bs-toggle="tab" data-bs-target="#queryeditor" type="button" role="tab" aria-controls="queryeditor" aria-selected="false">❮⁄❯ Query Editor</button>
         </li>
     </ul>
-
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="browsedata" role="tabpanel" aria-labelledby="browsedata-tab">
             <div class="btn-group btn-group-sm">
@@ -58,29 +52,24 @@
             <button id="formatsql" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.formatSql()">Format SQL<span class="material-symbols-outlined">database</span>
             </button>
             <button id="toggleHelloworld" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.toggleHelloWorld()">Toggle Hello World<span class="material-symbols-outlined">database</span></button>
+            <button id="clear" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.clear()">Clear<span class="material-symbols-outlined">database</span></button>
             <small id="tableQueryDetails" class="ml-2"></small>
             <hr class="invisible-divider">
             <header>
                 <nav class="float-right">
                     <ul>
-                        <li><label><input type="checkbox" name="EnableFormatAsYouGo" id="formatAsYouGo" checked/> Format as-you-go</label></li>
+                        <li><label><input type="checkbox" name="EnableFormatAsYouGo" id="formatAsYouGo" checked /> Format as-you-go</label></li>
                     </ul>
                 </nav>
             </header>
-            <div class="row">
-                <div class="col-6">
-                    <div id="outputDiv" class="monaco-editor-container"></div>
-                </div>
-                <div class="col-6">
-                <MonacoEditor Id="codeEditor" ConstructionOptions="EditorConstructionOptions"/>
-                </div>
-            </div>
+            <MonacoEditor Id="codeEditor" ConstructionOptions="EditorConstructionOptions" />
+            <MonacoEditor Id="inputString" ConstructionOptions="Blank"></MonacoEditor>
+            <MonacoEditor Id="outputDiv" ConstructionOptions="Blank"></MonacoEditor>
             <div id="helloworld"></div>
             <div id="tableQueryRecords" class="decorationsOverviewRuler"></div>
         </div>
     </div>
 </div>
-
 <style>
     .blue {
     color: blue !important;
@@ -113,23 +102,19 @@
     private SymbolField Conv { get; set; } = new();
     private bool AllowRowSelectOnRowClick { get; set; } = true;
     private IEnumerable<Prices> Prices { get; set; }
-    private Radzen.TabPosition _tabPosition = Radzen.TabPosition.Left;
-    private RadzenDataGrid<Prices> _PricesGrid;
-    RadzenDataGrid<Prices> _grid;
+    private TabPosition _tabPosition = TabPosition.Left;
+    private RadzenDataGrid<Prices>? _PricesGrid;
+    RadzenDataGrid<Prices>? _grid;
 
     public class DatabaseTables
     {
-        public DatabaseTables() { }
-        public object[] columns { get; set; } = null!;
-        public object[] values { get; set; } = null!;
+        public object[]? columns { get; set; }
+        public object[]? values { get; set; }
     }
 
     public IEnumerable<Person?>? Persons;
     public static string TableNameFromJS { get; set; } = string.Empty;
     public static string JSON { get; set; } = string.Empty;
-
-    private RadzenDataGrid<Person>? PersonsGrid;
-
     public string[]? columns { get; set; }
 
     bool allowRowSelectOnRowClick = true;
@@ -140,7 +125,6 @@
     {
         staticJsRuntime = Js;
         jsObjectRef = DotNetObjectReference.Create(this);
-        @* await Js.InvokeVoidAsync("AML.addColorListener"); *@
         await base.OnInitializedAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -148,9 +132,17 @@
         if (firstRender)
         {
             await Task.Run(() => isLoading = false);
+            @* module0 = await Js.InvokeAsync<IJSObjectReference>("import", "./JSLibReference/Debug/PoorMansTSqlFormatterJS.js"); *@
             await Init();
             await InvokeAsync(StateHasChanged);
         }
+    }
+
+    internal IJSObjectReference module0;
+
+    async Task Clear()
+    {
+        await Js.InvokeVoidAsync("Sql.clear");
     }
 
     async Task InitMonaco()
@@ -177,6 +169,16 @@ TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate 
         };
     }
 
+    private StandaloneEditorConstructionOptions Blank(MonacoEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            AutomaticLayout = true,
+            Language = "sql",
+            Value = "",
+        };
+    }
+
     async Task LoadGrid(CancellationToken ct = default)
     {
         bool isBrowseDataActive = false;
@@ -196,19 +198,8 @@ TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate 
         await base.OnParametersSetAsync();
     }
 
-    @* public async Task<object[]?>? GetColumns(string tableName)
-        {
-        columns = await Js.InvokeAsync<string[]>("Sql.getColumns", tableName);
-        for (int i = 0; i < columns.Length; i++)
-        {
-        await Task.Run(() => Console.WriteLine(columns[i].ToString())).ConfigureAwait(false);
-        }
-        return columns;
-        } *@
-
     protected async Task Init()
     {
-        // await Js.InvokeVoidAsync("Sql.initGrid");
         await Js.InvokeVoidAsync("Sql.init");
     }
 
@@ -221,7 +212,7 @@ TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate 
 
     private async Task UploadFiles(InputFileChangeEventArgs e)
     {
-        if (!e.GetMultipleFiles()[0].Name.ToString().ToLower().Contains(".db"))
+        if (!e.GetMultipleFiles()[0].Name.ToLower().Contains(".db"))
         {
             await Js.InvokeVoidAsync("AML.logit", "File is not a valid SQLite database");
             showLeaveAlert = true;
@@ -233,7 +224,7 @@ TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate 
             var file = e.GetMultipleFiles()[i];
             await Js.InvokeVoidAsync("AML.logit", $"Adding file {i + 1}");
             await Task.Run(() => files.Add(file));
-            await Js.InvokeVoidAsync("AML.logit", files[0].Name.ToString());
+            await Js.InvokeVoidAsync("AML.logit", files[0].Name);
         }
         await Js.InvokeVoidAsync("Sql.toggleTabs");
         await Js.InvokeVoidAsync("Sql.toggleMsg");
@@ -280,7 +271,6 @@ TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate 
         {
             await Task.Run(() => Console.WriteLine(prices[j].ToString()));
         }
-        return;
     }
 
     [JSInvokable]

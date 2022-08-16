@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.Json;
-using System.Threading.Tasks;
 using MudBlazor.Examples.Data.Models;
 
 namespace MudBlazor.Examples.Data
@@ -20,7 +16,7 @@ namespace MudBlazor.Examples.Data
             var elements = new List<Element>();
             var key = GetResourceKey(typeof(PeriodicTableService).Assembly, "Elements.json");
             using var stream = typeof(PeriodicTableService).Assembly.GetManifestResourceStream(key);
-            var table = await JsonSerializer.DeserializeAsync<Table>(stream, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            var table = await JsonSerializer.DeserializeAsync<Table>(stream, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             foreach (var elementGroup in table.ElementGroups)
             {
                 elements = elements.Concat(elementGroup.Elements).ToList();
@@ -28,8 +24,7 @@ namespace MudBlazor.Examples.Data
 
             if (search == string.Empty)
                 return elements;
-            else
-                return elements.Where(elm => (elm.Sign + elm.Name).Contains(search, StringComparison.InvariantCultureIgnoreCase));
+            return elements.Where(elm => (elm.Sign + elm.Name).Contains(search, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public static string GetResourceKey(Assembly assembly, string embeddedFile)

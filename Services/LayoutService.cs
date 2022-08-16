@@ -2,16 +2,13 @@
 // MudBlazor licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using allmylinks.Models;
 using allmylinks.Services.UserPreferences;
-using MudBlazor;
-using Stl.IO;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Text.RegularExpressions;
-using System.Reflection;
+using MudBlazor;
 
 namespace allmylinks.Services;
 
@@ -21,8 +18,8 @@ public class LayoutService : ILayoutService
     private readonly IUserPreferencesService _userPreferencesService;
     private UserPreferences.UserPreferences _userPreferences;
 
-    public bool IsRTL { get; private set; } = false;
-    public bool IsDarkMode { get; private set; } = false;
+    public bool IsRTL { get; private set; }
+    public bool IsDarkMode { get; private set; }
 
     public MudTheme CurrentTheme { get; private set; }
 
@@ -87,18 +84,18 @@ public class LayoutService : ILayoutService
         {
             return DocsBasePage.AllMyLinks;
         }
-        else if (uri.Contains("/getting-started/"))
+
+        if (uri.Contains("/getting-started/"))
         {
             return DocsBasePage.IsItChristmas;
         }
-        else if (uri.Contains("/mud/"))
+
+        if (uri.Contains("/mud/"))
         {
             return DocsBasePage.SQL;
         }
-        else
-        {
-            return DocsBasePage.None;
-        }
+
+        return DocsBasePage.None;
     }
 
     private static List<string> MyPages { get; set; } = new();
@@ -112,7 +109,7 @@ public class LayoutService : ILayoutService
         var wwwRootPath = Path.Combine(baseDir, "wwwroot");
         if (!Directory.Exists(Path.Combine(wwwRootPath, "_framework")))
             return Path.GetFullPath(Path.Combine(baseDir, $"../../../../UI/{binCfgPart}/net6.0/wwwroot"));
-        else return wwwRootPath;
+        return wwwRootPath;
     }
 
     public async Task<List<string>> GetPages()

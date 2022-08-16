@@ -1,9 +1,5 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using allmylinks;
-
 
 namespace allmylinks;
 
@@ -13,7 +9,7 @@ public static class InitializeDatabase
     {
         try {
             services.AddDbContextFactory<Context>(
-                    options => options.UseSqlite($"Filename=database/main.db"));
+                    options => options.UseSqlite("Filename=database/main.db"));
         }
         catch (Exception) {
             // ignore

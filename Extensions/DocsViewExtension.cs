@@ -1,12 +1,11 @@
-﻿using Blazored.LocalStorage;
-using Blazor.Analytics;
-using Microsoft.Extensions.DependencyInjection;
-using allmylinks.Services;
+﻿using allmylinks.Services;
 using allmylinks.Services.Notifications;
 using allmylinks.Services.UserPreferences;
-using MudBlazor.Services;
-using MudBlazor.Examples.Data;
+using Blazor.Analytics;
+using Blazored.LocalStorage;
 using MudBlazor;
+using MudBlazor.Examples.Data;
+using MudBlazor.Services;
 
 namespace allmylinks.Extensions
 {

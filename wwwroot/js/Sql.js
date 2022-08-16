@@ -443,7 +443,20 @@
             Sql.SetOutputPanelContent("Getting formatted SQL, please wait...");
             Sql.DoFormat();
         },
+        clear: function() {
+            var is = document.getElementById('inputString');
+            var od = document.getElementById('outputDiv');
+            var pre = document.getElementsByClassName('SQLCode');
+            if (is)
+                is.value = "";
+            if (od)
+                od.value = "";
+            if (pre) {
+                pre.innerHTML = "";
+                pre.innerText = "s";
+            }
 
+        },
         DoFormat: function() {
             var query = "";
             var lines = document.querySelectorAll(".view-line");
@@ -459,9 +472,7 @@
                 }
                 codeEditor.value = query;
             }
-            var result = JsFormattingEngine.RequestFormatting("inputSql=" + encodeURIComponent($("#codeEditor").val()) + "&expandCommaLists=true&trailingCommas=true&spaceAfterExpandedComma=false&expandBooleanExpressions=true&expandCaseStatements=true&expandBetweenConditions=true&expandInLists=true&breakJoinOnSections=false&uppercaseKeywords=true&coloring=true&keywordStandardization=false&randomizeColor=false&randomizeLineLengths=false&randomizeKeywordCase=false&preserveComments=false&enableKeywordSubstitution=false&formattingType=standard&indent=%5Ct&spacesPerTab=4&maxLineWidth=999&statementBreaks=2&clauseBreaks=1&language=&jsengine=true&reFormat=true&obfuscate=false");
-        
-        
+            JsFormattingEngine.RequestFormatting("inputSql=" + encodeURIComponent($("#codeEditor").val()) + "&expandCommaLists=true&trailingCommas=true&spaceAfterExpandedComma=false&expandBooleanExpressions=true&expandCaseStatements=true&expandBetweenConditions=true&expandInLists=true&breakJoinOnSections=false&uppercaseKeywords=true&coloring=true&keywordStandardization=false&randomizeColor=false&randomizeLineLengths=false&randomizeKeywordCase=false&preserveComments=false&enableKeywordSubstitution=false&formattingType=standard&indent=%5Ct&spacesPerTab=4&maxLineWidth=999&statementBreaks=2&clauseBreaks=1&language=&jsengine=true&reFormat=true&obfuscate=false");
         },
 
         //var inputKeyEventFireFormat = function () {
