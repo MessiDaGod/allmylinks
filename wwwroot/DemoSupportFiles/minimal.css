@@ -1,18 +1,18 @@
 /*
 	Minimal CSS
 	minimalcss.com
-	
+
 	(MIT License, see: https://github.com/billyshall/minimalcss/blob/master/license.txt)
 */
 
 /* Reset */
 * { margin: 0; padding: 0; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 
-/* Layout */
-body { background-color: #fff; color: #333;	font: 14px/20px "HelveticaNeue-Light", "HelveticaNeue", Helvetica, Arial, sans-serif; }
 
-header { width: 100%; margin: 0 auto; position: relative; padding: 20px 0; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
-.logo { font-size: 28px; color: #333; }
+/* body { background-color: #fff; color: #333;	font: 14px/20px "HelveticaNeue-Light", "HelveticaNeue", Helvetica, Arial, sans-serif; } */
+
+/* header { width: 100%; margin: 0 auto; position: relative; padding: 20px 0; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
+.logo { font-size: 28px; color: #333; } */
 
 nav ul { margin: 0; }
 nav ul li { display: inline; margin-right: 20px; font-size: 16px; line-height: 28px; color: #333; }
@@ -112,4 +112,4 @@ tfoot { font-style: italic; }
         box-shadow: none !important;
         color: #000 !important;
     }
-}	
+}

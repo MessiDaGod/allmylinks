@@ -54,6 +54,9 @@
             <button id="toggleHelloworld" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.toggleHelloWorld()">Toggle Hello World<span class="material-symbols-outlined">database</span></button>
             <button id="clear" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.clear()">Clear<span class="material-symbols-outlined">database</span></button>
             <small id="tableQueryDetails" class="ml-2"></small>
+            <button id="toggleFormat" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.toggleFormat()">Toggle DemoPage.html<span class="material-symbols-outlined">database</span></button>
+            <small id="tableQueryDetails" class="ml-2"></small>
+
             <hr class="invisible-divider">
             <header>
                 <nav class="float-right">
@@ -228,7 +231,7 @@ TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate 
         }
         await Js.InvokeVoidAsync("Sql.toggleTabs");
         await Js.InvokeVoidAsync("Sql.toggleMsg");
-        await Init();
+        @* await Init(); *@
         var result = await Js.InvokeAsync<Prices[]>("Sql.getPrices");
         List<Prices> pricesList = new();
         if (result != null)

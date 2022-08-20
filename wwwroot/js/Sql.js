@@ -865,7 +865,23 @@
         isNullOrEmpty: function(str) {
             return (!str || 0 === str.length);
         },
+        toggleFormat: function() {
+            var el = [...document.querySelectorAll("#demopage")];
+            var el1 = [...document.querySelectorAll("#codeEditor")];
+            var el2 = [...document.querySelectorAll("#inputString")];
+            var el3 = [...document.querySelectorAll("#outputDiv")];
+            // if (el[0])
+            //     el[0].classList.toggle("hide");
 
+            if (el1[0])
+                el1[0].classList.toggle("hide");
+
+            if (el2[0])
+                el2[0].classList.toggle("hide");
+
+            if (el3[0])
+                el3[0].classList.toggle("hide");
+        },
         loadTableSelectable: async function(tblName) {
             //await Sql.setQuery(tblName);
             // Sql.init();

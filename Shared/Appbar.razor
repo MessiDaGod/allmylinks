@@ -1,4 +1,7 @@
 @inject IJSRuntime Js;
+@using UAParser;
+@using Stl.Fusion.Authentication
+@inject Session Session;
 @inherits MudComponentBase;
 
 <div id="appbar" class="hide"></div>
@@ -28,6 +31,7 @@
         <MudButton id="showisitchristmas" @onclick="ShowXmas" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.IsItChristmas)">Is It Christmas?</MudButton>
         <MudButton id="showsql" @onclick="ShowSql" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.SQL)">SQL</MudButton>
         <MudButton id="showcandles" @onclick="ShowCandles" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.SQL)">Candlestick</MudButton>
+        <MudButton id="os">OS: <span class="material-symbols-outlined">computer</span></MudButton>
         <MudSpacer/>
         @if (DisplaySearchBar)
     {

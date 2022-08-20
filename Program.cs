@@ -104,6 +104,8 @@ internal class Program
 
         // // Fusion service clients
         fusionClient.AddReplicaService<ICounterService, ICounterClientDef>();
+        fusionClient.AddClientService<IAuthBackend>();
+        // fusionClient.AddClientService<IAuth>();
         // fusionClient.AddReplicaService<IWeatherForecastService, IWeatherForecastClientDef>();
         // fusionClient.AddReplicaService<IChatService, IChatClientDef>();
 

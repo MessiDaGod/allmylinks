@@ -22,19 +22,16 @@
 	<meta name='HandheldFriendly' content='True' />
 	<meta name='MobileOptimized' content='320' />
 	<meta http-equiv='Content-Security-Policy' content='upgrade-insecure-requests' />
-	<link href="css/editor.main.css" rel="stylesheet" />
-	<link defer href="css/bootstrap.min.css" rel="stylesheet" />
-	<link href="allmylinks.styles.css" rel="stylesheet" />
-	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
 	<style>
 		body.loading {
 			visibility: hidden
 		}
 	</style>
-	<script src="js/jquery.min.js"></script>
-    <!-- <script src="DemoSupportFiles/jquery-1.5.2.min.js"></script> -->
-
+	<link href="css/editor.main.css" rel="stylesheet" />
+	<link defer href="css/bootstrap.min.css" rel="stylesheet" />
+	<link href="allmylinks.styles.css" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
 	<link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
 	<link href='css/main.css' rel='stylesheet' type='text/css' />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
@@ -46,100 +43,6 @@
 	<!-- this link handles the spinner -->
 	<link href="css/app.css" rel="stylesheet" />
 	<title>Joe Shakely | Website</title>
-    <script src="DemoSupportFiles/jquery-1.5.2.min.js"></script>
-    <script src="DemoSupportFiles/formattingengine.js"></script>
-    <script src="DemoSupportFiles/initFormatting.js"></script>
-
-    <script type="text/javascript">
-        var PageService = function () {
-            var EnableUI = function () {
-                $("#inputString").removeAttr("disabled");
-                $("#inputString").change(inputChanged);
-                $("#inputString").blur(inputChanged);
-            }
-
-            var inputChanged = function () {
-                SetOutputPanelContent("Getting formatted SQL, please wait...");
-                DoFormat();
-            }
-
-            var DoFormat = function () {
-                JsFormattingEngine.RequestFormatting("inputString=" + encodeURIComponent($("#inputString").val()) + "&expandCommaLists=true&trailingCommas=true&spaceAfterExpandedComma=false&expandBooleanExpressions=true&expandCaseStatements=true&expandBetweenConditions=true&expandInLists=true&breakJoinOnSections=false&uppercaseKeywords=true&coloring=true&keywordStandardization=false&randomizeColor=false&randomizeLineLengths=false&randomizeKeywordCase=false&preserveComments=false&enableKeywordSubstitution=false&formattingType=standard&indent=%5Ct&spacesPerTab=4&maxLineWidth=999&statementBreaks=2&clauseBreaks=1&language=&jsengine=true&reFormat=true&obfuscate=false");
-            }
-
-            //var inputKeyEventFireFormat = function () {
-            //    doFormatInPlace();
-            //    formatToOutDiv();
-            //}
-
-            var SetOutputPanelContent = function (outputData) {
-                $("#outputDiv").html(outputData);
-            }
-
-            var NotifyFormattingResult = function (formattingResult) {
-                //TODO: add safety here, against race conditions etc.
-                SetOutputPanelContent(formattingResult.outputSqlHtml);
-            }
-
-            var CheckSettings = function () {
-                if ($("#formatAsYouGo:checked").val())
-                    $('#inputString').keyup(DoFormat)
-                else
-                    //untested...
-                    $("#inputString").keyup(null);
-            }
-
-            var formatToOutDiv = function () {
-                setOutput(formattedText);
-            }
-
-            var doFormatInPlace = function () {
-                if (formatInPlace) {
-                    var tokenizedData = tokenizer.TokenizeSQL(inputData);
-                    var parsedData = parser.ParseSQL(tokenizedData);
-                    var formattedText = textFormatter.FormatSQLTree(parsedData);
-
-                    $("#inputString").val(formattedText);
-                }
-            }
-
-
-            return {
-                EnableUI: EnableUI,
-                SetOutputPanelContent: SetOutputPanelContent,
-                NotifyFormattingResult: NotifyFormattingResult,
-                CheckSettings: CheckSettings
-        };
-        }();
-
-    </script>
-    <script>
-        $(function () {
-            var minflag = false;
-            var debugflag = false;
-
-            var scriptURLList = [
-                'JSLibReference/' + (debugflag ? "Debug/" : "Release/") + 'PoorMansTSqlFormatterJS.' + (minflag ? "min." : "") + 'js',
-                'DemoSupportFiles/formattingmapper.js'
-            ];
-
-            $("#formatAsYouGo").change(PageService.CheckSettings);
-            PageService.CheckSettings();
-
-            //TODO: not implemented yet!!
-            var formatInPlace = false;
-            debugger;
-            JsFormattingEngine.LoadEnvironment(
-              document.location.href.split("?")[0].replace('index.html', ''),
-              'DemoSupportFiles/formattingworker.js',
-              scriptURLList,
-              function () { PageService.EnableUI(); },
-              function (paramLength, outputString) { PageService.SetOutputPanelContent(outputString); },
-              function (errorMessage) { PageService.SetOutputPanelContent("Error: " + errorMessage); }
-            );
-
-        });
-    </script>
 </head>
 <script>
 	window.getUserAgent = () => {
