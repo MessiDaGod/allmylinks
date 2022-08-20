@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using MudBlazor.Services;
 using Radzen;
 using Stl.DependencyInjection;
@@ -46,6 +47,7 @@ internal class Program
         builder.Services.AddScoped<ContextMenuService>();
         builder.Services.AddScoped<SideBarService>();
         builder.Services.AddScoped<LayoutService>();
+        builder.Services.TryAddScoped<ClientAuthHelper>();
 
         builder.Services.TryAddDocsViewServices();
         try
@@ -106,9 +108,10 @@ internal class Program
         fusionClient.AddReplicaService<ICounterService, ICounterClientDef>();
         fusionClient.AddClientService<IAuthBackend>();
         // fusionClient.AddClientService<IAuth>();
+        fusionClient.AddClientService<ISessionResolver>();
         // fusionClient.AddReplicaService<IWeatherForecastService, IWeatherForecastClientDef>();
         // fusionClient.AddReplicaService<IChatService, IChatClientDef>();
-
+        fusion.AddComputeService<ISqlService, SqlService>();
         ConfigureSharedServices(services);
     }
 

@@ -93,6 +93,28 @@
     // xhr.send();
 
     window.Sql = {
+        getFormattedText: function() {
+            var text = "";
+            var iframe = document.getElementById("sqlformat");
+            const iWindow = iframe.contentWindow;
+            const iDocument = iWindow.document;
+
+            if (iframe) {
+                if (iDocument.querySelector("pre[class='SQLCode']").childNodes.length > 0) {
+                    for (let index = 0; index < iDocument.querySelector("pre[class='SQLCode']").childNodes.length; index++) {
+                        var node = iDocument.querySelector("pre[class='SQLCode']").childNodes[index].textContent;
+                        if (node !== undefined | text !== "." | text !== ",")
+                        text += node;
+                    }
+                }
+            }
+
+            let code = document.getElementById("codeEditor");
+            if (code) {
+                code.value = text;
+            }
+            return text;
+        },
         doGrid: function() {
             if (Json)
                 console.log(Json);
@@ -429,15 +451,7 @@
             Sql.inputChanged();
         },
         formatSql: function() {
-            errorDisplay.textContent = '';
-            try {
-                Sql.DoFormat();
-            }
-            catch (err) {
-                errorDisplay.textContent = '';
-                errorDisplay.textContent = `⚠ ERROR: ${err.stack}`;
-                Sql.appendLogOutput(err.message, 'ERROR');
-            }
+            Sql.getFormattedText();
         },
         inputChanged: function() {
             Sql.SetOutputPanelContent("Getting formatted SQL, please wait...");

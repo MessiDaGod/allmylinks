@@ -1,12 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
-    <title>PoorMansTSqlFormatterJS Demo Harness</title>
     <meta name="description" content="This is a simple demo page for the PoorMansTSqlFormatterJS library - more complete site at http://poorsql.com/">
-
+    <script src="js/Sql.js"></script>
     <link href="DemoSupportFiles/minimal.css" rel="stylesheet">
     <script src="DemoSupportFiles/jquery-1.5.2.min.js"></script>
     <script src="DemoSupportFiles/formattingengine.js"></script>
@@ -34,7 +32,6 @@
             //}
 
             var SetOutputPanelContent = function (outputData) {
-                console.log(outputData);
                 $("#outputDiv").html(outputData);
             }
 
@@ -64,7 +61,6 @@
                     $("#inputString").val(formattedText);
                 }
             }
-
 
             return {
                 EnableUI: EnableUI,
@@ -105,8 +101,6 @@
 </head>
 <body>
     <header>
-        <span class="logo">PoorMansTSqlFormatterJS Demo Harness
-        </span>
         <nav class="float-right">
             <ul>
                 <li><label><input type="checkbox" name="EnableFormatAsYouGo" id="formatAsYouGo" checked/> Format as-you-go</label></li>

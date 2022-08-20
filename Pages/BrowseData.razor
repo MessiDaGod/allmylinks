@@ -1,9 +1,26 @@
 @page "/browse-data"
-@using Newtonsoft.Json
+@using Radzen;
+@using Stl.Fusion.Authentication;
+@using System.Data;
+@using Stl.Fusion
+@using Stl.Fusion.Blazor;
 @inject IJSRuntime Js;
-@inject NavigationManager UriHelper;
+@inject Session _session;
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper;
+@inject Stl.Fusion.UI.UICommander _uiCommandRunner;
+@inject ILogger<BrowseData> Log;
+@inject ISqlService SqlService;
+@inherits MixedStateComponent<BrowseData.Model, BrowseData.LocalModel>;
 @namespace allmylinks
 
+@{
+    var locals = MutableState.Value;
+    var state = State.LatestNonErrorValue;
+    var user = new User("guest");
+    var usedAuthSchemas = user.Identities.Select(kv => kv.Key.Schema).ToHashSet();
+    var unusedAuthSchemas = AuthSchemas.Where(p => !usedAuthSchemas.Contains(p.Name)).ToArray();
+    var error = State.Error;
+}
 
 <!--suppress SpellCheckingInspection -->
 <div class="mud-tabs-toolbar-wrapper" style="transform:translateX(-0px);">
@@ -56,18 +73,10 @@
             <small id="tableQueryDetails" class="ml-2"></small>
             <button id="toggleFormat" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.toggleFormat()">Toggle DemoPage.html<span class="material-symbols-outlined">database</span></button>
             <small id="tableQueryDetails" class="ml-2"></small>
-
+            <allmylinks.Pages.SqlFormat />
             <hr class="invisible-divider">
-            <header>
-                <nav class="float-right">
-                    <ul>
-                        <li><label><input type="checkbox" name="EnableFormatAsYouGo" id="formatAsYouGo" checked /> Format as-you-go</label></li>
-                    </ul>
-                </nav>
-            </header>
-            <MonacoEditor Id="codeEditor" ConstructionOptions="EditorConstructionOptions" />
+            <MonacoEditor @ref="_editor"  Id="codeEditor" ConstructionOptions="EditorConstructionOptions" />
             <MonacoEditor Id="inputString" ConstructionOptions="Blank"></MonacoEditor>
-            <MonacoEditor Id="outputDiv" ConstructionOptions="Blank"></MonacoEditor>
             <div id="helloworld"></div>
             <div id="tableQueryRecords" class="decorationsOverviewRuler"></div>
         </div>
@@ -99,6 +108,33 @@
 
 @code {
 
+    private MonacoEditor _editor { get; set; }
+
+    public class Model
+    {
+        public string Text { get; set; } = string.Empty;
+
+        public Model(string text)
+        {
+            Text = text;
+        }
+    }
+    public class LocalModel : BrowseData
+    {
+        private string _text = "";
+        public string MyText
+        {
+            get => _text;
+            set
+            {
+                if (_text == value)
+                    return;
+                _text = value;
+            }
+        }
+    }
+
+    private (string Name, string DisplayName)[] AuthSchemas { get; set; } = Array.Empty<(string, string)>();
     private bool showCallAlert = true;
     private bool showLeaveAlert = false;
     IEnumerable<SymbolField> symbols => SymbolField.Symbols;
@@ -108,6 +144,9 @@
     private TabPosition _tabPosition = TabPosition.Left;
     private RadzenDataGrid<Prices>? _PricesGrid;
     RadzenDataGrid<Prices>? _grid;
+
+    [Parameter]
+    public Task<AuthState> AuthStateTask { get; set; } = null!;
 
     public class DatabaseTables
     {
@@ -124,6 +163,9 @@
     bool isLoading = false;
     protected static IJSRuntime staticJsRuntime { get; set; }
     protected DotNetObjectReference<BrowseData> jsObjectRef { get; set; }
+    bool FirstRender { get; set; } = true;
+
+
     protected override async Task OnInitializedAsync()
     {
         staticJsRuntime = Js;
@@ -138,7 +180,10 @@
             @* module0 = await Js.InvokeAsync<IJSObjectReference>("import", "./JSLibReference/Debug/PoorMansTSqlFormatterJS.js"); *@
             await Init();
             await InvokeAsync(StateHasChanged);
+            return;
         }
+        FirstRender = false;
+        return;
     }
 
     internal IJSObjectReference module0;
@@ -156,21 +201,23 @@
         };
         await MonacoEditorBase.SetModelLanguage(model, "sql");
     }
+
     private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
     {
         return new StandaloneEditorConstructionOptions
         {
             AutomaticLayout = true,
             Language = "sql",
-            Value = @" SELECT tr.hMy Id , tr.hParent2 BatchId , tr.hPerson PersonId , tr.uRef InvoiceNumber , 0 OwnerId, tr.itype2 DisplayType, tr.hOffsetAcct
+            Value = FirstRender ? @" SELECT tr.hMy Id , tr.hParent2 BatchId , tr.hPerson PersonId , tr.uRef InvoiceNumber , 0 OwnerId, tr.itype2 DisplayType, tr.hOffsetAcct
 CashAccountId , tr.hAccrualAcct ApAccountId , tr.uPostDate PostMonth , tr.dtvatreported VatReturnMonth,  tr.sDateoccurred InvoiceDate ,
 tr.sOtherDate1 DueDate , tr.sOtherDate2 DiscountDate ,   tr.fDiscountPercent DiscountPercent , tr.sDiscountAmt DiscountAmount ,   tr.hFunding
 FundingEntityId, tr.hCompany CompanyId,  tr.sUserDefined1 UserDefinedFields0, tr.sUserDefined2 UserDefinedFields1 , tr.sTranFields1
 UserDefinedFields2 ,   tr.sTranFields2 UserDefinedFields3 , tr.sTranFields3 UserDefinedFields4 , tr.sTranFields4 UserDefinedFields5 ,   tr.sTranFields5 UserDefinedFields6 , tr.sTranFields6 UserDefinedFields7 , tr.sTranFields7 UserDefinedFields8 ,   tr.sTranFields8 UserDefinedFields9 , tr.bMemoFromInv GetCheckMemoFromInvoice ,   tr.hParent1 ReverserId , tr.iType Type , tr.iType1 Type1 , tr.hProp PropertyId , tr.bOpen IsUnpaid ,   tr.sTotalAmount Amount , tr.sTotalAmount BaseAmount , tr.sAmountPaid AmountPaid , tr.sOtherDate3 ManualCheckPostMonth ,   tr.iPostWarn ManualCheckNumber , tr.dtLastPost ManualCheckDate , tr.h3Party ForBenefitOf ,   tr.sNotes Notes , tr.VOID Void , tr.CONSOLIDATECHECK ConsoloidatePayments , tr.CREDIT IsCreditMemo ,   tr.ADJUSTMENT IsAdjustment , tr.VOIDED Voided , tr.VOIDER Voider , tr.HOLDPAYMENT HoldPayments ,   tr.sOtherDate4 ImplicitPostMonthDate , tr.hParent3 MultiOffset , tr.RETENTION IsRetention ,   tr.RETPAY IsRetPay , tr.bNon1099 ExemptFrom1099 , tr.sDiscountAmt RetentionAmount ,   tr.bACH IsAch , tr.dtFrom FromDate , tr.dtTo ToDate , tr.hBaseCurrency BaseCurrencyId ,   tr.hTranCurrency
 TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate ,   tr.sTranAmount TranAmount , tr.sInvNum SequenceNumber , tr.hUsercreatedby UserCreatedById ,   tr.hUsermodifiedby UserLastModifiedById , tr.sDateCreated DateCreated , tr.sDateModified DateLastModified ,   tr.sModuleCreatedBy ModuleCreatedBy , tr.sModuleModifiedBy ModuleModifiedBy ,   tr.iSubType TranModuleType , tr.dtStamp DateTimeStamp,     tr.hTranCurrency TranCurrencyId, tr.hBaseCurrency BaseCurrencyId,  case when tr.sTranFields1 = '-1' then '-1' else '0' end VatInvoiceReceived,  tr.sTranFields2 VatInvoiceNumber, tr.dtTaxPoint TaxPointDate, tr.sMemo ExpenseType, tr.bReceiptDirecttoOwner IsPaidbyOwner,  tri.PREPAID IsPrepaid,tri.sGAcctAmount GAcctAmount  ,isnull(PHATrans.sPmtType,'') PHAType  ,tr.hRemittanceVendor RemittanceVendorId
- , case when isnull(tr.bACH,0) = -1 and isnull(tr.CashReceipt,0) = 0 then 1 else isnull(tr.CashReceipt,0) end PaymentMethod  FROM trans tr  LEFT JOIN trans_int tri on tri.htran = tr.hmy left join H8PRHTrans PHATrans on (PHATrans.hTran = tr.hmy)  WHERE tr.hMy = 300330533",
+ , case when isnull(tr.bACH,0) = -1 and isnull(tr.CashReceipt,0) = 0 then 1 else isnull(tr.CashReceipt,0) end PaymentMethod  FROM trans tr  LEFT JOIN trans_int tri on tri.htran = tr.hmy left join H8PRHTrans PHATrans on (PHATrans.hTran = tr.hmy)  WHERE tr.hMy = 300330533" : MyText,
         };
     }
+
 
     private StandaloneEditorConstructionOptions Blank(MonacoEditor editor)
     {
@@ -269,11 +316,11 @@ TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate 
     [JSInvokable]
     public static async Task LoadTables(string json)
     {
-        var prices = JsonConvert.DeserializeObject<Prices[]>(json);
-        for (int j = 0; j < prices.Length; j++)
-        {
+        @* var prices = JsonConvert.DeserializeObject<Prices[]>(json);
+            for (int j = 0; j < prices.Length; j++)
+            {
             await Task.Run(() => Console.WriteLine(prices[j].ToString()));
-        }
+            } *@
     }
 
     [JSInvokable]
@@ -305,5 +352,35 @@ TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate 
     {
         args.Cancel = true;
 
+    }
+
+    private async Task SetValue()
+    {
+        Console.WriteLine($"setting value to: {MyText}");
+        await _editor.SetValue(MyText);
+    }
+
+    public string MyText { get; private set; }
+
+    protected override async Task<Model> ComputeState(CancellationToken cancellationToken)
+    {
+        MyText = await Js.InvokeAsync<string>("Sql.getFormattedText");
+        var model = new Model(MyText);
+        await Js.InvokeVoidAsync("AML.logit", "ComputeState!!");
+        await _editor.SetValue(MyText);
+        await Js.InvokeVoidAsync("AML.logit", MyText);
+        return model;
+    }
+
+    private async Task Post()
+    {
+        var (_, ce) = await _uiCommandRunner.Run(new SqlService.PostCommand(MyText, _session));
+        if (ce != null)
+            return;
+        @* await Task.Run(async () => MostRecentPrice = LatestStick.ToArray()[LatestStick.ToArray().Length - 1].Close.ToString()); *@
+
+        await Task.Delay(2000).ConfigureAwait(false);
+        await MutableState.Recompute();
+        MutableState.Invalidate();
     }
 }
