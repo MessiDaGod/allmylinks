@@ -8,7 +8,7 @@
     <ReleaseVersion>1.0</ReleaseVersion>
     <PublishTrimmed>false</PublishTrimmed>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>    
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <GHPages>true</GHPages>
   </PropertyGroup>
   <PropertyGroup>
@@ -64,6 +64,7 @@
     <Content Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\**" />
     <Content Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\**" />
     <Content Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\**" />
+    <Content Remove="PoorMansTSqlFormatterLib\obj\**" />
   </ItemGroup>
 
   <!-- <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
@@ -99,6 +100,7 @@
     <None Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\**" />
     <None Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\**" />
     <None Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\**" />
+    <None Remove="PoorMansTSqlFormatterLib\obj\**" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\main.db">
@@ -113,6 +115,7 @@
     <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\**" />
     <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\Properties\AssemblyInfo.cs" />
     <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\Properties\AssemblyInfo.cs" />
+    <Compile Remove="PoorMansTSqlFormatterLib\obj\**" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="artifacts\**" />
@@ -120,6 +123,7 @@
     <EmbeddedResource Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\**" />
     <EmbeddedResource Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\**" />
     <EmbeddedResource Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\**" />
+    <EmbeddedResource Remove="PoorMansTSqlFormatterLib\obj\**" />
   </ItemGroup>
   <ItemGroup>
     <_ContentIncludedByDefault Remove="artifacts\bin\Stl.CommandR.RegisterAttributes\net6.0\Stl.CommandR.RegisterAttributes.deps.json" />
@@ -174,12 +178,4 @@
     <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\global.json" />
     <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\global.json" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Projects\PoorMansSqlFormatter\PoorMansTSqlFormatterLib\PoorMansTSqlFormatterLib.csproj" />
-  </ItemGroup>
-<!--  <ItemGroup>-->
-<!--    <Reference Include="PoorMansTSqlFormatterWebDemo">-->
-<!--      <HintPath>..\PoorMansTSqlFormatter\PoorMansTSqlFormatterWebDemo\bin\PoorMansTSqlFormatterWebDemo.dll</HintPath>-->
-<!--    </Reference>-->
-<!--  </ItemGroup>-->
 </Project>

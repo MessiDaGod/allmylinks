@@ -1,0 +1,3 @@
+[submodule "PoorMansTSqlFormatterLib"]
+	path = PoorMansTSqlFormatterLib
+	url = https://github.com/MessiDaGod/PoorMansTSqlFormatterLib.git
