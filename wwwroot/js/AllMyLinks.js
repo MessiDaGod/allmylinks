@@ -106,6 +106,9 @@
     // var child = [];
 
     window.AML = {
+        getUserAgent: async function() {
+            return navigator.userAgent;
+        },
         colorize: function() {
             var lines = document.querySelectorAll("[class^=mtk]");
             if (lines) {

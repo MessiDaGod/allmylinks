@@ -1,4 +1,12 @@
-﻿<MudBadge Color="Color.Secondary" Dot="true" Overlap="true" Visible="_newNotificationsAvailable">
+﻿@inject IJSRuntime Js;
+@using UAParser;
+@using Stl.Fusion.Authentication
+@using allmylinks.Models;
+@using System.Text.RegularExpressions
+@inject Session Session;
+@inherits MudComponentBase;
+
+<MudBadge Color="Color.Secondary" Dot="true" Overlap="true" Visible="_newNotificationsAvailable">
     <MudMenu Icon="@Icons.Outlined.Notifications" Color="Color.Inherit" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter" PopoverClass="docs-layout-menu-shadow" ListClass="pa-2 docs-menu-list" LockScroll="true">
         <div class="d-flex justify-space-between align-center px-2">
             <MudText Typo="Typo.subtitle2">Notifications</MudText>
@@ -24,9 +32,49 @@
         }
     </MudMenu>
 </MudBadge>
-@* <MudTooltip Duration="1000" Text="@(LayoutService.IsRTL ? "Switch to left-to-right" : "Switch to right-to-left")">
-    <MudIconButton Icon="@(LayoutService.IsRTL ? @Icons.Material.Filled.FormatTextdirectionLToR : @Icons.Material.Filled.FormatTextdirectionRToL)" OnClick="@LayoutService.ToggleRightToLeft" Color="Color.Inherit"/>
-</MudTooltip> *@
 <MudTooltip Duration="1000" Text="@(LayoutService.IsDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme")">
     <MudIconButton Icon="@(LayoutService.IsDarkMode ? Icons.Rounded.LightMode : Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@LayoutService.ToggleDarkMode"/>
 </MudTooltip>
+<MudButton id="os"><span class="material-symbols-outlined">computer</span>&nbsp;@Platform</MudButton>
+
+
+@code {
+
+    private string UserAgent { get; set; } = string.Empty;
+    private string Platform { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserAgent = await Js.InvokeAsync<string>("AML.getUserAgent");
+        allmylinks.Models.OperatingSystem OS = new();
+        string pattern = @"(Mac OS X)";
+        RegexOptions options = RegexOptions.Multiline;
+
+        foreach (Match m in Regex.Matches(UserAgent, pattern, options))
+        {
+            OS.Platform = m.Value;
+            Platform = OS.Platform;
+        }
+        pattern = @"(Windows)";
+        foreach (Match m in Regex.Matches(UserAgent, pattern, options))
+        {
+            OS.Platform = m.Value;
+            Platform = OS.Platform;
+        }
+        pattern = @"(iPhone)";
+        foreach (Match m in Regex.Matches(UserAgent, pattern, options))
+        {
+            OS.Platform = m.Value;
+            Platform = OS.Platform;
+        }
+        pattern = @"(Android)";
+        foreach (Match m in Regex.Matches(UserAgent, pattern, options))
+        {
+            OS.Platform = m.Value;
+            Platform = OS.Platform;
+        }
+
+        await Js.InvokeVoidAsync("AML.logit", UserAgent);
+        await base.OnInitializedAsync();
+    }
+}
