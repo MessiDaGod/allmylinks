@@ -4,8 +4,6 @@ VisualStudioVersion = 25.0.1703.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "allmylinks", "allmylinks.csproj", "{B17C2878-C101-4D77-BF5C-C0E4E6635987}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoorMansTSqlFormatterLib", "..\..\Projects\PoorMansSqlFormatter\PoorMansTSqlFormatterLib\PoorMansTSqlFormatterLib.csproj", "{88F90D4A-2BB1-43B2-A3FE-9007CBE94F4B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,10 +14,6 @@ Global
 		{B17C2878-C101-4D77-BF5C-C0E4E6635987}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B17C2878-C101-4D77-BF5C-C0E4E6635987}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B17C2878-C101-4D77-BF5C-C0E4E6635987}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88F90D4A-2BB1-43B2-A3FE-9007CBE94F4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88F90D4A-2BB1-43B2-A3FE-9007CBE94F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88F90D4A-2BB1-43B2-A3FE-9007CBE94F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88F90D4A-2BB1-43B2-A3FE-9007CBE94F4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
