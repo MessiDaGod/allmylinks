@@ -8,6 +8,7 @@
     <ReleaseVersion>1.0</ReleaseVersion>
     <PublishTrimmed>false</PublishTrimmed>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>    
     <GHPages>true</GHPages>
   </PropertyGroup>
   <PropertyGroup>
