@@ -76,35 +76,6 @@
     var CandlestickPage = document.getElementById("candles");
     var isCandlestickActive = (CandlestickPage && !CandlestickPage.classList.contains("hide")) ? true : false;
 
-    // const doIsCandlesActive = async () => {
-
-    //     var isactive = false;
-    //     var candlesdiv = document.getElementById("candles");
-    //     if (candlesdiv) {
-    //         if (candlesdiv.classList.contains("hide"))
-    //             return false;
-    //         else {
-    //             return true;
-    //         }
-    //     }
-    // }
-
-    //   const isCandlesActive = async () => {
-
-    //     const isactive = await doIsCandlesActive();
-
-    //     if (isactive) {
-    //       return true;
-    //     }
-    //     else {
-    //         return false;
-    //     }
-    //   }
-
-    // await isCandlesActive();
-
-    // var child = [];
-
     window.AML = {
         getUserAgent: async function() {
             return navigator.userAgent;
