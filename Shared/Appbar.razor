@@ -31,10 +31,14 @@
         </NavLink>
         <MudButton id="showallmylinks" @onclick="ShowAllMyLinks" Color="Color.Inherit" Variant="Variant.Text" Class="@String.Concat(GetActiveClass(DocsBasePage.AllMyLinks), " active")">All My Links</MudButton>
         <MudButton id="showisitchristmas" @onclick="ShowXmas" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.IsItChristmas)">Is It Christmas?</MudButton>
+@if (Platform != "iPhone" || Platform != "Android")
+{
         <MudButton id="showsql" @onclick="ShowSql" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.SQL)">SQL</MudButton>
         <MudButton id="showcandles" @onclick="ShowCandles" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.SQL)">Candlestick</MudButton>
         <MudSpacer/>
-        @if (DisplaySearchBar)
+}
+
+@if (DisplaySearchBar)
     {
             <MudAutocomplete AutoFocus="true" @ref="_searchAutocomplete" T="ApiLinkServiceEntry" Placeholder="Search" SearchFunc="Search" Variant="Variant.Outlined" ValueChanged="OnSearchResult" Class="docs-search-bar mx-4" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search">
                 <ItemTemplate Context="result">
@@ -89,6 +93,42 @@
     }
 </style>
 @code {
+
+    private string UserAgent { get; set; } = string.Empty;
+    public string Platform { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserAgent = await Js.InvokeAsync<string>("AML.getUserAgent");
+        allmylinks.Models.OperatingSystem OS = new();
+        string pattern = @"(Mac OS X)";
+        RegexOptions options = RegexOptions.Multiline;
+
+        foreach (Match m in Regex.Matches(UserAgent, pattern, options))
+        {
+            OS.Platform = m.Value;
+            Platform = OS.Platform;
+        }
+        pattern = @"(Windows)";
+        foreach (Match m in Regex.Matches(UserAgent, pattern, options))
+        {
+            OS.Platform = m.Value;
+            Platform = OS.Platform;
+        }
+        pattern = @"(iPhone)";
+        foreach (Match m in Regex.Matches(UserAgent, pattern, options))
+        {
+            OS.Platform = m.Value;
+            Platform = OS.Platform;
+        }
+        pattern = @"(Android)";
+        foreach (Match m in Regex.Matches(UserAgent, pattern, options))
+        {
+            OS.Platform = m.Value;
+            Platform = OS.Platform;
+        }
+        await base.OnInitializedAsync();
+    }
 
     private static List<string> MyPages { get; set; } = new();
 

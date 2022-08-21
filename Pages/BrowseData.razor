@@ -75,7 +75,7 @@
             <small id="tableQueryDetails" class="ml-2"></small>
             <allmylinks.Pages.SqlFormat />
             <hr class="invisible-divider">
-            <MonacoEditor @ref="_editor"  Id="codeEditor" ConstructionOptions="EditorConstructionOptions" />
+            <MonacoEditor @ref="_editor" Id="codeEditor" ConstructionOptions="EditorConstructionOptions" />
             <MonacoEditor Id="inputString" ConstructionOptions="Blank"></MonacoEditor>
             <div id="helloworld"></div>
             <div id="tableQueryRecords" class="decorationsOverviewRuler"></div>
@@ -177,7 +177,6 @@
         if (firstRender)
         {
             await Task.Run(() => isLoading = false);
-            @* module0 = await Js.InvokeAsync<IJSObjectReference>("import", "./JSLibReference/Debug/PoorMansTSqlFormatterJS.js"); *@
             await Init();
             await InvokeAsync(StateHasChanged);
             return;
@@ -208,13 +207,13 @@
         {
             AutomaticLayout = true,
             Language = "sql",
-            Value = FirstRender ? @" SELECT tr.hMy Id , tr.hParent2 BatchId , tr.hPerson PersonId , tr.uRef InvoiceNumber , 0 OwnerId, tr.itype2 DisplayType, tr.hOffsetAcct
+            Value = @" SELECT tr.hMy Id , tr.hParent2 BatchId , tr.hPerson PersonId , tr.uRef InvoiceNumber , 0 OwnerId, tr.itype2 DisplayType, tr.hOffsetAcct
 CashAccountId , tr.hAccrualAcct ApAccountId , tr.uPostDate PostMonth , tr.dtvatreported VatReturnMonth,  tr.sDateoccurred InvoiceDate ,
 tr.sOtherDate1 DueDate , tr.sOtherDate2 DiscountDate ,   tr.fDiscountPercent DiscountPercent , tr.sDiscountAmt DiscountAmount ,   tr.hFunding
 FundingEntityId, tr.hCompany CompanyId,  tr.sUserDefined1 UserDefinedFields0, tr.sUserDefined2 UserDefinedFields1 , tr.sTranFields1
 UserDefinedFields2 ,   tr.sTranFields2 UserDefinedFields3 , tr.sTranFields3 UserDefinedFields4 , tr.sTranFields4 UserDefinedFields5 ,   tr.sTranFields5 UserDefinedFields6 , tr.sTranFields6 UserDefinedFields7 , tr.sTranFields7 UserDefinedFields8 ,   tr.sTranFields8 UserDefinedFields9 , tr.bMemoFromInv GetCheckMemoFromInvoice ,   tr.hParent1 ReverserId , tr.iType Type , tr.iType1 Type1 , tr.hProp PropertyId , tr.bOpen IsUnpaid ,   tr.sTotalAmount Amount , tr.sTotalAmount BaseAmount , tr.sAmountPaid AmountPaid , tr.sOtherDate3 ManualCheckPostMonth ,   tr.iPostWarn ManualCheckNumber , tr.dtLastPost ManualCheckDate , tr.h3Party ForBenefitOf ,   tr.sNotes Notes , tr.VOID Void , tr.CONSOLIDATECHECK ConsoloidatePayments , tr.CREDIT IsCreditMemo ,   tr.ADJUSTMENT IsAdjustment , tr.VOIDED Voided , tr.VOIDER Voider , tr.HOLDPAYMENT HoldPayments ,   tr.sOtherDate4 ImplicitPostMonthDate , tr.hParent3 MultiOffset , tr.RETENTION IsRetention ,   tr.RETPAY IsRetPay , tr.bNon1099 ExemptFrom1099 , tr.sDiscountAmt RetentionAmount ,   tr.bACH IsAch , tr.dtFrom FromDate , tr.dtTo ToDate , tr.hBaseCurrency BaseCurrencyId ,   tr.hTranCurrency
 TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate ,   tr.sTranAmount TranAmount , tr.sInvNum SequenceNumber , tr.hUsercreatedby UserCreatedById ,   tr.hUsermodifiedby UserLastModifiedById , tr.sDateCreated DateCreated , tr.sDateModified DateLastModified ,   tr.sModuleCreatedBy ModuleCreatedBy , tr.sModuleModifiedBy ModuleModifiedBy ,   tr.iSubType TranModuleType , tr.dtStamp DateTimeStamp,     tr.hTranCurrency TranCurrencyId, tr.hBaseCurrency BaseCurrencyId,  case when tr.sTranFields1 = '-1' then '-1' else '0' end VatInvoiceReceived,  tr.sTranFields2 VatInvoiceNumber, tr.dtTaxPoint TaxPointDate, tr.sMemo ExpenseType, tr.bReceiptDirecttoOwner IsPaidbyOwner,  tri.PREPAID IsPrepaid,tri.sGAcctAmount GAcctAmount  ,isnull(PHATrans.sPmtType,'') PHAType  ,tr.hRemittanceVendor RemittanceVendorId
- , case when isnull(tr.bACH,0) = -1 and isnull(tr.CashReceipt,0) = 0 then 1 else isnull(tr.CashReceipt,0) end PaymentMethod  FROM trans tr  LEFT JOIN trans_int tri on tri.htran = tr.hmy left join H8PRHTrans PHATrans on (PHATrans.hTran = tr.hmy)  WHERE tr.hMy = 300330533" : MyText,
+ , case when isnull(tr.bACH,0) = -1 and isnull(tr.CashReceipt,0) = 0 then 1 else isnull(tr.CashReceipt,0) end PaymentMethod  FROM trans tr  LEFT JOIN trans_int tri on tri.htran = tr.hmy left join H8PRHTrans PHATrans on (PHATrans.hTran = tr.hmy)  WHERE tr.hMy = 300330533",
         };
     }
 

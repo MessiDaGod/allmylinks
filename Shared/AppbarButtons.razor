@@ -74,8 +74,6 @@
             OS.Platform = m.Value;
             Platform = OS.Platform;
         }
-
-        await Js.InvokeVoidAsync("AML.logit", UserAgent);
         await base.OnInitializedAsync();
     }
 }
