@@ -367,7 +367,6 @@ TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate 
         var model = new Model(MyText);
         await Js.InvokeVoidAsync("AML.logit", "ComputeState!!");
         await _editor.SetValue(MyText);
-        await Js.InvokeVoidAsync("AML.logit", MyText);
         return model;
     }
 
@@ -376,8 +375,6 @@ TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate 
         var (_, ce) = await _uiCommandRunner.Run(new SqlService.PostCommand(MyText, _session));
         if (ce != null)
             return;
-        @* await Task.Run(async () => MostRecentPrice = LatestStick.ToArray()[LatestStick.ToArray().Length - 1].Close.ToString()); *@
-
         await Task.Delay(2000).ConfigureAwait(false);
         await MutableState.Recompute();
         MutableState.Invalidate();
