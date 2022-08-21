@@ -1,15 +1,13 @@
 @inject IJSRuntime JS;
 @using Microsoft.JSInterop;
-@using Flurl.Http;
-@using System.Text.RegularExpressions;
 
-<iframe id="sqlformat" title="Sql Formatting" frameborder="0" scrolling="no" src="https://messidagod.github.io/allmylinks/DemoPage.html" width="70%" height="60%"></iframe>
 
+<iframe id="sqlformat" src="https://messidagod.github.io/allmylinks/DemoPage.html" width="70%" height="60%"></iframe>
 
 @code {
 
     bool ready;
-    private IJSObjectReference module0;
+
     private static readonly HttpClient http = new();
     // 1
     protected override async Task OnInitializedAsync()

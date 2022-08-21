@@ -29,7 +29,7 @@
             <button onclick="AML.colorizes" class="nav-link active" id="browsedata-tab" data-bs-toggle="tab" data-bs-target="#browsedata" type="button" role="tab" aria-controls="browsedata" aria-selected="true"><span class="material-symbols-outlined">search</span>Browse Data</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="queryeditor-tab" data-bs-toggle="tab" data-bs-target="#queryeditor" type="button" role="tab" aria-controls="queryeditor" aria-selected="false">❮⁄❯ Query Editor</button>
+            <button class="nav-link" id="queryeditor-tab" data-bs-toggle="tab" data-bs-target="#queryeditor" type="button" role="tab" aria-controls="queryeditor" aria-selected="false" @onclick=QueryEditor>❮⁄❯ Query Editor</button>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -76,7 +76,6 @@
             <allmylinks.Pages.SqlFormat />
             <hr class="invisible-divider">
             <MonacoEditor @ref="_editor" Id="codeEditor" ConstructionOptions="EditorConstructionOptions" />
-            <MonacoEditor Id="inputString" ConstructionOptions="Blank"></MonacoEditor>
             <div id="helloworld"></div>
             <div id="tableQueryRecords" class="decorationsOverviewRuler"></div>
         </div>
@@ -134,6 +133,9 @@
         }
     }
 
+    private async Task QueryEditor() {
+        await Js.InvokeVoidAsync("Sql.queryEditor");
+    }
     private (string Name, string DisplayName)[] AuthSchemas { get; set; } = Array.Empty<(string, string)>();
     private bool showCallAlert = true;
     private bool showLeaveAlert = false;

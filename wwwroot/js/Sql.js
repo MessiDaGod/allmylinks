@@ -661,10 +661,14 @@
                 }
             // });
         },
+        queryEditor: function() {
+            var input = document.getElementById("inputString");
+            if (input)
+            input.disabled = false;
+        },
         init: async function() {
 
             if (!isSqlInit) {
-                console.log('Sql.init()');
                 var runQueryBtn;
                 var exportAsJSON;
                 var exportQueryAsJSON;
@@ -747,40 +751,6 @@
                     exportEditorQuery = document.getElementById('exportEditorQuery');
 
                 });
-
-                // ================================== Query Editor Tab ===========================
-
-                // codeEditor = document.getElementById('codeEditor');
-                // if (codeEditor) {
-                //     //var lineCounter = document.getElementById('lineCounter');
-
-                //     var _buffer;
-
-                //     var onFirstLoad = true;
-                //     var lineCountCache = 0;
-                //     var outArrCache = new Array();
-
-                //     if (codeEditor != null && codeEditor != undefined) {
-
-                //         codeEditor.addEventListener('keydown', (e) => {
-                //             var {
-                //                 keyCode
-                //             } = e;
-                //             var {
-                //                 value,
-                //                 selectionStart,
-                //                 selectionEnd
-                //             } = codeEditor;
-                //             if (keyCode === 9) {
-                //                 // TAB = 9
-                //                 e.preventDefault();
-                //                 codeEditor.value = value.slice(0, selectionStart) + '\t' + value.slice(selectionEnd);
-                //                 codeEditor.setSelectionRange(selectionStart + 2, selectionStart + 1)
-                //             }
-                //         });
-                //         codeEditor.value = sampleQueryStmt;
-                //     }
-                // }
 
                 if (upload != null && upload != undefined) {
 

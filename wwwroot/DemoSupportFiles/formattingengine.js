@@ -43,21 +43,21 @@ var JsFormattingEngine = function () {
   var _WorkerService = function () {
     var Initialize = function () {
       //throw "Test without workers";
-      
+
       worker = new Worker(workerURL);
-      
+
       worker.addEventListener('message', WorkerMessageHandler, false);
-      
+
       worker.postMessage({
         commandToRun: "init",
         urlPrefix: scriptPrefix,
         scriptURLs: scriptURLs
       });
     }
-    
+
     var WorkerMessageHandler = function (e) {
       var data = e.data;
-      
+
       switch (data.status) {
         case 'initialized':
           effectiveService = _WorkerService;
@@ -74,7 +74,7 @@ var JsFormattingEngine = function () {
     var RequestFormatting = function (initializationData) {
       worker.postMessage({ commandToRun: "format", paramLength: initializationData.paramLength, options: initializationData.options, inputSql: initializationData.inputSql });
     }
-    
+
     return {
       Initialize: Initialize,
       RequestFormatting: RequestFormatting
@@ -95,20 +95,20 @@ var JsFormattingEngine = function () {
       var scriptElement = document.createElement("script")
       scriptElement.type = "text/javascript";
       scriptElement.src = url;
-    
+
 
       var successWrapperHandler = function() {
         scriptLoadCompleted = true;
         successHandler();
       }
-    
+
       var IEWrapperHandler = function() {
         if (scriptElement.readyState == "loaded" || scriptElement.readyState == "complete") {
           scriptElement.onreadystatechange = null;
           successWrapperHandler();
         }
       }
-    
+
       if (scriptElement.readyState)
         scriptElement.onreadystatechange = IEWrapperHandler;
       else
@@ -118,7 +118,7 @@ var JsFormattingEngine = function () {
         if (!scriptLoadCompleted)
           failureHandler();
       }
-    
+
       document.getElementsByTagName("head")[0].appendChild(scriptElement);
 
       //default to 10 seconds for failure delay
@@ -141,11 +141,11 @@ var JsFormattingEngine = function () {
           initializationCompletionHandler();
         }
       }
-    
+
       var scriptLoadTimedOutHandler = function() {
         generalErrorHandler("Loading of formatting script timed out: " + scriptURLs[startIndex]);
       }
-    
+
       _loadScript(scriptURLs[startIndex], scriptLoadedHandler, scriptLoadTimedOutHandler);
     }
 
