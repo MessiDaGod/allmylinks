@@ -8,12 +8,11 @@
     <link href="DemoSupportFiles/minimal.css" rel="stylesheet">
     <script src="DemoSupportFiles/jquery-1.5.2.min.js"></script>
     <script src="DemoSupportFiles/formattingengine.js"></script>
-    <script src="DemoSupportFiles/formattingworker.js"></script>
 
     <script>
         var PageService = function () {
-
             var EnableUI = function () {
+                $("#inputString").removeAttr("disabled");
                 $("#inputString").change(inputChanged);
                 $("#inputString").blur(inputChanged);
             }
@@ -74,8 +73,8 @@
     </script>
     <script>
         $(function () {
-            var minflag = true;
-            var debugflag = true;
+            var minflag = false;
+            var debugflag = false;
 
             var scriptURLList = [
                 'JSLibReference/' + (debugflag ? "Debug/" : "Release/") + 'PoorMansTSqlFormatterJS.' + (minflag ? "min." : "") + 'js',
@@ -105,13 +104,13 @@
         <nav class="float-right">
             <ul>
                 <li><label><input type="checkbox" name="EnableFormatAsYouGo" id="formatAsYouGo" checked/> Format as-you-go</label></li>
-                <li class="hide"><label><input type="checkbox" name="EnableInPlaceFormat" id="inPlaceFormat" disabled="disabled" /> In-place format</label></li>
+                <li><label><input type="checkbox" name="EnableInPlaceFormat" id="inPlaceFormat" disabled="disabled" /> In-place format</label></li>
             </ul>
         </nav>
     </header>
     <div class="row">
         <div class="col-6">
-            <textarea name="inputString" id="inputString" style="width: 100%; height: 80vh; padding: 2px; border: 1px solid;"></textarea>
+            <textarea name="inputString" id="inputString" style="width: 100%; height: 80vh; padding: 2px; border: 1px solid; " disabled="disabled"></textarea>
         </div>
         <div class="col-6">
             <div id="outputDiv" class="hide" style="height:80vh; padding: 2px; border: 1px solid; overflow: scroll;">

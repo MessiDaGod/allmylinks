@@ -661,7 +661,7 @@
                 }
             // });
         },
-        queryEditor: function() {
+        enableQueryEditor: function() {
             var input = document.getElementById("inputString");
             if (input)
             input.disabled = false;

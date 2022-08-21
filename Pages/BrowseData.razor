@@ -68,10 +68,8 @@
             </button>
             <button id="formatsql" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick=SetValue>Format SQL<span class="material-symbols-outlined">database</span>
             </button>
-            <button id="toggleHelloworld" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.toggleHelloWorld()">Toggle Hello World<span class="material-symbols-outlined">database</span></button>
+
             <button id="clear" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.clear()">Clear<span class="material-symbols-outlined">database</span></button>
-            <small id="tableQueryDetails" class="ml-2"></small>
-            <button id="toggleFormat" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.toggleFormat()">Toggle DemoPage.html<span class="material-symbols-outlined">database</span></button>
             <small id="tableQueryDetails" class="ml-2"></small>
             <allmylinks.Pages.SqlFormat />
             <hr class="invisible-divider">
@@ -134,7 +132,7 @@
     }
 
     private async Task QueryEditor() {
-        await Js.InvokeVoidAsync("Sql.queryEditor");
+        await Js.InvokeVoidAsync("Sql.enableQueryEditor");
     }
     private (string Name, string DisplayName)[] AuthSchemas { get; set; } = Array.Empty<(string, string)>();
     private bool showCallAlert = true;
