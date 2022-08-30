@@ -206,17 +206,6 @@
         };
     }
 
-
-    private StandaloneEditorConstructionOptions Blank(MonacoEditor editor)
-    {
-        return new StandaloneEditorConstructionOptions
-        {
-            AutomaticLayout = true,
-            Language = "sql",
-            Value = "",
-        };
-    }
-
     async Task LoadGrid(CancellationToken ct = default)
     {
         bool isBrowseDataActive = false;

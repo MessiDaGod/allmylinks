@@ -94,7 +94,7 @@
             var inputString = iDocument.querySelectorAll("#inputString");
             if (inputString.length > 0) {
                 result = AML.getMonacoText();
-                inputString[0].textContent = result.replace(new RegExp(String.fromCharCode(160),"g")," ");
+                inputString[0].textContent = result.replace(new RegExp(String.fromCharCode(160),"g")," ").replace(new RegExp(String.fromCharCode(183),"g")," ");
                 // inputString[0].innerText = result;
                 // inputString[0].innerHTML = result;
             }
@@ -107,9 +107,12 @@
         },
         getMonacoText: function() {
             let element = document.getElementsByClassName("view-line");
-            if (element) {
-                let myText = element[0].children[0].innerText;
-                return myText;
+            var result = "";
+            if (element.length > 0) {
+                for (let i = 0; i < element.length; i++) {
+                    result += element[i].textContent;
+                }
+                return result;
             }
         },
         getFormattedText: function() {
