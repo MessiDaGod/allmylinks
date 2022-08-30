@@ -85,6 +85,32 @@
     window.location.search = “?s=flexbox”
     */
     window.AML = {
+        setInputStringValue: function() {
+            var input = document.getElementById("inputstring");
+            input.value = "";
+        },
+        getFormattedText: function() {
+            var text = "";
+            var iframe = document.getElementById("sqlformat");
+            const iWindow = iframe.contentWindow;
+            const iDocument = iWindow.document;
+
+            if (iframe) {
+                if (iDocument.querySelector("pre[class='SQLCode']").childNodes.length > 0) {
+                    for (let index = 0; index < iDocument.querySelector("pre[class='SQLCode']").childNodes.length; index++) {
+                        var node = iDocument.querySelector("pre[class='SQLCode']").childNodes[index].textContent;
+                        if (node !== undefined | text !== "." | text !== ",")
+                        text += node;
+                    }
+                }
+            }
+
+            let code = document.getElementById("codeEditor");
+            if (code) {
+                code.value = text;
+            }
+            return text;
+        },
         getUserAgent: async function() {
             return navigator.userAgent;
         },
