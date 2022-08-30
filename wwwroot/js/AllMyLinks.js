@@ -110,7 +110,7 @@
             var result = "";
             if (element.length > 0) {
                 for (let i = 0; i < element.length; i++) {
-                    result += element[i].textContent;
+                    result += element[i].textContent.trim();
                 }
                 return result;
             }
