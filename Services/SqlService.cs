@@ -8,15 +8,17 @@ namespace allmylinks.Services;
 public class SqlService : ISqlService
 {
 
-    public record PostCommand(string price, Session Session) : ISessionCommand<Price>
+    public record PostCommand(string text, Session Session) : ISessionCommand<QueryEditor>
     {
         // Default constructor is needed for JSON deserialization
         public PostCommand() : this(null!, Session.Null) { }
     }
 
-    public async Task<string> Get(string text)
+    public virtual async Task<string> Get(string text)
     {
-        return text;
+        string result = string.Empty;
+        await Task.Run(() => result = text).ConfigureAwait(false);
+        return result;
     }
 }
 

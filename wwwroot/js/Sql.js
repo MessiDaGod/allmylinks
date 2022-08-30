@@ -316,7 +316,7 @@
                         pageX = undefined;
                         nxtColWidth = undefined;
                         curColWidth = undefined
-                    });
+                    }, {once : true});
                 }
 
                 function createDiv(height) {

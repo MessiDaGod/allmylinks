@@ -22,7 +22,6 @@
             }
 
             var inputChanged = function () {
-                SetOutputPanelContent("Getting formatted SQL, please wait...");
                 DoFormat();
             }
 
@@ -46,7 +45,7 @@
 
             var CheckSettings = function () {
                 if ($("#formatAsYouGo:checked").val())
-                    $('#inputString').keyup(DoFormat)
+                    $('#inputString').change(DoFormat)
                 else
                     //untested...
                     $("#inputString").keyup(null);
@@ -88,7 +87,9 @@
             "js/" + 'PoorMansTSqlFormatterJS.' + (minflag ? "min." : "") + 'js',
                 'js/formattingmapper.js'
             ];
-
+            $("#formatAsYouGo").change(function() {
+                DoFormat();
+            });
             $("#formatAsYouGo").change(PageService.CheckSettings);
             PageService.CheckSettings();
             var formatInPlace = false;
@@ -109,7 +110,7 @@
     <header>
         <nav class="float-right">
             <ul>
-                <li><label><input type="checkbox" name="EnableFormatAsYouGo" id="formatAsYouGo" /> Format as-you-go</label></li>
+                <li><label><input type="checkbox" name="EnableFormatAsYouGo" id="formatAsYouGo" checked/> Format as-you-go</label></li>
                 <li hidden><label><input type="checkbox" name="EnableInPlaceFormat" id="inPlaceFormat" disabled="disabled"/> In-place format</label></li>
             </ul>
         </nav>
