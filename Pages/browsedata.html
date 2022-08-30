@@ -101,7 +101,7 @@
         min-width: auto !important;
     }
     #outputDiv, #codeEditor {
-        height:70vh; padding: 2px; border: 1px solid; overflow: scroll;
+        height:60vh; padding: 2px; border: 1px solid; overflow: scroll;
     }
 </style>
 
@@ -182,6 +182,7 @@
             return;
         }
         FirstRender = false;
+        await Js.InvokeVoidAsync("AML.setInputStringValue");
         return;
     }
 
@@ -203,17 +204,6 @@
             AutomaticLayout = true,
             Language = "sql",
             Value = @"SELECT tr.hMy Id , tr.hParent2 BatchId , tr.hPerson PersonId , tr.uRef InvoiceNumber, tr.itype2 DisplayType, tr.hOffsetAcct CashAccountId , tr.hAccrualAcct ApAccountId, tr.uPostDate PostMonth,isnull(PHATrans.sPmtType,'') PHAType  ,tr.hRemittanceVendor RemittanceVendorId, case when isnull(tr.bACH,0) = -1 and isnull(tr.CashReceipt,0) = 0 then 1 else isnull(tr.CashReceipt,0) end PaymentMethod  FROM trans tr  LEFT JOIN trans_int tri on tri.htran = tr.hmy left join H8PRHTrans PHATrans on (PHATrans.hTran = tr.hmy)  WHERE tr.hMy = 300330533",
-        };
-    }
-
-
-    private StandaloneEditorConstructionOptions Blank(MonacoEditor editor)
-    {
-        return new StandaloneEditorConstructionOptions
-        {
-            AutomaticLayout = true,
-            Language = "sql",
-            Value = "",
         };
     }
 
@@ -305,6 +295,22 @@
         showLeaveAlert = true;
     }
 
+    [JSInvokable]
+    public static async Task LoadTables(string json)
+    {
+        @* var prices = JsonConvert.DeserializeObject<Prices[]>(json);
+            for (int j = 0; j < prices.Length; j++)
+            {
+            await Task.Run(() => Console.WriteLine(prices[j].ToString()));
+            } *@
+    }
+
+    [JSInvokable]
+    async Task UpdateQueryColor()
+    {
+        await Js.InvokeVoidAsync("AML.colorize");
+    }
+
     void OnCollapse(RadzenSplitterEventArgs args)
     {
     }
@@ -332,33 +338,32 @@
 
     private async Task SetValue()
     {
-        MyText = await Js.InvokeAsync<string>("Sql.getFormattedText");
+        MyText = await Js.InvokeAsync<string>("AML.setInputStringValue");
+        await _editor.SetValue(MyText);
+        await Js.InvokeVoidAsync("AML.logit", "Formatted Sql!");
         await Post();
-    }
-
-    private async Task CopyMonacoToInput()
-    {
-
     }
 
     public string MyText { get; private set; }
 
     protected override async Task<Model> ComputeState(CancellationToken cancellationToken)
     {
+        MyText = await Js.InvokeAsync<string>("AML.setInputStringValue");
         var model = new Model(MyText);
+        await _editor.SetValue(MyText);
+        await Post();
         await Js.InvokeVoidAsync("AML.logit", "Formatted through ComputeState.");
         return model;
     }
 
     private async Task Post()
     {
-        await _editor.SetValue(MyText);
         var (_, ce) = await _uiCommandRunner.Run(new SqlService.PostCommand(MyText, _session));
         if (ce == null)
             return;
 
-        await Js.InvokeVoidAsync("AML.logit", "Invalidating...");
-        @* await MutableState.Recompute(); *@
+        await Task.Delay(2000).ConfigureAwait(false);
+        await MutableState.Recompute();
         MutableState.Invalidate();
     }
 }

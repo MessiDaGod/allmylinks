@@ -85,25 +85,57 @@
     window.location.search = “?s=flexbox”
     */
     window.AML = {
-        setInputStringValue: function() {
-            var input = document.getElementById("inputstring");
-            if (input)
-            input.value = AML.getMonacoText();
-        },
-        getMonacoText: function() {
-            let element = document.getElementsByClassName("view-line");
-            if (element) {
-                let myText = element[0].children[0].innerText;
-                return myText;
+        setInputStringValue: async function() {
+            var result = "";
+            var iframe = document.getElementById("sqlformat");
+            var iWindow = iframe.contentWindow;
+            var iDocument = iWindow.document;
+            if (iDocument)
+            var inputString = iDocument.querySelectorAll("#inputString");
+            if (inputString.length > 0) {
+                result = AML.getMonacoText();
+                inputString[0].textContent = result;
+                inputString[0].innerText = result;
+                inputString[0].innerHTML = result;
             }
+            return new Promise(resolve=>{
+                    resolve(true);
+                }
+            );
         },
+        // getFormattedText: function() {
+        //     var text = "";
+        //     var iframe = document.getElementById("sqlformat");
+        //     var iWindow = iframe.contentWindow;
+        //     var iDocument = iWindow.document;
+        //     var nodes;
+        //     if (iframe) {
+        //         nodes = iDocument.querySelector("pre[class='SQLCode']");
+        //         if (nodes)
+        //         if (iDocument.querySelector("pre[class='SQLCode']").childNodes.length > 0) {
+        //             for (let index = 0; index < iDocument.querySelector("pre[class='SQLCode']").childNodes.length; index++) {
+        //                 var node = iDocument.querySelector("pre[class='SQLCode']").childNodes[index].textContent;
+        //                 if (node !== undefined | text !== "." | text !== ",")
+        //                 text += node;
+        //             }
+        //         }
+        //     }
+
+        //     let code = document.getElementById("codeEditor");
+        //     if (code && text !== "") {
+        //         code.value = text;
+        //     }
+        //     return text;
+        // },
         getFormattedText: function() {
             var text = "";
             var iframe = document.getElementById("sqlformat");
-            const iWindow = iframe.contentWindow;
-            const iDocument = iWindow.document;
-
-            if (iframe) {
+            var iWindow = iframe.contentWindow;
+            var iDocument = iWindow.document;
+            var nodes;
+            if (iDocument) {
+                nodes = iDocument.querySelector("pre[class='SQLCode']");
+                if (nodes)
                 if (iDocument.querySelector("pre[class='SQLCode']").childNodes.length > 0) {
                     for (let index = 0; index < iDocument.querySelector("pre[class='SQLCode']").childNodes.length; index++) {
                         var node = iDocument.querySelector("pre[class='SQLCode']").childNodes[index].textContent;
@@ -118,6 +150,13 @@
                 code.value = text;
             }
             return text;
+        },
+        getMonacoText: function() {
+            let element = document.getElementsByClassName("view-line");
+            if (element) {
+                let myText = element[0].children[0].innerText;
+                return myText;
+            }
         },
         getUserAgent: async function() {
             return navigator.userAgent;
