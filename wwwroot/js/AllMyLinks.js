@@ -86,9 +86,24 @@
     */
     window.AML = {
         setInputStringValue: function() {
-            var input = document.getElementById("inputstring");
-            if (input)
-            input.value = AML.getMonacoText();
+            var result = "";
+            var iframe = document.getElementById("sqlformat");
+            var iWindow = iframe.contentWindow;
+            var iDocument = iWindow.document;
+            if (iDocument)
+            var inputString = iDocument.querySelectorAll("#inputString");
+            if (inputString.length > 0) {
+                result = AML.getMonacoText();
+                inputString[0].textContent = result.replace(new RegExp(String.fromCharCode(160),"g")," ");
+                // inputString[0].innerText = result;
+                // inputString[0].innerHTML = result;
+            }
+            return result;
+        },
+        setInputAsync: async function() {
+            setInputStringValue().then(x => {
+                return x;
+            })
         },
         getMonacoText: function() {
             let element = document.getElementsByClassName("view-line");
@@ -102,8 +117,10 @@
             var iframe = document.getElementById("sqlformat");
             const iWindow = iframe.contentWindow;
             const iDocument = iWindow.document;
-
-            if (iframe) {
+            var nodes;
+            if (iDocument) {
+                nodes = iDocument.querySelector("pre[class='SQLCode']");
+                if (nodes)
                 if (iDocument.querySelector("pre[class='SQLCode']").childNodes.length > 0) {
                     for (let index = 0; index < iDocument.querySelector("pre[class='SQLCode']").childNodes.length; index++) {
                         var node = iDocument.querySelector("pre[class='SQLCode']").childNodes[index].textContent;

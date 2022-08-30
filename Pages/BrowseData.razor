@@ -332,13 +332,16 @@
 
     private async Task SetValue()
     {
-        MyText = await Js.InvokeAsync<string>("Sql.getFormattedText");
+        await CopyMonacoToInput();
+        MyText = await Js.InvokeAsync<string>("AML.getFormattedText");
         await Post();
     }
 
     private async Task CopyMonacoToInput()
     {
-
+        await Js.InvokeVoidAsync("AML.logit", "Copying Monaco to Input: " + await _editor.GetValue());
+        await Js.InvokeAsync<string>("AML.setInputStringValue", await _editor.GetValue());
+        await Task.Run(() => MutableState.Invalidate()).ConfigureAwait(false);
     }
 
     public string MyText { get; private set; }
