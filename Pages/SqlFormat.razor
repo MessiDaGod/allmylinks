@@ -7,11 +7,12 @@
 @code {
 
     bool ready;
-
+    string Url { get; set; } = string.Empty;
     private static readonly HttpClient http = new();
     // 1
     protected override async Task OnInitializedAsync()
     {
+        Url = await JS.InvokeAsync<string>("AML.geturl");
         await base.OnInitializedAsync();
     }
 

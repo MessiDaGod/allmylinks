@@ -71,26 +71,14 @@
     var staticTbls = [];
     var tblcnt = 0;
     var lastClicked = [];
-    var errorDisplay;
     var exportQueryAsJSON;
     var exportAsJSON;
     var _buffer;
     var exportEditorQuery;
     var Json;
     var isSqlInit = false;
-    // var Sql = {};
 
-    // var dbFile = "https://localhost:7199/main.db";
-    // const xhr = new XMLHttpRequest();
-    // // For example: https://github.com/lerocha/chinook-database/raw/master/ChinookDatabase/DataSources/Chinook_Sqlite.sqlite
-    // xhr.open('GET', dbFile, true);
-    // xhr.responseType = 'arraybuffer';
 
-    // xhr.onload = e => {
-    //   let uInt8Array = new Uint8Array(xhr.response);
-    //   db = new SQL.Database(uInt8Array);
-    // };
-    // xhr.send();
 
     window.Sql = {
         getFormattedText: function() {

@@ -23,20 +23,11 @@ function HandleError(errorMessage) {
   self.postMessage(result);
 }
 
-// let message = fetchMyTournament(message).then(function(result){return result;});
 function Startup(urlPrefix, scriptURLs) {
-  console.log("logging urlPrefix scriptURLs line 28 formattingworker.js");
-  console.log(urlPrefix);
-  console.log(scriptURLs);
-  try {
-    for(let i = 0, len = scriptURLs.length; i < len; i++) {
-      importScripts(urlPrefix + scriptURLs[i]);
-    }
+  //Some error handling might be nice...
+  for(var i = 0, len = scriptURLs.length; i < len; i++) {
+    importScripts(urlPrefix + scriptURLs[i]);
   }
-  catch (err) {
-    // ignore
-  }
-
 
   tokenizer = new PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer();
   parser = new PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser();

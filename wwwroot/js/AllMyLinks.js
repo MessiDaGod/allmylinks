@@ -80,6 +80,9 @@
         getUserAgent: async function() {
             return navigator.userAgent;
         },
+        geturl: function() {
+            return window.location.href;
+        },
         colorize: function() {
             var lines = document.querySelectorAll("[class^=mtk]");
             if (lines) {

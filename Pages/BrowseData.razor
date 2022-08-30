@@ -29,7 +29,7 @@
             <button onclick="AML.colorizes" class="nav-link active" id="browsedata-tab" data-bs-toggle="tab" data-bs-target="#browsedata" type="button" role="tab" aria-controls="browsedata" aria-selected="true"><span class="material-symbols-outlined">search</span>Browse Data</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="queryeditor-tab" data-bs-toggle="tab" data-bs-target="#queryeditor" type="button" role="tab" aria-controls="queryeditor" aria-selected="false" @onclick=QueryEditor>❮⁄❯ Query Editor</button>
+            <button class="nav-link" id="queryeditor-tab" data-bs-toggle="tab" data-bs-target="#queryeditor" type="button" role="tab" aria-controls="queryeditor" aria-selected="false">❮⁄❯ Query Editor</button>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -68,12 +68,14 @@
             </button>
             <button id="formatsql" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick=SetValue>Format SQL<span class="material-symbols-outlined">database</span>
             </button>
-
+            <button id="toggleHelloworld" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.toggleHelloWorld()">Toggle Hello World<span class="material-symbols-outlined">database</span></button>
             <button id="clear" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.clear()">Clear<span class="material-symbols-outlined">database</span></button>
             <small id="tableQueryDetails" class="ml-2"></small>
-            <allmylinks.Pages.SqlFormat />
+            <button id="toggleFormat" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.toggleFormat()">Toggle DemoPage.html<span class="material-symbols-outlined">database</span></button>
             <hr class="invisible-divider">
             <MonacoEditor @ref="_editor" Id="codeEditor" ConstructionOptions="EditorConstructionOptions" />
+            <allmylinks.Pages.SqlFormat />
+            <small id="tableQueryDetails" class="ml-2"></small>
             <div id="helloworld"></div>
             <div id="tableQueryRecords" class="decorationsOverviewRuler"></div>
         </div>
@@ -81,7 +83,7 @@
 </div>
 <style>
     .blue {
-    color: blue !important;
+        color: blue !important;
     }
     .tab-pane {
         overflow-y: scroll !important;
@@ -131,9 +133,6 @@
         }
     }
 
-    private async Task QueryEditor() {
-        await Js.InvokeVoidAsync("Sql.enableQueryEditor");
-    }
     private (string Name, string DisplayName)[] AuthSchemas { get; set; } = Array.Empty<(string, string)>();
     private bool showCallAlert = true;
     private bool showLeaveAlert = false;
@@ -170,6 +169,7 @@
     {
         staticJsRuntime = Js;
         jsObjectRef = DotNetObjectReference.Create(this);
+
         await base.OnInitializedAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -367,6 +367,7 @@ TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate 
         var model = new Model(MyText);
         await Js.InvokeVoidAsync("AML.logit", "ComputeState!!");
         await _editor.SetValue(MyText);
+        await Js.InvokeVoidAsync("AML.logit", MyText);
         return model;
     }
 
@@ -375,6 +376,8 @@ TranCurrencyId , tr.dExchRate ExchangeRate , tr.dtExchangeRate ExchangeRateDate 
         var (_, ce) = await _uiCommandRunner.Run(new SqlService.PostCommand(MyText, _session));
         if (ce != null)
             return;
+        @* await Task.Run(async () => MostRecentPrice = LatestStick.ToArray()[LatestStick.ToArray().Length - 1].Close.ToString()); *@
+
         await Task.Delay(2000).ConfigureAwait(false);
         await MutableState.Recompute();
         MutableState.Invalidate();
