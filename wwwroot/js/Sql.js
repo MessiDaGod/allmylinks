@@ -525,7 +525,13 @@
                     else
                         query += line.innerText + " ";
                 }
-                codeEditor.value = query;
+                let regex = /\/\*(.|\n)*?\*\//gm;
+                let subst = ``;
+
+                // The substituted value will be contained in the result variable
+                let result = query.replace(regex, subst);
+                query = result;
+                codeEditor.value = result;
             }
             runQueryBtn = document.getElementById('runQueryBtn');
 
