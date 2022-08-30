@@ -7,9 +7,9 @@
     <title>PoorMansTSqlFormatterJS Demo Harness</title>
     <meta name="description" content="This is a simple demo page for the PoorMansTSqlFormatterJS library - more complete site at http://poorsql.com/">
 
-    <link href="DemoSupportFiles/minimal.css" rel="stylesheet">
-    <script src="DemoSupportFiles/jquery-1.5.2.min.js"></script>
-    <script src="DemoSupportFiles/formattingengine.js"></script>
+    <link href="js/minimal.css" rel="stylesheet">
+    <script src="js/jquery-1.5.2.min.js"></script>
+    <script src="js/formattingengine.js"></script>
     <script src="js/AllMyLinks.js"></script>
 
     <script>
@@ -85,8 +85,8 @@
             var debugflag = true;
 
             var scriptURLList = [
-                'JSLibReference/' + (debugflag ? "Debug/" : "Release/") + 'PoorMansTSqlFormatterJS.' + (minflag ? "min." : "") + 'js',
-                'DemoSupportFiles/formattingmapper.js'
+            "js/" + 'PoorMansTSqlFormatterJS.' + (minflag ? "min." : "") + 'js',
+                'js/formattingmapper.js'
             ];
 
             $("#formatAsYouGo").change(PageService.CheckSettings);
@@ -95,7 +95,7 @@
 
             JsFormattingEngine.LoadEnvironment(
               document.location.href.split("?")[0].replace('DemoPage.html', ''),
-              'DemoSupportFiles/formattingworker.js',
+              'js/formattingworker.js',
               scriptURLList,
               function () { PageService.EnableUI(); },
               function (paramLength, outputString) { PageService.SetOutputPanelContent(outputString); },
