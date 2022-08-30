@@ -24,5 +24,4 @@ public partial class LandingLayout : LayoutComponentBase
     {
         _drawerOpen = !_drawerOpen;
     }
-
 }

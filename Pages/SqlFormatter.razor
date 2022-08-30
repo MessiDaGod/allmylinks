@@ -37,6 +37,27 @@
     #sqlformatter {
         padding-top: 70px;
     }
+    .blue {
+        color: blue !important;
+    }
+    .tab-pane {
+        overflow-y: scroll !important;
+        overflow-x: scroll !important;
+    }
+    #queryeditor, #myTabContent, .mud-layout {
+        overflow-y: scroll !important;
+        overflow-x: scroll !important;
+    }
+    #tableQueryRecords {
+        overflow-x: scroll !important;
+        overflow-y: scroll !important;
+    }
+    th {
+        min-width: auto !important;
+    }
+    #outputDiv, #codeEditor,  #outputDiv2, #codeEditor2 {
+        height:70vh; padding: 2px; border: 1px solid; overflow: scroll;
+    }
     .hide {
         display: none !important;
     }
@@ -44,19 +65,36 @@
 
 @code {
 
+    bool ready;
+    string Url { get; set; } = string.Empty;
+    private static readonly HttpClient http = new();
+    // 1
+    protected override async Task OnInitializedAsync()
+    {
+        staticJsRuntime = Js;
+        jsObjectRef = DotNetObjectReference.Create(this);
+        Url = await Js.InvokeAsync<string>("AML.geturl");
+        await Js.InvokeVoidAsync("AML.logit", "Url: " + Url);
+        await base.OnInitializedAsync();
+    }
+
+    private string Followers { get; set; } = "0";
+    // 2
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ready = true;
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
     private MonacoEditor _editor { get; set; }
     protected static IJSRuntime staticJsRuntime { get; set; }
     protected DotNetObjectReference<SqlFormatter> jsObjectRef { get; set; }
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
     private static string InitialValue { get { return @"SELECT tr.hMy Id , tr.hParent2 BatchId , tr.hPerson PersonId , tr.uRef InvoiceNumber, tr.itype2 DisplayType, tr.hOffsetAcct CashAccountId , tr.hAccrualAcct ApAccountId, tr.uPostDate PostMonth,isnull(PHATrans.sPmtType,'') PHAType  ,tr.hRemittanceVendor RemittanceVendorId, case when isnull(tr.bACH,0) = -1 and isnull(tr.CashReceipt,0) = 0 then 1 else isnull(tr.CashReceipt,0) end PaymentMethod  FROM trans tr  LEFT JOIN trans_int tri on tri.htran = tr.hmy left join H8PRHTrans PHATrans on (PHATrans.hTran = tr.hmy)  WHERE tr.hMy = 300330533"; } }
-
-    protected override async Task OnInitializedAsync()
-    {
-        staticJsRuntime = Js;
-        jsObjectRef = DotNetObjectReference.Create(this);
-
-        await base.OnInitializedAsync();
-    }
 
     private async Task Reset()
     {

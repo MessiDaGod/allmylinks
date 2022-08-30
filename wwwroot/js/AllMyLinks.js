@@ -75,6 +75,8 @@
     var Pages = ["showallmylinks", "showsql", "showisitchristmas", "showcandles", "showsqlformatter"];
     var CandlestickPage = document.getElementById("candles");
     var isCandlestickActive = (CandlestickPage && !CandlestickPage.classList.contains("hide")) ? true : false;
+    var TabHistory = [];
+    TabHistory.push(Pages[0]);
 
     /*
     https://css-tricks.com/example/index.html?s=flexbox
@@ -94,6 +96,8 @@
         setInputStringValue: function() {
             var result = "";
             var iframe = document.getElementById("sqlformat");
+            if (!iframe)
+                iframe = document.getElementById("sqlformatter");
             var iWindow = iframe.contentWindow;
             var iDocument = iWindow.document;
             if (iDocument)
@@ -143,7 +147,7 @@
             }
             return text;
         },
-        getUserAgent: async function() {
+        getUserAgent: function() {
             return navigator.userAgent;
         },
         geturl: function() {
@@ -159,19 +163,25 @@
             }
         },
         setActiveDiv: function(activeDivId) {
+            var lastTab = TabHistory[TabHistory.length - 1];
             document.getElementById("appbar").textContent = activeDivId;
-            AML.setAsActive(activeDivId);
-            if (activeDivId === "showcandles") {
+            var active = document.getElementById(activeDivId);
+            if (active && active.id == "showcandles") {
                 AML.plot();
             }
-        },
-        events: function() {
-            document.addEventListener("load", function() {
-                var button = document.querySelectorAll("button[id='showcandles']")[0];
-                button.addEventListener("click", function() {
-                    AML.setAsActive((button.id.replace('show', '')));
-                });
-            });
+            for (var i = 0; i < Pages.length; i++) {
+                if (Pages[i] === activeDivId)
+                    continue;
+
+                    let removeActive = document.getElementById(Pages[i]);
+                    removeActive.classList.remove("active");
+                    AML.hideById(removeActive.id.replace("show", ""));
+                }
+
+            if (!active.classList.contains("active"))
+                active.classList.add("active");
+            AML.showById(activeDivId.replace("show", ""));
+            TabHistory.push(activeDivId);
         },
         doIsCandlesActive: async function() {
             var isactive = false;
@@ -223,30 +233,6 @@
                 , 2000);
             }
             );
-        },
-        setAsActive: function(activeDivId) {
-            var el = document.getElementById(activeDivId);
-            if (el && el.id == "candles") {
-                if (activeDivId.includes("candles")) {
-                    AML.plot();
-                }
-            }
-            if (el) {
-                el.classList.add("active");
-                var id = el.id.replace("show", "");
-                AML.showById(id);
-            }
-            for (var i = 0; i < Pages.length; i++) {
-                if (Pages[i] === activeDivId) {
-                    el.classList.remove("hide");
-                    continue;
-                }
-                var el = document.getElementById(Pages[i]);
-                if (el) {
-                    el.classList.remove("active");
-                    AML.hideById(el.id.replace("show", ""));
-                }
-            }
         },
         addDbLink: function() {
             var els = document.querySelectorAll("a[href='/SqlPage']");

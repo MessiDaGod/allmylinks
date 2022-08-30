@@ -13,22 +13,6 @@
     <MudAppBar Class="landing-appbar" Elevation="0">
         <Appbar DrawerToggleCallback="ToggleDrawer" />
     </MudAppBar>
-    @* <MudDrawer @bind-Open="@_drawerOpen" Elevation="25" Variant="@DrawerVariant.Temporary">
-        <MudToolBar Dense="true" DisableGutters="true" Class="px-1 docs-gray-bg">
-            <MudIconButton Icon="@Icons.Rounded.Close" Color="Color.Inherit" OnClick="@ToggleDrawer"/>
-            <MudSpacer/>
-        </MudToolBar>
-        <MudNavMenu Color="Color.Primary" Margin="Margin.Dense" Rounded="true" Class="pa-2">
-            <MudNavLink id="showallmylinks" @ontouchleave="ShowAllMyLinks" @onclick="ShowAllMyLinks">All My Links</MudNavLink>
-            <MudNavLink id="showisitchristmas" @ontouchleave="ShowXmas"  @onclick="ShowXmas">Is It Christmas?</MudNavLink>
-@if (Platform != "iPhone" && Platform != "Android")
-            {
-                    <MudNavLink id="showsql" @ontouchleave="ShowSql"  @onclick="ShowSql">SQL</MudNavLink>
-                    <MudNavLink id="showsql2" @ontouchleave="ShowSql2"  @onclick="ShowSql2">SQL2</MudNavLink>
-                    <MudNavLink @ontouchleave="ShowCandles"  @onclick="ShowCandles" id="showcandles">CandleSticks</MudNavLink>
-            }
-        </MudNavMenu>
-    </MudDrawer> *@
     <MudMainContent Class="pa-0">
         @Body
         <LandingFooter/>
@@ -45,61 +29,11 @@
     protected override async Task OnInitializedAsync()
     {
         UserAgent = await Js.InvokeAsync<string>("AML.getUserAgent");
-        allmylinks.Models.OperatingSystem OS = new();
-        string pattern = @"(Mac OS X)";
-        RegexOptions options = RegexOptions.Multiline;
-
-        foreach (Match m in Regex.Matches(UserAgent, pattern, options))
-        {
-            OS.Platform = m.Value;
-            Platform = OS.Platform;
-        }
-        pattern = @"(Windows)";
-        foreach (Match m in Regex.Matches(UserAgent, pattern, options))
-        {
-            OS.Platform = m.Value;
-            Platform = OS.Platform;
-        }
-        pattern = @"(iPhone)";
-        foreach (Match m in Regex.Matches(UserAgent, pattern, options))
-        {
-            OS.Platform = m.Value;
-            Platform = OS.Platform;
-        }
-        pattern = @"(Android)";
-        foreach (Match m in Regex.Matches(UserAgent, pattern, options))
-        {
-            OS.Platform = m.Value;
-
-        }
+        IsMobile = await SetBrowerAgnostic();
         await Js.InvokeVoidAsync("AML.logit", IsMobile ? "Mobile: true" : "Mobile: false");
     }
 
-    async Task ShowXmas()
-    {
-        ToggleDrawer();
-        await Js.InvokeVoidAsync("AML.setActiveDiv", "showisitchristmas");
-    }
-    async Task ShowSql()
-    {
-        ToggleDrawer();
-        await Js.InvokeVoidAsync("AML.setActiveDiv", "showsql");
-    }
-    async Task ShowSql2()
-    {
-        ToggleDrawer();
-        await Js.InvokeVoidAsync("AML.setActiveDiv", "showsql2");
-    }
-    async Task ShowAllMyLinks()
-    {
-        ToggleDrawer();
-        await Js.InvokeVoidAsync("AML.setActiveDiv", "showallmylinks");
-    }
-    async Task ShowCandles()
-    {
-        ToggleDrawer();
-        await Js.InvokeVoidAsync("AML.setActiveDiv", "showcandles");
-    }
+
 
     protected async Task<bool> SetBrowerAgnostic()
     {
@@ -139,5 +73,4 @@
         await Js.InvokeVoidAsync("AML.logit", IsMobile ? "true" : "false");
         return IsMobile;
     }
-
 }

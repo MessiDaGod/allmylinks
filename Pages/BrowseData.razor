@@ -73,32 +73,13 @@
             <small id="tableQueryDetails" class="ml-2"></small>
             <button id="toggleFormat" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick="Reset">Reset Value<span class="material-symbols-outlined">database</span></button>
             <hr class="invisible-divider">
+            @if (UseNewVersion) {
+                <MonacoEditor @ref="_editor" Id="codeEditor" ConstructionOptions="EditorConstructionOptions"></MonacoEditor>
+                <SqlFormatter />
+            }
             @if (!UseNewVersion) {
                 <allmylinks.Pages.SqlFormat />
                 <MonacoEditor @ref="_editor" Id="codeEditor" ConstructionOptions="EditorConstructionOptions"></MonacoEditor>
-            }
-            else {
-                <SqlFormatter />
-                <div id="sqlformatter" class="hide">
-                    <header>
-                        <nav class="float-right">
-                            <ul>
-                                <li><label><input type="checkbox" name="EnableFormatAsYouGo" id="formatAsYouGo2" checked/> Format as-you-go</label></li>
-                                <li><label><input type="checkbox" name="EnableInPlaceFormat" id="inPlaceFormat2" disabled="disabled"/> In-place format</label></li>
-                            </ul>
-                        </nav>
-                    </header>
-                    <div class="row">
-                        <div class="col-6">
-                            <textarea name="inputString" id="inputString2" style="width: 100%; height: 80vh; padding: 2px; border: 1px solid; "></textarea>
-                        </div>
-                        <div class="col-6">
-                            <div id="outputDiv2" style="height:80vh; padding: 2px; border: 1px solid; overflow: scroll;">
-                            </div>
-                        </div>
-                    </div>
-                <MonacoEditor @ref="_editor" Id="codeEditor2" ConstructionOptions="EditorConstructionOptions"></MonacoEditor>
-            </div>
             }
 
             <small id="tableQueryDetails" class="ml-2"></small>
