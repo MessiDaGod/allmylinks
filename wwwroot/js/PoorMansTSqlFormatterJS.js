@@ -2878,7 +2878,7 @@
                             descriptor = descriptors[i];
                             break;
                         }
-                    }    
+                    }
                 }
 
                 var dcount = key.split("$").length;
@@ -3186,7 +3186,7 @@
                              cls[name]();
                         });
                     })(t, t.prototype.$main.name || "Main");
-                    
+
                     t.prototype.$main = null;
                 }
             }
@@ -3298,7 +3298,7 @@
     // @source Object.js
 
     Bridge.define("System.Object", {
-        
+
     });
 
     Bridge.define("System.Void", {
@@ -4773,13 +4773,13 @@ Bridge.define("System.Exception", {
         getBaseException: function() {
             var inner = this.innerException;
             var back = this;
-            
+
             while (inner != null) {
                 back = inner;
                 inner = inner.innerException;
             }
-            
-            return back;  
+
+            return back;
         },
 
         toString: function () {
@@ -4790,11 +4790,11 @@ Bridge.define("System.Exception", {
             } else {
                 builder += "\n";
             }
-                
+
             if (this.StackTrace != null) {
                 builder += this.StackTrace + "\n";
             }
-                
+
             return builder;
         },
 
@@ -4944,7 +4944,7 @@ Bridge.define("System.Exception", {
                         return this.paramName;
                     }
                 }
-            }  
+            }
         },
 
         ctor: function (message, paramName, innerException) {
@@ -5211,7 +5211,7 @@ Bridge.define("System.Exception", {
                 back = back.InnerException;
                 backAsAggregate = Bridge.as(back, System.AggregateException);
             }
-            return back;  
+            return back;
         },
 
         flatten: function () {
@@ -9826,7 +9826,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                         return this._condition;
                     }
                 }
-            }  
+            }
         },
 
         ctor: function (failureKind, failureMessage, userMessage, condition, innerException) {
@@ -11136,7 +11136,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
 				    }
 				}
 			},
-			
+
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
@@ -11225,7 +11225,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
 				    }
 				}
 			},
-			
+
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
@@ -11847,7 +11847,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                 } else {
                     this._capacity = this.items.length;
                 }
-                
+
                 this.clear.$clearCallbacks = [];
             },
 
@@ -11895,9 +11895,9 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
             trimExcess: function () {
                 var threshold = Bridge.Int.clip32(this.Capacity * 0.9);
                 if (this.items.length < threshold) {
-                    this.Capacity = this.items.length;                
+                    this.Capacity = this.items.length;
                 }
-            }, 
+            },
 
             add: function (value) {
                 this.checkReadOnly();
@@ -12155,7 +12155,7 @@ Bridge.Class.addExtend(System.Boolean, [System.IComparable$1(System.Boolean), Sy
                 if (action == null) {
                     throw new System.ArgumentNullException("action");
                 }
- 
+
                 for (var i = 0; i < this.items.length; i++) {
                     action(this.items[i]);
                 }
@@ -13841,17 +13841,17 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
             toString$1: function (fieldCount) {
                 var sb;
                 switch (fieldCount) {
-                    case 0: 
+                    case 0:
                         return ("");
-                    case 1: 
+                    case 1:
                         return (this._Major.toString());
-                    case 2: 
+                    case 2:
                         sb = new System.Text.StringBuilder();
                         System.Version.appendPositiveNumber(this._Major, sb);
                         sb.append(String.fromCharCode(46));
                         System.Version.appendPositiveNumber(this._Minor, sb);
                         return sb.toString();
-                    default: 
+                    default:
                         if (this._Build === -1) {
                             throw new System.ArgumentException("Build should be > 0 if fieldCount > 2", "fieldCount");
                         }
@@ -13936,13 +13936,13 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
             },
             getVersionParseException: function () {
                 switch (this.m_failure) {
-                    case System.Version.ParseFailureKind.ArgumentNullException: 
+                    case System.Version.ParseFailureKind.ArgumentNullException:
                         return new System.ArgumentNullException(this.m_argumentName);
-                    case System.Version.ParseFailureKind.ArgumentException: 
+                    case System.Version.ParseFailureKind.ArgumentException:
                         return new System.ArgumentException("VersionString");
-                    case System.Version.ParseFailureKind.ArgumentOutOfRangeException: 
+                    case System.Version.ParseFailureKind.ArgumentOutOfRangeException:
                         return new System.ArgumentOutOfRangeException(this.m_exceptionArgument, "Cannot be < 0");
-                    case System.Version.ParseFailureKind.FormatException: 
+                    case System.Version.ParseFailureKind.FormatException:
                         // Regenerate the FormatException as would be thrown by Int32.Parse()
                         try {
                             System.Int32.parse(this.m_exceptionArgument);
@@ -13961,7 +13961,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
                             }
                         }
                         return new System.FormatException("InvalidString");
-                    default: 
+                    default:
                         return new System.ArgumentException("VersionString");
                 }
             },
@@ -15678,7 +15678,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
                     var array = buffer.getArray(),
                         count = buffer.getCount(),
                         offset = buffer.getOffset();
- 
+
                     var data = new Uint8Array(count);
 
                     for (var i = 0; i < count; i++) {
@@ -15688,7 +15688,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
                     if (messageType === "text") {
                         data = String.fromCharCode.apply(null, data);
                     }
- 
+
                     this.socket.send(data);
                 }
 
@@ -15958,7 +15958,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
 					}
 				}
 			},
-			
+
             alias: [
 				"getCurrent", "System$Collections$IEnumerator$getCurrent",
 				"moveNext", "System$Collections$IEnumerator$moveNext",
@@ -15999,7 +15999,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
 							return this.getCurrent();
 						}
 					},
-					
+
 					Current$1: {
 						get: function () {
 							return this.getCurrent();
@@ -19328,16 +19328,16 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
                 s = list.toArray().join("-");
 
                 switch (format) {
-                    case "n": 
-                    case "N": 
+                    case "n":
+                    case "N":
                         return System.Guid.replace.replace(s, "");
-                    case "b": 
-                    case "B": 
+                    case "b":
+                    case "B":
                         return System.String.concat(String.fromCharCode(123), s, String.fromCharCode(125));
-                    case "p": 
-                    case "P": 
+                    case "p":
+                    case "P":
                         return System.String.concat(String.fromCharCode(40), s, String.fromCharCode(41));
-                    default: 
+                    default:
                         return s;
                 }
             },
@@ -19724,7 +19724,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
             if (!Bridge.isDefined(useCache)) {
                 useCache = false;
             }
-            
+
             var scope = System.Text.RegularExpressions;
 
             if (pattern == null) {
@@ -20053,7 +20053,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
                     get: function() {
                         return this._capcount;
                     }
-                }    
+                }
             },
 
             alias: [
@@ -20431,7 +20431,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
 					}
 				}
 			},
-			
+
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
@@ -20807,7 +20807,7 @@ Bridge.Class.addExtend(System.String, [System.IComparable$1(System.String), Syst
 					}
 				}
 			},
-			
+
             alias: [
                 "getCurrent", "System$Collections$IEnumerator$getCurrent",
                 "moveNext", "System$Collections$IEnumerator$moveNext",
@@ -28229,77 +28229,77 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
                 init: function () {
                     this.HashPrime = 101;
                     this.primes = System.Array.init([
-                        3, 
-                        7, 
-                        11, 
-                        17, 
-                        23, 
-                        29, 
-                        37, 
-                        47, 
-                        59, 
-                        71, 
-                        89, 
-                        107, 
-                        131, 
-                        163, 
-                        197, 
-                        239, 
-                        293, 
-                        353, 
-                        431, 
-                        521, 
-                        631, 
-                        761, 
-                        919, 
-                        1103, 
-                        1327, 
-                        1597, 
-                        1931, 
-                        2333, 
-                        2801, 
-                        3371, 
-                        4049, 
-                        4861, 
-                        5839, 
-                        7013, 
-                        8419, 
-                        10103, 
-                        12143, 
-                        14591, 
-                        17519, 
-                        21023, 
-                        25229, 
-                        30293, 
-                        36353, 
-                        43627, 
-                        52361, 
-                        62851, 
-                        75431, 
-                        90523, 
-                        108631, 
-                        130363, 
-                        156437, 
-                        187751, 
-                        225307, 
-                        270371, 
-                        324449, 
-                        389357, 
-                        467237, 
-                        560689, 
-                        672827, 
-                        807403, 
-                        968897, 
-                        1162687, 
-                        1395263, 
-                        1674319, 
-                        2009191, 
-                        2411033, 
-                        2893249, 
-                        3471899, 
-                        4166287, 
-                        4999559, 
-                        5999471, 
+                        3,
+                        7,
+                        11,
+                        17,
+                        23,
+                        29,
+                        37,
+                        47,
+                        59,
+                        71,
+                        89,
+                        107,
+                        131,
+                        163,
+                        197,
+                        239,
+                        293,
+                        353,
+                        431,
+                        521,
+                        631,
+                        761,
+                        919,
+                        1103,
+                        1327,
+                        1597,
+                        1931,
+                        2333,
+                        2801,
+                        3371,
+                        4049,
+                        4861,
+                        5839,
+                        7013,
+                        8419,
+                        10103,
+                        12143,
+                        14591,
+                        17519,
+                        21023,
+                        25229,
+                        30293,
+                        36353,
+                        43627,
+                        52361,
+                        62851,
+                        75431,
+                        90523,
+                        108631,
+                        130363,
+                        156437,
+                        187751,
+                        225307,
+                        270371,
+                        324449,
+                        389357,
+                        467237,
+                        560689,
+                        672827,
+                        807403,
+                        968897,
+                        1162687,
+                        1395263,
+                        1674319,
+                        2009191,
+                        2411033,
+                        2893249,
+                        3471899,
+                        4166287,
+                        4999559,
+                        5999471,
                         7199369
                     ], System.Int32);
                     this.MaxPrimeArrayLength = 2146435069;
@@ -28654,7 +28654,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                 }
 
                 //PLEASE NOTE: This is not reusable/general-purpose key-value serialization: it does not handle commas in data.
-                // This will need to be enhanced if we ever need to store formatter options that might contain equals signs or 
+                // This will need to be enhanced if we ever need to store formatter options that might contain equals signs or
                 // commas.
                 $t = Bridge.getEnumerator(System.String.split(serializedString, [44].map(function(i) {{ return String.fromCharCode(i); }})));
                 try {
@@ -28827,7 +28827,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
             },
             ctors: {
                 init: function () {
-                    this.FormatErrorDefaultMessage = "--WARNING! ERRORS ENCOUNTERED DURING SQL PARSING!";
+                    this.FormatErrorDefaultMessage = "/* Errors */";
                 }
             }
         }
@@ -29551,13 +29551,13 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
             methods: {
                 HtmlEncode: function (raw) {
                     var $t;
-                    /* 
+                    /*
                       This is a "Roll Your Own" implementation of HtmlEncode, which was necessary in the end because people want
-                      to use the library with .Net 3.5 Client Profile and other restricted environments; the dependency on 
+                      to use the library with .Net 3.5 Client Profile and other restricted environments; the dependency on
                       System.Web just for HtmlEncode was always a little disturbing anyway.
-                      I've attempted to optimize the implementation towards strings that don't actually contain any special 
+                      I've attempted to optimize the implementation towards strings that don't actually contain any special
                       characters, and I've also skipped some of the more interesting stuff that I see in the MS implementation
-                      (pointers, and some special handling in the WinAnsi special range of characters?), keeping it to the basic 
+                      (pointers, and some special handling in the WinAnsi special range of characters?), keeping it to the basic
                       4 "known bad" characters.
                     */
 
@@ -29576,16 +29576,16 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                             var replacementString = null;
 
                             switch (c) {
-                                case 62: 
+                                case 62:
                                     replacementString = "&gt;";
                                     break;
-                                case 60: 
+                                case 60:
                                     replacementString = "&lt;";
                                     break;
-                                case 38: 
+                                case 38:
                                     replacementString = "&amp;";
                                     break;
-                                case 34: 
+                                case 34:
                                     replacementString = "&quot;";
                                     break;
                             }
@@ -29697,7 +29697,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
     /** @namespace PoorMansTSqlFormatterLib.Formatters */
 
     /**
-     * This formatter is intended to output *exactly the same content as initially parsed*, unless the 
+     * This formatter is intended to output *exactly the same content as initially parsed*, unless the
      "HtmlColoring" option is enabled (then it should look the same in HTML, except for the coloring).
      *
      * @public
@@ -29729,72 +29729,72 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     }
 
                     switch (contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Name) {
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDLDETAIL_PARENS: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PARENS: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_PARENS: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IN_PARENS: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EXPRESSION_PARENS: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SELECTIONTARGET_PARENS: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDLDETAIL_PARENS:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PARENS:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_PARENS:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IN_PARENS:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EXPRESSION_PARENS:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SELECTIONTARGET_PARENS:
                             state.AddOutputContent("(");
                             PoorMansTSqlFormatterLib.Formatters.TSqlIdentityFormatter.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state);
                             state.AddOutputContent(")");
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_ROOT: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_STATEMENT: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_CLAUSE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BOOLEAN_EXPRESSION: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PROCEDURAL_BLOCK: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_OTHER_BLOCK: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_DECLARE_BLOCK: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_DECLARATION: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BEGIN_END_BLOCK: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRY_BLOCK: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CATCH_BLOCK: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_STATEMENT: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_INPUT: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_WHEN: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_THEN: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_ELSE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IF_STATEMENT: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ELSE_CLAUSE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHILE_LOOP: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_AS_BLOCK: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_CONDITION: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_LOWERBOUND: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_UPPERBOUND: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_WITH_CLAUSE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_ALIAS: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_AS_BLOCK: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_FOR_BLOCK: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_FOR_OPTIONS: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRIGGER_CONDITION: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMPOUNDKEYWORD: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BEGIN_TRANSACTION: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ROLLBACK_TRANSACTION: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SAVE_TRANSACTION: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMIT_TRANSACTION: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BATCH_SEPARATOR: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SET_OPERATOR_CLAUSE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_OPEN: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_MULTISTATEMENT: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_SINGLESTATEMENT: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_GENERALCONTENT: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_CLOSE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SELECTIONTARGET: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_BLOCK: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_DETAIL: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_TARGET: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_RECIPIENT: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_WITH_CLAUSE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_CLAUSE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_TARGET: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_USING: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_CONDITION: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_WHEN: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_THEN: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_ACTION: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_JOIN_ON_SECTION: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_RETURNS: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_ROOT:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_STATEMENT:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_CLAUSE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BOOLEAN_EXPRESSION:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PROCEDURAL_BLOCK:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_OTHER_BLOCK:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_DECLARE_BLOCK:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_DECLARATION:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BEGIN_END_BLOCK:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRY_BLOCK:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CATCH_BLOCK:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_STATEMENT:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_INPUT:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_WHEN:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_THEN:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_ELSE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IF_STATEMENT:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ELSE_CLAUSE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHILE_LOOP:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_AS_BLOCK:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_CONDITION:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_LOWERBOUND:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_UPPERBOUND:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_WITH_CLAUSE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_ALIAS:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_AS_BLOCK:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_FOR_BLOCK:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_FOR_OPTIONS:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRIGGER_CONDITION:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMPOUNDKEYWORD:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BEGIN_TRANSACTION:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ROLLBACK_TRANSACTION:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SAVE_TRANSACTION:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMIT_TRANSACTION:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BATCH_SEPARATOR:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SET_OPERATOR_CLAUSE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_OPEN:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_MULTISTATEMENT:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_SINGLESTATEMENT:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_GENERALCONTENT:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_CLOSE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SELECTIONTARGET:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_BLOCK:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_DETAIL:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_TARGET:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_RECIPIENT:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_WITH_CLAUSE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_CLAUSE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_TARGET:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_USING:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_CONDITION:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_WHEN:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_THEN:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_ACTION:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_JOIN_ON_SECTION:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_RETURNS:
                             $t = Bridge.getEnumerator(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, PoorMansTSqlFormatterLib.ParseStructure.Node);
                             try {
                                 while ($t.moveNext()) {
@@ -29806,58 +29806,58 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                     $t.System$IDisposable$dispose();
                                 }
                             }break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_MULTILINE: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_MULTILINE:
                             state.AddOutputContent$1(System.String.concat("/*", contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "*/"), PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_COMMENT);
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE:
                             state.AddOutputContent$1(System.String.concat("--", contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue), PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_COMMENT);
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE_CSTYLE: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE_CSTYLE:
                             state.AddOutputContent$1(System.String.concat("//", contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue), PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_COMMENT);
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_STRING: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_STRING:
                             state.AddOutputContent$1(System.String.concat("'", System.String.replaceAll(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "'", "''"), "'"), PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_STRING);
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NSTRING: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NSTRING:
                             state.AddOutputContent$1(System.String.concat("N'", System.String.replaceAll(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "'", "''"), "'"), PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_STRING);
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_QUOTED_STRING: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_QUOTED_STRING:
                             state.AddOutputContent(System.String.concat("\"", System.String.replaceAll(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "\"", "\"\""), "\""));
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BRACKET_QUOTED_NAME: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BRACKET_QUOTED_NAME:
                             state.AddOutputContent(System.String.concat("[", System.String.replaceAll(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "]", "]]"), "]"));
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMA: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERIOD: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SEMICOLON: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ASTERISK: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EQUALSSIGN: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SCOPERESOLUTIONOPERATOR: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ALPHAOPERATOR: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHEROPERATOR: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMA:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERIOD:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SEMICOLON:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ASTERISK:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EQUALSSIGN:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SCOPERESOLUTIONOPERATOR:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ALPHAOPERATOR:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHEROPERATOR:
                             state.AddOutputContent$1(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_OPERATOR);
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_AND_OPERATOR: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OR_OPERATOR: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_AND_OPERATOR:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OR_OPERATOR:
                             state.AddOutputContent$1(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERKEYWORD).PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_OPERATOR);
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_KEYWORD: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_KEYWORD:
                             state.AddOutputContent$1(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_FUNCTION);
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERKEYWORD: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DATATYPE_KEYWORD: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PSEUDONAME: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERKEYWORD:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DATATYPE_KEYWORD:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PSEUDONAME:
                             state.AddOutputContent$1(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_KEYWORD);
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERNODE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHITESPACE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NUMBER_VALUE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MONETARY_VALUE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BINARY_VALUE: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_LABEL: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERNODE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHITESPACE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NUMBER_VALUE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MONETARY_VALUE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BINARY_VALUE:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_LABEL:
                             state.AddOutputContent(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue);
                             break;
-                        default: 
+                        default:
                             throw new System.Exception("Unrecognized element in SQL Xml!");
                     }
 
@@ -29918,57 +29918,57 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     while ($t.moveNext()) {
                         var entry = $t.Current;
                         switch (entry.PoorMansTSqlFormatterLib$Interfaces$IToken$Type) {
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MultiLineComment: 
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MultiLineComment:
                                 outString.append("/*");
                                 outString.append(entry.PoorMansTSqlFormatterLib$Interfaces$IToken$Value);
                                 outString.append("*/");
                                 break;
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineComment: 
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineComment:
                                 outString.append("--");
                                 outString.append(entry.PoorMansTSqlFormatterLib$Interfaces$IToken$Value);
                                 break;
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineCommentCStyle: 
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineCommentCStyle:
                                 outString.append("//");
                                 outString.append(entry.PoorMansTSqlFormatterLib$Interfaces$IToken$Value);
                                 break;
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.String: 
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.String:
                                 outString.append("'");
                                 outString.append(System.String.replaceAll(entry.PoorMansTSqlFormatterLib$Interfaces$IToken$Value, "'", "''"));
                                 outString.append("'");
                                 break;
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.NationalString: 
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.NationalString:
                                 outString.append("N'");
                                 outString.append(System.String.replaceAll(entry.PoorMansTSqlFormatterLib$Interfaces$IToken$Value, "'", "''"));
                                 outString.append("'");
                                 break;
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.QuotedString: 
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.QuotedString:
                                 outString.append("\"");
                                 outString.append(System.String.replaceAll(entry.PoorMansTSqlFormatterLib$Interfaces$IToken$Value, "\"", "\"\""));
                                 outString.append("\"");
                                 break;
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BracketQuotedName: 
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BracketQuotedName:
                                 outString.append("[");
                                 outString.append(System.String.replaceAll(entry.PoorMansTSqlFormatterLib$Interfaces$IToken$Value, "]", "]]"));
                                 outString.append("]");
                                 break;
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OpenParens: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.CloseParens: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Comma: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Period: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Semicolon: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Colon: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Asterisk: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.EqualsSign: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherNode: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.WhiteSpace: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherOperator: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Number: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BinaryValue: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MonetaryValue: 
-                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.PseudoName: 
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OpenParens:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.CloseParens:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Comma:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Period:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Semicolon:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Colon:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Asterisk:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.EqualsSign:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherNode:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.WhiteSpace:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherOperator:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Number:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BinaryValue:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MonetaryValue:
+                            case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.PseudoName:
                                 outString.append(entry.PoorMansTSqlFormatterLib$Interfaces$IToken$Value);
                                 break;
-                            default: 
+                            default:
                                 throw new System.Exception("Unrecognized Token Type in Token List!");
                         }
                     }
@@ -30078,71 +30078,71 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                 }},
             ProcessSqlNode: function (contentElement, state) {
                 switch (contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Name) {
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_ROOT: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_STATEMENT: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_CLAUSE: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SET_OPERATOR_CLAUSE: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PROCEDURAL_BLOCK: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_OTHER_BLOCK: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_DECLARE_BLOCK: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_DECLARATION: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BEGIN_TRANSACTION: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SAVE_TRANSACTION: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMIT_TRANSACTION: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ROLLBACK_TRANSACTION: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_OPEN: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_CLOSE: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHILE_LOOP: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IF_STATEMENT: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SELECTIONTARGET: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_GENERALCONTENT: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_WITH_CLAUSE: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_BLOCK: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_DETAIL: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_CLAUSE: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_TARGET: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_INPUT: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BOOLEAN_EXPRESSION: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_LOWERBOUND: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_UPPERBOUND: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_SINGLESTATEMENT: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_MULTISTATEMENT: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_ACTION: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_TARGET: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_RECIPIENT: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_WITH_CLAUSE: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_CONDITION: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_THEN: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_JOIN_ON_SECTION: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_ALIAS: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ELSE_CLAUSE: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_AS_BLOCK: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_FOR_BLOCK: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRIGGER_CONDITION: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_FOR_OPTIONS: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_AS_BLOCK: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_RETURNS: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_USING: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_WHEN: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_CONDITION: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BEGIN_END_BLOCK: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRY_BLOCK: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CATCH_BLOCK: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_STATEMENT: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_WHEN: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_THEN: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_ELSE: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_AND_OPERATOR: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OR_OPERATOR: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_ROOT:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_STATEMENT:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_CLAUSE:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SET_OPERATOR_CLAUSE:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PROCEDURAL_BLOCK:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_OTHER_BLOCK:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_DECLARE_BLOCK:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_DECLARATION:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BEGIN_TRANSACTION:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SAVE_TRANSACTION:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMIT_TRANSACTION:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ROLLBACK_TRANSACTION:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_OPEN:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_CLOSE:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHILE_LOOP:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IF_STATEMENT:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SELECTIONTARGET:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_GENERALCONTENT:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_WITH_CLAUSE:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_BLOCK:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_DETAIL:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_CLAUSE:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_TARGET:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_INPUT:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BOOLEAN_EXPRESSION:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_LOWERBOUND:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_UPPERBOUND:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_SINGLESTATEMENT:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_MULTISTATEMENT:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_ACTION:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_TARGET:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_RECIPIENT:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_WITH_CLAUSE:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_CONDITION:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_THEN:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_JOIN_ON_SECTION:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_ALIAS:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ELSE_CLAUSE:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_AS_BLOCK:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_FOR_BLOCK:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRIGGER_CONDITION:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_FOR_OPTIONS:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_AS_BLOCK:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_RETURNS:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_USING:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_WHEN:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_CONDITION:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BEGIN_END_BLOCK:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRY_BLOCK:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CATCH_BLOCK:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_STATEMENT:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_WHEN:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_THEN:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_ELSE:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_AND_OPERATOR:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OR_OPERATOR:
                         //these are all containers, and therefore have no impact on obfuscated output.
                         this.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state);
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDLDETAIL_PARENS: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_PARENS: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IN_PARENS: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PARENS: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EXPRESSION_PARENS: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SELECTIONTARGET_PARENS: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDLDETAIL_PARENS:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_PARENS:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IN_PARENS:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PARENS:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EXPRESSION_PARENS:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SELECTIONTARGET_PARENS:
                         state.SpaceExpected = false;
                         state.AddOutputContent("(");
                         this.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state);
@@ -30150,80 +30150,80 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                         state.SpaceExpectedForAnsiString = false;
                         state.AddOutputContent(")");
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHITESPACE: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHITESPACE:
                         //do nothing
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_MULTILINE: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_MULTILINE:
                         if (this.PreserveComments) {
                             state.SpaceExpected = false;
                             state.AddOutputContent(System.String.concat("/*", contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "*/"));
                         }
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE:
                         if (this.PreserveComments) {
                             state.SpaceExpected = false;
                             state.AddOutputContent(System.String.concat("--", System.String.replaceAll(System.String.replaceAll(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "\r", ""), "\n", "")));
                             state.BreakExpected = true;
                         }
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE_CSTYLE: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE_CSTYLE:
                         if (this.PreserveComments) {
                             state.SpaceExpected = false;
                             state.AddOutputContent(System.String.concat("//", System.String.replaceAll(System.String.replaceAll(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "\r", ""), "\n", "")));
                             state.BreakExpected = true;
                         }
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BATCH_SEPARATOR: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BATCH_SEPARATOR:
                         //newline regardless of whether previous element recommended a break or not.
                         state.BreakExpected = true;
                         this.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state);
                         state.BreakExpected = true;
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_STRING: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_STRING:
                         state.SpaceIfExpectedForAnsiString();
                         state.SpaceExpected = false;
                         state.AddOutputContent(System.String.concat("'", System.String.replaceAll(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "'", "''"), "'"));
                         state.SpaceExpectedForAnsiString = true;
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NSTRING: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NSTRING:
                         state.AddOutputContent(System.String.concat("N'", System.String.replaceAll(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "'", "''"), "'"));
                         state.SpaceExpectedForAnsiString = true;
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BRACKET_QUOTED_NAME: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BRACKET_QUOTED_NAME:
                         state.SpaceExpected = false;
                         state.AddOutputContent(System.String.concat("[", System.String.replaceAll(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "]", "]]"), "]"));
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_QUOTED_STRING: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_QUOTED_STRING:
                         state.SpaceExpected = false;
                         state.AddOutputContent(System.String.concat("\"", System.String.replaceAll(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "\"", "\"\""), "\""));
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMA: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERIOD: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SEMICOLON: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SCOPERESOLUTIONOPERATOR: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ASTERISK: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EQUALSSIGN: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHEROPERATOR: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMA:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERIOD:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SEMICOLON:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SCOPERESOLUTIONOPERATOR:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ASTERISK:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EQUALSSIGN:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHEROPERATOR:
                         state.SpaceExpected = false;
                         state.AddOutputContent(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue);
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMPOUNDKEYWORD: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMPOUNDKEYWORD:
                         state.AddOutputContent(this.FormatKeyword(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$GetAttributeValue(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ANAME_SIMPLETEXT)));
                         state.SpaceExpected = true;
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_LABEL: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_LABEL:
                         state.AddOutputContent(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue);
                         state.BreakExpected = true;
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERKEYWORD: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ALPHAOPERATOR: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DATATYPE_KEYWORD: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PSEUDONAME: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BINARY_VALUE: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERKEYWORD:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ALPHAOPERATOR:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DATATYPE_KEYWORD:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PSEUDONAME:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BINARY_VALUE:
                         state.AddOutputContent(this.FormatKeyword(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue));
                         state.SpaceExpected = true;
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NUMBER_VALUE: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NUMBER_VALUE:
                         state.AddOutputContent(this.FormatKeyword(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue));
                         if (!System.String.contains(PoorMansTSqlFormatterLib.Utils.ToLowerInvariant$1(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue),"e")) {
                             state.SpaceExpectedForE = true;
@@ -30232,7 +30232,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                             }
                         }
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MONETARY_VALUE: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MONETARY_VALUE:
                         if (!System.String.equals(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue.substr(0, 1), "$")) {
                             state.SpaceExpected = false;
                         }
@@ -30241,12 +30241,12 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                             state.SpaceExpectedForPlusMinus = true;
                         }
                         break;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERNODE: 
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_KEYWORD: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERNODE:
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_KEYWORD:
                         state.AddOutputContent(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue);
                         state.SpaceExpected = true;
                         break;
-                    default: 
+                    default:
                         throw new System.Exception("Unrecognized element in SQL Xml!");
                 }
             },
@@ -30619,13 +30619,13 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
             }
 
             switch (contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Name) {
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_STATEMENT: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_STATEMENT:
                     this.WhiteSpace_SeparateStatements(contentElement, state);
                     state.ResetKeywords();
                     this.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state);
                     state.StatementBreakExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_CLAUSE: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_CLAUSE:
                     state.UnIndentInitialBreak = true;
                     this.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state.IncrementIndent());
                     state.DecrementIndent();
@@ -30636,7 +30636,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                         state.AdditionalBreaksExpected = (this.Options.NewClauseLineBreaks - 1) | 0;
                     }
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SET_OPERATOR_CLAUSE: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SET_OPERATOR_CLAUSE:
                     state.DecrementIndent();
                     state.WhiteSpace_BreakToNextLine(); //this is the one already recommended by the start of the clause
                     state.WhiteSpace_BreakToNextLine(); //this is the one we additionally want to apply
@@ -30644,43 +30644,43 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     state.BreakExpected = true;
                     state.AdditionalBreaksExpected = 1;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BATCH_SEPARATOR: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BATCH_SEPARATOR:
                     //newline regardless of whether previous element recommended a break or not.
                     state.WhiteSpace_BreakToNextLine();
                     this.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state);
                     state.BreakExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PROCEDURAL_BLOCK: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_OTHER_BLOCK: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_DECLARE_BLOCK: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_DECLARATION: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BEGIN_TRANSACTION: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SAVE_TRANSACTION: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMIT_TRANSACTION: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ROLLBACK_TRANSACTION: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_OPEN: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_CLOSE: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHILE_LOOP: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IF_STATEMENT: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SELECTIONTARGET: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_GENERALCONTENT: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_WITH_CLAUSE: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_BLOCK: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_DETAIL: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_CLAUSE: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_TARGET: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PROCEDURAL_BLOCK:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_OTHER_BLOCK:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_DECLARE_BLOCK:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_DECLARATION:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BEGIN_TRANSACTION:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SAVE_TRANSACTION:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMIT_TRANSACTION:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ROLLBACK_TRANSACTION:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_OPEN:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_CLOSE:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHILE_LOOP:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IF_STATEMENT:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SELECTIONTARGET:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_GENERALCONTENT:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_WITH_CLAUSE:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_BLOCK:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_DETAIL:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_CLAUSE:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_TARGET:
                     this.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state);
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_INPUT: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BOOLEAN_EXPRESSION: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_LOWERBOUND: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_UPPERBOUND: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_INPUT:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BOOLEAN_EXPRESSION:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_LOWERBOUND:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_UPPERBOUND:
                     this.WhiteSpace_SeparateWords(state);
                     this.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state);
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_SINGLESTATEMENT: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_MULTISTATEMENT: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_ACTION: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_SINGLESTATEMENT:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_MULTISTATEMENT:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_ACTION:
                     var singleStatementIsIf = false;
                     $t = Bridge.getEnumerator(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_STATEMENT), PoorMansTSqlFormatterLib.ParseStructure.Node);
                     try {
@@ -30726,17 +30726,17 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     state.StatementBreakExpected = false; //the responsibility for breaking will be with the OUTER statement; there should be no consequence propagating out from statements in this container;
                     state.UnIndentInitialBreak = false; //if there was no word spacing after the last content statement's clause starter, doesn't mean the unIndent should propagate to the following content!
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_TARGET: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_RECIPIENT: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_WITH_CLAUSE: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_CONDITION: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_THEN: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_TARGET:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_RECIPIENT:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_WITH_CLAUSE:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_CONDITION:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_THEN:
                     state.BreakExpected = true;
                     state.UnIndentInitialBreak = true;
                     this.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state.IncrementIndent());
                     state.DecrementIndent();
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_JOIN_ON_SECTION: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_JOIN_ON_SECTION:
                     if (this.Options.BreakJoinOnSections) {
                         state.BreakExpected = true;
                     }
@@ -30749,41 +30749,41 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                         state.DecrementIndent();
                     }
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_ALIAS: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_ALIAS:
                     state.UnIndentInitialBreak = true;
                     this.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state);
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ELSE_CLAUSE: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ELSE_CLAUSE:
                     this.ProcessSqlNodeList(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_OPEN), state.DecrementIndent());
                     this.ProcessSqlNodeList(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_SINGLESTATEMENT), state.IncrementIndent());
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_AS_BLOCK: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_FOR_BLOCK: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_AS_BLOCK:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_FOR_BLOCK:
                     state.BreakExpected = true;
                     this.ProcessSqlNodeList(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_OPEN), state.DecrementIndent());
                     state.BreakExpected = true;
                     this.ProcessSqlNodeList(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_GENERALCONTENT), state);
                     state.IncrementIndent();
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRIGGER_CONDITION: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRIGGER_CONDITION:
                     state.DecrementIndent();
                     state.WhiteSpace_BreakToNextLine();
                     this.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state.IncrementIndent());
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_FOR_OPTIONS: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_AS_BLOCK: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_FOR_OPTIONS:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_AS_BLOCK:
                     state.BreakExpected = true;
                     this.ProcessSqlNodeList(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_OPEN), state.DecrementIndent());
                     this.ProcessSqlNodeList(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_GENERALCONTENT), state.IncrementIndent());
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_RETURNS: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_USING: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_WHEN: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_RETURNS:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_USING:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MERGE_WHEN:
                     state.BreakExpected = true;
                     state.UnIndentInitialBreak = true;
                     this.ProcessSqlNodeList(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Children, state);
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_CONDITION: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_CONDITION:
                     this.ProcessSqlNodeList(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_OPEN), state);
                     state.IncrementIndent();
                     this.ProcessSqlNodeList(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BETWEEN_LOWERBOUND), state.IncrementIndent());
@@ -30795,8 +30795,8 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     state.DecrementIndent();
                     state.DecrementIndent();
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDLDETAIL_PARENS: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_PARENS: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDLDETAIL_PARENS:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_PARENS:
                     //simply process sub-nodes - don't add space or expect any linebreaks (but respect linebreaks if necessary)
                     state.WordSeparatorExpected = false;
                     this.WhiteSpace_BreakAsExpected(state);
@@ -30807,10 +30807,10 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     state.AddOutputContent$1(this.FormatOperator(")"), PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_OPERATOR);
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PARENS: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EXPRESSION_PARENS: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SELECTIONTARGET_PARENS: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IN_PARENS: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PARENS:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EXPRESSION_PARENS:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SELECTIONTARGET_PARENS:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IN_PARENS:
                     this.WhiteSpace_SeparateWords(state);
                     if (System.String.equals(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Name, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EXPRESSION_PARENS) || System.String.equals(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Name, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_IN_PARENS)) {
                         state.IncrementIndent();
@@ -30834,9 +30834,9 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     }
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BEGIN_END_BLOCK: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRY_BLOCK: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CATCH_BLOCK: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BEGIN_END_BLOCK:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRY_BLOCK:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CATCH_BLOCK:
                     if (System.String.equals(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Parent.PoorMansTSqlFormatterLib$ParseStructure$Node$Name, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_CLAUSE) && System.String.equals(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Parent.PoorMansTSqlFormatterLib$ParseStructure$Node$Parent.PoorMansTSqlFormatterLib$ParseStructure$Node$Name, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_STATEMENT) && System.String.equals(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Parent.PoorMansTSqlFormatterLib$ParseStructure$Node$Parent.PoorMansTSqlFormatterLib$ParseStructure$Node$Parent.PoorMansTSqlFormatterLib$ParseStructure$Node$Name, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_SINGLESTATEMENT)) {
                         state.DecrementIndent();
                     }
@@ -30850,7 +30850,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                         state.IncrementIndent();
                     }
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_STATEMENT: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_STATEMENT:
                     this.ProcessSqlNodeList(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_OPEN), state);
                     state.IncrementIndent();
                     this.ProcessSqlNodeList(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_INPUT), state);
@@ -30862,9 +30862,9 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     this.ProcessSqlNodeList(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_CLOSE), state);
                     state.DecrementIndent();
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_WHEN: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_THEN: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_ELSE: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_WHEN:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_THEN:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_ELSE:
                     if (this.Options.ExpandCaseStatements) {
                         state.BreakExpected = true;
                     }
@@ -30873,14 +30873,14 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     this.ProcessSqlNodeList(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildrenByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CASE_THEN), state);
                     state.DecrementIndent();
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_AND_OPERATOR: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OR_OPERATOR: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_AND_OPERATOR:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OR_OPERATOR:
                     if (this.Options.ExpandBooleanExpressions) {
                         state.BreakExpected = true;
                     }
                     this.ProcessSqlNode(PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ChildByName(contentElement, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERKEYWORD), state);
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_MULTILINE: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_MULTILINE:
                     if (System.Nullable.eq(state.SpecialRegionActive, PoorMansTSqlFormatterLib.Formatters.TSqlStandardFormatter.SpecialRegionType.NoFormat) && System.String.contains(PoorMansTSqlFormatterLib.Utils.ToUpperInvariant$1(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue),"[/NOFORMAT]")) {
                         var skippedXml = PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ExtractStructureBetween(state.RegionStartNode, contentElement);
                         if (skippedXml != null) {
@@ -30923,8 +30923,8 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                         state.RegionStartNode = contentElement;
                     }
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE_CSTYLE: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE_CSTYLE:
                     if (System.Nullable.eq(state.SpecialRegionActive, PoorMansTSqlFormatterLib.Formatters.TSqlStandardFormatter.SpecialRegionType.NoFormat) && System.String.contains(PoorMansTSqlFormatterLib.Utils.ToUpperInvariant$1(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue),"[/NOFORMAT]")) {
                         var skippedXml2 = PoorMansTSqlFormatterLib.ParseStructure.NodeExtensions.ExtractStructureBetween(state.RegionStartNode, contentElement);
                         if (skippedXml2 != null) {
@@ -30964,8 +30964,8 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                         state.RegionStartNode = contentElement;
                     }
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_STRING: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NSTRING: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_STRING:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NSTRING:
                     this.WhiteSpace_SeparateWords(state);
                     var outValue = null;
                     if (System.String.equals(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$Name, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NSTRING)) {
@@ -30976,17 +30976,17 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     state.AddOutputContent$1(outValue, PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_STRING);
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BRACKET_QUOTED_NAME: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BRACKET_QUOTED_NAME:
                     this.WhiteSpace_SeparateWords(state);
                     state.AddOutputContent(System.String.concat("[", System.String.replaceAll(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "]", "]]"), "]"));
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_QUOTED_STRING: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_QUOTED_STRING:
                     this.WhiteSpace_SeparateWords(state);
                     state.AddOutputContent(System.String.concat("\"", System.String.replaceAll(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "\"", "\"\""), "\""));
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMA: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMA:
                     //comma always ignores requested word spacing
                     if (this.Options.TrailingCommas) {
                         this.WhiteSpace_BreakAsExpected(state);
@@ -31012,23 +31012,23 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
 
                     }
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERIOD: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SEMICOLON: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SCOPERESOLUTIONOPERATOR: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERIOD:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SEMICOLON:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SCOPERESOLUTIONOPERATOR:
                     //always ignores requested word spacing, and doesn't request a following space either.
                     state.WordSeparatorExpected = false;
                     this.WhiteSpace_BreakAsExpected(state);
                     state.AddOutputContent$1(this.FormatOperator(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue), PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_OPERATOR);
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ASTERISK: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EQUALSSIGN: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ALPHAOPERATOR: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHEROPERATOR: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ASTERISK:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EQUALSSIGN:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ALPHAOPERATOR:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHEROPERATOR:
                     this.WhiteSpace_SeparateWords(state);
                     state.AddOutputContent$1(this.FormatOperator(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue), PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_OPERATOR);
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMPOUNDKEYWORD: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMPOUNDKEYWORD:
                     this.WhiteSpace_SeparateWords(state);
                     state.SetRecentKeyword(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$GetAttributeValue(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ANAME_SIMPLETEXT));
                     state.AddOutputContent$1(this.FormatKeyword(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$GetAttributeValue(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ANAME_SIMPLETEXT)), PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_KEYWORD);
@@ -31037,49 +31037,49 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     state.DecrementIndent();
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERKEYWORD: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DATATYPE_KEYWORD: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERKEYWORD:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DATATYPE_KEYWORD:
                     this.WhiteSpace_SeparateWords(state);
                     state.SetRecentKeyword(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue);
                     state.AddOutputContent$1(this.FormatKeyword(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue), PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_KEYWORD);
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PSEUDONAME: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PSEUDONAME:
                     this.WhiteSpace_SeparateWords(state);
                     state.AddOutputContent$1(this.FormatKeyword(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue), PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_KEYWORD);
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_KEYWORD: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_KEYWORD:
                     this.WhiteSpace_SeparateWords(state);
                     state.SetRecentKeyword(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue);
                     state.AddOutputContent$1(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, PoorMansTSqlFormatterLib.Interfaces.SqlHtmlConstants.CLASS_FUNCTION);
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERNODE: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MONETARY_VALUE: 
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_LABEL: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERNODE:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MONETARY_VALUE:
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_LABEL:
                     this.WhiteSpace_SeparateWords(state);
                     state.AddOutputContent(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue);
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NUMBER_VALUE: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NUMBER_VALUE:
                     this.WhiteSpace_SeparateWords(state);
                     state.AddOutputContent(PoorMansTSqlFormatterLib.Utils.ToLowerInvariant$1(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue));
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BINARY_VALUE: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BINARY_VALUE:
                     this.WhiteSpace_SeparateWords(state);
                     state.AddOutputContent("0x");
                     state.AddOutputContent(PoorMansTSqlFormatterLib.Utils.ToUpperInvariant$1(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue.substr(2)));
                     state.WordSeparatorExpected = true;
                     break;
-                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHITESPACE: 
+                case PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHITESPACE:
                     //take note if it's a line-breaking space, but don't DO anything here
                     if (System.Text.RegularExpressions.Regex.isMatch(contentElement.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue, "(\\r|\\n)+")) {
                         state.SourceBreakPending = true;
                     }
                     break;
-                default: 
+                default:
                     throw new System.Exception("Unrecognized element in SQL Xml!");
             }
 
@@ -31280,7 +31280,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                 //hints for debugging line-width issues:
                 //_outBuilder.Append(" (" + CurrentLineLength.ToString(System.Globalization.CultureInfo.InvariantCulture) + ")");
 
-                //if linebreaks are added directly in the content (eg in comments or strings), they 
+                //if linebreaks are added directly in the content (eg in comments or strings), they
                 // won't be accounted for here - that's ok.
                 if (this.SpecialRegionActive == null) {
                     PoorMansTSqlFormatterLib.BaseFormatterState.prototype.AddOutputLineBreak.call(this);
@@ -31447,7 +31447,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                 InitializeKeywordList: function () {
                     //List originally copied from Side by Side SQL Comparer project from CodeProject:
                     // http://www.codeproject.com/KB/database/SideBySideSQLComparer.aspx
-                    // Added some entries that are not strictly speaking keywords, such as 
+                    // Added some entries that are not strictly speaking keywords, such as
                     // cursor options "READ_ONLY", "FAST_FORWARD", etc.
                     // also added numerous missing entries, such as "Xml", etc
                     // Could/Should check against MSDN Ref: http://msdn.microsoft.com/en-us/library/ms189822.aspx
@@ -32020,7 +32020,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     var token = System.Array.getItem(tokenList, tokenID.v, PoorMansTSqlFormatterLib.Interfaces.IToken);
 
                     switch (token.PoorMansTSqlFormatterLib$Interfaces$IToken$Type) {
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OpenParens: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OpenParens:
                             var firstNonCommentParensSibling = sqlTree.GetFirstNonWhitespaceNonCommentChildElement(sqlTree.CurrentContainer);
                             var lastNonCommentParensSibling = sqlTree.GetLastNonWhitespaceNonCommentChildElement(sqlTree.CurrentContainer);
                             var isInsertOrValuesClause = (firstNonCommentParensSibling != null && ((System.String.equals(firstNonCommentParensSibling.PoorMansTSqlFormatterLib$ParseStructure$Node$Name, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERKEYWORD) && System.String.startsWith(PoorMansTSqlFormatterLib.Utils.ToUpperInvariant$1(firstNonCommentParensSibling.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue), "INSERT")) || (System.String.equals(firstNonCommentParensSibling.PoorMansTSqlFormatterLib$ParseStructure$Node$Name, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMPOUNDKEYWORD) && System.String.startsWith(PoorMansTSqlFormatterLib.Utils.ToUpperInvariant$1(firstNonCommentParensSibling.PoorMansTSqlFormatterLib$ParseStructure$Node$GetAttributeValue(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ANAME_SIMPLETEXT)), "INSERT ")) || (System.String.equals(firstNonCommentParensSibling.PoorMansTSqlFormatterLib$ParseStructure$Node$Name, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERKEYWORD) && System.String.startsWith(PoorMansTSqlFormatterLib.Utils.ToUpperInvariant$1(firstNonCommentParensSibling.PoorMansTSqlFormatterLib$ParseStructure$Node$TextValue), "VALUES"))));
@@ -32057,8 +32057,8 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 }
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.CloseParens: 
-                            //we're not likely to actually have a "SingleStatement" in parens, but 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.CloseParens:
+                            //we're not likely to actually have a "SingleStatement" in parens, but
                             // we definitely want the side-effects (all the lower-level escapes)
                             sqlTree.EscapeAnySingleOrPartialStatementContainers();
                             //check whether we expected to end the parens...
@@ -32073,12 +32073,12 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 sqlTree.SaveNewElementWithError(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERNODE, ")");
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherNode: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherNode:
                             //prepare multi-keyword detection by "peeking" up to 7 keywords ahead
                             var significantTokenPositions = this.GetSignificantTokenPositions(tokenList, tokenID.v, 7);
                             var significantTokensString = this.ExtractTokensString(tokenList, significantTokenPositions);
                             if (sqlTree.PathNameMatches$1(0, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERMISSIONS_DETAIL)) {
-                                //if we're in a permissions detail clause, we can expect all sorts of statements 
+                                //if we're in a permissions detail clause, we can expect all sorts of statements
                                 // starters and should ignore them all; the only possible keywords to escape are
                                 // "ON" and "TO".
                                 if (System.String.startsWith(significantTokensString, "ON ")) {
@@ -32100,7 +32100,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 sqlTree.CurrentContainer = sqlTree.SaveNewElement(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CURSOR_DECLARATION, "");
                                 sqlTree.SaveNewElement(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERKEYWORD, token.PoorMansTSqlFormatterLib$Interfaces$IToken$Value);
                             } else if (sqlTree.PathNameMatches$1(0, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_PROCEDURAL_BLOCK) && PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser._TriggerConditionDetector.isMatch(significantTokensString)) {
-                                //horrible complicated forward-search, to avoid having to keep a different "Trigger Condition" state for Update, Insert and Delete statement-starting keywords 
+                                //horrible complicated forward-search, to avoid having to keep a different "Trigger Condition" state for Update, Insert and Delete statement-starting keywords
                                 var triggerConditions = PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser._TriggerConditionDetector.match(significantTokensString);
                                 sqlTree.CurrentContainer = sqlTree.SaveNewElement(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_TRIGGER_CONDITION, "");
                                 var triggerConditionType = sqlTree.SaveNewElement(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMPOUNDKEYWORD, "");
@@ -32675,20 +32675,20 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 var matchedKeywordType = { v : new PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser.KeywordType() };
                                 if (PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser.KeywordList.tryGetValue(PoorMansTSqlFormatterLib.Utils.ToUpperInvariant$1(token.PoorMansTSqlFormatterLib$Interfaces$IToken$Value), matchedKeywordType)) {
                                     switch (matchedKeywordType.v) {
-                                        case PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser.KeywordType.OperatorKeyword: 
+                                        case PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser.KeywordType.OperatorKeyword:
                                             newNodeName = PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ALPHAOPERATOR;
                                             break;
-                                        case PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser.KeywordType.FunctionKeyword: 
+                                        case PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser.KeywordType.FunctionKeyword:
                                             newNodeName = PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_FUNCTION_KEYWORD;
                                             break;
-                                        case PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser.KeywordType.DataTypeKeyword: 
+                                        case PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser.KeywordType.DataTypeKeyword:
                                             newNodeName = PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DATATYPE_KEYWORD;
                                             break;
-                                        case PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser.KeywordType.OtherKeyword: 
+                                        case PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser.KeywordType.OtherKeyword:
                                             sqlTree.EscapeAnySelectionTarget();
                                             newNodeName = PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERKEYWORD;
                                             break;
-                                        default: 
+                                        default:
                                             throw new System.Exception("Unrecognized Keyword Type!");
                                     }
                                 }
@@ -32696,16 +32696,16 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 sqlTree.SaveNewElement(newNodeName, token.PoorMansTSqlFormatterLib$Interfaces$IToken$Value);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Semicolon: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Semicolon:
                             sqlTree.SaveNewElement(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SEMICOLON, token.PoorMansTSqlFormatterLib$Interfaces$IToken$Value);
                             sqlTree.NewStatementDue = true;
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Colon: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Colon:
                             if (System.Array.getCount(tokenList, PoorMansTSqlFormatterLib.Interfaces.IToken) > ((tokenID.v + 1) | 0) && System.Array.getItem(tokenList, ((tokenID.v + 1) | 0), PoorMansTSqlFormatterLib.Interfaces.IToken).PoorMansTSqlFormatterLib$Interfaces$IToken$Type === PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Colon) {
                                 sqlTree.SaveNewElement(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SCOPERESOLUTIONOPERATOR, System.String.concat(token.PoorMansTSqlFormatterLib$Interfaces$IToken$Value, System.Array.getItem(tokenList, ((tokenID.v + 1) | 0), PoorMansTSqlFormatterLib.Interfaces.IToken).PoorMansTSqlFormatterLib$Interfaces$IToken$Value));
                                 tokenID.v = (tokenID.v + 1) | 0;
                             } else if (System.Array.getCount(tokenList, PoorMansTSqlFormatterLib.Interfaces.IToken) > ((tokenID.v + 1) | 0) && System.Array.getItem(tokenList, ((tokenID.v + 1) | 0), PoorMansTSqlFormatterLib.Interfaces.IToken).PoorMansTSqlFormatterLib$Interfaces$IToken$Type === PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherNode) {
-                                //This SHOULD never happen in valid T-SQL, but can happen in DB2 or NexusDB or PostgreSQL 
+                                //This SHOULD never happen in valid T-SQL, but can happen in DB2 or NexusDB or PostgreSQL
                                 // code (host variables) - so be nice and handle it anyway.
                                 sqlTree.SaveNewElement(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHERNODE, System.String.concat(token.PoorMansTSqlFormatterLib$Interfaces$IToken$Value, System.Array.getItem(tokenList, ((tokenID.v + 1) | 0), PoorMansTSqlFormatterLib.Interfaces.IToken).PoorMansTSqlFormatterLib$Interfaces$IToken$Value));
                                 tokenID.v = (tokenID.v + 1) | 0;
@@ -32713,7 +32713,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 sqlTree.SaveNewElementWithError(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHEROPERATOR, token.PoorMansTSqlFormatterLib$Interfaces$IToken$Value);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Comma: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Comma:
                             var isCTESplitter = (sqlTree.PathNameMatches$1(0, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_GENERALCONTENT) && sqlTree.PathNameMatches$1(1, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_WITH_CLAUSE));
                             sqlTree.SaveNewElement(this.GetEquivalentSqlNodeName(token.PoorMansTSqlFormatterLib$Interfaces$IToken$Type), token.PoorMansTSqlFormatterLib$Interfaces$IToken$Value);
                             if (isCTESplitter) {
@@ -32721,16 +32721,16 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 sqlTree.CurrentContainer = sqlTree.SaveNewElement(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CTE_ALIAS, "");
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.EqualsSign: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.EqualsSign:
                             sqlTree.SaveNewElement(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EQUALSSIGN, token.PoorMansTSqlFormatterLib$Interfaces$IToken$Value);
                             if (sqlTree.PathNameMatches$1(0, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_DDL_DECLARE_BLOCK)) {
                                 sqlTree.CurrentContainer = sqlTree.SaveNewElement(PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_CONTAINER_GENERALCONTENT, "");
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MultiLineComment: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineComment: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineCommentCStyle: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.WhiteSpace: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MultiLineComment:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineComment:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineCommentCStyle:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.WhiteSpace:
                             //create in statement rather than clause if there are no siblings yet
                             if (sqlTree.PathNameMatches$1(0, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_CLAUSE) && sqlTree.PathNameMatches$1(1, PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_SQL_STATEMENT) && !System.Linq.Enumerable.from(sqlTree.CurrentContainer.PoorMansTSqlFormatterLib$ParseStructure$Node$Children).any()) {
                                 sqlTree.SaveNewElementAsPriorSibling(this.GetEquivalentSqlNodeName(token.PoorMansTSqlFormatterLib$Interfaces$IToken$Type), token.PoorMansTSqlFormatterLib$Interfaces$IToken$Value, sqlTree.CurrentContainer);
@@ -32738,20 +32738,20 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 sqlTree.SaveNewElement(this.GetEquivalentSqlNodeName(token.PoorMansTSqlFormatterLib$Interfaces$IToken$Type), token.PoorMansTSqlFormatterLib$Interfaces$IToken$Value);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BracketQuotedName: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Asterisk: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Period: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherOperator: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.NationalString: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.String: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.QuotedString: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Number: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BinaryValue: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MonetaryValue: 
-                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.PseudoName: 
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BracketQuotedName:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Asterisk:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Period:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherOperator:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.NationalString:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.String:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.QuotedString:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Number:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BinaryValue:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MonetaryValue:
+                        case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.PseudoName:
                             sqlTree.SaveNewElement(this.GetEquivalentSqlNodeName(token.PoorMansTSqlFormatterLib$Interfaces$IToken$Type), token.PoorMansTSqlFormatterLib$Interfaces$IToken$Value);
                             break;
-                        default: 
+                        default:
                             throw new System.Exception("Unrecognized element encountered!");
                     }
 
@@ -32827,41 +32827,41 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
             },
             GetEquivalentSqlNodeName: function (tokenType) {
                 switch (tokenType) {
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.WhiteSpace: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.WhiteSpace:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_WHITESPACE;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineComment: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineComment:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineCommentCStyle: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineCommentCStyle:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_SINGLELINE_CSTYLE;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MultiLineComment: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MultiLineComment:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMENT_MULTILINE;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BracketQuotedName: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BracketQuotedName:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BRACKET_QUOTED_NAME;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Asterisk: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Asterisk:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_ASTERISK;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.EqualsSign: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.EqualsSign:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_EQUALSSIGN;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Comma: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Comma:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_COMMA;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Period: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Period:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PERIOD;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.NationalString: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.NationalString:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NSTRING;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.String: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.String:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_STRING;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.QuotedString: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.QuotedString:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_QUOTED_STRING;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherOperator: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherOperator:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_OTHEROPERATOR;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Number: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Number:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_NUMBER_VALUE;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MonetaryValue: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MonetaryValue:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_MONETARY_VALUE;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BinaryValue: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BinaryValue:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_BINARY_VALUE;
-                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.PseudoName: 
+                    case PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.PseudoName:
                         return PoorMansTSqlFormatterLib.Interfaces.SqlStructureConstants.ENAME_PSEUDONAME;
-                    default: 
+                    default:
                         throw new System.Exception("Mapping not found for provided Token Type");
                 }
             },
@@ -33136,7 +33136,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     return (currentCharacter === 47 || currentCharacter === 45 || currentCharacter === 43 || currentCharacter === 37 || currentCharacter === 42 || currentCharacter === 38 || currentCharacter === 124 || currentCharacter === 94 || currentCharacter === 61 || currentCharacter === 60 || currentCharacter === 62 || currentCharacter === 126);
                 },
                 IsCurrencyPrefix: function (currentCharacter) {
-                    //symbols that SQL Server recognizes as currency prefixes - these also happen to 
+                    //symbols that SQL Server recognizes as currency prefixes - these also happen to
                     // be word-breakers, except the dollar. Ref:
                     // http://msdn.microsoft.com/en-us/library/ms188688.aspx
                     return (currentCharacter === 36 || currentCharacter === 162 || currentCharacter === 163 || currentCharacter === 164 || currentCharacter === 165 || currentCharacter === 2546 || currentCharacter === 2547 || currentCharacter === 3647 || currentCharacter === 6107 || currentCharacter === 8352 || currentCharacter === 8353 || currentCharacter === 8354 || currentCharacter === 8355 || currentCharacter === 8356 || currentCharacter === 8357 || currentCharacter === 8358 || currentCharacter === 8359 || currentCharacter === 8360 || currentCharacter === 8361 || currentCharacter === 8362 || currentCharacter === 8363 || currentCharacter === 8364 || currentCharacter === 8365 || currentCharacter === 8366 || currentCharacter === 8367 || currentCharacter === 8368 || currentCharacter === 8369 || currentCharacter === 65020 || currentCharacter === 65129 || currentCharacter === 65284 || currentCharacter === 65504 || currentCharacter === 65505 || currentCharacter === 65509 || currentCharacter === 65510);
@@ -33246,88 +33246,88 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     }
 
                     switch (state.CurrentTokenizationType) {
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BlockComment: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BlockComment:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MultiLineComment, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.OtherNode: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.OtherNode:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherNode, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.PseudoName: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.PseudoName:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.PseudoName, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLineComment: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLineComment:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineComment, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLineCommentCStyle: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLineCommentCStyle:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.SingleLineCommentCStyle, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleHyphen: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleHyphen:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherOperator, "-");
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleDollar: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleDollar:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MonetaryValue, "$");
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleSlash: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleSlash:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherOperator, "/");
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.WhiteSpace: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.WhiteSpace:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.WhiteSpace, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleN: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleN:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherNode, "N");
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleExclamation: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleExclamation:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherNode, "!");
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SinglePipe: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SinglePipe:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherNode, "|");
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleGT: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleGT:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherOperator, ">");
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLT: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLT:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherOperator, "<");
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.NString: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.NString:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.NationalString, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.String: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.String:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.String, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.QuotedString: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.QuotedString:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.QuotedString, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BracketQuotedName: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BracketQuotedName:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BracketQuotedName, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.OtherOperator: 
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleOtherCompoundableOperator: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.OtherOperator:
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleOtherCompoundableOperator:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.OtherOperator, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleZero: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleZero:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Number, "0");
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SinglePeriod: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SinglePeriod:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Period, ".");
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleAsterisk: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleAsterisk:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Asterisk, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleEquals: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleEquals:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.EqualsSign, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.Number: 
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.DecimalValue: 
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.FloatValue: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.Number:
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.DecimalValue:
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.FloatValue:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.Number, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BinaryValue: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BinaryValue:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.BinaryValue, state.CurrentTokenValue.toString());
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.MonetaryValue: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.MonetaryValue:
                             PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SaveToken(state, PoorMansTSqlFormatterLib.Interfaces.SqlTokenType.MonetaryValue, state.CurrentTokenValue.toString());
                             break;
-                        default: 
+                        default:
                             throw new System.Exception("Unrecognized SQL Node Type");
                     }
 
@@ -33373,14 +33373,14 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                     }
 
                     switch (System.Nullable.getValue(state.CurrentTokenizationType)) {
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.WhiteSpace: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.WhiteSpace:
                             if (PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.IsWhitespace(state.CurrentChar)) {
                                 state.ConsumeCurrentCharacterIntoToken();
                             } else {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SinglePeriod: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SinglePeriod:
                             if (state.CurrentChar >= 48 && state.CurrentChar <= 57) {
                                 state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.DecimalValue;
                                 state.CurrentTokenValue.append(String.fromCharCode(46));
@@ -33390,7 +33390,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleZero: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleZero:
                             if (state.CurrentChar === 120 || state.CurrentChar === 88) {
                                 state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BinaryValue;
                                 state.CurrentTokenValue.append(String.fromCharCode(48));
@@ -33408,7 +33408,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.Number: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.Number:
                             if (state.CurrentChar === 101 || state.CurrentChar === 69) {
                                 state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.FloatValue;
                                 state.ConsumeCurrentCharacterIntoToken();
@@ -33421,7 +33421,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.DecimalValue: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.DecimalValue:
                             if (state.CurrentChar === 101 || state.CurrentChar === 69) {
                                 state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.FloatValue;
                                 state.ConsumeCurrentCharacterIntoToken();
@@ -33431,7 +33431,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.FloatValue: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.FloatValue:
                             if (state.CurrentChar >= 48 && state.CurrentChar <= 57) {
                                 state.ConsumeCurrentCharacterIntoToken();
                             } else if ((state.CurrentChar === 45 || state.CurrentChar === 43) && System.String.endsWith(state.CurrentTokenValue.toString().toUpperCase(), "E")) {
@@ -33440,14 +33440,14 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BinaryValue: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BinaryValue:
                             if ((state.CurrentChar >= 48 && state.CurrentChar <= 57) || (state.CurrentChar >= 65 && state.CurrentChar <= 70) || (state.CurrentChar >= 97 && state.CurrentChar <= 102)) {
                                 state.ConsumeCurrentCharacterIntoToken();
                             } else {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleDollar: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleDollar:
                             state.CurrentTokenValue.append(String.fromCharCode(36));
                             if ((state.CurrentChar >= 65 && state.CurrentChar <= 90) || (state.CurrentChar >= 97 && state.CurrentChar <= 122)) {
                                 state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.PseudoName;
@@ -33456,7 +33456,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                             }
                             state.ConsumeCurrentCharacterIntoToken();
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.MonetaryValue: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.MonetaryValue:
                             if (state.CurrentChar >= 48 && state.CurrentChar <= 57) {
                                 state.ConsumeCurrentCharacterIntoToken();
                             } else if (state.CurrentChar === 45 && state.CurrentTokenValue.getLength() === 1) {
@@ -33467,7 +33467,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleHyphen: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleHyphen:
                             if (state.CurrentChar === 45) {
                                 state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLineComment;
                                 state.HasUnprocessedCurrentCharacter = false; //DISCARDING the hyphen because of weird standard
@@ -33481,7 +33481,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleSlash: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleSlash:
                             if (state.CurrentChar === 42) {
                                 state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BlockComment;
                                 state.HasUnprocessedCurrentCharacter = false; //DISCARDING the asterisk because of weird standard
@@ -33499,8 +33499,8 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLineComment: 
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLineCommentCStyle: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLineComment:
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLineCommentCStyle:
                             if (state.CurrentChar === 13 || state.CurrentChar === 10) {
                                 var nextCharInt = state.InputReader.Peek();
                                 if (state.CurrentChar === 13 && nextCharInt === 10) {
@@ -33512,7 +33512,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 state.ConsumeCurrentCharacterIntoToken();
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BlockComment: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BlockComment:
                             if (state.CurrentChar === 42) {
                                 if (state.InputReader.Peek() === 47) {
                                     state.CommentNesting = (state.CommentNesting - 1) | 0;
@@ -33540,15 +33540,15 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 }
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.OtherNode: 
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.PseudoName: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.OtherNode:
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.PseudoName:
                             if (PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.IsNonWordCharacter(state.CurrentChar)) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             } else {
                                 state.ConsumeCurrentCharacterIntoToken();
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleN: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleN:
                             if (state.CurrentChar === 39) {
                                 state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.NString;
                                 state.HasUnprocessedCurrentCharacter = false; //DISCARDING the apostrophe because of weird standard
@@ -33562,8 +33562,8 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 }
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.NString: 
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.String: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.NString:
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.String:
                             if (state.CurrentChar === 39) {
                                 if (state.InputReader.Peek() === 39) {
                                     //add the character (once)
@@ -33579,7 +33579,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 state.ConsumeCurrentCharacterIntoToken();
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.QuotedString: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.QuotedString:
                             if (state.CurrentChar === 34) {
                                 if (state.InputReader.Peek() === 34) {
                                     //add the character (once)
@@ -33595,7 +33595,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 state.ConsumeCurrentCharacterIntoToken();
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BracketQuotedName: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.BracketQuotedName:
                             if (state.CurrentChar === 93) {
                                 if (state.InputReader.Peek() === 93) {
                                     //add the character (once)
@@ -33611,7 +33611,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 state.ConsumeCurrentCharacterIntoToken();
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLT: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleLT:
                             state.CurrentTokenValue.append(String.fromCharCode(60));
                             state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.OtherOperator;
                             if (state.CurrentChar === 61 || state.CurrentChar === 62 || state.CurrentChar === 60) {
@@ -33620,7 +33620,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleGT: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleGT:
                             state.CurrentTokenValue.append(String.fromCharCode(62));
                             state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.OtherOperator;
                             if (state.CurrentChar === 61 || state.CurrentChar === 62) {
@@ -33629,7 +33629,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleAsterisk: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleAsterisk:
                             state.CurrentTokenValue.append(String.fromCharCode(42));
                             if (state.CurrentChar === 61) {
                                 state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.OtherOperator;
@@ -33638,7 +33638,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleOtherCompoundableOperator: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleOtherCompoundableOperator:
                             state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.OtherOperator;
                             if (state.CurrentChar === 61) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.AppendCharAndCompleteToken(state);
@@ -33646,7 +33646,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SinglePipe: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SinglePipe:
                             state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.OtherOperator;
                             state.CurrentTokenValue.append(String.fromCharCode(124));
                             if (state.CurrentChar === 61 || state.CurrentChar === 124) {
@@ -33655,7 +33655,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleEquals: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleEquals:
                             state.CurrentTokenValue.append(String.fromCharCode(61));
                             if (state.CurrentChar === 61) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.AppendCharAndCompleteToken(state);
@@ -33663,7 +33663,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleExclamation: 
+                        case PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.SingleExclamation:
                             state.CurrentTokenValue.append(String.fromCharCode(33));
                             if (state.CurrentChar === 61 || state.CurrentChar === 60 || state.CurrentChar === 62) {
                                 state.CurrentTokenizationType = PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.SqlTokenizationType.OtherOperator;
@@ -33673,7 +33673,7 @@ Bridge.assembly("PoorMansTSqlFormatterJS", function ($asm, globals) {
                                 PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer.CompleteTokenAndProcessNext(state);
                             }
                             break;
-                        default: 
+                        default:
                             throw new System.Exception("In-progress node unrecognized!");
                     }
 
