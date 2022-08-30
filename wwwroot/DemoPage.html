@@ -94,8 +94,8 @@
             var formatInPlace = false;
 
             JsFormattingEngine.LoadEnvironment(
-              document.location.href.split("?")[0].replace('DemoPage.html', '').replace("allmylinks",""),
-              (url.includes("localhost") ? "" : "allmylinks/") + 'DemoSupportFiles/formattingworker.js',
+              document.location.href.split("?")[0].replace('DemoPage.html', ''),
+              'DemoSupportFiles/formattingworker.js',
               scriptURLList,
               function () { PageService.EnableUI(); },
               function (paramLength, outputString) { PageService.SetOutputPanelContent(outputString); },
