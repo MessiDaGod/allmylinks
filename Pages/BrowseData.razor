@@ -74,8 +74,8 @@
             <button id="toggleFormat" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick="Reset">Reset Value<span class="material-symbols-outlined">database</span></button>
             <hr class="invisible-divider">
             @if (UseNewVersion) {
-                <MonacoEditor @ref="_editor" Id="codeEditor" ConstructionOptions="EditorConstructionOptions"></MonacoEditor>
                 <SqlFormatter />
+                <MonacoEditor @ref="_editor" Id="codeEditor" ConstructionOptions="EditorConstructionOptions"></MonacoEditor>
             }
             @if (!UseNewVersion) {
                 <allmylinks.Pages.SqlFormat />

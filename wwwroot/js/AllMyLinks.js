@@ -76,6 +76,7 @@
     var CandlestickPage = document.getElementById("candles");
     var isCandlestickActive = (CandlestickPage && !CandlestickPage.classList.contains("hide")) ? true : false;
     var TabHistory = [];
+    var IsNew;
     TabHistory.push(Pages[0]);
 
     /*
@@ -95,11 +96,20 @@
         },
         setInputStringValue: function(isNew) {
             var result = "";
-            var iframe = isNew ? document.getElementById("sqlformat") : document.getElementById("sqlformatter");
-            var iWindow = iframe.contentWindow;
-            var iDocument = iWindow.document;
-            if (iDocument)
-            var inputString = iDocument.querySelectorAll("#inputString");
+            IsNew = isNew;
+            var iWindow, iDocument, inputString;
+            var iframe = !isNew ? document.getElementById("sqlformat") : document.getElementById("sqlformatter");
+            if (!isNew) {
+                iWindow = iframe.contentWindow;
+                iDocument = iWindow.document;
+                if (iDocument)
+                inputString = iDocument.querySelectorAll("#inputString");
+            }
+            if (isNew)
+            {
+                inputString = iframe.querySelectorAll("#inputString");
+            }
+
             if (inputString.length > 0) {
                 result = AML.getMonacoText().replace(new RegExp(String.fromCharCode(160),"g")," ").replace(new RegExp(String.fromCharCode(183),"g")," ");
                 inputString[0].textContent = result;
@@ -122,12 +132,15 @@
             }
         },
         getFormattedText: function() {
+            PS.PageService.EnableUI;
+            PS.PageService.DoFormat;
             var text = "";
-            var iframe = document.getElementById("sqlformat");
-            const iWindow = iframe.contentWindow;
-            const iDocument = iWindow.document;
-            var nodes;
-            if (iDocument) {
+            var iWindow, iDocument, inputString, nodes;
+            var iframe = !IsNew ? document.getElementById("sqlformat") : document.getElementById("sqlformatter");
+            if (!IsNew) {
+                iWindow = iframe.contentWindow;
+                iDocument = iWindow.document;
+                if (iDocument)
                 nodes = iDocument.querySelector("pre[class='SQLCode']");
                 if (nodes)
                 if (iDocument.querySelector("pre[class='SQLCode']").childNodes.length > 0) {
@@ -138,9 +151,20 @@
                     }
                 }
             }
-
+            if (IsNew)
+            {
+                nodes = iframe.querySelector("pre[class='SQLCode']");
+                if (nodes)
+                if (iframe.querySelector("pre[class='SQLCode']").childNodes.length > 0) {
+                    for (let index = 0; index < iframe.querySelector("pre[class='SQLCode']").childNodes.length; index++) {
+                        var node = iframe.querySelector("pre[class='SQLCode']").childNodes[index].textContent;
+                        if (node !== undefined | text !== "." | text !== ",")
+                        text += node;
+                    }
+                }
+            }
             let code = document.getElementById("codeEditor");
-            if (code) {
+            if (code && code.textContent !== "") {
                 code.value = text;
             }
             return text;

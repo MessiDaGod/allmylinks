@@ -10,7 +10,6 @@
 @inject Stl.Fusion.UI.UICommander _uiCommandRunner;
 @inject ILogger<SqlFormatter> Log;
 @inject ISqlService SqlService;
-@inherits MixedStateComponent<SqlFormatter.Model, SqlFormatter.LocalModel>;
 @namespace allmylinks
 
 <div id="sqlformatter" class="hide">
@@ -24,10 +23,10 @@
     </header>
     <div class="row">
         <div class="col-6">
-            <textarea name="inputString" id="inputString" style="width: 100%; height: 80vh; padding: 2px; border: 1px solid; "></textarea>
+            <textarea name="inputString" id="inputString" style="width: 100%; height: 20vh; padding: 2px; border: 1px solid; "></textarea>
         </div>
         <div class="col-6">
-            <div id="outputDiv" style="height:80vh; padding: 2px; border: 1px solid; overflow: scroll;">
+            <div id="outputDiv" style="height:20vh; padding: 2px; border: 1px solid; overflow: scroll;">
             </div>
         </div>
     </div>
@@ -68,13 +67,28 @@
     bool ready;
     string Url { get; set; } = string.Empty;
     private static readonly HttpClient http = new();
+    private MonacoEditor _editor { get; set; }
+    protected static IJSRuntime staticJsRuntime { get; set; }
+    protected DotNetObjectReference<SqlFormatter> jsObjectRef { get; set; }
+    private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
+    internal IJSObjectReference module0;
+    internal IJSObjectReference module1;
+    internal IJSObjectReference module2;
+
+
+    @* <link href="js/minimal.css" rel="stylesheet">
+    <script src="js/jquery-1.5.2.min.js"></script>
+    <script src="js/formattingengine.js"></script>
+     *@
     // 1
     protected override async Task OnInitializedAsync()
     {
         staticJsRuntime = Js;
         jsObjectRef = DotNetObjectReference.Create(this);
+
         Url = await Js.InvokeAsync<string>("AML.geturl");
         await Js.InvokeVoidAsync("AML.logit", "Url: " + Url);
+        await Js.InvokeVoidAsync("AML.showById", "sqlformatter");
         await base.OnInitializedAsync();
     }
 
@@ -85,88 +99,11 @@
         if (firstRender)
         {
             ready = true;
+            @* module0 = await Js.InvokeAsync<IJSObjectReference>("import", ".js/formattingengine.js"); *@
+            module1 = await Js.InvokeAsync<IJSObjectReference>("import", "./js/SqlFormatter.js");
             StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private MonacoEditor _editor { get; set; }
-    protected static IJSRuntime staticJsRuntime { get; set; }
-    protected DotNetObjectReference<SqlFormatter> jsObjectRef { get; set; }
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
-    private static string InitialValue { get { return @"SELECT tr.hMy Id , tr.hParent2 BatchId , tr.hPerson PersonId , tr.uRef InvoiceNumber, tr.itype2 DisplayType, tr.hOffsetAcct CashAccountId , tr.hAccrualAcct ApAccountId, tr.uPostDate PostMonth,isnull(PHATrans.sPmtType,'') PHAType  ,tr.hRemittanceVendor RemittanceVendorId, case when isnull(tr.bACH,0) = -1 and isnull(tr.CashReceipt,0) = 0 then 1 else isnull(tr.CashReceipt,0) end PaymentMethod  FROM trans tr  LEFT JOIN trans_int tri on tri.htran = tr.hmy left join H8PRHTrans PHATrans on (PHATrans.hTran = tr.hmy)  WHERE tr.hMy = 300330533"; } }
-
-    private async Task Reset()
-    {
-        await _editor.SetValue(InitialValue);
-    }
-
-    private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
-    {
-        return new StandaloneEditorConstructionOptions
-        {
-            AutomaticLayout = true,
-            Language = "sql",
-            Value = InitialValue,
-        };
-    }
-
-    private async Task SetValue()
-    {
-        await CopyMonacoToInput();
-        MyText = await Js.InvokeAsync<string>("AML.getFormattedText");
-        await Post();
-    }
-
-    private async Task CopyMonacoToInput()
-    {
-        await Js.InvokeVoidAsync("AML.logit", "Copying Monaco to Input: " + await _editor.GetValue());
-        await Js.InvokeAsync<string>("AML.setInputStringValue", await _editor.GetValue());
-        await Task.Run(() => MutableState.Invalidate()).ConfigureAwait(false);
-    }
-
-    public string MyText { get; private set; }
-
-    protected override async Task<Model> ComputeState(CancellationToken cancellationToken)
-    {
-        var model = new Model(MyText);
-        await Js.InvokeVoidAsync("AML.logit", "Formatted through ComputeState.");
-        return model;
-    }
-
-    private async Task Post()
-    {
-        await _editor.SetValue(MyText);
-        var (_, ce) = await _uiCommandRunner.Run(new SqlService.PostCommand(MyText, _session));
-        if (ce == null)
-            return;
-
-        await Js.InvokeVoidAsync("AML.logit", "Invalidating...");
-        @* await MutableState.Recompute(); *@
-        MutableState.Invalidate();
-    }
-
-    public class Model
-    {
-        public string Text { get; set; } = string.Empty;
-
-        public Model(string text)
-        {
-            Text = text;
-        }
-    }
-    public class LocalModel : SqlFormatter
-    {
-        private string _text = "";
-        public string MyText
-        {
-            get => _text;
-            set
-            {
-                if (_text == value)
-                    return;
-                _text = value;
-            }
-        }
-    }
 }
