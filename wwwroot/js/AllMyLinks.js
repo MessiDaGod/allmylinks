@@ -76,6 +76,14 @@
     var CandlestickPage = document.getElementById("candles");
     var isCandlestickActive = (CandlestickPage && !CandlestickPage.classList.contains("hide")) ? true : false;
 
+    /*
+    https://css-tricks.com/example/index.html?s=flexbox
+
+    window.location.protocol = “http:”
+    window.location.host = “css-tricks.com”
+    window.location.pathname = “/example/index.html”
+    window.location.search = “?s=flexbox”
+    */
     window.AML = {
         getUserAgent: async function() {
             return navigator.userAgent;
@@ -154,7 +162,7 @@
                 setTimeout(()=>{
                     console.log(typeof resolve(true));
                 }
-                , 1000);
+                , 2000);
             }
             );
         },

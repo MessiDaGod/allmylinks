@@ -10,8 +10,10 @@
     <link href="DemoSupportFiles/minimal.css" rel="stylesheet">
     <script src="DemoSupportFiles/jquery-1.5.2.min.js"></script>
     <script src="DemoSupportFiles/formattingengine.js"></script>
+    <script src="js/AllMyLinks.js"></script>
 
     <script>
+
         var PageService = function () {
             var EnableUI = function () {
                 $("#inputString").removeAttr("disabled");
@@ -76,11 +78,14 @@
     </script>
     <script>
         $(function () {
+            var url = window.location.protocol + "//" + window.location.host + "/";
+            console.log("url from DemoPage.html: " + url);
+
             var minflag = false;
             var debugflag = true;
 
             var scriptURLList = [
-                'JSLibReference/' + (debugflag ? "Debug/" : "Release/") + 'PoorMansTSqlFormatterJS.' + (minflag ? "min." : "") + 'js',
+                (url.includes("localhost") ? "" : "allmylinks/") + 'JSLibReference/' + (debugflag ? "Debug/" : "Release/") + 'PoorMansTSqlFormatterJS.' + (minflag ? "min." : "") + 'js',
                 'DemoSupportFiles/formattingmapper.js'
             ];
 
@@ -90,7 +95,7 @@
 
             JsFormattingEngine.LoadEnvironment(
               document.location.href.split("?")[0].replace('DemoPage.html', ''),
-              'DemoSupportFiles/formattingworker.js',
+              (url.includes("localhost") ? "" : "allmylinks/") + 'DemoSupportFiles/formattingworker.js',
               scriptURLList,
               function () { PageService.EnableUI(); },
               function (paramLength, outputString) { PageService.SetOutputPanelContent(outputString); },
@@ -102,8 +107,6 @@
 </head>
 <body>
     <header>
-        <span class="logo">PoorMansTSqlFormatterJS Demo Harness
-        </span>
         <nav class="float-right">
             <ul>
                 <li><label><input type="checkbox" name="EnableFormatAsYouGo" id="formatAsYouGo" checked/> Format as-you-go</label></li>
