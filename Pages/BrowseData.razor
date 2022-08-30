@@ -346,7 +346,7 @@
     private async Task CopyMonacoToInput()
     {
         await Js.InvokeVoidAsync("AML.logit", "Copying Monaco to Input: " + await _editor.GetValue());
-        await Js.InvokeAsync<string>("AML.setInputStringValue", await _editor.GetValue());
+        await Js.InvokeAsync<string>("AML.setInputStringValue", UseNewVersion);
         await Task.Run(() => MutableState.Invalidate()).ConfigureAwait(false);
     }
 

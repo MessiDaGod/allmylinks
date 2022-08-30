@@ -93,11 +93,9 @@
                 formatterDiv.classList.add("hide");
             }
         },
-        setInputStringValue: function() {
+        setInputStringValue: function(isNew) {
             var result = "";
-            var iframe = document.getElementById("sqlformat");
-            if (!iframe)
-                iframe = document.getElementById("sqlformatter");
+            var iframe = isNew ? document.getElementById("sqlformat") : document.getElementById("sqlformatter");
             var iWindow = iframe.contentWindow;
             var iDocument = iWindow.document;
             if (iDocument)
@@ -163,24 +161,19 @@
             }
         },
         setActiveDiv: function(activeDivId) {
-            var lastTab = TabHistory[TabHistory.length - 1];
+            var lastTab = document.getElementById(TabHistory[TabHistory.length - 1]);
             document.getElementById("appbar").textContent = activeDivId;
             var active = document.getElementById(activeDivId);
-            if (active && active.id == "showcandles") {
+
+            AML.showById(activeDivId.replace("show", ""));
+            active.classList.add("active");
+
+            AML.hideById(lastTab.id.replace("show", ""));
+            lastTab.classList.remove("active");
+
+            if (active && active.id.includes("candles")) {
                 AML.plot();
             }
-            for (var i = 0; i < Pages.length; i++) {
-                if (Pages[i] === activeDivId)
-                    continue;
-
-                    let removeActive = document.getElementById(Pages[i]);
-                    removeActive.classList.remove("active");
-                    AML.hideById(removeActive.id.replace("show", ""));
-                }
-
-            if (!active.classList.contains("active"))
-                active.classList.add("active");
-            AML.showById(activeDivId.replace("show", ""));
             TabHistory.push(activeDivId);
         },
         doIsCandlesActive: async function() {

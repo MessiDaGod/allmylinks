@@ -34,7 +34,6 @@
 @if (Platform != "iPhone" && Platform != "Android")
 {
         <MudButton id="showsql" @onclick="ShowSql" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.SQL)">SQL</MudButton>
-        <MudButton id="showsqlformatter" @onclick="ShowSql2" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.SQL)">SQL2</MudButton>
         <MudButton id="showcandles" @onclick="ShowCandles" Color="Color.Inherit" Variant="Variant.Text" Class="@GetActiveClass(DocsBasePage.SQL)">Candlestick</MudButton>
         <MudSpacer/>
 }
@@ -140,10 +139,6 @@
     async Task ShowSql()
     {
         await Js.InvokeVoidAsync("AML.setActiveDiv", "showsql");
-    }
-    async Task ShowSql2()
-    {
-        await Js.InvokeVoidAsync("AML.setActiveDiv", "showsqlformatter");
     }
     async Task ShowAllMyLinks()
     {
