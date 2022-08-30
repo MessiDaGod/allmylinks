@@ -112,7 +112,7 @@
                 for (let i = 0; i < element.length; i++) {
                     result += element[i].textContent.trim();
                 }
-                return result;
+                return result.replace(new RegExp(String.fromCharCode(160),"g")," ").replace(new RegExp(String.fromCharCode(183),"g")," ");
             }
         },
         getFormattedText: function() {
