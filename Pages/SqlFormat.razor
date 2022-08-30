@@ -2,12 +2,11 @@
 @using Microsoft.JSInterop;
 
 @if (!Url.Contains("localhost")) {
-    <iframe id="sqlformat" src="https://messidagod.github.io/allmylinks/DemoPage.html" width="70%" height="60%"></iframe>
+    <iframe id="sqlformat" src="https://messidagod.github.io/allmylinks/DemoPage.html"></iframe>
 }
 else {
-    <iframe id="sqlformat" src=@String.Concat(Url, "DemoPage.html") width="70%" height="60%"></iframe>
+    <iframe id="sqlformat" src=@String.Concat(Url, "DemoPage.html")></iframe>
 }
-
 
 @code {
 

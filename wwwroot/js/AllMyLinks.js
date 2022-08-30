@@ -72,7 +72,7 @@
     }
     // <span class="material-symbols-outlined">database</span>
     var FS;
-    var Pages = ["showallmylinks", "showsql", "showisitchristmas", "showcandles"];
+    var Pages = ["showallmylinks", "showsql", "showisitchristmas", "showcandles", "showsqlformatter"];
     var CandlestickPage = document.getElementById("candles");
     var isCandlestickActive = (CandlestickPage && !CandlestickPage.classList.contains("hide")) ? true : false;
 
@@ -85,6 +85,12 @@
     window.location.search = “?s=flexbox”
     */
     window.AML = {
+        formatterDiv: function() {
+            var formatterDiv = document.getElementById("formatterDiv");
+            if (formatterDiv) {
+                formatterDiv.classList.add("hide");
+            }
+        },
         setInputStringValue: function() {
             var result = "";
             var iframe = document.getElementById("sqlformat");
@@ -93,10 +99,8 @@
             if (iDocument)
             var inputString = iDocument.querySelectorAll("#inputString");
             if (inputString.length > 0) {
-                result = AML.getMonacoText();
-                inputString[0].textContent = result.replace(new RegExp(String.fromCharCode(160),"g")," ").replace(new RegExp(String.fromCharCode(183),"g")," ");
-                // inputString[0].innerText = result;
-                // inputString[0].innerHTML = result;
+                result = AML.getMonacoText().replace(new RegExp(String.fromCharCode(160),"g")," ").replace(new RegExp(String.fromCharCode(183),"g")," ");
+                inputString[0].textContent = result;
             }
             return result;
         },
@@ -232,7 +236,6 @@
                 var id = el.id.replace("show", "");
                 AML.showById(id);
             }
-            ;
             for (var i = 0; i < Pages.length; i++) {
                 if (Pages[i] === activeDivId) {
                     el.classList.remove("hide");
@@ -244,7 +247,6 @@
                     AML.hideById(el.id.replace("show", ""));
                 }
             }
-            ;
         },
         addDbLink: function() {
             var els = document.querySelectorAll("a[href='/SqlPage']");

@@ -75,7 +75,12 @@ internal class Program
         // host.UseStaticFiles();
         // host.UseRouting();
 
-        // host.UseCors();
+
+        // builder.Services.Configure<ForwardedHeadersOptions>(options =>
+        // {
+        //     options.ForwardedHeaders =
+        //         ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+        // });
 
         host.Services.HostedServices().Start();
         return host.RunAsync();
@@ -112,6 +117,7 @@ internal class Program
         // fusionClient.AddReplicaService<IWeatherForecastService, IWeatherForecastClientDef>();
         // fusionClient.AddReplicaService<IChatService, IChatClientDef>();
         fusion.AddComputeService<ISqlService, SqlService>();
+
         ConfigureSharedServices(services);
     }
 
