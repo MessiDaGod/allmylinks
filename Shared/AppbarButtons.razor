@@ -36,7 +36,7 @@
     <MudIconButton Icon="@(LayoutService.IsDarkMode ? Icons.Rounded.LightMode : Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@LayoutService.ToggleDarkMode"/>
 </MudTooltip>
     <MudTooltip Duration="1000" Text="Operating System">
-        <MudButton id="os"><span class="material-symbols-outlined">computer</span>&nbsp;@Platform</MudButton>
+        <MudButton id="os"><span class="material-symbols-outlined">@IsMobileIcon</span>&nbsp;@Platform</MudButton>
     </MudTooltip>
 
 @code {
@@ -44,6 +44,7 @@
     private string UserAgent { get; set; } = string.Empty;
     public string Platform { get; set; } = string.Empty;
     private bool IsMobile { get; set; } = false;
+    private string IsMobileIcon { get; set; } = "computer";
     protected override async Task OnInitializedAsync()
     {
         UserAgent = await Js.InvokeAsync<string>("AML.getUserAgent");
@@ -55,25 +56,32 @@
         {
             OS.Platform = m.Value;
             Platform = OS.Platform;
+            goto Finish;
         }
         pattern = @"(Windows)";
         foreach (Match m in Regex.Matches(UserAgent, pattern, options))
         {
             OS.Platform = m.Value;
             Platform = OS.Platform;
+            goto Finish;
         }
         pattern = @"(iPhone)";
         foreach (Match m in Regex.Matches(UserAgent, pattern, options))
         {
             OS.Platform = m.Value;
             Platform = OS.Platform;
+            IsMobileIcon = "phone_iphone";
+            goto Finish;
         }
         pattern = @"(Android)";
         foreach (Match m in Regex.Matches(UserAgent, pattern, options))
         {
             OS.Platform = m.Value;
             Platform = OS.Platform;
+            IsMobileIcon = "phone_android";
+            goto Finish;
         }
+        Finish:
         await base.OnInitializedAsync();
     }
 
@@ -89,8 +97,6 @@
             bIsMobile = true;
             IsMobile = bIsMobile;
         }
-
-        await Js.InvokeVoidAsync("AML.logit", IsMobile ? "true" : "false");
         return IsMobile;
     }
 }
