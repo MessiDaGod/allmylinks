@@ -86,6 +86,9 @@
     window.location.host = “css-tricks.com”
     window.location.pathname = “/example/index.html”
     window.location.search = “?s=flexbox”
+
+    .replace(new RegExp(String.fromCharCode(160),"g"), String.fromCharCode(32))
+
     */
     window.AML = {
         formatterDiv: function() {
@@ -111,7 +114,7 @@
             }
 
             if (inputString.length > 0) {
-                result = AML.getMonacoText().replace(new RegExp(String.fromCharCode(160),"g")," ").replace(new RegExp(String.fromCharCode(183),"g")," ");
+                result = AML.getMonacoText().replace(new RegExp(String.fromCharCode(160),"g"), String.fromCharCode(32)).replace(new RegExp(String.fromCharCode(183),"g"), String.fromCharCode(32));
                 inputString[0].textContent = result;
             }
         },
@@ -125,9 +128,9 @@
             var result = "";
             if (element.length > 0) {
                 for (let i = 0; i < element.length; i++) {
-                    result += element[i].textContent.trim();
+                    result += element[i].textContent;
                 }
-                return result.replace(new RegExp(String.fromCharCode(160),"g")," ").replace(new RegExp(String.fromCharCode(183),"g")," ");
+                return result;
             }
         },
         getFormattedText: async function() {
