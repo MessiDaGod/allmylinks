@@ -174,7 +174,7 @@
     protected static IJSRuntime staticJsRuntime { get; set; }
     protected DotNetObjectReference<BrowseData> jsObjectRef { get; set; }
     bool FirstRender { get; set; } = true;
-
+    public string MyText { get; private set; }
     private static string InitialValue { get { return @"SELECT tr.hMy Id , tr.hParent2 BatchId , tr.hPerson PersonId , tr.uRef InvoiceNumber, tr.itype2 DisplayType, tr.hOffsetAcct CashAccountId , tr.hAccrualAcct ApAccountId, tr.uPostDate PostMonth,isnull(PHATrans.sPmtType,'') PHAType  ,tr.hRemittanceVendor RemittanceVendorId, case when isnull(tr.bACH,0) = -1 and isnull(tr.CashReceipt,0) = 0 then 1 else isnull(tr.CashReceipt,0) end PaymentMethod  FROM trans tr  LEFT JOIN trans_int tri on tri.htran = tr.hmy left join H8PRHTrans PHATrans on (PHATrans.hTran = tr.hmy)  WHERE tr.hMy = 300330533"; } }
 
     protected override async Task OnInitializedAsync()
@@ -347,10 +347,9 @@
     {
         await Js.InvokeVoidAsync("AML.logit", "Copying Monaco to Input: " + await _editor.GetValue());
         await Js.InvokeAsync<string>("AML.setInputStringValue", UseNewVersion);
-        await Task.Run(() => MutableState.Invalidate()).ConfigureAwait(false);
+        await Js.InvokeVoidAsync("AML.getFormattedText");
+        @* await Task.Run(() => MutableState.Invalidate()).ConfigureAwait(false); *@
     }
-
-    public string MyText { get; private set; }
 
     protected override async Task<Model> ComputeState(CancellationToken cancellationToken)
     {

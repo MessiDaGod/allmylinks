@@ -132,8 +132,8 @@
             }
         },
         getFormattedText: function() {
-            PS.PageService.EnableUI;
-            PS.PageService.DoFormat;
+            PS.PageService.EnableUI();
+            // PS.PageService.DoFormat;
             var text = "";
             var iWindow, iDocument, inputString, nodes;
             var iframe = !IsNew ? document.getElementById("sqlformat") : document.getElementById("sqlformatter");
@@ -164,7 +164,7 @@
                 }
             }
             let code = document.getElementById("codeEditor");
-            if (code && code.textContent !== "") {
+            if (code && text !== "") {
                 code.value = text;
             }
             return text;
@@ -198,6 +198,12 @@
             if (active && active.id.includes("candles")) {
                 AML.plot();
             }
+
+            if (active.id.includes("sqlformatter")) {
+                AML.showById("sqlformatter");
+                document.getElementById("sqlformatter").classList.remove("hide");
+            }
+
             TabHistory.push(activeDivId);
         },
         doIsCandlesActive: async function() {

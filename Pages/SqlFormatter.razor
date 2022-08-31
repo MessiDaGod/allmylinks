@@ -12,7 +12,7 @@
 @inject ISqlService SqlService;
 @namespace allmylinks
 
-<div id="sqlformatter" class="hide">
+<div id="sqlformatter" class="">
     <header>
         <nav class="float-right">
             <ul>
@@ -34,7 +34,8 @@
 
 <style>
     #sqlformatter {
-        padding-top: 70px;
+        padding-top: 0px;
+        visibility: hidden;
     }
     .blue {
         color: blue !important;
@@ -56,9 +57,6 @@
     }
     #outputDiv, #codeEditor,  #outputDiv2, #codeEditor2 {
         height:70vh; padding: 2px; border: 1px solid; overflow: scroll;
-    }
-    .hide {
-        display: none !important;
     }
 </style>
 

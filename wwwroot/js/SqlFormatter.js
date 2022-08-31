@@ -9,6 +9,9 @@
             $("#inputString").removeAttr("disabled");
             $("#inputString").change(inputChanged);
             $("#inputString").blur(inputChanged);
+            console.log(encodeURIComponent($("#inputString").val()));
+            DoFormat();
+            // $("#formatAsYouGo").change(PS.PageService.CheckSettings);
         }
 
         var inputChanged = function () {
