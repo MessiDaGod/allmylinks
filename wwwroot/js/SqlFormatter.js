@@ -9,7 +9,7 @@
             $("#inputString").removeAttr("disabled");
             $("#inputString").change(inputChanged);
             $("#inputString").blur(inputChanged);
-            console.log(encodeURIComponent($("#inputString").val()));
+            CheckSettings();
             DoFormat();
             // $("#formatAsYouGo").change(PS.PageService.CheckSettings);
         }
@@ -32,7 +32,7 @@
         }
 
         var NotifyFormattingResult = function (formattingResult) {
-            //TODO: add safety here, against race conditions etc.
+            console.log("formattingResult.outputSqlHtml: from SqlFormatter.js" + formattingResult.outputSqlHtml);
             SetOutputPanelContent(formattingResult.outputSqlHtml);
         }
 

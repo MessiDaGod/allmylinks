@@ -114,7 +114,6 @@
                 result = AML.getMonacoText().replace(new RegExp(String.fromCharCode(160),"g")," ").replace(new RegExp(String.fromCharCode(183),"g")," ");
                 inputString[0].textContent = result;
             }
-            return result;
         },
         setInputAsync: async function() {
             setInputStringValue().then(x => {
@@ -131,8 +130,9 @@
                 return result.replace(new RegExp(String.fromCharCode(160),"g")," ").replace(new RegExp(String.fromCharCode(183),"g")," ");
             }
         },
-        getFormattedText: function() {
+        getFormattedText: async function() {
             PS.PageService.EnableUI();
+            await AML.resolveAfter2Seconds();
             // PS.PageService.DoFormat;
             var text = "";
             var iWindow, iDocument, inputString, nodes;
@@ -146,7 +146,7 @@
                 if (iDocument.querySelector("pre[class='SQLCode']").childNodes.length > 0) {
                     for (let index = 0; index < iDocument.querySelector("pre[class='SQLCode']").childNodes.length; index++) {
                         var node = iDocument.querySelector("pre[class='SQLCode']").childNodes[index].textContent;
-                        if (node !== undefined | text !== "." | text !== ",")
+                        if (Sql.isNullOrEmpty(node))
                         text += node;
                     }
                 }
@@ -185,7 +185,10 @@
             }
         },
         setActiveDiv: function(activeDivId) {
+
             var lastTab = document.getElementById(TabHistory[TabHistory.length - 1]);
+            if (activeDivId === lastTab.id)
+                return;
             document.getElementById("appbar").textContent = activeDivId;
             var active = document.getElementById(activeDivId);
 
@@ -253,7 +256,7 @@
                 setTimeout(()=>{
                     console.log(typeof resolve(true));
                 }
-                , 2000);
+                , 100);
             }
             );
         },
@@ -329,6 +332,11 @@
         },
         doclear: function() {
             document.getElementById("myList").innerHTML = "";
+        },
+        clear: function() {
+            var el = document.getElementById("errorDisplay");
+            if (el)
+                el.innerHTML = "";
         },
         plot: function(/** @type {string | URL} */
         url) {

@@ -74,8 +74,8 @@
             <button id="toggleFormat" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick="Reset">Reset Value<span class="material-symbols-outlined">database</span></button>
             <hr class="invisible-divider">
             @if (UseNewVersion) {
-                <SqlFormatter />
                 <MonacoEditor @ref="_editor" Id="codeEditor" ConstructionOptions="EditorConstructionOptions"></MonacoEditor>
+                <SqlFormatter />
             }
             @if (!UseNewVersion) {
                 <allmylinks.Pages.SqlFormat />
@@ -291,6 +291,7 @@
     private async Task Clear()
     {
         await _editor.SetValue(string.Empty);
+        await Js.InvokeVoidAsync("AML.clear");
     }
 
     private void CloseMe(bool value)
@@ -339,22 +340,22 @@
     private async Task SetValue()
     {
         await CopyMonacoToInput();
-        MyText = await Js.InvokeAsync<string>("AML.getFormattedText");
         await Post();
     }
 
     private async Task CopyMonacoToInput()
     {
-        await Js.InvokeVoidAsync("AML.logit", "Copying Monaco to Input: " + await _editor.GetValue());
-        await Js.InvokeAsync<string>("AML.setInputStringValue", UseNewVersion);
-        await Js.InvokeVoidAsync("AML.getFormattedText");
-        @* await Task.Run(() => MutableState.Invalidate()).ConfigureAwait(false); *@
+        await Js.InvokeVoidAsync("AML.setInputStringValue", UseNewVersion);
+        MyText = await Js.InvokeAsync<string>("AML.getFormattedText");
+        await Js.InvokeVoidAsync("AML.logit", "Copying Monaco to Input");
+        await Task.Run(() => MutableState.Invalidate()).ConfigureAwait(false);
     }
 
     protected override async Task<Model> ComputeState(CancellationToken cancellationToken)
     {
         var model = new Model(MyText);
         await Js.InvokeVoidAsync("AML.logit", "Formatted through ComputeState.");
+        await Post();
         return model;
     }
 
@@ -366,7 +367,7 @@
             return;
 
         await Js.InvokeVoidAsync("AML.logit", "Invalidating...");
-        @* await MutableState.Recompute(); *@
+        await MutableState.Recompute();
         MutableState.Invalidate();
     }
 }
