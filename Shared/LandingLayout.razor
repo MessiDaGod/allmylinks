@@ -1,3 +1,4 @@
+@using System.Text.RegularExpressions;
 @inject IJSRuntime Js;
 @inherits LayoutComponentBase
 @layout MainLayout
@@ -72,6 +73,27 @@
         }
     Finish:
         await base.OnInitializedAsync();
+    }
+
+    async Task ShowXmas()
+    {
+        ToggleDrawer();
+        await Js.InvokeVoidAsync("AML.setActiveDiv", "showisitchristmas");
+    }
+    async Task ShowSql()
+    {
+        ToggleDrawer();
+        await Js.InvokeVoidAsync("AML.setActiveDiv", "showsql");
+    }
+    async Task ShowAllMyLinks()
+    {
+        ToggleDrawer();
+        await Js.InvokeVoidAsync("AML.setActiveDiv", "showallmylinks");
+    }
+    async Task ShowCandles()
+    {
+        ToggleDrawer();
+        await Js.InvokeVoidAsync("AML.setActiveDiv", "showcandles");
     }
 
     protected async Task<bool> GetIsMobile()
