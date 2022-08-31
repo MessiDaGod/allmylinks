@@ -73,6 +73,7 @@
             <button id="clear" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick="Clear">Clear<span class="material-symbols-outlined">database</span></button>
             <small id="tableQueryDetails" class="ml-2"></small>
             <button id="toggleFormat" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick="Reset">Reset Value<span class="material-symbols-outlined">database</span></button>
+            <button id="clear" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick="ToggleInputs">Toggle Inputs<span class="material-symbols-outlined">database</span></button>
             <hr class="invisible-divider">
             @if (UseNewVersion) {
                 <MonacoEditor @ref="_editor" Id="codeEditor" ConstructionOptions="EditorConstructionOptions"></MonacoEditor>
@@ -293,6 +294,12 @@
     {
         await _editor.SetValue(string.Empty);
         await Js.InvokeVoidAsync("AML.clear");
+    }
+
+    private async Task ToggleInputs()
+    {
+        await _editor.SetValue(string.Empty);
+        await Js.InvokeVoidAsync("AML.ToggleInputs");
     }
 
     private async Task SetValue()

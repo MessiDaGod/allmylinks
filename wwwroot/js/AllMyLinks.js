@@ -95,6 +95,13 @@
     .replace(new RegExp(String.fromCharCode(160),"g"), "\n").replace(new RegExp(String.fromCharCode(183),"g"), "\n")
     */
     window.AML = {
+        ToggleInputs: function(inputs) {
+            let el = document.getElementById("sqlformatter");
+            if (el) {
+                el.classList.toggle("hide");
+                el.classList.toggle("hidden");
+            }
+        },
         formatterDiv: function() {
             var formatterDiv = document.getElementById("formatterDiv");
             if (formatterDiv) {
