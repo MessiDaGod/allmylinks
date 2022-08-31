@@ -29,13 +29,13 @@
     protected override async Task OnInitializedAsync()
     {
         UserAgent = await Js.InvokeAsync<string>("AML.getUserAgent");
-        IsMobile = await SetBrowerAgnostic();
+        IsMobile = await GetIsMobile();
         await Js.InvokeVoidAsync("AML.logit", IsMobile ? "Mobile: true" : "Mobile: false");
     }
 
 
 
-    protected async Task<bool> SetBrowerAgnostic()
+    protected async Task<bool> GetIsMobile()
     {
         // read cookie value set for "Use Browser Agnostic
 

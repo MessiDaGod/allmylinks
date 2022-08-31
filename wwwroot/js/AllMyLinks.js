@@ -147,24 +147,8 @@
             var text = "";
             var iWindow, iDocument, inputString, nodes;
             var iframe = !IsNew ? document.getElementById("sqlformat") : document.getElementById("sqlformatter");
-            if (!IsNew) {
-                iWindow = iframe.contentWindow;
-                iDocument = iWindow.document;
-                if (iDocument)
-                nodes = iDocument.querySelector("pre[class='SQLCode']");
-                if (nodes)
-                if (iDocument.querySelector("pre[class='SQLCode']").childNodes.length > 0) {
-                    for (let index = 0; index < iDocument.querySelector("pre[class='SQLCode']").childNodes.length; index++) {
-                        var node = iDocument.querySelector("pre[class='SQLCode']").childNodes[index].textContent;
-                        if (Sql.isNullOrEmpty(node))
-                        text += node;
-                    }
-                }
-            }
-            if (IsNew)
-            {
-                nodes = iframe.querySelector("pre[class='SQLCode']");
-                if (nodes)
+            nodes = iframe.querySelector("pre[class='SQLCode']");
+            if (nodes)
                 if (iframe.querySelector("pre[class='SQLCode']").childNodes.length > 0) {
                     for (let index = 0; index < iframe.querySelector("pre[class='SQLCode']").childNodes.length; index++) {
                         var node = iframe.querySelector("pre[class='SQLCode']").childNodes[index].textContent;
@@ -172,7 +156,6 @@
                         text += reverse(node).substring(0, 1) === "\n" ? (node.substring(0, node.length - 1) + "\n" + " ") : node;
                     }
                 }
-            }
             let code = document.getElementById("codeEditor");
             text = text.replace(new RegExp(String.fromCharCode(160),"g"), String.fromCharCode(32))
             if (code && text !== "") {
