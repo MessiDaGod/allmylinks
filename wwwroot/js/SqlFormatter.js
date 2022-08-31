@@ -32,16 +32,13 @@
         }
 
         var NotifyFormattingResult = function (formattingResult) {
-            console.log("formattingResult.outputSqlHtml: from SqlFormatter.js" + formattingResult.outputSqlHtml);
             SetOutputPanelContent(formattingResult.outputSqlHtml);
         }
 
         var CheckSettings = function () {
             if ($("#formatAsYouGo:checked").val())
                 $('#inputString').change(DoFormat)
-            else
-                //untested...
-                $("#inputString").keyup(null);
+            else $("#inputString").keyup(null);
         }
 
         var formatToOutDiv = function () {

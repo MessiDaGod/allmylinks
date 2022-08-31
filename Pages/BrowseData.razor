@@ -5,6 +5,7 @@
 @using Stl.Fusion
 @using Stl.Fusion.Blazor;
 @inject IJSRuntime Js;
+@using System.Text.RegularExpressions;
 @inject Session _session;
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper;
 @inject Stl.Fusion.UI.UICommander _uiCommandRunner;
@@ -175,7 +176,7 @@
     protected DotNetObjectReference<BrowseData> jsObjectRef { get; set; }
     bool FirstRender { get; set; } = true;
     public string MyText { get; private set; }
-    private static string InitialValue { get { return @"SELECT tr.hMy Id , tr.hParent2 BatchId , tr.hPerson PersonId , tr.uRef InvoiceNumber, tr.itype2 DisplayType, tr.hOffsetAcct CashAccountId , tr.hAccrualAcct ApAccountId, tr.uPostDate PostMonth,isnull(PHATrans.sPmtType,'') PHAType  ,tr.hRemittanceVendor RemittanceVendorId, case when isnull(tr.bACH,0) = -1 and isnull(tr.CashReceipt,0) = 0 then 1 else isnull(tr.CashReceipt,0) end PaymentMethod  FROM trans tr  LEFT JOIN trans_int tri on tri.htran = tr.hmy left join H8PRHTrans PHATrans on (PHATrans.hTran = tr.hmy)  WHERE tr.hMy = 300330533"; } }
+    private static string InitialValue { get { return @"SELECT tr.hMy Id , tr.hParent2 BatchId , tr.hPerson PersonId , tr.uRef InvoiceNumber, case when isnull(tr.bACH,0) = -1 and isnull(tr.CashReceipt,0) = 0 then 1 else isnull(tr.CashReceipt,0) end PaymentMethod FROM trans tr LEFT JOIN trans_int tri on tri.htran = tr.hmy left join H8PRHTrans PHATrans on (PHATrans.hTran = tr.hmy)  WHERE tr.hMy = 300330533"; } }
 
     protected override async Task OnInitializedAsync()
     {
@@ -294,6 +295,57 @@
         await Js.InvokeVoidAsync("AML.clear");
     }
 
+    private async Task SetValue()
+    {
+        await Js.InvokeVoidAsync("AML.clearInput");
+        await CopyMonacoToInput();
+        await Post();
+    }
+
+    /// <summary>
+    /// Char(13) – Carriage Return, Char(10) – Line Feed
+    /// </summary>
+    /// <returns></returns>
+    private async Task CopyMonacoToInput()
+    {
+        await Js.InvokeVoidAsync("AML.setInputStringValue", UseNewVersion);
+        string input = $"{await Js.InvokeAsync<string>("AML.getFormattedText")}";
+        string pattern = $"{(char)13}";
+        string substitution = $"{(char)10}{(char)13}{(char)9}";
+        RegexOptions options = RegexOptions.Multiline | RegexOptions.IgnoreCase;
+
+        Regex regex = new Regex(pattern, options);
+        MyText  = regex.Replace(input, substitution);
+        @* MyText = await Js.InvokeAsync<string>("AML.getFormattedText"); *@
+        await Task.Run(() => MutableState.Invalidate()).ConfigureAwait(false);
+    }
+
+    protected override async Task<Model> ComputeState(CancellationToken cancellationToken)
+    {
+        var model = new Model(MyText);
+        await Js.InvokeVoidAsync("AML.logit", "Formatted through ComputeState.");
+        await Post();
+        return model;
+    }
+
+    private async Task Post()
+    {
+        string pattern = $"{(char)13}";
+        string substitution = $"{(char)10}{(char)13}{(char)9}";
+        RegexOptions options = RegexOptions.Multiline | RegexOptions.IgnoreCase;
+
+        Regex regex = new Regex(pattern, options);
+        MyText  = regex.Replace(MyText, substitution);
+        await _editor.SetValue(MyText);
+        var (_, ce) = await _uiCommandRunner.Run(new SqlService.PostCommand(MyText, _session));
+        if (ce == null)
+            return;
+
+        await Js.InvokeVoidAsync("AML.logit", "Invalidating...");
+        await MutableState.Recompute();
+        MutableState.Invalidate();
+    }
+
     private void CloseMe(bool value)
     {
         if (value)
@@ -337,37 +389,4 @@
 
     }
 
-    private async Task SetValue()
-    {
-        await CopyMonacoToInput();
-        await Post();
-    }
-
-    private async Task CopyMonacoToInput()
-    {
-        await Js.InvokeVoidAsync("AML.setInputStringValue", UseNewVersion);
-        MyText = await Js.InvokeAsync<string>("AML.getFormattedText");
-        await Js.InvokeVoidAsync("AML.logit", "Copying Monaco to Input");
-        await Task.Run(() => MutableState.Invalidate()).ConfigureAwait(false);
-    }
-
-    protected override async Task<Model> ComputeState(CancellationToken cancellationToken)
-    {
-        var model = new Model(MyText);
-        await Js.InvokeVoidAsync("AML.logit", "Formatted through ComputeState.");
-        await Post();
-        return model;
-    }
-
-    private async Task Post()
-    {
-        await _editor.SetValue(MyText);
-        var (_, ce) = await _uiCommandRunner.Run(new SqlService.PostCommand(MyText, _session));
-        if (ce == null)
-            return;
-
-        await Js.InvokeVoidAsync("AML.logit", "Invalidating...");
-        await MutableState.Recompute();
-        MutableState.Invalidate();
-    }
 }

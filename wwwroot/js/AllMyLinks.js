@@ -88,7 +88,7 @@
     window.location.search = “?s=flexbox”
 
     .replace(new RegExp(String.fromCharCode(160),"g"), String.fromCharCode(32))
-
+    .replace(new RegExp(String.fromCharCode(160),"g"), "\n").replace(new RegExp(String.fromCharCode(183),"g"), "\n")
     */
     window.AML = {
         formatterDiv: function() {
@@ -96,6 +96,9 @@
             if (formatterDiv) {
                 formatterDiv.classList.add("hide");
             }
+        },
+        clearInput: function() {
+            document.getElementById("inputString").value = "";
         },
         setInputStringValue: function(isNew) {
             var result = "";
@@ -114,8 +117,8 @@
             }
 
             if (inputString.length > 0) {
-                result = AML.getMonacoText().replace(new RegExp(String.fromCharCode(160),"g"), String.fromCharCode(32)).replace(new RegExp(String.fromCharCode(183),"g"), String.fromCharCode(32));
-                inputString[0].textContent = result;
+                result = AML.getMonacoText().replace(new RegExp(String.fromCharCode(160),"gmi"), "\t\r\n");
+                inputString[0].value = result;
             }
         },
         setInputAsync: async function() {
@@ -161,12 +164,13 @@
                 if (iframe.querySelector("pre[class='SQLCode']").childNodes.length > 0) {
                     for (let index = 0; index < iframe.querySelector("pre[class='SQLCode']").childNodes.length; index++) {
                         var node = iframe.querySelector("pre[class='SQLCode']").childNodes[index].textContent;
-                        if (node !== undefined | text !== "." | text !== ",")
+                        if (node !== undefined)
                         text += node;
                     }
                 }
             }
             let code = document.getElementById("codeEditor");
+            text = text.replace(new RegExp(String.fromCharCode(160),"g"), String.fromCharCode(32))
             if (code && text !== "") {
                 code.value = text;
             }

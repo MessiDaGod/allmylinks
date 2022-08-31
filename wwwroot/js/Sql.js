@@ -521,9 +521,9 @@
                 for (let index = 0; index < lines.length; index++) {
                     const line = lines[index];
                     if (index === lines.length - 1)
-                        query += line.innerText.replaceAll(';', '') + ";";
+                        query += line.textContent.replaceAll(';', '') + ";";
                     else
-                        query += line.innerText + " ";
+                        query += line.textContent + " ";
                 }
                 let regex = /\/\*(.|\n)*?\*\//gm;
                 let subst = ``;
