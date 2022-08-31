@@ -309,13 +309,13 @@
     private async Task CopyMonacoToInput()
     {
         await Js.InvokeVoidAsync("AML.setInputStringValue", UseNewVersion);
-        string input = $"{await Js.InvokeAsync<string>("AML.getFormattedText")}";
-        string pattern = $"{(char)13}";
+        MyText = await Js.InvokeAsync<string>("AML.getFormattedText");
+        @* string pattern = $"{(char)13}";
         string substitution = $"{(char)10}{(char)13}{(char)9}";
         RegexOptions options = RegexOptions.Multiline | RegexOptions.IgnoreCase;
 
         Regex regex = new Regex(pattern, options);
-        MyText  = regex.Replace(input, substitution);
+        MyText  = regex.Replace(input, substitution); *@
         @* MyText = await Js.InvokeAsync<string>("AML.getFormattedText"); *@
         await Task.Run(() => MutableState.Invalidate()).ConfigureAwait(false);
     }
@@ -330,12 +330,6 @@
 
     private async Task Post()
     {
-        string pattern = $"{(char)13}";
-        string substitution = $"{(char)10}{(char)13}{(char)9}";
-        RegexOptions options = RegexOptions.Multiline | RegexOptions.IgnoreCase;
-
-        Regex regex = new Regex(pattern, options);
-        MyText  = regex.Replace(MyText, substitution);
         await _editor.SetValue(MyText);
         var (_, ce) = await _uiCommandRunner.Run(new SqlService.PostCommand(MyText, _session));
         if (ce == null)

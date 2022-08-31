@@ -52,6 +52,10 @@
         ;
     }
 
+    function reverse(s){
+        return [...s].reverse().join("");
+    }
+
     class Log {
         /**
          * @param {string} val
@@ -165,7 +169,7 @@
                     for (let index = 0; index < iframe.querySelector("pre[class='SQLCode']").childNodes.length; index++) {
                         var node = iframe.querySelector("pre[class='SQLCode']").childNodes[index].textContent;
                         if (node !== undefined)
-                        text += node;
+                        text += reverse(node).substring(0, 1) === "\n" ? node.substring(0, node.length - 1) + "\n\t" : node;
                     }
                 }
             }
