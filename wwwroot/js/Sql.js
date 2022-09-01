@@ -363,6 +363,49 @@
                             }
                         }
                     });
+
+                    document.addEventListener('keydown', function(e) {
+                        if (e.isComposing || e.keyCode === 229) {
+                            return;
+                        }
+                        // Declare variables
+                        let input, filter, table, tr, td, i, txtValue, cols;
+                        let columns = [];
+
+                        input = document.querySelectorAll("input.gridjs-input.gridjs-search-input");
+                        if (!input)
+                            return;
+                        filter = input[0].value.toUpperCase();
+
+                        table = document.querySelectorAll("tbody.gridjs-tbody")[0];
+                        // console.log(table);
+                        tr = table.querySelectorAll("tr");
+                        // console.log(tr);
+
+                        // console.log(td);
+                        var hideThis = true;
+
+                        let values = [];
+                        for (let i = 0; i < tr.length; i++) {
+                            td = tr[i].querySelectorAll("td");
+                            for (let index = 0; index < td.length; index++) {
+
+                                let row = td[index].innerText.toUpperCase();
+
+                                if (row.indexOf(filter) > -1) {
+                                    hideThis = false;
+                                    console.log(row);
+                                }
+
+                            }
+                            if (hideThis === true) {
+                                tr[i].style.display = "none";
+                            } else {
+                                tr[i].style.display = "";
+                                hideThis = true;
+                            }
+                        }
+                    });
                 }
 
                 function createDiv(height) {
