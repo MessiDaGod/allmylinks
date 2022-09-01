@@ -94,13 +94,28 @@
     .replace(new RegExp(String.fromCharCode(160),"g"), String.fromCharCode(32))
     .replace(new RegExp(String.fromCharCode(160),"g"), "\n").replace(new RegExp(String.fromCharCode(183),"g"), "\n")
     */
+    var InputStringHidden = true;
+        
     window.AML = {
         ToggleInputs: function(inputs) {
             let el = document.getElementById("sqlformatter");
-            if (el) {
-                el.classList.toggle("hide");
-                el.classList.toggle("hidden");
+            // var lastTab = document.getElementById(TabHistory[TabHistory.length - 1]);
+            // if (activeDivId === lastTab.id)
+            //     return;                
+
+            if (el && InputStringHidden) {
+                el.classList.remove("hide");
+                el.classList.remove("hidden");
+                    InputStringHidden = false;
+                    return;
             }
+
+            if (el && !InputStringHidden) {
+                el.classList.add("hide");
+                el.classList.add("hidden");
+                    InputStringHidden = true;
+                    return;
+            }           
         },
         formatterDiv: function() {
             var formatterDiv = document.getElementById("formatterDiv");

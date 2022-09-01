@@ -15,7 +15,7 @@ body {
 }
 #infoPanel,
 #mainTabsWrapper {
-    height: calc(50vh - 2px);
+    height: calc(100vh - 2px);
     width: calc(var(--variable-width) + 500px);
 }
 #browse {

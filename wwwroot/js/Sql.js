@@ -949,6 +949,8 @@
                 // ================================================
                 stmt = 'SELECT COUNT(*) FROM `' + selected_tbl_name + '`';
                 resultset2 = db2.exec(stmt);
+                if (resultset2[0].values[0].length > 1)
+                if (resultset2.length > 0) {
                 // ================================================
                 totalNoOfRecords = resultset2[0]['values'][0];
                 totalNoOfRecords = parseInt(totalNoOfRecords);
@@ -958,9 +960,11 @@
                 // render datatable records
                 stmt = 'SELECT * FROM `' + selected_tbl_name + '` LIMIT ' + offset + ',' + recordsPerPage;
                 resultset2 = db2.exec(stmt);
-                await Sql.RenderDatabaseTables(resultset2);
-                await Sql.renderDatatable(resultset2, document.getElementById('tableRecords'));
-                Sql.setActiveTable(selected_tbl_name);
+                    await Sql.RenderDatabaseTables(resultset2);
+                    await Sql.renderDatatable(resultset2, document.getElementById('tableRecords'));
+                }
+
+                // Sql.setActiveTable(selected_tbl_name);
             } catch (err) {
                 throw new Error(err.message);
             }
