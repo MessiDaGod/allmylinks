@@ -333,13 +333,8 @@
                         if (!input)
                             return;
                         filter = input[0].value.toUpperCase();
-
                         table = document.querySelectorAll("tbody.gridjs-tbody")[0];
-                        // console.log(table);
                         tr = table.querySelectorAll("tr");
-                        // console.log(tr);
-
-                        // console.log(td);
                         var hideThis = true;
 
                         let values = [];
@@ -351,9 +346,7 @@
 
                                 if (row.indexOf(filter) > -1) {
                                     hideThis = false;
-                                    console.log(row);
                                 }
-
                             }
                             if (hideThis === true) {
                                 tr[i].style.display = "none";
@@ -376,13 +369,8 @@
                         if (!input)
                             return;
                         filter = input[0].value.toUpperCase();
-
                         table = document.querySelectorAll("tbody.gridjs-tbody")[0];
-                        // console.log(table);
                         tr = table.querySelectorAll("tr");
-                        // console.log(tr);
-
-                        // console.log(td);
                         var hideThis = true;
 
                         let values = [];
@@ -394,7 +382,6 @@
 
                                 if (row.indexOf(filter) > -1) {
                                     hideThis = false;
-                                    console.log(row);
                                 }
 
                             }
@@ -927,7 +914,12 @@
         loadTableSelectable: async function(tblName, isInit) {
             //await Sql.setQuery(tblName);
             // Sql.init();
-
+            document.getElementById("browsedata-tab").ariaSelected = "true";
+            document.getElementById("queryeditor-tab").ariaSelected = "false";
+            document.querySelectorAll("div#queryeditor")[0].classList.remove("active");
+            document.querySelectorAll("div#browsedata")[0].classList.add("active");
+            document.querySelectorAll("div#queryeditor")[0].classList.remove("show");
+            document.querySelectorAll("div#browsedata")[0].classList.add("show");
             let tblIcon = '';
             let selected_tbl_name = '';
             let currentPage;
