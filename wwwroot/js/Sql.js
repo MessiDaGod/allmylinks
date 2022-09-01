@@ -854,7 +854,7 @@
             let noOfPages;
             let firstPageBtn, prevPageBtn, currentPageNo, nextPageBtn, lastPageBtn;
 
-            if (isInit = true) {
+            if (isInit === true) {
                 let tblClickableBtn = document.createElement('button');
                 var tableDetails = document.getElementById('tableDetails');
                 tblClickableBtn.setAttribute('id', tblName);
@@ -946,10 +946,28 @@
                 }
             }
 
-            if (isInit = false) {
-                TabHistory.push(tblName);
+            if (isInit === false) {
+                if (tblName != document.getElementById(TabHistory[TabHistory.length - 1]).id) {
+                    try {
+                        TabHistory.push(tblName);
+
+                        totalNoOfRecords = resultset2[0]['values'][0];
+                        totalNoOfRecords = parseInt(totalNoOfRecords);
+                        noOfPages = totalNoOfRecords / recordsPerPage;
+                        noOfPages = Math.ceil(noOfPages);
+
+                        // render datatable records
+                        stmt = 'SELECT * FROM `' + tblName + '` LIMIT ' + offset + ',' + recordsPerPage;
+                        resultset2 = db2.exec(stmt);
+                        await Sql.RenderDatabaseTables(resultset2);
+                        await Sql.renderDatatable(resultset2, document.getElementById('tableRecords'));
+
+                    } catch (err) {
+                        throw new Error(err.message);
+                    }
+                }
+                document.getElementById(tblName).classList.add("active");
                 document.getElementById(TabHistory[TabHistory.length - 2]).classList.remove("active");
-                document.getElementById(TabHistory[TabHistory.length - 1]).classList.add("active");
             }
         },
         getCurrentDatetimeStamp: function() {
