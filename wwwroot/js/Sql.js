@@ -193,7 +193,7 @@
             try {
                 tableRecordsEle.innerHTML = '';
 
-                var header1 = "<div role=\"complementary\" class=\"gridjs gridjs-container\" style=\"width: 100%;\">\n" + "<div class=\"gridjs-head\">\n" + "<div class=\"gridjs-search\"><input type=\"search\" placeholder=\"Type a keyword...\" aria-label=\"Type a keyword...\" class=\"gridjs-input gridjs-search-input\"></div>\n" + "</div>\n" + "<div class=\"gridjs-wrapper\" style=\"height: auto;\">\n" + "<table role=\"grid\" class=\"gridjs-table\" style=\"height: auto;\">\n" + "<thead class=\"gridjs-thead\">\n" + "<tr class=\"gridjs-tr\">\n";
+                var header1 = "<div role=\"complementary\" class=\"gridjs gridjs-container\" style=\"width: 100%;\">\n" + "<div class=\"gridjs-head\">\n" + "<div class=\"gridjs-search\"><input type=\"search\" placeholder=\"Type a keyword...\" aria-label=\"Type a keyword...\" class=\"gridjs-input gridjs-search-input\"></div>\n" + "</div>\n" + "<div class=\"gridjs-wrapper\" style=\"height: auto;\">\n" + "<table role=\"grid\" class=\"gridjs-table\" style=\"height: auto;\">\n" + "<thead class=\"gridjs-thead\">\n"+ "<tr class=\"gridjs-tr\">\n";
 
                 let headerColumns = "";
                 let valuesHeader = "";
@@ -319,8 +319,49 @@
                         pageX = undefined;
                         nxtColWidth = undefined;
                         curColWidth = undefined
-                    }, {
-                        once: true
+                    });
+
+                    document.addEventListener('keyup', function(e) {
+                        if (e.isComposing || e.keyCode === 229) {
+                            return;
+                        }
+                        // Declare variables
+                        let input, filter, table, tr, td, i, txtValue, cols;
+                        let columns = [];
+
+                        input = document.querySelectorAll("input.gridjs-input.gridjs-search-input");
+                        if (!input)
+                            return;
+                        filter = input[0].value.toUpperCase();
+
+                        table = document.querySelectorAll("tbody.gridjs-tbody")[0];
+                        // console.log(table);
+                        tr = table.querySelectorAll("tr");
+                        // console.log(tr);
+
+                        // console.log(td);
+                        var hideThis = true;
+
+                        let values = [];
+                        for (let i = 0; i < tr.length; i++) {
+                            td = tr[i].querySelectorAll("td");
+                            for (let index = 0; index < td.length; index++) {
+
+                                let row = td[index].innerText.toUpperCase();
+
+                                if (row.indexOf(filter) > -1) {
+                                    hideThis = false;
+                                    console.log(row);
+                                }
+
+                            }
+                            if (hideThis === true) {
+                                tr[i].style.display = "none";
+                            } else {
+                                tr[i].style.display = "";
+                                hideThis = true;
+                            }
+                        }
                     });
                 }
 
