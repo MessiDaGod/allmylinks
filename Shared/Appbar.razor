@@ -143,6 +143,9 @@
     async Task ShowSql()
     {
         await Js.InvokeVoidAsync("AML.setActiveDiv", "showsql");
+        await Js.InvokeVoidAsync("AML.showById", "mainTabs");
+        await Js.InvokeVoidAsync("AML.showById", "queryeditor");
+        await Js.InvokeVoidAsync("Sql.toggleSqlTabs");
     }
     async Task ShowAllMyLinks()
     {

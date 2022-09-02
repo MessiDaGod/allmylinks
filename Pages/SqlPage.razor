@@ -198,7 +198,7 @@
             await Task.Run(() => files.Add(file));
             await Js.InvokeVoidAsync("AML.logit", files[0].Name);
         }
-        await Js.InvokeVoidAsync("Sql.toggleTabs");
+        @* await Js.InvokeVoidAsync("Sql.toggleTabs"); *@
         await Js.InvokeVoidAsync("Sql.toggleMsg");
         await Init();
     }

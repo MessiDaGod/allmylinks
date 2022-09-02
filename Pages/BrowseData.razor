@@ -5,6 +5,7 @@
 @using Stl.Fusion
 @using Stl.Fusion.Blazor;
 @inject IJSRuntime Js;
+@using System.Diagnostics;
 @using System.Text.RegularExpressions;
 @inject Session _session;
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper;
@@ -73,7 +74,7 @@
             <button id="clear" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick="Clear">Clear<span class="material-symbols-outlined">database</span></button>
             <small id="tableQueryDetails" class="ml-2"></small>
             <button id="toggleFormat" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick="Reset">Reset Value<span class="material-symbols-outlined">database</span></button>
-            <button id="clear" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick="ToggleInputs">Toggle Inputs<span class="material-symbols-outlined">database</span></button>
+            @* <button id="clear" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick="ToggleInputs">Toggle Inputs<span class="material-symbols-outlined">database</span></button> *@
             <hr class="invisible-divider">
             @if (UseNewVersion) {
                 <MonacoEditor @ref="_editor" Id="codeEditor" ConstructionOptions="EditorConstructionOptions"></MonacoEditor>
@@ -183,7 +184,6 @@
     {
         staticJsRuntime = Js;
         jsObjectRef = DotNetObjectReference.Create(this);
-
         await base.OnInitializedAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -272,7 +272,7 @@
             await Task.Run(() => files.Add(file));
             await Js.InvokeVoidAsync("AML.logit", files[0].Name);
         }
-        await Js.InvokeVoidAsync("Sql.toggleTabs");
+        @* await Js.InvokeVoidAsync("Sql.toggleTabs"); *@
         await Js.InvokeVoidAsync("Sql.toggleMsg");
         @* await Init(); *@
         var result = await Js.InvokeAsync<Prices[]>("Sql.getPrices");

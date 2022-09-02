@@ -193,7 +193,7 @@
             try {
                 tableRecordsEle.innerHTML = '';
 
-                var header1 = "<div role=\"complementary\" class=\"gridjs gridjs-container\" style=\"width: 100%;\">\n" + "<div class=\"gridjs-head\">\n" + "<div class=\"gridjs-search\"><input type=\"search\" placeholder=\"Type a keyword...\" aria-label=\"Type a keyword...\" class=\"gridjs-input gridjs-search-input\"></div>\n" + "</div>\n" + "<div class=\"gridjs-wrapper\" style=\"height: auto;\">\n" + "<table role=\"grid\" class=\"gridjs-table\" style=\"height: auto;\">\n" + "<thead class=\"gridjs-thead\">\n"+ "<tr class=\"gridjs-tr\">\n";
+                var header1 = "<div role=\"complementary\" class=\"gridjs gridjs-container\" style=\"width: 100%;\">\n" + "<div class=\"gridjs-head\">\n" + "<div class=\"gridjs-search\"><input type=\"search\" placeholder=\"Type a keyword...\" aria-label=\"Type a keyword...\" class=\"gridjs-input gridjs-search-input\"></div>\n" + "</div>\n" + "<div class=\"gridjs-wrapper\" style=\"height: auto;\">\n" + "<table role=\"grid\" class=\"gridjs-table\" style=\"height: auto;\">\n" + "<thead class=\"gridjs-thead\">\n" + "<tr class=\"gridjs-tr\">\n";
 
                 let headerColumns = "";
                 let valuesHeader = "";
@@ -206,7 +206,7 @@
                 let columnNames = resultset[0]['columns'];
 
                 for (let j = 0; j < resultset[0]['columns'].length; j++) {
-                    headerColumns += "<th data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-th gridjs-th-sort\" tabindex=\"0\">\n" + "<div class=\"gridjs-th-content\">" + resultset[0]['columns'][j] + "</div><button tabindex=\"-1\" aria-label=\"Sort column ascending\" \n" + "title=\"Sort column ascending\" class=\"gridjs-sort gridjs-sort-neutral\"></button>\n" + "<div class=\"gridjs-th gridjs-resizable\"></div>\n" + "</th>\n";
+                    headerColumns += "<th data-column-id=\"" + Sql.camelize(resultset[0]['columns'][j]) + "\" class=\"gridjs-th gridjs-th-sort\" tabindex=\"0\">\n" + "<div class=\"gridjs-th-content\">" + Sql.HtmlEncode(resultset[0]['columns'][j].toString()) + "</div><button tabindex=\"-1\" aria-label=\"Sort column ascending\" \n" + "title=\"Sort column ascending\" class=\"gridjs-sort gridjs-sort-neutral\"></button>\n" + "<div class=\"gridjs-th gridjs-resizable\"></div>\n" + "</th>\n";
                 }
 
                 for (let i = 0; i < resultset[0]['values'].length; i++) {
@@ -222,9 +222,7 @@
                 tableRecordsEle.innerHTML = header1 + headerColumns + values + closeTable;
 
                 errorDisplay.textContent = '';
-                // await Sql.addEventListeners();
                 await Sql.setTableCount();
-                // await Sql.setActiveTable();
                 var el = document.querySelectorAll("#tableRecords>table")[0];
                 if (el && el.rows.length > 0) {
                     var active = document.getElementById("activetable");
@@ -242,6 +240,24 @@
             } catch (err) {
                 throw new Error(err.message);
             }
+        },
+        HtmlEncode: function(str) {
+
+            var regex = /(<)/gm;
+            var subst = `&lt;`;
+
+            var regex1 = /(>)/gm;
+            var subst1 = `&gt;`;
+
+            var regex2 = /(&)/gm;
+            var subst2 = `&amp;`;
+
+            var regex3 = /(\")/gm;
+            var subst3 = `&quot;`;
+
+            var result = str.replace(regex, subst).replace(regex1, subst1).replace(regex2, subst2).replace(regex3, subst3);
+
+            return result;
         },
         initresize: function() {
             // var query = document.querySelectorAll("th[data-column-id")[3];
@@ -911,15 +927,28 @@
             if (el3[0])
                 el3[0].classList.toggle("hide");
         },
+        toggleSqlTabs: function() {
+            document.getElementById("browsedata-tab").ariaSelected = "false";
+            document.getElementById("queryeditor-tab").ariaSelected = "true";
+            document.getElementById("browsedata-tab").classList.remove("active");
+            document.getElementById("queryeditor-tab").classList.add("active");
+            document.querySelectorAll("div#queryeditor")[0].classList.add("active");
+            document.querySelectorAll("div#browsedata")[0].classList.remove("active");
+            document.querySelectorAll("div#queryeditor")[0].classList.add("show");
+            document.querySelectorAll("div#browsedata")[0].classList.remove("show");
+        },
         loadTableSelectable: async function(tblName, isInit) {
             //await Sql.setQuery(tblName);
-            // Sql.init();
-            document.getElementById("browsedata-tab").ariaSelected = "true";
-            document.getElementById("queryeditor-tab").ariaSelected = "false";
-            document.querySelectorAll("div#queryeditor")[0].classList.remove("active");
-            document.querySelectorAll("div#browsedata")[0].classList.add("active");
-            document.querySelectorAll("div#queryeditor")[0].classList.remove("show");
-            document.querySelectorAll("div#browsedata")[0].classList.add("show");
+            AML.showById("mainTabs");
+            if (db) {
+                document.getElementById("browsedata-tab").ariaSelected = "true";
+                document.getElementById("queryeditor-tab").ariaSelected = "false";
+                document.querySelectorAll("div#queryeditor")[0].classList.remove("active");
+                document.querySelectorAll("div#browsedata")[0].classList.add("active");
+                document.querySelectorAll("div#queryeditor")[0].classList.remove("show");
+                document.querySelectorAll("div#browsedata")[0].classList.add("show");
+            }
+
             let tblIcon = '';
             let selected_tbl_name = '';
             let currentPage;
@@ -1038,8 +1067,7 @@
                         await Sql.RenderDatabaseTables(resultset2);
                         await Sql.renderDatatable(resultset2, document.getElementById('tableRecords'));
 
-                    } catch (err) {
-                        throw new Error(err.message);
+                    } catch (err) {// ignore
                     }
                 }
                 document.getElementById(tblName).classList.add("active");
