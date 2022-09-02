@@ -124,4 +124,6 @@ a.dropdown-item {
 #tableQueryPagination,
 #errorDisplay {
     font-family: Segoe ui emoji;
+    font-size: larger;
+    color: red;
 }

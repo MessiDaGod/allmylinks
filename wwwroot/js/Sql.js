@@ -674,6 +674,14 @@
                 await Sql.renderDatatable(queryResultset, tableQueryRecords);
 
             } catch (err) {
+                if (!errorDisplay) {
+                    errorDisplay = document.getElementById('errorDisplay');
+                    errorDisplay.textContent = '';
+                    errorDisplay.textContent = `${"Please upload a database to run queries."}`;
+                    Sql.appendLogOutput("Please upload a database to run a query.", 'WARNING');
+                    // throw new Error(err.message);
+                    return "ERROR";
+                }
                 errorDisplay.textContent = '';
                 errorDisplay.textContent = `⚠ ERROR: ${err.stack}`;
                 Sql.appendLogOutput(err.message, 'ERROR');
@@ -784,7 +792,7 @@
                 document.addEventListener('DOMContentLoaded', async()=>{
                     console.log('DOMContentLoaded');
 
-                    await AML.addColorListener();
+                    // await AML.addColorListener();
 
                     if (!window.FileReader) {
                         errorDisplay.textContent = '⛔ WARNING: Your browser does not support HTML5 \'FileReader\' function required to open a file.';
@@ -815,7 +823,6 @@
                         , false);
 
                     var dbTableDetails = document.getElementById('dbTableDetails');
-                    var errorDisplay = document.getElementById('errorDisplay');
 
                     // =============== BROWSE TAB =============================
 

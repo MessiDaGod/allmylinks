@@ -5,9 +5,8 @@
 @using Stl.Fusion
 @using Stl.Fusion.Blazor;
 @inject IJSRuntime Js;
-@using System.Diagnostics;
-@using System.Text.RegularExpressions;
 @inject Session _session;
+@inject NotificationService NotificationService;
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper;
 @inject Stl.Fusion.UI.UICommander _uiCommandRunner;
 @inject ILogger<BrowseData> Log;
@@ -66,7 +65,7 @@
                     </ul>
                 </div>
             </div>
-            <button id="runQueryBtn" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" onclick="Sql.initRunQuery()">Execute Query<span class="material-symbols-outlined">database</span>
+            <button id="runQueryBtn" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick="RunQuery">Execute Query<span class="material-symbols-outlined">database</span>
             </button>
             <button id="formatsql" type="button" class="btn btn-sm btn-light text-primary border-primary rounded-0 ml-2" @onclick=SetValue>Format SQL<span class="material-symbols-outlined">database</span>
             </button>
@@ -287,6 +286,26 @@
             }
             Prices = pricesList.AsEnumerable();
             await InvokeAsync(StateHasChanged);
+        }
+    }
+
+
+    public async Task Notify(string e)
+    {
+         await Task.Run(() => NotificationService.Notify(NotificationSeverity.Error, $"Error: {e}", e, 1000000)).ConfigureAwait(false);
+    }
+
+    private async Task RunQuery()
+    {
+        try {
+            var result = await Js.InvokeAsync<string>("Sql.initRunQuery");
+            await Js.InvokeVoidAsync("AML.logit", result);
+            if (result == "ERROR")
+                await Notify("Please upload a database before running this query.");
+        }
+        catch (Exception e)
+        {
+            await Notify(e.Message);
         }
     }
 

@@ -21,6 +21,7 @@ public class LayoutService : ILayoutService
     public bool IsRTL { get; private set; }
     public bool IsDarkMode { get; private set; }
 
+    public string MyLastQuery { get; private set; }
     public MudTheme CurrentTheme { get; private set; }
 
 
