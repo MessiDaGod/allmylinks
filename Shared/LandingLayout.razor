@@ -3,6 +3,7 @@
 @inherits LayoutComponentBase
 @layout MainLayout
 
+@* This page is the side menu when  *@
 <MudLayout>
     <MudAppBar Class="landing-appbar" Elevation="0">
         <Appbar DrawerToggleCallback="ToggleDrawer" />
@@ -17,7 +18,7 @@
             <MudNavLink id="showisitchristmas" @ontouchleave="ShowXmas"  @onclick="ShowXmas">Is It Christmas?</MudNavLink>
 @if (!IsMobile) {
             <MudNavLink id="showsql" @ontouchleave="ShowSql"  @onclick="ShowSql">SQL</MudNavLink>
-            <MudNavLink @ontouchleave="ShowCandles"  @onclick="ShowCandles" id="showcandles">CandleSticks</MudNavLink>
+            @* <MudNavLink @ontouchleave="ShowCandles"  @onclick="ShowCandles" id="showcandles">CandleSticks</MudNavLink> *@
 }
         </MudNavMenu>
     </MudDrawer>

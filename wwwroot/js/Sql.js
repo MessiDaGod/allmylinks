@@ -599,6 +599,10 @@
             }
         },
         initRunQuery: async function() {
+            if (!db) {
+                console.log("no database loaded.");
+                return "ERROR";
+            }
             var query = "";
             var lines = document.querySelectorAll(".view-line");
             codeEditor = document.getElementById('codeEditor');
@@ -682,9 +686,9 @@
                     // throw new Error(err.message);
                     return "ERROR";
                 }
-                errorDisplay.textContent = '';
-                errorDisplay.textContent = `⚠ ERROR: ${err.stack}`;
-                Sql.appendLogOutput(err.message, 'ERROR');
+                // errorDisplay.textContent = '';
+                // errorDisplay.textContent = `⚠ ERROR: ${err.stack}`;
+                // Sql.appendLogOutput(err.message, 'ERROR');
             }
 
             if (exportAsJSON != null && exportAsJSON != undefined)
