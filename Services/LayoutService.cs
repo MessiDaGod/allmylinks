@@ -28,6 +28,7 @@ public class LayoutService : ILayoutService
     public LayoutService(IUserPreferencesService userPreferencesService)
     {
         _userPreferencesService = userPreferencesService;
+
     }
 
     public void SetDarkMode(bool value)

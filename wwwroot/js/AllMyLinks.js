@@ -95,13 +95,13 @@
     .replace(new RegExp(String.fromCharCode(160),"g"), "\n").replace(new RegExp(String.fromCharCode(183),"g"), "\n")
     */
     var InputStringHidden = true;
-        
+
     window.AML = {
         ToggleInputs: function(inputs) {
             let el = document.getElementById("sqlformatter");
             // var lastTab = document.getElementById(TabHistory[TabHistory.length - 1]);
             // if (activeDivId === lastTab.id)
-            //     return;                
+            //     return;
 
             if (el && InputStringHidden) {
                 el.classList.remove("hide");
@@ -115,7 +115,7 @@
                 el.classList.add("hidden");
                     InputStringHidden = true;
                     return;
-            }           
+            }
         },
         formatterDiv: function() {
             var formatterDiv = document.getElementById("formatterDiv");
@@ -143,7 +143,7 @@
             }
 
             if (inputString.length > 0) {
-                result = AML.getMonacoText().replace(new RegExp(String.fromCharCode(160),"gmi"), "\t\r\n");
+                result = AML.getMonacoText().replace(new RegExp(String.fromCharCode(160),"g"), " ");
                 inputString[0].value = result;
             }
         },
@@ -157,14 +157,14 @@
             var result = "";
             if (element.length > 0) {
                 for (let i = 0; i < element.length; i++) {
-                    result += element[i].textContent;
+                    result += (element[i].textContent + " ");
                 }
                 return result;
             }
         },
-        getFormattedText: async function() {
+        getFormattedText: async function() {                
             PS.PageService.EnableUI();
-            await AML.resolveAfter2Seconds();
+            await AML.resolveAfter2Seconds();                
             // PS.PageService.DoFormat;
             var text = "";
             var iWindow, iDocument, inputString, nodes;
@@ -182,7 +182,7 @@
             text = text.replace(new RegExp(String.fromCharCode(160),"g"), String.fromCharCode(32))
             if (code && text !== "") {
                 code.value = text;
-            }
+            }              
             return text;
         },
         getUserAgent: function() {
