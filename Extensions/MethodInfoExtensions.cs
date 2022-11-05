@@ -1,5 +1,5 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace allmylinks.Extensions
@@ -62,7 +62,7 @@ namespace allmylinks.Extensions
                 {
                     firstParameter = false;
 
-                    if (method.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute), false))
+                    if (method.IsDefined(typeof(ExtensionAttribute), false))
                     {
                         if (callable)
                         {
@@ -72,7 +72,7 @@ namespace allmylinks.Extensions
                         stringBuilder.Append("this ");
                     }
                 }
-                else if (secondParameter == true)
+                else if (secondParameter)
                 {
                     secondParameter = false;
                 }
@@ -127,16 +127,14 @@ namespace allmylinks.Extensions
                 case "CHAR": return "char";
                 case "FLOAT": return "float";
                 default:
-                    {
-                        if (type != null)
+                {
+                    if (type != null)
                         {
                             return string.IsNullOrWhiteSpace(type.FullName) ? RemoveNamespace(type.Name) : RemoveNamespace(type.FullName);
                         }
-                        else
-                        {
-                            return RemoveNamespace(value);
-                        }
-                    }
+
+                    return RemoveNamespace(value);
+                }
             }
         }
 

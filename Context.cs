@@ -1,9 +1,7 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
-using SQLite;
+using SQLitePCL;
 
 namespace allmylinks;
 public class Context : DbContext
@@ -16,7 +14,7 @@ public class Context : DbContext
         DbContextOptions<Context> options,
         IJSRuntime jsRuntime) : base(options)
     {
-        SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3());
+        raw.SetProvider(new SQLite3Provider_e_sqlite3());
         _moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
    "import", "./js/AllMyLinks.js").AsTask());
     }
@@ -56,13 +54,13 @@ public class Context : DbContext
 
 }
 
-[System.ComponentModel.DataAnnotations.Schema.Table(nameof(Person))]
+[Table(nameof(Person))]
 public record Person : LongKeyedEntity
 {
     public Person() { }
 
-    public string? FirstName { get; set; } = null!;
-    public string? LastName { get; set; } = null!;
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
     public string Date { get { return DateTime.Now.ToLongTimeString(); } }
 
     public Person(string firstName, string lastName)
@@ -73,6 +71,6 @@ public record Person : LongKeyedEntity
 
     public override string ToString()
     {
-        return string.Concat(this.FirstName ?? "", " ", this.LastName ?? "");
+        return string.Concat(FirstName ?? "", " ", LastName ?? "");
     }
 }

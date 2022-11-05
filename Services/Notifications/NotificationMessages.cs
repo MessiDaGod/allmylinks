@@ -1,7 +1,4 @@
 
-using System;
-using System.Collections.Generic;
-
 namespace allmylinks.Services.Notifications;
 
 public record NotificationAuthor(string DisplayName, string AvatarUlr);

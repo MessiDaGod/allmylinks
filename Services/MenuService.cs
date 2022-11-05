@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using MudBlazor.Charts;
 using allmylinks.Models;
 using MudBlazor;
+using MudBlazor.Charts;
 
 namespace allmylinks.Services
 {
@@ -227,7 +224,7 @@ namespace allmylinks.Services
         /// <summary>
         /// Customization menu links
         /// </summary>
-        public IEnumerable<DocsLink> Customization => _customization ??= new List<DocsLink>()
+        public IEnumerable<DocsLink> Customization => _customization ??= new List<DocsLink>
         {
             new DocsLink {Title="Default theme", Href="customization/default-theme"},
             new DocsLink {Title = "Overview", Href = "customization/overview"},
@@ -241,7 +238,7 @@ namespace allmylinks.Services
         /// <summary>
         /// CSS Utilities menu links
         /// </summary>
-        public IEnumerable<DocsLink> Utilities => _utilities ??= new List<DocsLink>()
+        public IEnumerable<DocsLink> Utilities => _utilities ??= new List<DocsLink>
         {
             new DocsLink {Group = "Layout", Title = "Display", Href = "utilities/display"},
             new DocsLink {Group = "Layout", Title = "Z-Index", Href = "utilities/z-index"},

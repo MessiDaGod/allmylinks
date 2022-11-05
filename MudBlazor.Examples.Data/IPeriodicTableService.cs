@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using MudBlazor.Examples.Data.Models;
+﻿using MudBlazor.Examples.Data.Models;
 
 namespace MudBlazor.Examples.Data
 {

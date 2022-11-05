@@ -2076,14 +2076,15 @@
     function getActiveTab() {
       var assign;
 
-      var activeTabs = tabs.getElementsByClassName('active');
-
-      if (activeTabs.length === 1 && !activeTabs[0].parentNode.classList.contains('dropdown')) {
-        (assign = activeTabs, activeTab = assign[0]);
-      } else if (activeTabs.length > 1) {
-        activeTab = activeTabs[activeTabs.length - 1];
+      if (tabs) {
+        var activeTabs = tabs.getElementsByClassName('active');
+        if (activeTabs.length === 1 && !activeTabs[0].parentNode.classList.contains('dropdown')) {
+          (assign = activeTabs, activeTab = assign[0]);
+        } else if (activeTabs.length > 1) {
+          activeTab = activeTabs[activeTabs.length - 1];
+        }
+        return activeTab;
       }
-      return activeTab;
     }
     function getActiveContent() { return queryElement(getActiveTab().getAttribute('href')); }
     // handler
@@ -2145,6 +2146,7 @@
     // instance options
     var animateHeight = !(!supportTransition || (options.height === false || heightData === 'false'));
 
+    if (tabs)
     // set default animation state
     tabs.isAnimating = false;
 

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using allmylinks.Models;
 
 namespace allmylinks.Services
@@ -86,7 +82,7 @@ namespace allmylinks.Services
                 //api
                 RegisterPage(
                     title: item.ComponentName,
-                    subtitle: $"API documentation",
+                    subtitle: "API documentation",
                     componentType: item.Type,
                     link: ApiLink.GetApiLinkFor(item.Type)
                     );
