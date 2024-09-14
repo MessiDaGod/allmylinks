@@ -3,12 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.AspNetCore.Components;
-using MudBlazor.Utilities;
 using MudBlazor;
+using MudBlazor.Utilities;
 
 namespace allmylinks.Shared
 {
-    public partial class MudRTLProvider : MudComponentBase
+    public class MudRTLProvider : MudComponentBase
     {
         protected string Classname =>
             new CssBuilder("mud-rtl-provider")

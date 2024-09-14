@@ -992,3 +992,11 @@ html {
         transform: translateY(0px);
     }
 }
+span[class^='mtk'], div[class*=' mtk']{
+    color: blue !important;
+}
+
+.blue {
+    color: blue !important;
+}
+/* document.querySelectorAll("[class^=mtk]"); */

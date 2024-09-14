@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang='en' class='notranslate' translate='no'>
+
+<head>
+    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+
+<body>
+    <div id="tableQueryRecords">
+        <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
+            <div class="gridjs-head">
+                <div class="gridjs-search"><input type="search" placeholder="Type a keyword..." aria-label="Type a keyword..." class="gridjs-input gridjs-search-input"></div>
+            </div>
+            <!-- <div class="gridjs-wrapper" style="height: auto;"> -->
+                <table role="grid" class="gridjs-table" style="height: auto;">
+                    <thead class="gridjs-thead">
+                        <tr class="gridjs-tr">
+                            <th data-column-id="id" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px;">
+                                <div class="gridjs-th-content">Id</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                <div class="gridjs-th gridjs-resizable"></div>
+                            </th>
+                            <th data-column-id="userId" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px;">
+                                <div class="gridjs-th-content">UserId</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                <div class="gridjs-th gridjs-resizable"></div>
+                            </th>
+                            <th data-column-id="createdAt" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px;">
+                                <div class="gridjs-th-content">CreatedAt</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                <div class="gridjs-th gridjs-resizable"></div>
+                            </th>
+                            <th data-column-id="date" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px;">
+                                <div class="gridjs-th-content">Date</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                <div class="gridjs-th gridjs-resizable"></div>
+                            </th>
+                            <th data-column-id="open" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px;">
+                                <div class="gridjs-th-content">Open</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                <div class="gridjs-th gridjs-resizable"></div>
+                            </th>
+                            <th data-column-id="high" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px;">
+                                <div class="gridjs-th-content">High</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                <div class="gridjs-th gridjs-resizable"></div>
+                            </th>
+                            <th data-column-id="low" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px;">
+                                <div class="gridjs-th-content">Low</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                <div class="gridjs-th gridjs-resizable"></div>
+                            </th>
+                            <th data-column-id="close" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px;">
+                                <div class="gridjs-th-content">Close</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                <div class="gridjs-th gridjs-resizable"></div>
+                            </th>
+                            <th data-column-id="adjustedClose" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px;">
+                                <div class="gridjs-th-content">AdjustedClose</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                <div class="gridjs-th gridjs-resizable"></div>
+                            </th>
+                            <th data-column-id="volume" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px;">
+                                <div class="gridjs-th-content">Volume</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                <div class="gridjs-th gridjs-resizable"></div>
+                            </th>
+                            <th data-column-id="symbol" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px;">
+                                <div class="gridjs-th-content">Symbol</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                <div class="gridjs-th gridjs-resizable"></div>
+                            </th>
+                            <th data-column-id="pct_Change" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px;">
+                                <div class="gridjs-th-content">Pct_Change</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                <div class="gridjs-th gridjs-resizable"></div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="gridjs-tbody">
+                        <tr class="gridjs-tr">
+                            <td data-column-id="id" class="gridjs-td">1</td>
+                            <td data-column-id="userId" class="gridjs-td">1</td>
+                            <td data-column-id="createdAt" class="gridjs-td">6/29/2022</td>
+                            <td data-column-id="date" class="gridjs-td">6/28/2022</td>
+                            <td data-column-id="open" class="gridjs-td">$142.70</td>
+                            <td data-column-id="high" class="gridjs-td">$143.42</td>
+                            <td data-column-id="low" class="gridjs-td">$137.32</td>
+                            <td data-column-id="close" class="gridjs-td">$137.44</td>
+                            <td data-column-id="adjustedClose" class="gridjs-td">$137.44</td>
+                            <td data-column-id="volume" class="gridjs-td">66928031</td>
+                            <td data-column-id="symbol" class="gridjs-td">AAPL</td>
+                            <td data-column-id="pct_Change" class="gridjs-td">-$2.98</td>
+                        </tr>
+                    </tbody>
+                    <tbody class="gridjs-tbody"></tbody>
+                </table>
+            <!-- </div> -->
+        </div>
+    </div>
+    <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+</body>
+
+<style>
+    html {
+        overflow-x: scroll;
+        overflow-y: scroll;
+    }
+    #tableQueryRecords {
+        overflow-x: scroll;
+        overflow-y: scroll;
+    }
+    th {
+        min-width: auto !important;
+    }
+</style>
+<script>
+    var tables = document.getElementsByTagName('table');
+    for (var i=0; i<tables.length;i++){
+     resizableGrid(tables[i]);
+    }
+
+    function resizableGrid(table) {
+     var row = table.getElementsByTagName('tr')[0],
+     cols = row ? row.children : undefined;
+     if (!cols) return;
+
+     table.style.overflow = 'hidden';
+
+     var tableHeight = table.offsetHeight;
+
+     for (var i=0;i<cols.length;i++){
+      var div = createDiv(tableHeight);
+      cols[i].appendChild(div);
+      cols[i].style.position = 'relative';
+      setListeners(div);
+     }
+
+     function setListeners(div){
+      var pageX,curCol,nxtCol,curColWidth,nxtColWidth;
+
+      div.addEventListener('mousedown', function (e) {
+       curCol = e.target.parentElement;
+       nxtCol = curCol.nextElementSibling;
+       pageX = e.pageX;
+
+       var padding = paddingDiff(curCol);
+
+       curColWidth = curCol.offsetWidth - padding;
+       if (nxtCol)
+        nxtColWidth = nxtCol.offsetWidth - padding;
+      });
+
+      div.addEventListener('mouseover', function (e) {
+       e.target.style.borderRight = '2px solid #0000ff';
+      })
+
+      div.addEventListener('mouseout', function (e) {
+       e.target.style.borderRight = '';
+      })
+
+      document.addEventListener('mousemove', function (e) {
+       if (curCol) {
+        var diffX = e.pageX - pageX;
+
+        if (nxtCol)
+         nxtCol.style.width = (nxtColWidth - (diffX))+'px';
+
+        curCol.style.width = (curColWidth + diffX)+'px';
+       }
+      });
+
+      document.addEventListener('mouseup', function (e) {
+       curCol = undefined;
+       nxtCol = undefined;
+       pageX = undefined;
+       nxtColWidth = undefined;
+       curColWidth = undefined
+      });
+     }
+
+     function createDiv(height){
+      var div = document.createElement('div');
+      div.style.top = 0;
+      div.style.right = 0;
+      div.style.width = '5px';
+      div.style.position = 'absolute';
+      div.style.cursor = 'col-resize';
+      div.style.userSelect = 'none';
+      div.style.height = height + 'px';
+      return div;
+     };
+
+     function paddingDiff(col){
+
+        if (getStyleVal(col,'box-sizing') == 'border-box'){
+         return 0;
+        }
+
+        var padLeft = getStyleVal(col,'padding-left');
+        var padRight = getStyleVal(col,'padding-right');
+        return (parseInt(padLeft) + parseInt(padRight));
+
+       }
+
+       function getStyleVal(elm,css){
+        return (window.getComputedStyle(elm, null).getPropertyValue(css))
+       }
+      };
+</script>

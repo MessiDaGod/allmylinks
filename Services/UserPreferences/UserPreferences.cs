@@ -13,5 +13,7 @@ namespace allmylinks.Services.UserPreferences
         public bool DarkTheme { get; set; }
 
         public string DatabaseFilePath { get; set; } = string.Empty;
+
+        public string LastQuery { get; set; } = string.Empty;
     }
 }

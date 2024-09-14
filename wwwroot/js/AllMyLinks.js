@@ -1,35 +1,59 @@
 // @ts-nocheck
-(function () {
+(function() {
     'use strict';
 
     if (!Element.prototype.matches) {
         Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
     }
     if (!Element.prototype.closest) {
-        Element.prototype.closest = function ( /** @type {string} */ s) {
+        Element.prototype.closest = function(/** @type {string} */
+        s) {
             var el = this;
             do {
-                if (el.matches(s)) return el;
+                if (el.matches(s))
+                    return el;
                 el = el.parentElement || el.parentNode;
             } while (el !== null && el.nodeType === 1);
             return null;
-        };
+        }
+        ;
     }
+
+    // document.addEventListener("load", function(){
+    //     var button = document.querySelectorAll("button[id='showcandles']")[0];
+    //     document.addEventListener("click", function() {
+    //         console.log("clicked");
+    //         var candlesbutton = document.getElementById("candles");
+    //         if (candlesbutton) {
+    //             var aml = document.getElementById("allmylinks");
+    //             if (aml) {
+    //                 aml.classList.add("hide");
+    //             }
+    //             candlesbutton.classList.remove("hide");
+    //             AML.plot();
+    //         }
+    //       });
+    // });
 
     function toggle(sectionId, buttonId) {
         var x = document.getElementById(sectionId);
         let button = document.getElementById(buttonId);
-        if (x === undefined) { // Meaning the picture is hidden
+        if (x === undefined) {
+            // Meaning the picture is hidden
             x = document.getElementByClass("hide");
         }
         x.classList.toggle("hide");
 
         if (document.getElementById(sectionId).classList.length === 0) {
             button.textContent = ("Hide " + buttonId.replace('Button', '') + (buttonId.includes('Price') ? " BTC-USD" : ""));
-        }
-        else {
+        } else {
             button.textContent = ("Show " + buttonId.replace('Button', '') + (buttonId.includes('Price') ? " BTC-USD" : ""))
-        };
+        }
+        ;
+    }
+
+    function reverse(s){
+        return [...s].reverse().join("");
     }
 
     class Log {
@@ -50,38 +74,209 @@
             document.getElementById("myList").appendChild(node);
         }
     }
-// <span class="material-symbols-outlined">database</span>
+    // <span class="material-symbols-outlined">database</span>
     var FS;
-    var Pages = ["showallmylinks", "showsql", "showisitchristmas", "showcandles"];
+    var Pages = ["showallmylinks", "showsql", "showisitchristmas", "showcandles", "showsqlformatter"];
     var CandlestickPage = document.getElementById("candles");
     var isCandlestickActive = (CandlestickPage && !CandlestickPage.classList.contains("hide")) ? true : false;
+    var TabHistory = [];
+    var IsNew;
+    TabHistory.push(Pages[0]);
+
+    /*
+    https://css-tricks.com/example/index.html?s=flexbox
+
+    window.location.protocol = “http:”
+    window.location.host = “css-tricks.com”
+    window.location.pathname = “/example/index.html”
+    window.location.search = “?s=flexbox”
+
+    .replace(new RegExp(String.fromCharCode(160),"g"), String.fromCharCode(32))
+    .replace(new RegExp(String.fromCharCode(160),"g"), "\n").replace(new RegExp(String.fromCharCode(183),"g"), "\n")
+    */
+    var InputStringHidden = true;
 
     window.AML = {
-        setActiveDiv: function(activeDivId) {
-            document.getElementById("appbar").textContent = activeDivId;
-            AML.setAsActive(activeDivId);
-        },
-        setAsActive: function(activeDivId) {
-            var el = document.getElementById(activeDivId);
-            if (el) {
-                el.classList.add("active");
-                var id = el.id.replace("show", "");
-                AML.showById(id);
+        ToggleInputs: function(inputs) {
+            let el = document.getElementById("sqlformatter");
+            // var lastTab = document.getElementById(TabHistory[TabHistory.length - 1]);
+            // if (activeDivId === lastTab.id)
+            //     return;
+
+            if (el && InputStringHidden) {
+                el.classList.remove("hide");
+                el.classList.remove("hidden");
+                    InputStringHidden = false;
+                    return;
             }
 
-            for (var i = 0; i < Pages.length; i++) {
-                if (Pages[i] === activeDivId) {
-                    el.classList.remove("hide");
-                    continue;
+            if (el && !InputStringHidden) {
+                el.classList.add("hide");
+                el.classList.add("hidden");
+                    InputStringHidden = true;
+                    return;
+            }
+        },
+        formatterDiv: function() {
+            var formatterDiv = document.getElementById("formatterDiv");
+            if (formatterDiv) {
+                formatterDiv.classList.add("hide");
+            }
+        },
+        clearInput: function() {
+            document.getElementById("inputString").value = "";
+        },
+        setInputStringValue: function(isNew) {
+            var result = "";
+            IsNew = isNew;
+            var iWindow, iDocument, inputString;
+            var iframe = !isNew ? document.getElementById("sqlformat") : document.getElementById("sqlformatter");
+            if (!isNew) {
+                iWindow = iframe.contentWindow;
+                iDocument = iWindow.document;
+                if (iDocument)
+                inputString = iDocument.querySelectorAll("#inputString");
+            }
+            if (isNew)
+            {
+                inputString = iframe.querySelectorAll("#inputString");
+            }
+
+            if (inputString.length > 0) {
+                result = AML.getMonacoText().replace(new RegExp(String.fromCharCode(160),"g"), " ");
+                inputString[0].value = result;
+            }
+        },
+        setInputAsync: async function() {
+            setInputStringValue().then(x => {
+                return x;
+            })
+        },
+        getMonacoText: function() {
+            let element = document.getElementsByClassName("view-line");
+            var result = "";
+            if (element.length > 0) {
+                for (let i = 0; i < element.length; i++) {
+                    result += (element[i].textContent + " ");
                 }
-                    var el = document.getElementById(Pages[i]);
-                    if (el) {
-                        el.classList.remove("active");
-                        AML.hideById(el.id.replace("show", ""));
+                return result;
+            }
+        },
+        getFormattedText: async function() {                
+            PS.PageService.EnableUI();
+            await AML.resolveAfter2Seconds();                
+            // PS.PageService.DoFormat;
+            var text = "";
+            var iWindow, iDocument, inputString, nodes;
+            var iframe = !IsNew ? document.getElementById("sqlformat") : document.getElementById("sqlformatter");
+            nodes = iframe.querySelector("pre[class='SQLCode']");
+            if (nodes)
+                if (iframe.querySelector("pre[class='SQLCode']").childNodes.length > 0) {
+                    for (let index = 0; index < iframe.querySelector("pre[class='SQLCode']").childNodes.length; index++) {
+                        var node = iframe.querySelector("pre[class='SQLCode']").childNodes[index].textContent;
+                        if (node !== undefined)
+                        text += reverse(node).substring(0, 1) === "\n" ? (node.substring(0, node.length - 1) + "\n" + " ") : node;
                     }
                 }
+            let code = document.getElementById("codeEditor");
+            text = text.replace(new RegExp(String.fromCharCode(160),"g"), String.fromCharCode(32))
+            if (code && text !== "") {
+                code.value = text;
+            }              
+            return text;
         },
-        addDbLink: function () {
+        getUserAgent: function() {
+            return navigator.userAgent;
+        },
+        geturl: function() {
+            return window.location.href;
+        },
+        colorize: function() {
+            var lines = document.querySelectorAll("[class^=mtk]");
+            if (lines) {
+                for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i];
+                    line.classList.add("blue");
+                }
+            }
+        },
+        setActiveDiv: function(activeDivId) {
+
+            var lastTab = document.getElementById(TabHistory[TabHistory.length - 1]);
+            if (activeDivId === lastTab.id)
+                return;
+            document.getElementById("appbar").textContent = activeDivId;
+            var active = document.getElementById(activeDivId);
+
+            AML.showById(activeDivId.replace("show", ""));
+            active.classList.add("active");
+
+            AML.hideById(lastTab.id.replace("show", ""));
+            lastTab.classList.remove("active");
+
+            if (active && active.id.includes("candles")) {
+                AML.plot();
+            }
+
+            if (active.id.includes("sqlformatter")) {
+                AML.showById("sqlformatter");
+                document.getElementById("sqlformatter").classList.remove("hide");
+            }
+
+            TabHistory.push(activeDivId);
+        },
+        doIsCandlesActive: async function() {
+            var isactive = false;
+            var candlesdiv = document.getElementById("candles");
+            if (candlesdiv) {
+                if (candlesdiv.classList.includes("hide"))
+                    return false;
+                else {
+                    return true;
+                }
+            }
+        },
+        isCandlesActive: async function() {
+            var isactive = await AML.doIsCandlesActive();
+
+            if (isactive) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        doisBrowseDataActive: async function() {
+            var isactive = false;
+            var el = document.querySelectorAll("#queryeditor-tab");
+
+            if (Sql.isNullOrEmpty(el))
+                return false;
+
+            if (el) {
+                isactive = el[0].ariaSelected;
+            }
+            if (isactive === "true") {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isBrowseDataActive: async function() {
+            var isactive = await AML.doisBrowseDataActive();
+
+            return isactive;
+        },
+
+        resolveAfter2Seconds: function() {
+            return new Promise(resolve=>{
+                setTimeout(()=>{
+                    console.log(typeof resolve(true));
+                }
+                , 100);
+            }
+            );
+        },
+        addDbLink: function() {
             var els = document.querySelectorAll("a[href='/SqlPage']");
             // els.innerHTML = "database";
             var dblink = document.createElement('span');
@@ -95,12 +290,12 @@
         toggleMenuItems: function(item) {
             var el = [];
             if (item.toLowerCase().includes("sql")) {
-            el = document.getElementById("");
+                el = document.getElementById("");
             }
             if (el)
-            el.classList.toggle('hide');
+                el.classList.toggle('hide');
         },
-        openNewWindow: function (url) {
+        openNewWindow: function(url) {
             var windowTarget = "_blank";
             let popup = window.open(url, this.windowTarget, "popup,width=1300,height=900z");
             if (!popup || popup.closed || typeof popup.closed == 'undefined') {
@@ -108,17 +303,16 @@
                     let redirectUrl = window.location.href;
                     let url = action + "?returnUrl=" + encode(redirectUrl);
                     window.location.replace(url);
-                }
-                else {
+                } else {
                     alert("Authentication popup is blocked by the browser. Please allow popups on this website and retry.")
                 }
             }
         },
-        getTwitterCookie: function (id) {
+        getTwitterCookie: function(id) {
             var cookie = document.getElementById(id).contentDocument.cookie;
             console.log(cookie);
         },
-        triggerFileDownload: function (fileName, url) {
+        triggerFileDownload: function(fileName, url) {
             const anchorElement = document.createElement('a');
             anchorElement.href = url;
             anchorElement.download = fileName ?? '';
@@ -126,74 +320,86 @@
             // anchorElement.click();
             // anchorElement.remove();
         },
-        ToggleCancel: function () {
+        ToggleCancel: function() {
             var x = document.getElementById("cancel");
             x.classList.toggle("hide");
         },
         Toggle: function(elemId) {
             var x = document.getElementById(elemId);
             if (x)
-            x.classList.toggle("hide");
+                x.classList.toggle("hide");
         },
         hideById: function(elemId) {
             var x = document.getElementById(elemId);
             if (x && !x.classList.contains("hide"))
-            x.classList.toggle("hide");
+                x.classList.toggle("hide");
         },
         showById: function(elemId) {
             var x = document.getElementById(elemId);
             if (x && x.classList.contains("hide"))
-            x.classList.remove("hide");
+                x.classList.remove("hide");
         },
-        scrollEventConsolesToTop: function () {
+        scrollEventConsolesToTop: function() {
             var myDiv = document.getElementById("event-console");
             myDiv.scrollTop = 0;
         },
-        clearGitMessage: function () {
+        clearGitMessage: function() {
             document.getElementById("gitcommit").value = null;
         },
-        doclear: function () {
+        doclear: function() {
             document.getElementById("myList").innerHTML = "";
         },
-        plot: function ( /** @type {string | URL} */ url) {
-            if (isCandlestickActive) {
+        clear: function() {
+            var el = document.getElementById("errorDisplay");
+            if (el)
+                el.innerHTML = "";
+        },
+        plot: function(/** @type {string | URL} */
+        url) {
+
             this.webSocketConnected = false;
             this.webSocketHost = "wss://stream.binance.com:9443/ws/" + "BTCUSDT" + "@kline_" + "1";
-            if (url == null) url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=50";
+            if (url == null)
+                url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=50";
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", url, true);
-            xmlhttp.onreadystatechange = function () {
+            xmlhttp.onreadystatechange = function() {
                 if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                     var json = JSON.parse(xmlhttp.responseText);
                     AML.candlestickChart = new AML.candleStickChart("candlestick");
                     for (var i = 0; i < json.length; ++i) {
-                        AML.addCandlestick(new AML.candleStick(
-                            json[i][0], // timestamp
-                            json[i][1], // open
-                            json[i][4], // close
-                            json[i][2], // high
-                            json[i][3], // low
+                        AML.addCandlestick(new AML.candleStick(json[i][0],// timestamp
+                        json[i][1],// open
+                        json[i][4],// close
+                        json[i][2],// high
+                        json[i][3],// low
                         ));
                     }
                     AML.draw();
                 }
-            };
+            }
+            ;
 
             xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xmlhttp.send();
-        }
+            console.log("Plotted...");
         },
-        plot2: function ( /** @type {[]} */ stick) {
-            AML.addCandlestick(new AML.candleStick(
-                stick[0].timeStamp, // timestamp
-                stick[0].open, // open
-                stick[0].close, // close
-                stick[0].high, // high
-                stick[0].low, // low
+        plot2: function(/** @type {[]} */
+        stick) {
+            AML.addCandlestick(new AML.candleStick(stick[0].timeStamp,// timestamp
+            stick[0].open,// open
+            stick[0].close,// close
+            stick[0].high,// high
+            stick[0].low,// low
             ));
             AML.draw2();
         },
-        candleStick: function ( /** @type {string} */ timestamp, /** @type {string} */ open, /** @type {string} */ close, /** @type {string} */ high, /** @type {string} */ low) {
+        candleStick: function(/** @type {string} */
+        timestamp, /** @type {string} */
+        open, /** @type {string} */
+        close, /** @type {string} */
+        high, /** @type {string} */
+        low) {
             this.timestamp = parseInt(timestamp);
             this.open = parseFloat(open);
             this.close = parseFloat(close);
@@ -205,31 +411,39 @@
             // let el = document.querySelector('header');
             // el.setAttribute("width", window.innerWidth - 50 + "px");
         },
-        candleStickChart: function ( /** @type {string} */ canvasElementID) {
+        candleStickChart: function(/** @type {string} */
+        canvasElementID) {
             AML.canvas = document.getElementById(canvasElementID);
-            var header = document.getElementById("header");
+            // var header = document.getElementById("header");
 
-            header.width = window.innerWidth * 0.9;
-            header.height = window.innerHeight * 0.04;
-            header.style.backgroundColor = "#060d13";
+            // header.width = window.innerWidth * 0.9;
+            // header.height = window.innerHeight * 0.04;
+            // header.style.backgroundColor = "#060d13";
             AML.canvas.width = window.innerWidth * 0.9;
             AML.canvas.height = window.innerHeight * 0.6;
 
-            if (AML.canvas.width) AML.width = parseInt(AML.canvas.width) * 0.99;
+            if (AML.canvas.width)
+                AML.width = parseInt(AML.canvas.width) * 0.99;
             AML.height = parseInt(AML.canvas.height) * 0.99;
             AML.ctx = AML.canvas.getContext("2d");
-            header.ctx = header.getContext("2d");
+            // header.ctx = header.getContext("2d");
 
-            AML.canvas.addEventListener("mousemove", ( /** @type {any} */ e) => {
+            AML.canvas.addEventListener("mousemove", (/** @type {any} */
+            e)=>{
                 AML.mouseMove(e);
-            });
-            AML.canvas.addEventListener("mouseout", ( /** @type {any} */ e) => {
+            }
+            );
+            AML.canvas.addEventListener("mouseout", (/** @type {any} */
+            e)=>{
                 AML.mouseOut(e);
-            });
+            }
+            );
 
-            addEventListener("resize", ( /** @type {any} */ e) => {
+            addEventListener("resize", (/** @type {any} */
+            e)=>{
                 AML.resize(e);
-            });
+            }
+            );
 
             // AML.canvas.addEventListener("wheel", ( /** @type {{ preventDefault: () => void; }} */ e) =>
             // {
@@ -239,7 +453,7 @@
 
             AML.canvas.style.backgroundColor = "#060d13";
             AML.ctx.font = '12px sans-serif';
-            header.ctx.font = '12px sans-serif';
+            // header.ctx.font = '12px sans-serif';
             AML.gridColor = "#444444";
             AML.gridTextColor = "#aaaaaa";
             AML.mouseHoverBackgroundColor = "#000000";
@@ -248,7 +462,7 @@
             AML.redColor = "#cc0000";
             AML.greenHoverColor = "#00ff00";
             AML.redHoverColor = "#ff0000";
-            AML.candleWidth = 20;
+            AML.candleWidth = 10;
             AML.marginLeft = 10;
             AML.marginRight = 10;
             AML.marginTop = 10;
@@ -262,8 +476,8 @@
             AML.xRange = 0;
             AML.xPixelRange = (AML.width - AML.marginLeft - AML.marginRight) * 0.87;
             // these are only approximations, the grid will be divided in a way so the numbers are nice
-            AML.xGridCells = 16;
-            AML.yGridCells = 16;
+            AML.xGridCells = 25;
+            AML.yGridCells = 25;
             AML.b_drawMouseOverlay = false;
             AML.mousePosition = {
                 x: 0,
@@ -277,74 +491,86 @@
             AML.technicalIndicators = [];
             AML.candlesticks = [];
         },
-        resize: function () {
+        resize: function() {
             AML.plot("https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=50");
         },
-        scroll: function ( /** @type {{ deltaY: number; }} */ e) {
+        scroll: function(/** @type {{ deltaY: number; }} */
+        e) {
             let url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=50";
             let split = url.split('&');
             let newLimit = 0;
             let cnt = 0;
             if (e.deltaY > 0)
                 AML.zoomStartID = 1;
-            else AML.zoomStartID = -1;
+            else
+                AML.zoomStartID = -1;
 
             for (let index = 0; index < split.length; index++) {
                 const element = split[index];
                 if (!element.includes('limit'))
                     continue;
-                else newLimit = parseInt(element.replace('limit=', ''));
+                else
+                    newLimit = parseInt(element.replace('limit=', ''));
             }
 
             //AML.draw();
         },
-        addCandlestick: function ( /** @type {any} */ candlestick) {
+        addCandlestick: function(/** @type {any} */
+        candlestick) {
             AML.candlesticks.push(candlestick);
         },
-        addOneCandlestick: function ( /** @type {any} */ candlestick) {
+        addOneCandlestick: function(/** @type {any} */
+        candlestick) {
             AML.candlesticks.push(candlestick);
         },
-        mouseMove: function ( /** @type {any} */ e) {
+        mouseMove: function(/** @type {any} */
+        e) {
             // document.getElementById("myList").innerHTML = "";
             // document.getElementById('myList').style.color = "white";
-            var getMousePos = ( /** @type {{ clientX: number; clientY: number; }} */ e) => {
+            var getMousePos = (/** @type {{ clientX: number; clientY: number; }} */
+            e)=>{
                 var rect = AML.canvas.getBoundingClientRect();
                 return {
                     x: e.clientX - rect.left,
                     y: e.clientY - rect.top
                 };
-            };
+            }
+            ;
             AML.mousePosition = getMousePos(e);
             AML.mousePosition.x += AML.candleWidth / 2;
             AML.b_drawMouseOverlay = true;
-            if (AML.mousePosition.x < AML.marginLeft) AML.b_drawMouseOverlay = false;
-            if (AML.mousePosition.x > AML.width - AML.marginRight + AML.candleWidth) AML.b_drawMouseOverlay = false;
-            if (AML.mousePosition.y > AML.height - AML.marginBottom) AML.b_drawMouseOverlay = false;
+            if (AML.mousePosition.x < AML.marginLeft)
+                AML.b_drawMouseOverlay = false;
+            if (AML.mousePosition.x > AML.width - AML.marginRight + AML.candleWidth)
+                AML.b_drawMouseOverlay = false;
+            if (AML.mousePosition.y > AML.height - AML.marginBottom)
+                AML.b_drawMouseOverlay = false;
             if (AML.b_drawMouseOverlay) {
                 AML.yMouseHover = AML.yToValueCoords(AML.mousePosition.y);
                 AML.xMouseHover = AML.xToValueCoords(AML.mousePosition.x);
                 // snap to candlesticks
                 var candlestickDelta = AML.candlesticks[1].timestamp - AML.candlesticks[0].timestamp;
-                AML.hoveredCandlestickID = Math.floor(
-                    (AML.xMouseHover - AML.candlesticks[0].timestamp) / candlestickDelta);
+                AML.hoveredCandlestickID = Math.floor((AML.xMouseHover - AML.candlesticks[0].timestamp) / candlestickDelta);
                 AML.xMouseHover = Math.floor(AML.xMouseHover / candlestickDelta) * candlestickDelta;
                 AML.mousePosition.x = AML.xToPixelCoords(AML.xMouseHover);
                 AML.draw();
-            } else AML.draw();
+            } else
+                AML.draw();
         },
-        mouseOut: function ( /** @type {any} */ e) {
+        mouseOut: function(/** @type {any} */
+        e) {
             AML.b_drawMouseOverlay = false;
             AML.draw();
         },
-        draw2: function () {
+        draw2: function() {
             AML.calculateYRange();
             AML.calculateXRange();
             AML.drawGrid();
         },
-        draw: function () {
+        draw: function() {
             // document.getElementById('candlestick').style.width = "90%";
             AML.ctx.clearRect(0, 0, AML.width, AML.height);
-            header.ctx.clearRect(0, 0, header.width, header.height);
+            // header.ctx.clearRect(0, 0, header.width, header.height);
             AML.calculateYRange();
             AML.calculateXRange();
             AML.drawGrid();
@@ -372,9 +598,12 @@
                 // if (AML.candleWidth % 2 == 0) AML.candleWidth--;
 
                 let color = (AML.candlesticks[i].close > AML.candlesticks[i].open) ? AML.greenColor : AML.redColor;
+
                 if (i == AML.hoveredCandlestickID) {
-                    if (color == AML.greenColor) color = AML.greenHoverColor;
-                    else if (color == AML.redColor) color = AML.redHoverColor;
+                    if (color == AML.greenColor)
+                        color = AML.greenHoverColor;
+                    else if (color == AML.redColor)
+                        color = AML.redHoverColor;
                 }
 
                 AML.drawLine(AML.xToPixelCoords(AML.candlesticks[i].timestamp), AML.yToPixelCoords(AML.candlesticks[i].low), AML.xToPixelCoords(AML.candlesticks[i].timestamp), AML.yToPixelCoords(AML.candlesticks[i].high), color);
@@ -382,14 +611,15 @@
                 AML.fillRect(AML.xToPixelCoords(AML.candlesticks[i].timestamp) - Math.floor(AML.candleWidth / 2), AML.yToPixelCoords(AML.candlesticks[i].open), AML.candleWidth, AML.yToPixelCoords(AML.candlesticks[i].close) - AML.yToPixelCoords(AML.candlesticks[i].open), color == AML.greenColor ? AML.canvas.style.backgroundColor : AML.redColor);
             }
 
-
             for (let i = 0; i < AML.candlesticks.length; ++i) {
                 if (AML.candlesticks[i].close > AML.candlesticks[i].open)
                     continue;
                 let color = AML.candlesticks[i].close > AML.candlesticks[i].open ? AML.greenColor : AML.redColor;
                 if (i == AML.hoveredCandlestickID) {
-                    if (color == AML.greenColor) color = AML.greenHoverColor;
-                    else if (color == AML.redColor) color = AML.redHoverColor;
+                    if (color == AML.greenColor)
+                        color = AML.greenHoverColor;
+                    else if (color == AML.redColor)
+                        color = AML.redHoverColor;
                 }
                 // draw the wick
                 AML.drawLine(AML.xToPixelCoords(AML.candlesticks[i].timestamp), AML.yToPixelCoords(AML.candlesticks[i].low), AML.xToPixelCoords(AML.candlesticks[i].timestamp), AML.yToPixelCoords(AML.candlesticks[i].high), color);
@@ -407,8 +637,10 @@
 
                 let color = AML.candlesticks[i].close > AML.candlesticks[i].open ? AML.greenColor : AML.redColor;
                 if (i == AML.hoveredCandlestickID) {
-                    if (color == AML.greenColor) color = AML.greenHoverColor;
-                    else if (color == AML.redColor) color = AML.redHoverColor;
+                    if (color == AML.greenColor)
+                        color = AML.greenHoverColor;
+                    else if (color == AML.redColor)
+                        color = AML.redHoverColor;
                 }
                 AML.ctx.setLineDash([]);
                 // draw the wick
@@ -430,29 +662,33 @@
 
             // Adding prices in the top right corner like coinbase has when hovering over.
             let x = AML.canvas.width * 0.6;
-            header.ctx.fillStyle = AML.gridTextColor;
 
-            header.ctx.fillStyle = AML.gridTextColor;
+            /**
+             * HEADER RECTANGLE
+             */
 
-            // TODO: getting TypeError: Cannot read properties of undefined (reading 'open') here idk why
-            if (AML.candlesticks.length > 0 && !AML.candlesticks === null)
-                try {
-                    header.ctx.fillText("O: ", x, 20);
-                    header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].open), x + 20, 20);
+            // header.ctx.fillStyle = AML.gridTextColor;
 
-                    header.ctx.fillText("H: ", x + 95 + 5, 20);
-                    header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].high), x + 95 + 20, 20);
+            // header.ctx.fillStyle = AML.gridTextColor;
 
-                    header.ctx.fillText("L: ", x + (95 * 2) + 5, 20);
-                    header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].low), x + (95 * 2) + 20, 20);
+            // // TODO: getting TypeError: Cannot read properties of undefined (reading 'open') here idk why
+            // if (AML.candlesticks.length > 0 && !AML.candlesticks === null)
+            //     try {
+            //         header.ctx.fillText("O: ", x, 20);
+            //         header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].open), x + 20, 20);
 
-                    header.ctx.fillText("C: ", x + (95 * 3) + 5, 20);
-                    header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].close), x + (95 * 3) + 20, 20);
-                } catch (error) {
-                    new Log(error);
-                    // new Log(AML.candlesticks.open);
-                }
+            //         header.ctx.fillText("H: ", x + 95 + 5, 20);
+            //         header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].high), x + 95 + 20, 20);
 
+            //         header.ctx.fillText("L: ", x + (95 * 2) + 5, 20);
+            //         header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].low), x + (95 * 2) + 20, 20);
+
+            //         header.ctx.fillText("C: ", x + (95 * 3) + 5, 20);
+            //         header.ctx.fillText(AML.fmt(AML.candlesticks[AML.hoveredCandlestickID === 0 ? AML.candlesticks.length : AML.hoveredCandlestickID].close), x + (95 * 3) + 20, 20);
+            //     } catch (error) {
+            //         new Log(error);
+            //         // new Log(AML.candlesticks.open);
+            //     }
 
             // draw mouse hover
             if (AML.b_drawMouseOverlay) {
@@ -480,6 +716,7 @@
                 AML.ctx.fillStyle = AML.gridTextColor;
                 str = AML.formatDate(new Date(AML.xMouseHover));
                 textWidth = AML.ctx.measureText(str).width;
+                console.log("textWidth: " + textWidth);
                 // fill x axis date box when hovering over
                 AML.fillRect(AML.mousePosition.x - textWidth / 2 - 5, AML.height - 20, textWidth + 10, 20, AML.canvas.style.backgroundColor);
                 AML.ctx.fillStyle = AML.gridTextColor;
@@ -491,13 +728,13 @@
             //     AML.plot()
             // }, millisecondsToWait);
         },
-        fmt: function (number) {
+        fmt: function(number) {
             return number.toLocaleString('en-US', {
                 style: 'currency',
                 currency: 'USD'
             });
         },
-        setGreenStroke: function () {
+        setGreenStroke: function() {
 
             AML.ctx.shadowColor = '#00ff00';
             AML.ctx.shadowBlur = 1;
@@ -505,14 +742,14 @@
             AML.ctx.lineWidth = 1;
             AML.ctx.strokeStyle = '#38f';
         },
-        clearStroke: function () {
+        clearStroke: function() {
             AML.ctx.shadowColor = '';
             AML.ctx.shadowBlur = 0;
             AML.ctx.lineJoin = '';
             AML.ctx.lineWidth = 1;
             AML.ctx.strokeStyle = "";
         },
-        onInit: function (candlestickChart) {
+        onInit: function(candlestickChart) {
             for (var i = 0; i < candlestickChart.candlesticks.length; ++i) {
                 // average the number of samples
                 var avg = 0;
@@ -525,18 +762,21 @@
                 this.data.push(avg);
             }
         },
-        addTechnicalIndicator: function ( /** @type {{ onInit: (arg0: any) => void; }} */ indicator) {
+        addTechnicalIndicator: function(/** @type {{ onInit: (arg0: any) => void; }} */
+        indicator) {
             indicator.onInit(this);
             this.technicalIndicators.push(indicator);
         },
-        getCurrentPrice: function () {
+        getCurrentPrice: function() {
             var el = document.getElementById("candleprice");
-            if (el != null || el != undefined) return el.textContent;
+            if (el != null || el != undefined)
+                return el.textContent;
         },
-        setCurrentPrice: function ( /** @type {[]} */ url) {
+        setCurrentPrice: function(/** @type {[]} */
+        url) {
             AML.plot(url);
         },
-        drawGrid: function () {
+        drawGrid: function() {
 
             // roughly divide the yRange into cells
             var yGridSize = AML.yRange / AML.yGridCells;
@@ -544,8 +784,10 @@
             var currentprice = AML.candlesticks[AML.candlesticks.length - 1].close;
             // try to find a nice number to round to
             var niceNumber = Math.pow(10, Math.ceil(Math.log10(yGridSize)));
-            if (yGridSize < 0.25 * niceNumber) niceNumber = 0.25 * niceNumber;
-            else if (yGridSize < 0.5 * niceNumber) niceNumber = 0.5 * niceNumber;
+            if (yGridSize < 0.25 * niceNumber)
+                niceNumber = 0.25 * niceNumber;
+            else if (yGridSize < 0.5 * niceNumber)
+                niceNumber = 0.5 * niceNumber;
             // find next largest nice number above yStart
             let yStartRoundNumber = Math.ceil(AML.yStart / niceNumber) * niceNumber;
             // find next lowest nice number below yEnd
@@ -568,15 +810,18 @@
             var xGridSize = AML.xRange / AML.xGridCells;
             // try to find a nice number to round to
             niceNumber = Math.pow(10, Math.ceil(Math.log10(xGridSize)));
-            if (xGridSize < 0.25 * niceNumber) niceNumber = 0.25 * niceNumber;
-            else if (xGridSize < 0.5 * niceNumber) niceNumber = 0.5 * niceNumber;
+            if (xGridSize < 0.25 * niceNumber)
+                niceNumber = 0.25 * niceNumber;
+            else if (xGridSize < 0.5 * niceNumber)
+                niceNumber = 0.5 * niceNumber;
             // find next largest nice number above yStart
             var xStartRoundNumber = Math.ceil(AML.xStart / niceNumber) * niceNumber;
             // find next lowest nice number below yEnd
             var xEndRoundNumber = Math.floor(AML.xEnd / niceNumber) * niceNumber;
             // if the total x range is more than 5 days, format the timestamp as date instead of hours
             var b_formatAsDate = false;
-            if (AML.xRange > 60 * 60 * 24 * 1000 * 5) b_formatAsDate = true;
+            if (AML.xRange > 60 * 60 * 24 * 1000 * 5)
+                b_formatAsDate = true;
             /////////////////////////////////////////////////////////////////////////////////////////////////////
             // DRAWING x AXIS LABELS
             for (var x = xStartRoundNumber; x <= xEndRoundNumber; x += niceNumber) {
@@ -597,7 +842,7 @@
                 AML.ctx.fillText(dateStr, AML.xToPixelCoords(x) + 5, AML.height - 25);
             }
         },
-        calculateYRange: function () {
+        calculateYRange: function() {
             for (var i = 0; i < AML.candlesticks.length; ++i) {
                 if (i == 0) {
                     AML.yStart = AML.candlesticks[i].low;
@@ -613,24 +858,33 @@
             }
             AML.yRange = AML.yEnd - AML.yStart;
         },
-        calculateXRange: function () {
+        calculateXRange: function() {
             AML.xStart = AML.candlesticks[0].timestamp;
             AML.xEnd = AML.candlesticks[AML.candlesticks.length - 1].timestamp;
             AML.xRange = (AML.xEnd - AML.xStart) * 0.9;
         },
-        yToPixelCoords: function ( /** @type {number} */ y) {
+        yToPixelCoords: function(/** @type {number} */
+        y) {
             return (AML.height - AML.marginBottom - ((y - AML.yStart) * AML.yPixelRange) / AML.yRange);
         },
-        xToPixelCoords: function ( /** @type {number} */ x) {
+        xToPixelCoords: function(/** @type {number} */
+        x) {
             return (AML.marginLeft + ((x - AML.xStart) * AML.xPixelRange) / AML.xRange);
         },
-        yToValueCoords: function ( /** @type {number} */ y) {
+        yToValueCoords: function(/** @type {number} */
+        y) {
             return (AML.yStart + ((AML.height - AML.marginBottom - y) * AML.yRange) / AML.yPixelRange);
         },
-        xToValueCoords: function ( /** @type {number} */ x) {
+        xToValueCoords: function(/** @type {number} */
+        x) {
             return (AML.xStart + ((x - AML.marginLeft) * AML.xRange) / AML.xPixelRange);
         },
-        drawLine: function ( /** @type {number} */ xStart, /** @type {number} */ yStart, /** @type {number} */ xEnd, /** @type {number} */ yEnd, /** @type {any} */ color) {
+        drawLine: function(/** @type {number} */
+        xStart, /** @type {number} */
+        yStart, /** @type {number} */
+        xEnd, /** @type {number} */
+        yEnd, /** @type {any} */
+        color) {
             AML.ctx.beginPath();
             // to get a crisp 1 pixel wide line, we need to add 0.5 to the coords
             AML.ctx.moveTo(xStart + 0.5, yStart + 0.5);
@@ -638,19 +892,34 @@
             AML.ctx.strokeStyle = color;
             AML.ctx.stroke();
         },
-        fillRect: function ( /** @type {any} */ x, /** @type {any} */ y, /** @type {any} */ width, /** @type {any} */ height, /** @type {any} */ color) {
+        fillRect: function(/** @type {any} */
+        x, /** @type {any} */
+        y, /** @type {any} */
+        width, /** @type {any} */
+        height, /** @type {any} */
+        color) {
             AML.ctx.beginPath();
             AML.ctx.fillStyle = color;
             AML.ctx.rect(x, y, width, height);
             AML.ctx.fill();
         },
-        drawRect: function ( /** @type {any} */ x, /** @type {any} */ y, /** @type {any} */ width, /** @type {any} */ height, /** @type {any} */ color) {
+        drawRect: function(/** @type {any} */
+        x, /** @type {any} */
+        y, /** @type {any} */
+        width, /** @type {any} */
+        height, /** @type {any} */
+        color) {
             AML.ctx.beginPath();
             AML.ctx.strokeStyle = color;
             AML.ctx.rect(x, y, width, height);
             AML.ctx.stroke();
         },
-        updateCandlestick: function ( /** @type {number} */ candlestickID, /** @type {any} */ open, /** @type {any} */ close, /** @type {any} */ high, /** @type {any} */ low) {
+        updateCandlestick: function(/** @type {number} */
+        candlestickID, /** @type {any} */
+        open, /** @type {any} */
+        close, /** @type {any} */
+        high, /** @type {any} */
+        low) {
             if (candlestickID >= 0 && candlestickID < this.candlesticks.length) {
                 this.candlesticks[candlestickID].update(open, close, high, low);
                 for (var i = 0; i < this.technicalIndicators.length; ++i) {
@@ -658,13 +927,18 @@
                 }
             }
         },
-        MovingAverage: function ( /** @type {any} */ samples, /** @type {any} */ color, /** @type {any} */ lineWidth) {
+        MovingAverage: function(/** @type {any} */
+        samples, /** @type {any} */
+        color, /** @type {any} */
+        lineWidth) {
             this.samples = samples;
             this.color = color;
             this.lineWidth = lineWidth;
             this.data = [];
         },
-        onAddCandlestick: function ( /** @type {{ candlesticks: { [x: string]: { close: number; }; }; }} */ candlestickChart, /** @type {number} */ candlestickID) {
+        onAddCandlestick: function(/** @type {{ candlesticks: { [x: string]: { close: number; }; }; }} */
+        candlestickChart, /** @type {number} */
+        candlestickID) {
             // average the number of samples
             var avg = 0;
             var counter = 0;
@@ -675,7 +949,9 @@
             avg /= counter;
             this.data.push(avg);
         },
-        onUpdateCandlestick: function ( /** @type {{ candlesticks: { [x: string]: { close: number; }; }; }} */ candlestickChart, /** @type {number} */ candlestickID) {
+        onUpdateCandlestick: function(/** @type {{ candlesticks: { [x: string]: { close: number; }; }; }} */
+        candlestickChart, /** @type {number} */
+        candlestickID) {
             // average the number of samples
             var avg = 0;
             var counter = 0;
@@ -686,7 +962,8 @@
             avg /= counter;
             this.data[candlestickID] = avg;
         },
-        MovingAverageDraw: function ( /** @type {{ context: { lineWidth: any; }; zoomStartID: any; drawLine: (arg0: any, arg1: any, arg2: any, arg3: any, arg4: any) => void; xToPixelCoords: (arg0: any) => any; candlesticks: { [x: string]: { timestamp: any; }; }; yToPixelCoords: (arg0: any) => any; }} */ candlestickChart) {
+        MovingAverageDraw: function(/** @type {{ context: { lineWidth: any; }; zoomStartID: any; drawLine: (arg0: any, arg1: any, arg2: any, arg3: any, arg4: any) => void; xToPixelCoords: (arg0: any) => any; candlesticks: { [x: string]: { timestamp: any; }; }; yToPixelCoords: (arg0: any) => any; }} */
+        candlestickChart) {
             var oldLineWidth = candlestickChart.context.lineWidth;
             candlestickChart.context.lineWidth = this.lineWidth;
             for (var i = candlestickChart.zoomStartID; i < this.data.length - 1; ++i) {
@@ -694,26 +971,35 @@
             }
             candlestickChart.context.lineWidth = oldLineWidth;
         },
-        formatDate: function ( /** @type {{ getDate: () => any; getMonth: () => number; getHours: () => any; getMinutes: () => any; getFullYear: () => string; }} */ date) {
+        formatDate: function(/** @type {{ getDate: () => any; getMonth: () => number; getHours: () => any; getMinutes: () => any; getFullYear: () => string; }} */
+        date) {
             AML.ctx.fillStyle = AML.gridTextColor;
             var day = date.getDate();
             var month = date.getMonth() + 1;
             var hours = date.getHours();
             var minutes = date.getMinutes();
-            if (minutes < 10) minutes = "0" + minutes;
+            if (minutes < 10)
+                minutes = "0" + minutes;
             return (month + "/" + day + "/" + date.getFullYear() + " - " + hours + ":" + minutes);
         },
-        roundPriceValue: function ( /** @type {number} */ value) {
-            if (value > 1.0) return ((Math.round(value * 100) / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"));
-            if (value > 0.001) return (Math.round(value * 1000) / 1000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
-            if (value > 0.00001) return (Math.round(value * 100000) / 100000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            if (value > 0.0000001) return (Math.round(value * 10000000) / 10000000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-            else return (Math.round(value * 1000000000) / 1000000000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        roundPriceValue: function(/** @type {number} */
+        value) {
+            if (value > 1.0)
+                return ((Math.round(value * 100) / 100).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"));
+            if (value > 0.001)
+                return (Math.round(value * 1000) / 1000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+            if (value > 0.00001)
+                return (Math.round(value * 100000) / 100000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            if (value > 0.0000001)
+                return (Math.round(value * 10000000) / 10000000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            else
+                return (Math.round(value * 1000000000) / 1000000000).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
         },
-        setCanvasSize: function () {
-            if (document.getElementById("candlestick") && document.getElementById("candlestick").style.width != "1600") document.getElementById("candlestick").style.width = window.innerWidth * 0.95;
+        setCanvasSize: function() {
+            if (document.getElementById("candlestick") && document.getElementById("candlestick").style.width != "1600")
+                document.getElementById("candlestick").style.width = window.innerWidth * 0.95;
         },
-        updateTitle: function () {
+        updateTitle: function() {
             // new Log(AML.getCurrentPrice());
             document.title = AML.getCurrentPrice();
         },
@@ -722,27 +1008,26 @@
                 window.Module.FS.mkdir('/database');
                 window.Module.FS.mount(window.Module.FS.IDBFS, {}, '/database');
                 return AML.syncDatabase(true);
-            }
-            catch (error) {
+            } catch (error) {
                 console.log(error);
             }
         },
         syncDatabase: function(populate) {
             try {
-            return new Promise((resolve, reject) => {
-                window.Module.FS.syncfs(populate, (err) => {
-                    if (err) {
-                        console.log('syncfs failed. Error:', err);
-                        reject(err);
+                return new Promise((resolve,reject)=>{
+                    window.Module.FS.syncfs(populate, (err)=>{
+                        if (err) {
+                            console.log('syncfs failed. Error:', err);
+                            reject(err);
+                        } else {
+                            console.log('synced successfull.');
+                            resolve();
+                        }
                     }
-                    else {
-                        console.log('synced successfull.');
-                        resolve();
-                    }
-                });
-            });
-            }
-            catch (error) {
+                    );
+                }
+                );
+            } catch (error) {
                 console.log('failed to sync database.');
             }
         },

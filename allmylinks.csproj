@@ -8,6 +8,7 @@
     <ReleaseVersion>1.0</ReleaseVersion>
     <PublishTrimmed>false</PublishTrimmed>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <GHPages>true</GHPages>
   </PropertyGroup>
   <PropertyGroup>
@@ -18,12 +19,18 @@
       <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.6" PrivateAssets="all" />
+    <PackageReference Include="BlazorMonaco" Version="2.1.0" />
+    <PackageReference Include="Flurl.Http" Version="3.2.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.7" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0-preview.5.22302.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0-preview.5.22302.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0-preview.7.22375.6" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0-preview.7.22375.6" />
     <PackageReference Include="MudBlazor" Version="6.0.11" />
     <PackageReference Include="PublishSPAforGitHubPages.Build" Version="1.3.6" />
     <PackageReference Include="Radzen.Blazor" Version="3.19.3" />
@@ -33,13 +40,13 @@
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.0" />
     <PackageReference Include="SQLitePCLRaw.core" Version="2.1.0" />
     <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.0" />
-    <PackageReference Include="Stl" Version="3.5.2" />
-    <PackageReference Include="Stl.Fusion" Version="3.5.2" />
-    <PackageReference Include="Stl.Fusion.Blazor" Version="3.5.2" />
+    <PackageReference Include="Stl" Version="3.5.23" />
+    <PackageReference Include="Stl.Fusion" Version="3.5.23" />
+    <PackageReference Include="Stl.Fusion.Blazor" Version="3.5.23" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Stl.Fusion.EntityFramework" Version="3.5.2" />
+    <PackageReference Include="Stl.Fusion.EntityFramework" Version="3.5.23" />
     <PackageReference Include="UAParser" Version="3.1.47" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
@@ -53,6 +60,12 @@
     <Content Remove="Pages\Index.razor" />
     <Content Remove="Pages\Redirect.razor" />
     <Content Remove="artifacts\**" />
+    <Content Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\bin\**" />
+    <Content Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\**" />
+    <Content Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\**" />
+    <Content Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\**" />
+    <Content Remove="PoorMansTSqlFormatterLib\obj\**" />
+    <Content Remove="PoorMansTSqlFormatterLib\**" />
   </ItemGroup>
 
   <!-- <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
@@ -84,6 +97,12 @@
     <None Remove="Microsoft.AspNetCore.Hosting" />
     <None Remove="Microsoft.AspNetCore.Hosting.Abstractions" />
     <None Remove="artifacts\**" />
+    <None Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\bin\**" />
+    <None Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\**" />
+    <None Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\**" />
+    <None Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\**" />
+    <None Remove="PoorMansTSqlFormatterLib\obj\**" />
+    <None Remove="PoorMansTSqlFormatterLib\**" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\main.db">
@@ -92,9 +111,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="artifacts\**" />
+    <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\bin\**" />
+    <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\**" />
+    <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\**" />
+    <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\**" />
+    <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\Properties\AssemblyInfo.cs" />
+    <Compile Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\Properties\AssemblyInfo.cs" />
+    <Compile Remove="PoorMansTSqlFormatterLib\obj\**" />
+    <Compile Remove="PoorMansTSqlFormatterLib\**" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="artifacts\**" />
+    <EmbeddedResource Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\bin\**" />
+    <EmbeddedResource Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\**" />
+    <EmbeddedResource Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\**" />
+    <EmbeddedResource Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\**" />
+    <EmbeddedResource Remove="PoorMansTSqlFormatterLib\obj\**" />
+    <EmbeddedResource Remove="PoorMansTSqlFormatterLib\**" />
   </ItemGroup>
   <ItemGroup>
     <_ContentIncludedByDefault Remove="artifacts\bin\Stl.CommandR.RegisterAttributes\net6.0\Stl.CommandR.RegisterAttributes.deps.json" />
@@ -137,5 +170,26 @@
     <_ContentIncludedByDefault Remove="artifacts\obj\Stl.RegisterAttributes\Stl.RegisterAttributes.csproj.nuget.dgspec.json" />
     <_ContentIncludedByDefault Remove="artifacts\obj\Stl\project.assets.json" />
     <_ContentIncludedByDefault Remove="artifacts\obj\Stl\Stl.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\bin\Debug\net6.0\PoorMansTSqlFormatterJS.deps.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\PoorMansTSqlFormatterJS.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\bin\Debug\net6.0\PoorMansTSqlFormatterLib.deps.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\PoorMansTSqlFormatterLib.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\Bridge.Resources.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterJS\global.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatter\PoorMansTSqlFormatterLib\global.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatterLib\bin\Debug\net6.0\PoorMansTSqlFormatterLib.deps.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatterLib\global.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatterLib\obj\PoorMansTSqlFormatterLib.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatterLib\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="PoorMansTSqlFormatterLib\obj\project.packagespec.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PoorMansTSqlFormatterLib">
+      <HintPath>..\PoorMansSqlFormatter\PoorMansTSqlFormatterLib\bin\Debug\net6.0\PoorMansTSqlFormatterLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

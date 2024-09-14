@@ -1,12 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using System.Net.Http.Json;
-using System.Text.Json;
 using allmylinks;
+using Microsoft.EntityFrameworkCore;
 using SQLite;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using System.Threading.Tasks;
 
 public class PersonServices : IPersonServices
 {
@@ -30,7 +24,7 @@ public class PersonServices : IPersonServices
         var dropResult = await db.DropTableAsync<Person>();
         var createResult = await db.CreateTableAsync<Person>();
         List<string> people = new();
-        var person = new Person()
+        var person = new Person
         {
             FirstName = "Joe",
             LastName = "Mothafuckin Shakely",

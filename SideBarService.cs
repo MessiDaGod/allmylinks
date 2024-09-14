@@ -113,15 +113,15 @@ public class SideBarService
         return example?.Description ?? "";
     }
 
-    public readonly SideBarItem[] GetSideBarItems = new[] {
-       new SideBarItem()
-        {
+    public readonly SideBarItem[] GetSideBarItems = {
+       new SideBarItem
+       {
             Name = "All My Links",
             Path = "/",
             Icon = "link"
         },
-       new SideBarItem()
-        {
+       new SideBarItem
+       {
             Name = "Sql",
             Path = "/SqlPage",
             Icon = "database"

@@ -1,0 +1,109 @@
+@page "/sql-formatter"
+@using Radzen;
+@using Stl.Fusion.Authentication;
+@using System.Data;
+@using Stl.Fusion
+@using Stl.Fusion.Blazor;
+@inject IJSRuntime Js;
+@inject Session _session;
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper;
+@inject Stl.Fusion.UI.UICommander _uiCommandRunner;
+@inject ILogger<SqlFormatter> Log;
+@inject ISqlService SqlService;
+@namespace allmylinks
+
+<div id="sqlformatter" class="hide hidden">
+    <header>
+        <nav class="float-right">
+            <ul>
+                <li><label><input type="checkbox" name="EnableFormatAsYouGo" id="formatAsYouGo" checked/> Format as-you-go</label></li>
+                <li><label><input type="checkbox" name="EnableInPlaceFormat" id="inPlaceFormat" disabled="disabled"/> In-place format</label></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="row" hidden>
+        <div class="col-6">
+            <textarea name="inputString" id="inputString" style="width: 100%; height: 20vh; padding: 2px; border: 1px solid; "></textarea>
+        </div>
+        <div class="col-6">
+            <div id="outputDiv" style="height:20vh; padding: 2px; border: 1px solid; overflow: scroll;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #sqlformatter {
+        padding-top: 0px;
+    }
+    .hidden {
+        visibility: hidden;
+    }
+    .blue {
+        color: blue !important;
+    }
+    .tab-pane {
+        overflow-y: scroll !important;
+        overflow-x: scroll !important;
+    }
+    #queryeditor, #myTabContent, .mud-layout {
+        overflow-y: scroll !important;
+        overflow-x: scroll !important;
+    }
+    #tableQueryRecords {
+        overflow-x: scroll !important;
+        overflow-y: scroll !important;
+    }
+    th {
+        min-width: auto !important;
+    }
+    #outputDiv, #codeEditor,  #outputDiv2, #codeEditor2 {
+        height:70vh; padding: 2px; border: 1px solid; overflow: scroll; resize: both !important;
+    }
+</style>
+
+@code {
+
+    bool ready;
+    string Url { get; set; } = string.Empty;
+    private static readonly HttpClient http = new();
+    private MonacoEditor _editor { get; set; }
+    protected static IJSRuntime staticJsRuntime { get; set; }
+    protected DotNetObjectReference<SqlFormatter> jsObjectRef { get; set; }
+    private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
+    internal IJSObjectReference module0;
+    internal IJSObjectReference module1;
+    internal IJSObjectReference module2;
+
+
+    @* <link href="js/minimal.css" rel="stylesheet">
+    <script src="js/jquery-1.5.2.min.js"></script>
+    <script src="js/formattingengine.js"></script>
+     *@
+    // 1
+    protected override async Task OnInitializedAsync()
+    {
+        staticJsRuntime = Js;
+        jsObjectRef = DotNetObjectReference.Create(this);
+
+        Url = await Js.InvokeAsync<string>("AML.geturl");
+        await Js.InvokeVoidAsync("AML.logit", "Url: " + Url);
+        await Js.InvokeVoidAsync("AML.showById", "sqlformatter");
+        await base.OnInitializedAsync();
+    }
+
+    private string Followers { get; set; } = "0";
+    // 2
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ready = true;
+            @* module0 = await Js.InvokeAsync<IJSObjectReference>("import", ".js/formattingengine.js"); *@
+            module1 = await Js.InvokeAsync<IJSObjectReference>("import", "./js/SqlFormatter.js");
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+}

@@ -1,11 +1,8 @@
 @page "/sql"
-@using MudBlazor;
-@inject IJSRuntime Js;
-@using Radzen
-@using Radzen.Blazor
-@namespace allmylinks
-@using allmylinks.Models;
+@using Orientation = Radzen.Orientation
 @using Newtonsoft.Json
+@inject IJSRuntime Js;
+@namespace allmylinks
 @inject NavigationManager UriHelper;
 
 <div id="sql" class="hide">
@@ -18,17 +15,17 @@
         <div id="infomsg" class="center">
             <MudAlert Severity="Severity.Success" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Press the "Upload Database" button to the left and upload a .db file to access this page.<br><a href="https://github.com/MessiDaGod/Files/blob/main/main.db?raw=true" class="center">Database File</a></MudAlert>
 
-            @if (showLeaveAlert == true)
+            @if (showLeaveAlert)
             {
                 <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Only .db files can be uploaded!</MudAlert>
             }
         </div>
     }
 
-    <RadzenSplitter Orientation="Radzen.Orientation.Vertical" Collapse=@OnCollapseDisabled Expand=@OnExpand>
+    <RadzenSplitter Orientation="Orientation.Vertical" Collapse=@OnCollapseDisabled Expand=@OnExpand>
         <RadzenSplitterPane>
             <RadzenSplitter Collapse=@OnCollapseDisabled Expand=@OnExpand>
-                <RadzenSplitterPane Size="14%">
+                <RadzenSplitterPane Size="12%" min-width="0">
                     <div id='infoPanel' class="card rounded-0 border-left-0">
                         <table class='table table-condensed small'>
                             <thead>
@@ -60,7 +57,7 @@
                     </div>
                 </RadzenSplitterPane>
                 <RadzenSplitterPane>
-                    <p id='errorDisplay' class='m-0 p-0 small text-danger'></p>
+                    <h4 id='errorDisplay' class='m-0 p-0 large text-danger'></h4>
                     <div id='mainTabsWrapper' class='card rounded-0 border-right-0'>
                         <div id='mainTabs' role='tablist' class="hide">
                             <BrowseData />
@@ -90,7 +87,6 @@
 
     public class DatabaseTables
     {
-        public DatabaseTables() { }
         public object[] columns { get; set; } = null!;
         public object[] values { get; set; } = null!;
     }
@@ -105,7 +101,7 @@
     private SymbolField Conv { get; set; } = new();
     private bool AllowRowSelectOnRowClick { get; set; } = true;
     private IEnumerable<Prices> Prices { get; set; }
-    private Radzen.TabPosition _tabPosition = Radzen.TabPosition.Left;
+    private TabPosition _tabPosition = TabPosition.Left;
     private RadzenDataGrid<Prices> _PricesGrid;
     RadzenDataGrid<Prices> _grid;
     private RadzenDataGrid<Person>? PersonsGrid;
@@ -117,6 +113,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        @* await Js.InvokeVoidAsync("AML.addColorListener"); *@
         await base.OnInitializedAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -124,6 +121,9 @@
         if (firstRender)
         {
             await Task.Run(() => isLoading = false);
+            @* bool isSqlActive = false;
+            isSqlActive = await JS.InvokeAsync<bool>("Sql.isSqlActive");
+            if (isSqlActive) *@
             await Init();
             await InvokeAsync(StateHasChanged);
         }
@@ -139,7 +139,7 @@
         columns = await Js.InvokeAsync<string[]>("Sql.getColumns", tableName);
         for (int i = 0; i < columns.Length; i++)
         {
-            await Task.Run(() => Console.WriteLine(columns[i].ToString())).ConfigureAwait(false);
+            await Task.Run(() => Console.WriteLine(columns[i])).ConfigureAwait(false);
         }
         return columns;
     }
@@ -171,7 +171,6 @@
                 {
                     await LogIt(prices[j].Close.ToString());
                 }
-            return;
         }
     }
 
@@ -190,7 +189,7 @@
 
     private async Task UploadFiles(InputFileChangeEventArgs e)
     {
-        if (!e.GetMultipleFiles()[0].Name.ToString().ToLower().Contains(".db"))
+        if (!e.GetMultipleFiles()[0].Name.ToLower().Contains(".db"))
         {
             await Js.InvokeVoidAsync("AML.logit", "File is not a valid SQLite database");
             showLeaveAlert = true;
@@ -202,7 +201,7 @@
             var file = e.GetMultipleFiles()[i];
             await Js.InvokeVoidAsync("AML.logit", $"Adding file {i + 1}");
             await Task.Run(() => files.Add(file));
-            await Js.InvokeVoidAsync("AML.logit", files[0].Name.ToString());
+            await Js.InvokeVoidAsync("AML.logit", files[0].Name);
         }
         await Js.InvokeVoidAsync("Sql.toggleTabs");
         await Js.InvokeVoidAsync("Sql.toggleMsg");
@@ -256,13 +255,13 @@
 
     void OnCollapseDisabled(RadzenSplitterEventArgs args)
     {
-        args.Cancel = true;
+        //args.Cancel = true;
 
     }
 
     void OnResizeDisabled(RadzenSplitterResizeEventArgs args)
     {
-        args.Cancel = true;
+        //args.Cancel = true;
 
     }
 

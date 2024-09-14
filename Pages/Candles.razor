@@ -6,7 +6,6 @@
 
 <div id="candles" class="hide">
     <strong><p id="candleprice" class="center"></p></strong>
-    <canvas id="header" width="100px"></canvas>
     <canvas id="candlestick"></canvas>
 </div>
 <style>
@@ -29,13 +28,14 @@
     protected override async Task OnInitializedAsync()
     {
         await ContinuallyGetPrices(cts.Token);
+        await base.OnInitializedAsync();
     }
 
     async Task ContinuallyGetPrices(CancellationToken ct = default)
     {
-        while (!cts.IsCancellationRequested) {
-            await JS.InvokeVoidAsync("AML.plot");
-            await Task.Delay(10000);
-        }
+        bool isCandlesActive = false;
+        isCandlesActive = await JS.InvokeAsync<bool>("AML.isCandlesActive");
+        if (isCandlesActive)
+        await JS.InvokeVoidAsync("AML.plot");
     }
 }

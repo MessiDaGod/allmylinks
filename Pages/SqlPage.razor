@@ -1,10 +1,7 @@
 @page "/SqlPage"
-@using MudBlazor;
+@using Orientation = Radzen.Orientation
 @inject IJSRuntime Js;
-@using Radzen
-@using Radzen.Blazor
 @namespace allmylinks
-@using allmylinks.Models;
 @inject NavigationManager UriHelper;
 
 @if (!isLoading)
@@ -14,7 +11,7 @@
         <div id="infomsg" class="center">
             <MudAlert Severity="Severity.Success" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Press the "Upload Database" button to the left and upload a .db file to access this page.<br><a href="https://github.com/MessiDaGod/Files/blob/main/main.db?raw=true" class="center">Database File</a></MudAlert>
 
-            @if (showLeaveAlert == true)
+            @if (showLeaveAlert)
             {
                 <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">Only .db files can be uploaded!</MudAlert>
             }
@@ -29,7 +26,7 @@
             </Columns>
         </RadzenDataGrid> *@
 
-    <RadzenSplitter Orientation="Radzen.Orientation.Vertical" Collapse=@OnCollapseDisabled Expand=@OnExpand>
+    <RadzenSplitter Orientation="Orientation.Vertical" Collapse=@OnCollapseDisabled Expand=@OnExpand>
         <RadzenSplitterPane>
             <RadzenSplitter Collapse=@OnCollapseDisabled Expand=@OnExpand>
                 <RadzenSplitterPane Size="14%">
@@ -130,7 +127,6 @@
 
     public class DatabaseTables
     {
-        public DatabaseTables() { }
         public object[] columns { get; set; } = null!;
         public object[] values { get; set; } = null!;
     }
@@ -177,7 +173,6 @@
                 await Task.Run(() => Console.WriteLine(tableNames[i].values[j].ToString())).ConfigureAwait(false); *@
             }
         }
-        return;
     }
 
     protected async Task InitRunQuery()
@@ -189,7 +184,7 @@
 
     private async Task UploadFiles(InputFileChangeEventArgs e)
     {
-        if (!e.GetMultipleFiles()[0].Name.ToString().ToLower().Contains(".db"))
+        if (!e.GetMultipleFiles()[0].Name.ToLower().Contains(".db"))
         {
             await Js.InvokeVoidAsync("AML.logit", "File is not a valid SQLite database");
             showLeaveAlert = true;
@@ -201,9 +196,9 @@
             var file = e.GetMultipleFiles()[i];
             await Js.InvokeVoidAsync("AML.logit", $"Adding file {i + 1}");
             await Task.Run(() => files.Add(file));
-            await Js.InvokeVoidAsync("AML.logit", files[0].Name.ToString());
+            await Js.InvokeVoidAsync("AML.logit", files[0].Name);
         }
-        await Js.InvokeVoidAsync("Sql.toggleTabs");
+        @* await Js.InvokeVoidAsync("Sql.toggleTabs"); *@
         await Js.InvokeVoidAsync("Sql.toggleMsg");
         await Init();
     }

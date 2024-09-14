@@ -2,23 +2,17 @@
 // MudBlazor licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using allmylinks.Extensions;
-using allmylinks.Models;
 using allmylinks.Services;
 using allmylinks.Services.Notifications;
+using Microsoft.AspNetCore.Components;
 
 namespace allmylinks.Shared;
 
 public partial class AppbarButtons
 {
-    [Inject] private INotificationService NotificationService { get; set; }
-    [Inject] private LayoutService LayoutService { get; set; }
-    private IDictionary<NotificationMessage, bool> _messages = null;
+    [Inject] private INotificationService NotificationService { get; set; } = null!;
+    [Inject] private LayoutService LayoutService { get; set; } = null!;
+    private IDictionary<NotificationMessage, bool> _messages = null!;
     private bool _newNotificationsAvailable = false;
 
     private async Task MarkNotificationAsRead()
@@ -29,7 +23,7 @@ public partial class AppbarButtons
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender == true)
+        if (firstRender)
         {
             _newNotificationsAvailable = await NotificationService.AreNewNotificationsAvailable();
             _messages = await NotificationService.GetNotifications();

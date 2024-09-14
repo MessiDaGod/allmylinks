@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using MudBlazor.Charts;
 using MudBlazor;
-
+using MudBlazor.Charts;
 
 namespace allmylinks.Models
 {
@@ -28,7 +24,7 @@ namespace allmylinks.Models
         /// </summary>
         public static Type GetTypeFromComponentLink(string component)
         {
-            if (component.Contains('#') == true)
+            if (component.Contains('#'))
             {
                 component = component.Substring(0, component.IndexOf('#'));
             }
@@ -47,7 +43,8 @@ namespace allmylinks.Models
                     {
                         return x.MakeGenericType(typeof(T));
                     }
-                    else if (x.Name.ToLowerInvariant() == $"mud{component}".ToLowerInvariant())
+
+                    if (x.Name.ToLowerInvariant() == $"mud{component}".ToLowerInvariant())
                     {
                         return x;
                     }

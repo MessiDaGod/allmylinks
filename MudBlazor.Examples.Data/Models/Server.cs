@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MudBlazor.Examples.Data.Models
+﻿namespace MudBlazor.Examples.Data.Models
 {
     public class Server
     {

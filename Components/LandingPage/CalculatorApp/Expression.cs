@@ -21,10 +21,7 @@
 //SOFTWARE.
 
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 namespace PrimitiveCalculator
 {
@@ -42,7 +39,7 @@ namespace PrimitiveCalculator
 
         public Expression(SimpleParser parser)
         {
-            this._parser = parser;
+            _parser = parser;
         }
 
         public Expression(double nr)
@@ -70,7 +67,7 @@ namespace PrimitiveCalculator
                 }
                 else if (_parser.NextIs("+-*^/%".ToCharArray()))
                 {
-                    var op = new Operation() { Operator = _parser.NextChar.ToString() };
+                    var op = new Operation { Operator = _parser.NextChar.ToString() };
                     _parser.Skip(1);
                     _parser.ConsumeAny(' ');
                     if (_parser.NextIs('('))

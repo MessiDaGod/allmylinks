@@ -1,5 +1,4 @@
 ﻿@implements IDisposable
-@using allmylinks.Services;
 @inject IRenderQueueService RenderQueue
 @namespace allmylinks.Components
 
@@ -13,8 +12,8 @@
     [Parameter] public RenderFragment ChildContent { get; set; }
     [Parameter] public bool RenderImmediately { get; set; }
 
-    private bool _showContent = false;
-    private bool _disposed = false;
+    private bool _showContent;
+    private bool _disposed;
     public event Action<QueuedContent> Rendered;
     public event Action<QueuedContent> Disposed;
 

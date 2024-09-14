@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Microsoft.AspNetCore.Components;
-using allmylinks.Extensions;
+﻿using allmylinks.Extensions;
 using allmylinks.Models;
+using Microsoft.AspNetCore.Components;
 
 namespace allmylinks.Services
 {
@@ -128,19 +124,17 @@ namespace allmylinks.Services
                 ;
                 return links;
             }
-            else
-            {
-                var potentialLinks = section switch
-                {
-                    NavigationSection.Customization => _menuService.Customization,
-                    NavigationSection.Features => _menuService.Features,
-                    NavigationSection.Utilities => _menuService.Utilities,
-                    _ => Array.Empty<DocsLink>()
-                };
 
-                return potentialLinks.Select((x => new NavigationFooterLink(x.Title, x.Href.Split("/").Last())))
-                    .ToList();
-            }
+            var potentialLinks = section switch
+            {
+                NavigationSection.Customization => _menuService.Customization,
+                NavigationSection.Features => _menuService.Features,
+                NavigationSection.Utilities => _menuService.Utilities,
+                _ => Array.Empty<DocsLink>()
+            };
+
+            return potentialLinks.Select((x => new NavigationFooterLink(x.Title, x.Href.Split("/").Last())))
+                .ToList();
         }
 
         private NavigationSection GetCurrentSection()

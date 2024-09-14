@@ -1,6 +1,6 @@
-﻿@using Microsoft.AspNetCore.Components
+﻿@using MudBlazor.Utilities
 @using MudBlazor.Examples.Data.Models
-@using MudBlazor.Utilities
+@using Orientation = MudBlazor.Orientation
 @namespace allmylinks.Components.LandingPage
 
 <div class="d-flex mud-width-full mud-height-full">
@@ -184,7 +184,7 @@
         {
         <div class="lp-app-grid">
             <MudPaper Class="rounded-lg">
-                <MudDatePicker PickerVariant="PickerVariant.Static" Orientation="MudBlazor.Orientation.Landscape" Date="@(DateTime.Today.AddDays(1))" Class="rounded-lg" />
+                <MudDatePicker PickerVariant="PickerVariant.Static" Orientation="Orientation.Landscape" Date="@(DateTime.Today.AddDays(1))" Class="rounded-lg" />
             </MudPaper>
             <MudPaper Class="rounded-lg d-flex flex-column">
                 <div class="d-flex align-center px-4 pt-4 pb-3 gap-4">
@@ -195,7 +195,7 @@
                 <div class="d-flex flex-column pa-4 gap-4">
                     <MudTextField T="string" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Rounded.CreditCard" Mask="@(new PatternMask("0000 0000 0000 0000"))" Label="Card Number" Placeholder="0000 0000 0000 0000"  Variant="@Variant.Text" />
                     <div class="d-flex gap-4">
-                        <MudTextField T="string" Mask="@(new DateMask("MM/YY", 'Y', 'M'))" Label="Expiration" Placeholder="MM/YY"  Variant="@Variant.Text" />
+                        <MudTextField T="string" Mask="@(new DateMask("MM/YY", 'Y'))" Label="Expiration" Placeholder="MM/YY"  Variant="@Variant.Text" />
                         <MudTextField T="string" Mask="@(new PatternMask("000"))" Label="CVC" Placeholder="000" Variant="@Variant.Text" />
                     </div>
                 </div>
@@ -330,10 +330,7 @@
         {
             return "width:240px;";
         }
-        else
-        {
-            return "width:0;opacity:0;";
-        }
+        return "width:0;opacity:0;";
     }
 
     protected override void OnParametersSet()
@@ -348,13 +345,13 @@
         }
     }
 
-    private IEnumerable<Element> Elements = new List<Element>()
+    private IEnumerable<Element> Elements = new List<Element>
     {
-        new Element() { Number = 1, Sign = "H", Name = "Hydrogen", Position = 0, Molar = 1.00794},
-        new Element() { Number = 2, Sign = "He", Name = "Helium", Position = 17, Molar = 4.002602},
-        new Element() { Number = 3, Sign = "Li", Name = "Lithium", Position = 0, Molar = 6.941},
-        new Element() { Number = 4, Sign = "Be", Name = "Beryllium", Position = 1, Molar = 9.012182},
-        new Element() { Number = 5, Sign = "C", Name = "Carbon", Position = 13, Molar = 12.0107},
-        new Element() { Number = 6, Sign = "O", Name = "Oxygen", Position = 15, Molar = 15.9994},
+        new Element { Number = 1, Sign = "H", Name = "Hydrogen", Position = 0, Molar = 1.00794},
+        new Element { Number = 2, Sign = "He", Name = "Helium", Position = 17, Molar = 4.002602},
+        new Element { Number = 3, Sign = "Li", Name = "Lithium", Position = 0, Molar = 6.941},
+        new Element { Number = 4, Sign = "Be", Name = "Beryllium", Position = 1, Molar = 9.012182},
+        new Element { Number = 5, Sign = "C", Name = "Carbon", Position = 13, Molar = 12.0107},
+        new Element { Number = 6, Sign = "O", Name = "Oxygen", Position = 15, Molar = 15.9994},
     };
 }

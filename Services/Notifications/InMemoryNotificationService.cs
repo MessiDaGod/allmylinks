@@ -1,10 +1,6 @@
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Blazored.LocalStorage;
-using Microsoft.Extensions.Logging;
+
 // using allmylinks.NotificationContent;
 
 namespace allmylinks.Services.Notifications;
@@ -32,11 +28,9 @@ public class InMemoryNotificationService : INotificationService
         {
             return DateTime.MinValue;
         }
-        else
-        {
-            var timestamp = await _localStorageService.GetItemAsync<DateTime>(LocalStorageKey);
-            return timestamp;
-        }
+
+        var timestamp = await _localStorageService.GetItemAsync<DateTime>(LocalStorageKey);
+        return timestamp;
     }
 
     public async Task<bool> AreNewNotificationsAvailable()

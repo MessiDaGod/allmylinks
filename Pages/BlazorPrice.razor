@@ -1,13 +1,7 @@
 @page "/BlazorPrices"
-@using MudBlazor;
 @inject IJSRuntime Js;
-@using Radzen
-@using Radzen.Blazor
 @namespace allmylinks
-@using allmylinks.Models;
 @inject NavigationManager UriHelper;
-@using Newtonsoft.Json;
-@using Newtonsoft.Json.Linq
 
 @if (Prices == null)
 {
@@ -17,13 +11,13 @@
             <SqlPage />
 }
 @if (Prices != null) {
-<RadzenDataGrid @ref="_PricesGrid" AllowFiltering="true" AllowColumnResize="true" AllowVirtualization="true" Style="height:700px" FilterMode="FilterMode.Advanced" AllowSorting="true" Data="@Prices.ToList().AsEnumerable()" TItem="Prices" ColumnWidth="100px" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" PagerHorizontalAlign="HorizontalAlign.Left" LogicalFilterOperator="LogicalFilterOperator.Or" AllowRowSelectOnRowClick="@AllowRowSelectOnRowClick" SelectionMode="Radzen.DataGridSelectionMode.Multiple">
+<RadzenDataGrid @ref="_PricesGrid" AllowFiltering="true" AllowColumnResize="true" AllowVirtualization="true" Style="height:700px" FilterMode="FilterMode.Advanced" AllowSorting="true" Data="@Prices.ToList().AsEnumerable()" TItem="Prices" ColumnWidth="100px" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" PagerHorizontalAlign="HorizontalAlign.Left" LogicalFilterOperator="LogicalFilterOperator.Or" AllowRowSelectOnRowClick="@AllowRowSelectOnRowClick" SelectionMode="DataGridSelectionMode.Multiple">
     <Columns>
         <RadzenDataGridColumn TItem="Prices" Property="Symbol" Title="Symbol" Sortable="true" Filterable="true">
             <Template Context="Prices">
                 @if (Conv.ConvertTo(Prices.Symbol).Type == SymbolType.Stock || Prices.Symbol == "BTC-USD")
                 {
-                    <a href="@(String.Concat("JavaScript:Shakely.openNewWindow('", "https://finance.yahoo.com/quote/", @Prices.Symbol, "/", "')"))">@(Prices.Symbol)</a>
+                    <a href="@(String.Concat("JavaScript:Shakely.openNewWindow('", "https://finance.yahoo.com/quote/", Prices.Symbol, "/", "')"))">@(Prices.Symbol)</a>
                 }
                 else
                 {
@@ -42,15 +36,15 @@
                 <span style="color: black; font-weight: 700">@Prices.Pct_Change.ToString("N4")</span>
                 @if (Prices.Pct_Change < 0)
                 {
-                    <RadzenImage Path="@UriHelper.ToAbsoluteUri($"img/down.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
+                    <RadzenImage Path="@UriHelper.ToAbsoluteUri("img/down.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
                 }
                 @if (Prices.Pct_Change > 0)
                 {
-                    <RadzenImage Path="@UriHelper.ToAbsoluteUri($"img/up.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
+                    <RadzenImage Path="@UriHelper.ToAbsoluteUri("img/up.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
                 }
                 @if (Prices.Pct_Change == 0)
                 {
-                    <RadzenImage Path="@UriHelper.ToAbsoluteUri($"img/arrowleftright.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
+                    <RadzenImage Path="@UriHelper.ToAbsoluteUri("img/arrowleftright.png").ToString()" style="width: 10px; height: 10px; border-radius: 0px;" />
                 }
             </Template>
         </RadzenDataGridColumn>
@@ -64,7 +58,7 @@
     private SymbolField Conv { get; set; } = new();
     private bool AllowRowSelectOnRowClick { get; set; } = true;
     private IEnumerable<Prices> Prices { get; set; }
-    private Radzen.TabPosition _tabPosition = Radzen.TabPosition.Left;
+    private TabPosition _tabPosition = TabPosition.Left;
     private RadzenDataGrid<Prices> _PricesGrid;
     RadzenDataGrid<Prices> _grid;
 
@@ -80,12 +74,10 @@
         Prices = pricesList.AsEnumerable();
         await InvokeAsync(StateHasChanged);
         }
-
-        return;
     }
 
     private bool showCallAlert = true;
-    private bool showLeaveAlert = false;
+    private bool showLeaveAlert;
 
     private void CloseMe(bool value)
     {

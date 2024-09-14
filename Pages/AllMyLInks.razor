@@ -10,15 +10,15 @@
             </div>
             <div class="sc-bdfBwQ LyLIy">
                 @for (var i = 0; i < Links.Length; i++)
-        {
-                            <div id="links-@i" class="sc-bdfBwQ pkAuV">
-                                <div data-testid="StyledContainer" class="sc-bdfBwQ StyledContainer__StyledLinkContainer-sc-1kae6sc-0 hBNyQA doOGeq">
-                                    <a href="@Links[i]" target="_blank" rel="noopener" data-testid="LinkButton" aria-describedby="profile-links-@i" height="auto" class="@CssClass">
-                                        <p class="">@DomainFromUrl(Links[i]).Replace(".com", "").Replace("www.", "") </p>
-                                    </a>
-                                </div>
-                            </div>
-        }
+                {
+                                    <div id="links-@i" class="sc-bdfBwQ pkAuV">
+                                        <div data-testid="StyledContainer" class="sc-bdfBwQ StyledContainer__StyledLinkContainer-sc-1kae6sc-0 hBNyQA doOGeq">
+                                            <a href="@Links[i]" target="_blank" rel="noopener" data-testid="LinkButton" aria-describedby="profile-links-@i" height="auto" class="@CssClass">
+                                                <p class="">@DomainFromUrl(Links[i]).Replace(".com", "").Replace("www.", "") </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                }
             </div>
         </div>
 
@@ -29,8 +29,9 @@
 </style>
 @code {
     public static string CssClass => "sc-pFZIQ StyledButton-sc-686c3k-0 ldGKnQ imjgnX";
+    public HttpClient httpClient = new();
 
-    public static string[] Links => new[] { "https://github.com/messidagod", "https://instagram.com/joeshakely", "https://www.tiktok.com/@joeshakely", "https://joe-shakely.github.io" };
+    public static string[] Links => new[] { "https://github.com/messidagod", "https://instagram.com/joeshakely", "https://www.tiktok.com/@joeshakely", "https://joe-shakely.github.io", "https://www.linkedin.com/in/josephshakely/" };
 
     public static string DomainFromUrl(string uri)
     {
@@ -38,4 +39,11 @@
         return myUri.Host;
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        KeyValuePair<string, string> headers = new("Access-Control-Allow-Origin", "*");
+        var url = "https://github.com/MessiDaGod/Files/blob/main/main.db?raw=true";
+        @* var dbFile = await url.WithHeaders(headers).GetStringAsync(); *@
+        @* var dbFile = await url.GetStringAsync(); *@
+    }
 }

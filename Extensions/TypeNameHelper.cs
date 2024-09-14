@@ -3,8 +3,6 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace allmylinks.Extensions
@@ -14,7 +12,7 @@ namespace allmylinks.Extensions
     {
         public static string GetTypeDisplayName(this Type type)
         {
-            return TypeNameHelper.GetTypeDisplayName(type, false);
+            return GetTypeDisplayName(type, false);
         }
 
         public static readonly Dictionary<Type, string> BuiltInTypeNames = new Dictionary<Type, string>
