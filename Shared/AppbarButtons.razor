@@ -8,44 +8,42 @@
 
 <MudBadge Color="Color.Secondary" Dot="true" Overlap="true" Visible="_newNotificationsAvailable">
     <MudTooltip Duration="1000" Text="Notifications">
-    <MudMenu Icon="@Icons.Outlined.Notifications" Color="Color.Inherit" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter" PopoverClass="docs-layout-menu-shadow" ListClass="pa-2 docs-menu-list" LockScroll="true">
-
-@if (!IsMobile)
+        <MudMenu Icon="@Icons.Outlined.Notifications" Color="Color.Inherit" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter" PopoverClass="docs-layout-menu-shadow" ListClass="pa-2 docs-menu-list" LockScroll="true">
+            @if (!IsMobile)
             {
-
-
-                    <div class="d-flex justify-space-between align-center px-2">
-                        <MudText Typo="Typo.subtitle2">Notifications</MudText>
-                        <MudButton Disabled="@(_newNotificationsAvailable == false)" OnClick="MarkNotificationAsRead" StartIcon="@Icons.Filled.DoneAll" Variant="Variant.Text" Color="Color.Primary" Class="ml-16 mr-n2">Mark as read</MudButton>
-                    </div>
-                @if (_messages != null && _newNotificationsAvailable)
-                {
-                    @foreach (var (message, isRead) in _messages.Take(5))
-                    {
-                                                    <MudMenuItem Class="px-2 py-0 rounded" Link="@($"/mud/announcements/{message.Id}")">
-                                                        <MudText Typo="Typo.subtitle2">@message.Title</MudText>
-                                                        <MudText Typo="Typo.body2">@($"{message.Authors.FirstOrDefault()?.DisplayName} • {message.PublishDate.ToString("MM/dd/yyyy")}")</MudText>
-                                                    </MudMenuItem>
-                                                    <MudDivider Class="my-2"/>
-                    }
-                }
-                else
-                {
-                                    <div class="d-flex justify-center align-center px-2 py-8 relative">
-                                        <MudText Class="mud-text-secondary my-12">Nothing new :(</MudText>
-                                        <MudBlazorLogo Class="docs-logo-filter mx-16 absolute"/>
-                                    </div>
-                }
+            <div class="d-flex justify-space-between align-center px-2">
+                <MudText Typo="Typo.subtitle2">Notifications</MudText>
+                <MudButton Disabled="@(_newNotificationsAvailable == false)" OnClick="MarkNotificationAsRead" StartIcon="@Icons.Filled.DoneAll" Variant="Variant.Text" Color="Color.Primary" Class="ml-16 mr-n2">Mark as read</MudButton>
+            </div>
+            @if (_messages != null && _newNotificationsAvailable)
+            {
+            @foreach (var (message, isRead) in _messages.Take(5))
+            {
+            <MudMenuItem Class="px-2 py-0 rounded" Link="@($" /mud/announcements/{message.Id}")">
+                <MudText Typo="Typo.subtitle2">@message.Title</MudText>
+                <MudText Typo="Typo.body2">@($"{message.Authors.FirstOrDefault()?.DisplayName} • {message.PublishDate.ToString("MM/dd/yyyy")}")</MudText>
+            </MudMenuItem>
+            <MudDivider Class="my-2" />
             }
-    </MudMenu>
+            }
+            else
+            {
+            <div class="d-flex justify-center align-center px-2 py-8 relative">
+                <MudText Class="mud-text-secondary my-12">Nothing new :(</MudText>
+                @*
+                <MudBlazorLogo Class="docs-logo-filter mx-16 absolute;" /> *@
+            </div>
+            }
+            }
+        </MudMenu>
     </MudTooltip>
 </MudBadge>
-<MudTooltip Duration="1000" Text="@(LayoutService.IsDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme")">
-    <MudIconButton Icon="@(LayoutService.IsDarkMode ? Icons.Rounded.LightMode : Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@LayoutService.ToggleDarkMode"/>
+<MudTooltip Duration="1000" Text="@(LayoutService.IsDarkMode ? " Switch to Light Theme" : "Switch to Dark Theme" )">
+    <MudIconButton Icon="@(LayoutService.IsDarkMode ? Icons.Rounded.LightMode : Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@LayoutService.ToggleDarkMode" />
 </MudTooltip>
-    <MudTooltip Duration="1000" Text="Operating System">
-        <MudButton id="os" Edge="Edge.End"><span class="material-symbols-outlined">@IsMobileIcon</span>&nbsp;@Platform</MudButton>
-    </MudTooltip>
+<MudTooltip Duration="1000" Text="Operating System">
+    <MudButton id="os" Edge="Edge.End"><span class="material-symbols-outlined">@IsMobileIcon</span>&nbsp;@Platform</MudButton>
+</MudTooltip>
 
 @code {
 
@@ -95,7 +93,7 @@
         if (b.IsMatch(UserAgent) || v.IsMatch(UserAgent.Substring(0, 4))) {
             IsMobile = true;
         }
-        await Js.InvokeVoidAsync("AML.logit", "logging mobile...");
+        await Js.InvokeVoidAsync("AML.logit", "Agnostic?...");
         await Js.InvokeVoidAsync("AML.logit", IsMobileIcon);
     }
 }

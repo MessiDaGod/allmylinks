@@ -16,8 +16,8 @@ namespace allmylinks.Services
         //constructor with DI
         public ApiLinkService(IMenuService menuService)
         {
-
-            Register(menuService.Api);//this also registers components
+            //this also registers components
+            Register(menuService.Api);
             Register(menuService.Customization);
             Register(menuService.Features);
             Register(menuService.Utilities);

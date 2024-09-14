@@ -10,9 +10,9 @@ namespace allmylinks.Shared;
 
 public partial class AppbarButtons
 {
-    [Inject] private INotificationService NotificationService { get; set; }
-    [Inject] private LayoutService LayoutService { get; set; }
-    private IDictionary<NotificationMessage, bool> _messages = null;
+    [Inject] private INotificationService NotificationService { get; set; } = null!;
+    [Inject] private LayoutService LayoutService { get; set; } = null!;
+    private IDictionary<NotificationMessage, bool> _messages = null!;
     private bool _newNotificationsAvailable = false;
 
     private async Task MarkNotificationAsRead()
