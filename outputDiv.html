@@ -1,0 +1,97 @@
+<pre class="SQLCode"><span class="SQLKeyword">SELECT</span> tr<span class="SQLOperator">.</span>hMy Id<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hParent2 BatchId<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hPerson PersonId<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>uRef InvoiceNumber<span class="SQLOperator">,</span>
+	0 OwnerId<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>itype2 DisplayType<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hOffsetAcct CashAccountId<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hAccrualAcct ApAccountId<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>uPostDate PostMonth<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>dtvatreported VatReturnMonth<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sDateoccurred InvoiceDate<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sOtherDate1 DueDate<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sOtherDate2 DiscountDate<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>fDiscountPercent DiscountPercent<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sDiscountAmt DiscountAmount<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hFunding FundingEntityId<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hCompany CompanyId<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sUserDefined1 UserDefinedFields0<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sUserDefined2 UserDefinedFields1<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sTranFields1 UserDefinedFields2<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sTranFields2 UserDefinedFields3<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sTranFields3 UserDefinedFields4<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sTranFields4 UserDefinedFields5<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sTranFields5 UserDefinedFields6<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sTranFields6 UserDefinedFields7<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sTranFields7 UserDefinedFields8<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sTranFields8 UserDefinedFields9<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>bMemoFromInv GetCheckMemoFromInvoice<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hParent1 ReverserId<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>iType Type<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>iType1 Type1<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hProp PropertyId<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>bOpen IsUnpaid<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sTotalAmount Amount<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sTotalAmount BaseAmount<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sAmountPaid AmountPaid<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sOtherDate3 ManualCheckPostMonth<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>iPostWarn ManualCheckNumber<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>dtLastPost ManualCheckDate<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>h3Party ForBenefitOf<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sNotes Notes<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>VOID Void<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>CONSOLIDATECHECK ConsoloidatePayments<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>CREDIT IsCreditMemo<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>ADJUSTMENT IsAdjustment<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>VOIDED Voided<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>VOIDER Voider<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>HOLDPAYMENT HoldPayments<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sOtherDate4 ImplicitPostMonthDate<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hParent3 MultiOffset<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>RETENTION IsRetention<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>RETPAY IsRetPay<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>bNon1099 ExemptFrom1099<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sDiscountAmt RetentionAmount<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>bACH IsAch<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>dtFrom FromDate<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>dtTo ToDate<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hBaseCurrency BaseCurrencyId<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hTranCurrency TranCurrencyId<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>dExchRate ExchangeRate<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>dtExchangeRate ExchangeRateDate<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sTranAmount TranAmount<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sInvNum SequenceNumber<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hUsercreatedby UserCreatedById<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hUsermodifiedby UserLastModifiedById<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sDateCreated DateCreated<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sDateModified DateLastModified<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sModuleCreatedBy ModuleCreatedBy<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sModuleModifiedBy ModuleModifiedBy<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>iSubType TranModuleType<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>dtStamp DateTimeStamp<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hTranCurrency TranCurrencyId<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hBaseCurrency BaseCurrencyId<span class="SQLOperator">,</span>
+	<span class="SQLKeyword">CASE</span>
+		<span class="SQLKeyword">WHEN</span> tr<span class="SQLOperator">.</span>sTranFields1 <span class="SQLOperator">=</span> <span class="SQLString">'-1'</span>
+			<span class="SQLKeyword">THEN</span> <span class="SQLString">'-1'</span>
+		<span class="SQLKeyword">ELSE</span> <span class="SQLString">'0'</span>
+		<span class="SQLKeyword">END</span> VatInvoiceReceived<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sTranFields2 VatInvoiceNumber<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>dtTaxPoint TaxPointDate<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>sMemo ExpenseType<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>bReceiptDirecttoOwner IsPaidbyOwner<span class="SQLOperator">,</span>
+	tri<span class="SQLOperator">.</span>PREPAID IsPrepaid<span class="SQLOperator">,</span>
+	tri<span class="SQLOperator">.</span>sGAcctAmount GAcctAmount<span class="SQLOperator">,</span>
+	<span class="SQLFunction">isnull</span><span class="SQLOperator">(</span>PHATrans<span class="SQLOperator">.</span>sPmtType<span class="SQLOperator">,</span> <span class="SQLString">''</span><span class="SQLOperator">)</span> PHAType<span class="SQLOperator">,</span>
+	tr<span class="SQLOperator">.</span>hRemittanceVendor RemittanceVendorId<span class="SQLOperator">,</span>
+	<span class="SQLKeyword">CASE</span>
+		<span class="SQLKeyword">WHEN</span> <span class="SQLFunction">isnull</span><span class="SQLOperator">(</span>tr<span class="SQLOperator">.</span>bACH<span class="SQLOperator">,</span> 0<span class="SQLOperator">)</span> <span class="SQLOperator">=</span> <span class="SQLOperator">-</span> 1
+			<span class="SQLKeyword">AND</span> <span class="SQLFunction">isnull</span><span class="SQLOperator">(</span>tr<span class="SQLOperator">.</span>CashReceipt<span class="SQLOperator">,</span> 0<span class="SQLOperator">)</span> <span class="SQLOperator">=</span> 0
+			<span class="SQLKeyword">THEN</span> 1
+		<span class="SQLKeyword">ELSE</span> <span class="SQLFunction">isnull</span><span class="SQLOperator">(</span>tr<span class="SQLOperator">.</span>CashReceipt<span class="SQLOperator">,</span> 0<span class="SQLOperator">)</span>
+		<span class="SQLKeyword">END</span> PaymentMethod
+<span class="SQLKeyword">FROM</span> trans tr
+<span class="SQLKeyword">LEFT JOIN</span> trans_int tri <span class="SQLKeyword">ON</span> tri<span class="SQLOperator">.</span>htran <span class="SQLOperator">=</span> tr<span class="SQLOperator">.</span>hmy
+<span class="SQLKeyword">LEFT JOIN</span> H8PRHTrans PHATrans <span class="SQLKeyword">ON</span> <span class="SQLOperator">(</span>PHATrans<span class="SQLOperator">.</span>hTran <span class="SQLOperator">=</span> tr<span class="SQLOperator">.</span>hmy<span class="SQLOperator">)</span>
+<span class="SQLKeyword">WHERE</span> tr<span class="SQLOperator">.</span>hMy <span class="SQLOperator">=</span> 300330533
+</pre>
